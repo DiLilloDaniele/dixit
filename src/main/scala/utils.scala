@@ -45,7 +45,7 @@ object utils {
   @main def main() =
 
     val reader: BufferedReader = new BufferedReader(new InputStreamReader(System.in));
-
+    System.out.print("Inserisci l'ip")
     val ipAddress: String = reader.readLine();
 
     val port: String = reader.readLine();
@@ -53,7 +53,7 @@ object utils {
     System.out.print(ipAddress + ":"+ port)
     val sender = startupWithRole("sender", port, ipAddress)(apply());
 
-
+    
 
 
 }
