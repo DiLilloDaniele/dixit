@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "grpcService";
+option java_outer_classname = "HelloWorldProto";
+
+package grpcService;
+
+service Server {
+
+  rpc Hello(HelloMessage) returns (HelloMessage) { }
+  rpc Login(LoginRequest) returns (LoginResult) { }
+  rpc Register(LoginRequest) returns (LoginResult) { }
+  rpc GetOpenedGames(OpenedGamesRequest) returns (OpenedGames) { }
+  rpc CloseGame(Game) returns (ClosingResponse) { }
+
+}
+
+message HelloMessage {
+  string message = 1;
+}
+
+message Game {
+
+}
+
+message ClosingResponse {
+
+}
+
+message OpenedGamesRequest {
+
+}
+
+message OpenedGames {
+  repeated string cluster_name = 1;
+}
+
+message LoginRequest {
+  string name = 1;
+  string password = 2;
+}
+
+message LoginResult {
+  bool response = 1;
+}
