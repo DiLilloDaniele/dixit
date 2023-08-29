@@ -13,6 +13,7 @@ lazy val akkaGroup = "com.typesafe.akka"
 libraryDependencies ++= Seq(
   akkaGroup %% "akka-actor-typed" % akkaVersion,
   "ch.qos.logback" % "logback-classic" % "1.2.3",
+  "mysql" % "mysql-connector-java" % "5.1.44",
   akkaGroup %% "akka-actor-testkit-typed" % akkaVersion % Test,
   "org.scalatest" %% "scalatest" % "3.2.11" % Test,
   "com.typesafe.akka" %% "akka-remote" % akkaVersion, // For akka remote
