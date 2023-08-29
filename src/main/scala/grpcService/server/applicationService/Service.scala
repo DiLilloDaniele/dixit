@@ -1,11 +1,15 @@
-package grpcService.server
+package grpcService.server.applicationService
 
-import grpcService.ServerHandler
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{HttpRequest, HttpResponse}
 import com.typesafe.config.ConfigFactory
-import grpcService.server.MyServerService
+import grpcService.ServerHandler
+import grpcService.server.adapters.MyServerService
+import grpcService.server.applicationService.Service
+import grpcService.server.data.ports.AccessPort
+import grpcService.server.domain.ports.{InboundPorts, RegisterPort}
+import grpcService.server.domain.service.ServerLogic
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -22,11 +26,26 @@ object Service {
   }
 }
 
+/**
+ * usare using e given a catena
+ * qua istanzio porte e logica di dominio
+ * in MyServerService voglio come contesto le porte da utilizzare
+ * nelle porte voglio come contesto la logica di dominio
+ * @param system
+ */
 class Service(system: ActorSystem) {
+  given serverLogic: ServerLogic = ServerLogic {
+    AccessPort {
+      ServiceLocator.getDataAdapter()
+    }
+  }
+  val registerPort = RegisterPort()
+
   def run(): Future[Http.ServerBinding] = {
     // Akka boot up code
-    implicit val sys: ActorSystem = system
-    implicit val ec: ExecutionContext = sys.dispatcher
+    given sys: ActorSystem = system
+    given ec: ExecutionContext = sys.dispatcher
+    given inboundPorts: InboundPorts = InboundPorts(registerPort)
 
     // Create service handlers
     val service: HttpRequest => Future[HttpResponse] =
