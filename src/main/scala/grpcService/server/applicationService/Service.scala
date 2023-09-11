@@ -8,7 +8,7 @@ import grpcService.ServerHandler
 import grpcService.server.adapters.MyServerService
 import grpcService.server.applicationService.Service
 import grpcService.server.data.ports.AccessPort
-import grpcService.server.domain.ports.{InboundPorts, RegisterPort}
+import grpcService.server.domain.ports.{InboundPorts, RegisterPort, GamesManagementPort}
 import grpcService.server.domain.service.ServerLogic
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -40,19 +40,20 @@ class Service(system: ActorSystem) {
     }
   }
   val registerPort = RegisterPort()
+  val managementPort = GamesManagementPort()
 
   def run(): Future[Http.ServerBinding] = {
     // Akka boot up code
     given sys: ActorSystem = system
     given ec: ExecutionContext = sys.dispatcher
-    given inboundPorts: InboundPorts = InboundPorts(registerPort)
+    given inboundPorts: InboundPorts = InboundPorts(registerPort, managementPort)
 
     // Create service handlers
     val service: HttpRequest => Future[HttpResponse] =
       ServerHandler(new MyServerService())
 
     // Bind service handler servers to localhost:8080/8081
-    val binding = Http().newServerAt("127.0.0.1", 8080).bind(service)
+    val binding = Http().newServerAt("127.0.0.1", 8083).bind(service)
 
     // report successful binding
     binding.foreach { binding => println(s"gRPC server bound to: ${binding.localAddress}") }
