@@ -15,19 +15,18 @@ object AccessPort:
   @main def main() =
     val accessPort = AccessPort(ServiceLocator.getDataAdapter())
     //accessPort.insertNewUser("Daniele", "password")
-    accessPort.addPointsToUser("1", 10)
+    //accessPort.addPointsToUser("1", 10)
+    accessPort.selectUser("Daniele") match {
+      case Some(value) => println(value.name + " - " + value.password)
+    }
 
 class AccessPort(accessAdapter: AccessAdapter) extends AccessRepository {
   
-  override def selectUser(userId: String): User =
+  override def selectUser(userId: String): Option[User] =
     val queryWrapper = QueryBuilder()
-    val resultSet: ResultSet = accessAdapter.selectSingleRow(
-    queryWrapper select "userName" from "USER" where "userId" equal userId
-    ).getOrElse {
-      throw SQLException("Error when reading user information")
-    }
-    val user = User(resultSet.getString("name"), resultSet.getInt("points"))
-    user
+    val query = queryWrapper select "*" from "User" where "Name" equal userId
+    println(query.query)
+    accessAdapter.selectSingleRow(query)
 
   override def insertNewUser(userName: String, password: String): Unit =
     val insertBuilder = InsertBuilder()

@@ -1,9 +1,8 @@
 package grpcService.server.data.adapters
 
+import grpcService.server.domain.model.User
+
 import java.sql.{Connection, DriverManager, ResultSet, SQLException, Statement}
-
-//conversion da QueryWrapper a stringa, da dare in pasto all'adapter
-
 
 object AccessAdapter:
 
@@ -24,13 +23,6 @@ class AccessAdapter(val url: String, val port: String, val driver: String, val d
 
   val connectionString = "jdbc:" + driver + "://" + url + ":" + port + "/" + dbName + "?autoReconnect=true&useSSL=false"
   var connection: Connection = _
-
-  /** provare a creare un dsl per ottenere i dati o fare modifiche
-   * tipo
-   * select NomeUtente => deve ritornare le info sull'utente
-   * insert User => deve poter inserire un utente
-   * update User with points => deve poter aggiungere points ai punti di User
-   */
 
   def connect(): Unit =
     //jdbc:mysql://localhost:3306/DIXIT?autoReconnect=true&useSSL=false
@@ -60,13 +52,17 @@ class AccessAdapter(val url: String, val port: String, val driver: String, val d
 
     return true
 
-  def selectSingleRow(queryWrapper: QueryBuilder): Option[ResultSet] =
-    var result: Option[ResultSet] = Option.empty
+  def selectSingleRow(queryWrapper: QueryBuilder): Option[User] =
+    var user : Option[User] = Option.empty
     try {
       connect()
       val statement: Statement = connection.createStatement()
       val query = queryWrapper.query
-      result = Option(statement.executeQuery(query))
+      val resultSet = statement.executeQuery(query)
+      resultSet.first() match
+        case true => user = Option(User(resultSet.getString("Name"), resultSet.getInt("Points"),
+          resultSet.getString("Password")))
+        case _ => user = Option.empty
     } catch {
       case e: Exception => e.printStackTrace
     } finally {
@@ -75,7 +71,7 @@ class AccessAdapter(val url: String, val port: String, val driver: String, val d
         case e: SQLException => /* Ignored */
       }
     }
-    result
+    user
 
   def insertQuery(query: InsertBuilder): Unit =
     try {
