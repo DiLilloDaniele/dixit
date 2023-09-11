@@ -1,3 +1,3 @@
 package grpcService.server.domain.ports
 
-case class InboundPorts(registerPort: RegisterPort)
+case class InboundPorts(registerPort: RegisterPort, gamesManagementPort: GamesManagementPort)
