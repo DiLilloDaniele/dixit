@@ -12,7 +12,8 @@ service Server {
   rpc Login(LoginRequest) returns (LoginResult) { }
   rpc Register(LoginRequest) returns (LoginResult) { }
   rpc GetOpenedGames(OpenedGamesRequest) returns (OpenedGames) { }
-  rpc CloseGame(Game) returns (ClosingResponse) { }
+  rpc CloseGame(GameMessage) returns (ClosingResponse) { }
+  rpc NewGame(GameMessage) returns (NewGameResponse) { }
 
 }
 
@@ -20,8 +21,9 @@ message HelloMessage {
   string message = 1;
 }
 
-message Game {
-
+message GameMessage {
+  string address = 1;
+  string forename = 2;
 }
 
 message ClosingResponse {
@@ -29,6 +31,10 @@ message ClosingResponse {
 }
 
 message OpenedGamesRequest {
+
+}
+
+message NewGameResponse {
 
 }
 
