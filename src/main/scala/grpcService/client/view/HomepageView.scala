@@ -131,12 +131,23 @@ class HomepageView(val gameController : GameController) extends JPanel() {
   add(borderLayout, "listpane")
 
   def apply() = {
-
-
+    
   }
+  
+  def createAndShowGui() =
+    SwingUtilities.invokeLater(() => {
+      val frame = JFrame("Main GUI")
+      frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
+      frame.setContentPane (this)
+      frame.pack()
+      frame.setLocationRelativeTo (null)
+      frame.setVisible (true)
+    })
 
   def changeView() =
-    cl.show(this, "listpane")
+    SwingUtilities.invokeLater(() => {
+      cl.show(this, "listpane")
+    })
 
   def getJavaList[A](list: scala.List[A]) =
     val javaList: util.ArrayList[A] = util.ArrayList()
