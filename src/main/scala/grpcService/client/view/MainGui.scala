@@ -15,30 +15,29 @@ object MainGui:
 
   def createAndShowGui() =
     val frame = JFrame("Test")
+    val gui: MainGui = MainGui(null, null, null)
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
-    frame.setContentPane (MainGui())
+    frame.setContentPane (gui)
     frame.pack ()
     frame.setLocationRelativeTo (null)
     frame.setVisible (true)
+    gui.getImageToChoose(List("1","1","1","1","1"))
 
-class MainGui extends JPanel(BorderLayout()){
+class MainGui(val sendImage: (cardId: Int, title: String) => Unit,
+              val guessCard: (id: Int) => Unit,
+              val guessCardFromMine: (id: Int) => Unit) extends JPanel(BorderLayout()){
 
   val resourceFolder = (System.getProperty("user.dir").toString() + "\\src\\main\\resources\\")
+  val imagesFolder = "carte"
   val listPane: JPanel = JPanel()
-  val myPicture = ImageIO.read(File(resourceFolder + File.separator + "carte" + File.separator + "1.PNG"))
 
   listPane.setLayout(BoxLayout(listPane, BoxLayout.X_AXIS))
 
-  val picLabel = new JLabel(new ImageIcon(myPicture))
-  picLabel.setAlignmentX(Component.CENTER_ALIGNMENT)
-  picLabel.addMouseListener(getListener(1))
-  listPane.add(picLabel)
-  val picLabel1 = new JLabel(new ImageIcon(myPicture))
-  listPane.add(picLabel1)
-  val picLabel2 = new JLabel(new ImageIcon(myPicture))
-  listPane.add(picLabel2)
-  val picLabel3 = new JLabel(new ImageIcon(myPicture))
-  listPane.add(picLabel3)
+  val images = LazyList.iterate(1){i => i + 1}.map { i =>
+    (
+      i,
+      ImageIO.read(File(resourceFolder + File.separator + imagesFolder + File.separator + s"$i.PNG"))
+    )}
 
   val nameAndReg = new JLabel("My details", SwingConstants.CENTER)
   val errorMsg = new JLabel("The error message", SwingConstants.CENTER)
@@ -70,17 +69,102 @@ class MainGui extends JPanel(BorderLayout()){
   add(butPanelNorth, BorderLayout.NORTH)
   add(butPanelSouth, BorderLayout.SOUTH)
 
-  def getListener(index: Int): MouseListener =
-    return new MouseListener {
-      override def mouseClicked(e: MouseEvent): Unit = println("IMAGE CLICKED " + index)
+  def resetListPane() =
+    listPane.removeAll()
 
-      override def mousePressed(e: MouseEvent): Unit = ???
-
-      override def mouseReleased(e: MouseEvent): Unit = ???
-
-      override def mouseEntered(e: MouseEvent): Unit = ???
-
-      override def mouseExited(e: MouseEvent): Unit = ???
+  def getImageForGuessing(cards: List[String], title: String) =
+    resetListPane()
+    changeWarnText(s"Titolo della carta: $title \n Qual è quella giusta?")
+    cards foreach { i =>
+      val image = images(i.toInt - 1)
+      val picLabel = new JLabel(new ImageIcon(image._2))
+      picLabel.setAlignmentX(Component.CENTER_ALIGNMENT)
+      picLabel.addMouseListener(getListenerForGuessing(image._1))
+      listPane.add(picLabel)
     }
+
+  def getImageForGuessingFromMine(cards: List[String], title: String) =
+    resetListPane()
+    changeWarnText(s"Titolo della carta: $title \n Scegli quella che reputi idonea")
+    cards foreach { i =>
+      val image = images(i.toInt - 1)
+      val picLabel = new JLabel(new ImageIcon(image._2))
+      picLabel.setAlignmentX(Component.CENTER_ALIGNMENT)
+      picLabel.addMouseListener(getListenerForGuessingFromMine(image._1))
+      listPane.add(picLabel)
+    }
+
+  def getImageToChoose(cards: List[String]) =
+    resetListPane()
+    changeWarnText("Scegli la carta e il titolo per il tuo turno")
+    cards foreach { i =>
+      val image = images(i.toInt - 1)
+      val picLabel = new JLabel(new ImageIcon(image._2))
+      picLabel.setAlignmentX(Component.CENTER_ALIGNMENT)
+      picLabel.addMouseListener(getListenerForChoose(image._1))
+      listPane.add(picLabel)
+    }
+
+  def changeWarnText(text: String) =
+    SwingUtilities.invokeLater(() => {
+      errorMsg.setText(text)
+    })
+
+  def getListenerForChoose(index: Int): MouseListener =
+    return new MouseListener {
+      override def mouseClicked(e: MouseEvent): Unit =
+        println("IMAGE CLICKED " + index)
+        changeWarnText(s"Attendi...")
+        val title = redVal.getText
+        sendImage(index, title)
+
+      override def mousePressed(e: MouseEvent): Unit = ()
+
+      override def mouseReleased(e: MouseEvent): Unit = ()
+
+      override def mouseEntered(e: MouseEvent): Unit = ()
+
+      override def mouseExited(e: MouseEvent): Unit = ()
+    }
+
+  def getListenerForGuessing(index: Int): MouseListener =
+    return new MouseListener {
+      override def mouseClicked(e: MouseEvent): Unit =
+        println("IMAGE CLICKED " + index)
+        changeWarnText(s"Attendi...")
+        guessCard(index)
+
+      override def mousePressed(e: MouseEvent): Unit = ()
+
+      override def mouseReleased(e: MouseEvent): Unit = ()
+
+      override def mouseEntered(e: MouseEvent): Unit = ()
+
+      override def mouseExited(e: MouseEvent): Unit = ()
+    }
+
+  def getListenerForGuessingFromMine(index: Int): MouseListener =
+    return new MouseListener {
+      override def mouseClicked(e: MouseEvent): Unit =
+        println("IMAGE CLICKED " + index)
+        changeWarnText(s"Attendi...")
+        guessCardFromMine(index)
+
+      override def mousePressed(e: MouseEvent): Unit = ()
+
+      override def mouseReleased(e: MouseEvent): Unit = ()
+
+      override def mouseEntered(e: MouseEvent): Unit = ()
+
+      override def mouseExited(e: MouseEvent): Unit = ()
+    }
+
+  def createAndShowGui() =
+    val frame = JFrame("Test")
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
+    frame.setContentPane (this)
+    frame.pack ()
+    frame.setLocationRelativeTo (null)
+    frame.setVisible (true)
 
 }
