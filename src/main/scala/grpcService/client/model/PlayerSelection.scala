@@ -1,3 +1,6 @@
 package grpcService.client.model
 
-case class PlayerSelection(val card: String, val player: String)
+import akka.actor.typed.ActorRef
+import grpcService.client.actors.Message
+
+case class PlayerSelection[A](val card: String, val player: ActorRef[A])
