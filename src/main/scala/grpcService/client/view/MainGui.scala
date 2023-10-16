@@ -1,6 +1,6 @@
 package grpcService.client.view
 
-import java.awt.event.{MouseEvent, MouseListener}
+import java.awt.event.{MouseEvent, MouseListener, WindowAdapter, WindowEvent}
 import java.awt.{BorderLayout, Color, Component, GridBagConstraints, GridBagLayout, Insets}
 import java.io.File
 import javax.imageio.ImageIO
@@ -15,7 +15,7 @@ object MainGui:
 
   def createAndShowGui() =
     val frame = JFrame("Test")
-    val gui: MainGui = MainGui(null, null, null)
+    val gui: MainGui = MainGui(null, null, null, null)
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
     frame.setContentPane (gui)
     frame.pack ()
@@ -25,7 +25,8 @@ object MainGui:
 
 class MainGui(val sendImage: (cardId: Int, title: String) => Unit,
               val guessCard: (id: Int) => Unit,
-              val guessCardFromMine: (id: Int) => Unit) extends JPanel(BorderLayout()){
+              val guessCardFromMine: (id: Int) => Unit,
+              val closeEvent: () => Unit) extends JPanel(BorderLayout()){
 
   val resourceFolder = (System.getProperty("user.dir").toString() + "\\src\\main\\resources\\")
   val imagesFolder = "carte"
@@ -162,6 +163,11 @@ class MainGui(val sendImage: (cardId: Int, title: String) => Unit,
   def createAndShowGui() =
     val frame = JFrame("Test")
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
+    frame.addWindowListener(new WindowAdapter() {
+      override def windowClosed(windowEvent: WindowEvent): Unit = {
+        closeEvent()
+      }
+    })
     frame.setContentPane (this)
     frame.pack ()
     frame.setLocationRelativeTo (null)
