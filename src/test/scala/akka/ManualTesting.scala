@@ -8,12 +8,13 @@ object ManualTesting {
   @main def testInteractions() =
     import grpcService.client.actors.utils
     val foreman = utils.startupWithRole("foreman", "2551", "127.0.0.1")(ForemanBehavior())
+    
     Thread.sleep(2000)
-    utils.startupWithRole("player1", "2552", "127.0.0.1")(PlayerBehavior())
+    utils.startupWithRole("player", "2555", "127.0.0.1")(PlayerBehavior())
     Thread.sleep(2000)
-    utils.startupWithRole("player2", "2553", "127.0.0.1")(PlayerBehavior())
-    Thread.sleep(2000)
-    utils.startupWithRole("player3", "2554", "127.0.0.1")(PlayerBehavior())
+    utils.startupWithRole("player", "2553", "127.0.0.1")(PlayerBehavior())
+    //Thread.sleep(2000)
+    //utils.startupWithRole("player", "2554", "127.0.0.1")(PlayerBehavior())
 
 
   @main def executeForeman() =

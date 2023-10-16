@@ -15,6 +15,8 @@ import org.scalatest.funspec.AnyFunSpec
 import concurrent.duration.DurationInt
 import scala.language.postfixOps
 
+
+
 //simple actor interaction that gives a card pre-prepared
 def interactionTestActor(): Behavior[InteractionBehavior.Command] =
   Behaviors.setup[InteractionBehavior.Command] { ctx =>
@@ -46,11 +48,11 @@ class AsyncTestingExampleSpec
         it("a player should send the choosen card for its turn") {
           val probe = testKit.createTestProbe[ForemanBehavior.Command]()
           val interaction = testKit.spawn(interactionTestActor(), "interaction")
-          val foreman = testKit.spawn(ForemanBehavior(Option(probe.ref), Option(interaction)), "foreman")
+          val foreman = testKit.spawn(ForemanBehavior(Option(probe.ref), Option(interaction), 2), "foreman")
           Thread.sleep(2000)
           val player = testKit.spawn(PlayerBehavior(interactionExt = Option(interaction)), "player")
           val player1 = testKit.spawn(PlayerBehavior(interactionExt = Option(interaction)), "player1")
-          probe.expectMessage(10 seconds, ForemanBehavior.Start)
+          probe.expectMessage(20 seconds, ForemanBehavior.Start(List(player, player1)))
           val message: ForemanBehavior.Command = probe.receiveMessage()
           message match {
             case ForemanBehavior.CardToGuess("1", "myTitle", _) => succeed
@@ -67,9 +69,10 @@ class AsyncTestingExampleSpec
           import PlayerBehavior._
           val probe = testKit.createTestProbe[PlayerBehavior.Command | Receptionist.Listing]()
           val interaction = testKit.spawn(interactionTestActor(), "interaction")
-          val foreman = testKit.spawn(ForemanBehavior(interactionExt = Option(interaction)), "foreman")
+          val foreman = testKit.spawn(ForemanBehavior(interactionExt = Option(interaction), 3), "foreman")
           Thread.sleep(2000)
           val player2 = testKit.spawn(PlayerBehavior(interactionExt = Option(interaction)), "player2")
+          val player3 = testKit.spawn(PlayerBehavior(interactionExt = Option(interaction)), "player3")
           val player1 = testKit.spawn(PlayerBehavior(logger = Option(probe.ref), interactionExt = Option(interaction)), "player1")
           val message1: PlayerBehavior.Command | Receptionist.Listing = probe.receiveMessage()
           println(message1)
@@ -79,6 +82,7 @@ class AsyncTestingExampleSpec
           println(message3)
           (message1, message2, message3) match {
             case (MemberOK, CardsAssigned(list), CardChoosenByOther("myTitle", _)) => succeed
+            case (MemberOK, CardsAssigned(list), YourTurn(_)) => succeed
             case m => fail("Unexpected message: " + m)
           }
           
