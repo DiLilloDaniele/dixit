@@ -2,12 +2,13 @@ package grpcService.client
 
 import akka.actor.ActorSystem
 import akka.grpc.GrpcClientSettings
-import grpcService.{HelloMessage, LoginRequest, OpenedGamesRequest, Server, ServerClient}
+import grpcService.{GameMessage, HelloMessage, LoginRequest, OpenedGamesRequest, Server, ServerClient}
 
 import scala.concurrent.ExecutionContextExecutor
 import scala.util.{Failure, Success}
 import grpcService.client.controller.GameControllerObj
 import grpcService.client.controller.GameControllerObj.SuccessFun
+import grpcService.client.view.HomepageView
 
 object Client {
   def main(args: Array[String]): Unit = {
@@ -23,7 +24,7 @@ object Client {
 
     // Create a client-side stub for the service
     val client: Server = ServerClient(clientSettings)
-
+/*
     val reply = client.hello(HelloMessage("Daniele"))
     reply.onComplete {
       case Success(msg) =>
@@ -31,7 +32,13 @@ object Client {
       case Failure(e) =>
         println(s"Error sayHello: $e")
     }
+*/
   }
+  
+  @main def startClient() =
+    val client = ClientImpl()
+    
+  
 }
 
 class ClientImpl() {
@@ -66,6 +73,15 @@ class ClientImpl() {
     reply.onComplete {
       case Success(msg) =>
         success(msg.response)
+      case Failure(e) =>
+        println(s"Error sayHello: $e")
+    }
+
+  def createGame(address: String, user: String, success: SuccessFun[Boolean]) =
+    val reply = client.newGame(GameMessage(address, user))
+    reply.onComplete {
+      case Success(msg) =>
+        success(true)
       case Failure(e) =>
         println(s"Error sayHello: $e")
     }
