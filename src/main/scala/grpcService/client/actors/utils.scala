@@ -64,7 +64,6 @@ object utils:
 
   @main def test() =
     val foreman = startupWithRole("foreman", "2551", "127.0.0.1")(ForemanBehavior());
-    startupWithRole("listener", "2552", "127.0.0.1")(ClusterListener(foreman));
     Thread.sleep(1000)
     startupWithRole("player", "2554", "127.0.0.1")(PlayerBehavior());
 
