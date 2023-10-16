@@ -49,8 +49,7 @@ class HomepageView(val gameController : GameController) extends JPanel() {
 
   labsPanel.add(listPane)
 
-  val strings = Array("csacsa", "cassaf", "sgrereh", "csacsa", "cassaf", "sgrereh", "csacsa", "cassaf", "sgrereh")
-  var myList: JList[String] = new JList(strings)
+  var myList: JList[String] = new JList()
   myList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION)
   myList.addListSelectionListener((e) => {
     println("ELEMENTO CLICCATO: " + myList.getSelectedValue)
@@ -64,8 +63,11 @@ class HomepageView(val gameController : GameController) extends JPanel() {
   labsPanel.add(listScroller)
 
   val butCreate = JButton("Create game")
-  val butSubmit = JButton("Submit")
+  val butSubmit = JButton("Join")
   val butRefresh = JButton("Refresh...")
+  butCreate.addActionListener((e) => {
+    gameController.createGame()
+  })
   butRefresh.addActionListener((e) => {
     gameController.getGames((list) => {
       println("LISTA GAMES:")
@@ -129,10 +131,6 @@ class HomepageView(val gameController : GameController) extends JPanel() {
 
   add(loginPanel, "empty")
   add(borderLayout, "listpane")
-
-  def apply() = {
-    
-  }
   
   def createAndShowGui() =
     SwingUtilities.invokeLater(() => {
