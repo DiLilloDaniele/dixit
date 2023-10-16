@@ -22,6 +22,7 @@ object PlayerBehavior:
   case object MemberKO extends Command
   case object Start extends Command
   case class TurnOf(val player: String) extends Command
+  case class GameInfo(msg: String) extends Command
 
   //turn messages
   case class YourTurn(val replyTo: ActorRef[ForemanBehavior.Command]) extends Command
@@ -36,6 +37,9 @@ object PlayerBehavior:
   case class CardsAssigned(cardsId: List[String]) extends Command
   case class SingleCardSubmitted(cardId: String) extends Command
   case class GuessedCardbyUser(cardId: String) extends Command
+  case object TurnCancelled extends Command
+  case class EndGame(points: Int) extends Command
+  case class NewCard(card: String) extends Command
 
   def apply(logger: Option[ActorRef[Command]] = Option.empty, interactionExt: Option[ActorRef[InteractionBehavior.Command]] = Option.empty): Behavior[Command] =
     Behaviors.setup[Command] { ctx =>
@@ -51,8 +55,12 @@ object PlayerBehavior:
       }
       val player = ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](context => new PlayerBehaviorImpl(context, interaction, ctx.self)), "player")
       player ! Start
-      ctx.watch(player)
+      ctx.watch(interaction)
+
       Behaviors.receiveMessage[Command] {
+        case GameInfo(msg) =>
+          interaction ! InteractionBehavior.MessageError(msg)
+          Behaviors.same
         case msg: Command =>
           ctx.log.info("MESSAGGIO RICEVUTO: " + msg)
           logger match {
@@ -62,7 +70,7 @@ object PlayerBehavior:
           player ! msg
           Behaviors.same
       }.receiveSignal { case (ctx, t @ Terminated(_)) =>
-        ctx.log.info("System terminated. Shutting down")
+        ctx.log.info("System terminated [PLAYER]. Shutting down")
         Behaviors.stopped
       }
     }
@@ -112,6 +120,15 @@ class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], 
     case CardChoosenByOther(title, replyTo) =>
       interactionActor ! InteractionBehavior.GuessCard(rootActor, title)
       guess(title, replyTo)
+    case NewCard(card) =>
+      interactionActor ! InteractionBehavior.NewCard(card)
+      Behaviors.same
+    case TurnCancelled => Behaviors.same
+
+    case EndGame(points) =>
+      interactionActor ! InteractionBehavior.MessageError(s"Gioco terminato, punti guadagnati: $points")
+      Behaviors.stopped
+
     case _ => Behaviors.same
   }
 
@@ -120,8 +137,10 @@ class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], 
       replyTo ! ForemanBehavior.SelectionToApply(card, rootActor)
       Behaviors.same
     case CardsSubmittedByOthers(cards) =>
-      interactionActor ! InteractionBehavior.ShowCardsProposed(rootActor, cards, "")
+      interactionActor ! InteractionBehavior.ShowCardsProposed(rootActor, cards, title)
       choose(replyTo)
+    case TurnCancelled => gameOn()
+
     case _ => Behaviors.same
   }
 
@@ -133,6 +152,9 @@ class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], 
     case GuessedCardbyUser(cardId) =>
       replyTo ! ForemanBehavior.GuessSelection(cardId, rootActor)
       waitForCardRevealed(replyTo)
+
+    case TurnCancelled => gameOn()
+
     case msg => context.log.info("Unknown message: " + msg)
       Behaviors.same
   }
@@ -141,6 +163,9 @@ class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], 
     case CardRevealed(cardId) =>
       // TODO reset interaction with image revealed (optional)
       gameOn()
+
+    case TurnCancelled => gameOn()
+
     case msg => context.log.info("Unknown message: " + msg)
       Behaviors.same
   }
