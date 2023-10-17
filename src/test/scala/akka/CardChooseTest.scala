@@ -49,7 +49,7 @@ class AsyncTestingExampleSpec
           Thread.sleep(2000)
           val player = testKit.spawn(PlayerBehavior(interactionExt = Option(interaction)), "player")
           val player1 = testKit.spawn(PlayerBehavior(interactionExt = Option(interaction)), "player1")
-          probe.expectMessage(20 seconds, ForemanBehavior.Start(List(player, player1)))
+          probe.expectMessage(20 seconds, ForemanBehavior.Start(Set(player, player1)))
           val message: ForemanBehavior.Command = probe.receiveMessage()
           message match {
             case ForemanBehavior.CardToGuess("1", "myTitle", _) => succeed

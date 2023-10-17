@@ -58,7 +58,7 @@ class PlayersManagerBehaviorImpl(context: ActorContext[Command],
         playersList = playersList :+ replyTo
         replyTo ! PlayerBehavior.MemberOK
         if(currentPlayers == maxPlayers)
-          foreman ! ForemanBehavior.Start(playersList)
+          foreman ! ForemanBehavior.Start(playersList.toSet)
           gameOn(maxPlayers, currentPlayers, foreman)
         else
           waitPlayers(maxPlayers, currentPlayers, foreman)

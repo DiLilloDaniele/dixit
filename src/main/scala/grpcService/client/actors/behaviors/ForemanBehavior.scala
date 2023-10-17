@@ -22,7 +22,7 @@ object ForemanBehavior:
 
   sealed trait Command extends Message
 
-  case class Start(playersList: List[ActorRef[PlayerBehavior.Command]]) extends Command
+  case class Start(playersList: Set[ActorRef[PlayerBehavior.Command]]) extends Command
   case class CardToGuess(val cardId: String, val title: String, val replyTo: ActorRef[PlayerBehavior.Command]) extends Command
   case class SelectionToApply(val cardId: String, val replyTo: ActorRef[PlayerBehavior.Command]) extends Command
   case class GuessSelection(val cardId: String, val replyTo: ActorRef[PlayerBehavior.Command]) extends Command
@@ -91,8 +91,7 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
       context.log.info("Unknown message: " + m.toString)
       Behaviors.same
   }
-
-  // TODO pescaggio carte
+  // TODO fine gioco
   def manageTurnOf(actor: ActorRef[PlayerBehavior.Command], turn: Int): Behavior[Command | Receptionist.Listing] = Behaviors.receiveMessage {
     case CardToGuess(card, title, replyTo) if replyTo.path == actor.path =>
       playersSelection = List()
