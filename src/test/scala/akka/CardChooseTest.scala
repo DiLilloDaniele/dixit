@@ -38,14 +38,11 @@ class AsyncTestingExampleSpec
     with BeforeAndAfterAll
     with Matchers {
 
-  val testKit = ActorTestKit()
-
-  override def afterAll(): Unit = testKit.shutdownTestKit()
-
   describe("The player actors") {
     describe("in a game with 2 players") {
       describe("when the game starts") {
         it("a player should send the choosen card for its turn") {
+          val testKit = ActorTestKit()
           val probe = testKit.createTestProbe[ForemanBehavior.Command]()
           val interaction = testKit.spawn(interactionTestActor(), "interaction")
           val foreman = testKit.spawn(ForemanBehavior(Option(probe.ref), Option(interaction), 2), "foreman")
@@ -58,8 +55,8 @@ class AsyncTestingExampleSpec
             case ForemanBehavior.CardToGuess("1", "myTitle", _) => succeed
             case m => fail("Unexpected message: " + m)
           }
-          
-          afterAll()
+
+          testKit.shutdownTestKit()
         }
       }
     }
@@ -67,6 +64,7 @@ class AsyncTestingExampleSpec
       describe("when a turn is terminated") {
         it("the other players should receive the cards selected for the guess phase") {
           import PlayerBehavior._
+          val testKit = ActorTestKit()
           val probe = testKit.createTestProbe[PlayerBehavior.Command | Receptionist.Listing]()
           val interaction = testKit.spawn(interactionTestActor(), "interaction")
           val foreman = testKit.spawn(ForemanBehavior(interactionExt = Option(interaction), 3), "foreman")
@@ -85,8 +83,8 @@ class AsyncTestingExampleSpec
             case (MemberOK, CardsAssigned(list), YourTurn(_)) => succeed
             case m => fail("Unexpected message: " + m)
           }
-          
-          afterAll()
+
+          testKit.shutdownTestKit()
         }
       }
     }
