@@ -10,6 +10,18 @@ Compile / run / mainClass := Some("MainClass")
 lazy val akkaVersion = "2.7.0"
 lazy val akkaGroup = "com.typesafe.akka"
 
+lazy val startupTransition: State => State = "conventionalCommits" :: _
+
+lazy val root = project
+  .in(file("."))
+  .settings(
+    // Other settings...
+    Global / onLoad := {
+      val old = (Global / onLoad).value
+      startupTransition compose old
+    }
+  )
+
 libraryDependencies ++= Seq(
   akkaGroup %% "akka-actor-typed" % akkaVersion,
   "ch.qos.logback" % "logback-classic" % "1.2.3",
