@@ -48,9 +48,10 @@ object PlayerClusterListener:
               if(member.roles.contains("foreman") || member.roles.contains("root"))
                 ctx.log.info("OUT: {}", member.roles)
                 ctx.log.info("Member is Removed: {} after {}", member.address, previousStatus)
-                //TODO manda un messaggio: è uscito il foreman, partita annullata
+                player ! PlayerBehavior.GameInfo("Il capopartita è uscito, partita annullata :(")
             case _: MemberEvent => // ignore
           }
+        case _ => Behaviors.same
       }
       Behaviors.same
     }

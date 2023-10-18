@@ -41,7 +41,6 @@ object ForemanBehavior:
     }
   
   def apply(logger: Option[ActorRef[Command]] = Option.empty,
-            interactionExt: Option[ActorRef[InteractionBehavior.Command]] = Option.empty,
             maxPlayers: Int = 3): Behavior[Command] =
     Behaviors.setup[Command] { ctx =>
       val rootActorRef = ctx.self

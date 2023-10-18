@@ -49,6 +49,7 @@ class PlayersManagerBehaviorImpl(context: ActorContext[Command],
 
   override def onMessage(msg: Command): Behavior[Command] = msg match {
     case Startup => waitPlayers(maxPlayers, 0, foreman)
+    case _ => Behaviors.same
   }
 
   def waitPlayers(maxPlayers: Int, currentNumPlayers: Int, foreman: ActorRef[ForemanBehavior.Command]): Behavior[Command] = Behaviors.receiveMessage[Command] {
@@ -89,6 +90,7 @@ class PlayersManagerBehaviorImpl(context: ActorContext[Command],
         timer.startSingleTimer(CheckMembers, 15000 milliseconds)
         gameOn(maxPlayers, currentPlayers, foreman)
       }
+    case _ => Behaviors.same
 
     case CheckMembers =>
       context.log.info("Checcko....")

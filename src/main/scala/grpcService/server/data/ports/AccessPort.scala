@@ -18,6 +18,7 @@ object AccessPort:
     //accessPort.addPointsToUser("1", 10)
     accessPort.selectUser("Daniele") match {
       case Some(value) => println(value.name + " - " + value.password)
+      case _ => ()
     }
 
 class AccessPort(accessAdapter: AccessAdapter) extends AccessRepository {
