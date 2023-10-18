@@ -66,6 +66,7 @@ object ClusterListener:
                 manager ! PlayersManagerBehavior.PlayerExited
             case _: MemberEvent => // ignore
           }
+        case _ => Behaviors.same
       }
       Behaviors.same
     }
