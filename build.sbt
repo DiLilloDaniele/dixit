@@ -3,9 +3,9 @@ name := "dixit"
 version := "0.1"
 
 scalaVersion := "3.2.0"
-
-mainClass := Some("MainClass")
-Compile / run / mainClass := Some("MainClass")
+//sbt "runMain grpcService.client.actors.ManualTesting"
+mainClass := Some("grpcService.client.Client")
+Compile / run / mainClass := Some("grpcService.client.Client")
 
 lazy val akkaVersion = "2.7.0"
 lazy val akkaGroup = "com.typesafe.akka"
@@ -34,5 +34,35 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-cluster-typed" % akkaVersion, // akka clustering module
   "com.typesafe.akka" %% "akka-serialization-jackson" % akkaVersion
 )
+
+val runApp = taskKey[Unit]("sbt equivalent of gradle's JavaExec")
+runApp := {
+  (runner in Compile).value.run(
+    mainClass = "grpcService.client.actors.ManualTesting",
+    classpath = (fullClasspath in Runtime).value.files,
+    options = Array(""),
+    log = streams.value.log
+  )
+}
+
+val runNewPlayer = taskKey[Unit]("sbt equivalent of gradle's JavaExec")
+runNewPlayer := {
+  (runner in Compile).value.run(
+    mainClass = "grpcService.client.actors.StartNewPlayer",
+    classpath = (fullClasspath in Runtime).value.files,
+    options = Array(""),
+    log = streams.value.log
+  )
+}
+
+val simpleTesting = taskKey[Unit]("sbt equivalent of gradle's JavaExec")
+simpleTesting := {
+  (runner in Compile).value.run(
+    mainClass = "grpcService.client.SimpleTesting",
+    classpath = (fullClasspath in Runtime).value.files,
+    options = Array(""),
+    log = streams.value.log
+  )
+}
 
 enablePlugins(AkkaGrpcPlugin)
