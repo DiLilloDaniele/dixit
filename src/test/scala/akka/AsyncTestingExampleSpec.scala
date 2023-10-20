@@ -101,9 +101,10 @@ class AsyncTestingExampleSpec
             import PlayerBehavior._
             val testKit = ActorTestKit()
             val probe = testKit.createTestProbe[ForemanBehavior.Command]()
-            val interactionWith0 = testKit.spawn(interactionTestActor("0"), "interaction")
-            val interactionWith1 = testKit.spawn(interactionTestActor("1"), "interaction")
+            val interactionWith0 = testKit.spawn(interactionTestActor("0"), "interaction1")
+            val interactionWith1 = testKit.spawn(interactionTestActor("1"), "interaction2")
             val foreman = testKit.spawn(ForemanBehavior(logger = Option(probe.ref), 3), "foreman")
+            Thread.sleep(2000)
             val player2 = testKit.spawn(PlayerBehavior(interactionExt = Option(interactionWith0)), "player2")
             val player3 = testKit.spawn(PlayerBehavior(interactionExt = Option(interactionWith0)), "player3")
             val player1 = testKit.spawn(PlayerBehavior(interactionExt = Option(interactionWith1)), "player1")
@@ -113,9 +114,17 @@ class AsyncTestingExampleSpec
               case m => fail("Unexpected message: " + m)
             }
             var cardsReceived: List[ForemanBehavior.Command] = List(probe.receiveMessage(), probe.receiveMessage(), probe.receiveMessage())
+            
+            cardsReceived match
+              case List(ForemanBehavior.CardToGuess(_, _, _), ForemanBehavior.SelectionToApply(_, _), ForemanBehavior.SelectionToApply(_, _)) => succeed
+              case m => fail("Unexpected messages: " + m)
 
-            println(cardsReceived)
-            //println(cardsReceived.map { i => i.cardId } groupBy(identity))
+            cardsReceived = List(probe.receiveMessage(), probe.receiveMessage())
+            
+            cardsReceived match
+              case List(ForemanBehavior.GuessSelection(_, _), ForemanBehavior.GuessSelection(_, _)) => succeed
+              case m => fail("Unexpected messages: " + m)
+            
             testKit.shutdownTestKit()
           }
         }
