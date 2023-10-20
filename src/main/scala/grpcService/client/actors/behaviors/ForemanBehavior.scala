@@ -102,9 +102,6 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
           i ! CardChoosenByOther(title, root)
       }
       waitForSelections(actor, turn, card)
-    case CardToGuess(card, title, replyTo) =>
-      replyTo ! NotYourTurn
-      Behaviors.same
 
     case PlayerRejoined(address) =>
       playerRejoinedProcedure(address, maxTurns - turnsFinished)

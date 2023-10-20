@@ -26,7 +26,6 @@ object PlayerBehavior:
 
   //turn messages
   case class YourTurn(val replyTo: ActorRef[ForemanBehavior.Command]) extends Command
-  case object NotYourTurn extends Command
 
   //guess messages
   case class CardChoosenByOther(val title: String, val replyTo: ActorRef[ForemanBehavior.Command]) extends Command
