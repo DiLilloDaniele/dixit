@@ -11,6 +11,7 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.funspec.AnyFunSpec
+import grpcService.client.actors.utils
 
 import concurrent.duration.DurationInt
 import scala.language.postfixOps
@@ -70,8 +71,8 @@ class AsyncTestingExampleSpec
         }
       }
     }
-    describe("in a game with 2 players") {
-      describe("when a turn is terminated") {
+    describe("in a game with 3 players") {
+      describe("when a turn is initiated") {
         it("is necessary that the other players should receive the cards selected for the guess phase") {
           import PlayerBehavior._
           val testKit = ActorTestKit()
@@ -97,7 +98,7 @@ class AsyncTestingExampleSpec
           testKit.shutdownTestKit()
         }
         describe("after the players received the chosen card") {
-          it("is necessary that all players select their proposal according to the title") {
+          it("is necessary that all players select their proposal according to the title and terminate the turn") {
             import PlayerBehavior._
             val testKit = ActorTestKit()
             val probe = testKit.createTestProbe[ForemanBehavior.Command]()
@@ -119,13 +120,82 @@ class AsyncTestingExampleSpec
               case List(ForemanBehavior.CardToGuess(_, _, _), ForemanBehavior.SelectionToApply(_, _), ForemanBehavior.SelectionToApply(_, _)) => succeed
               case m => fail("Unexpected messages: " + m)
 
-            cardsReceived = List(probe.receiveMessage(), probe.receiveMessage())
+            cardsReceived = List(probe.receiveMessage(), probe.receiveMessage(), probe.receiveMessage(20 seconds))
             
             cardsReceived match
-              case List(ForemanBehavior.GuessSelection(_, _), ForemanBehavior.GuessSelection(_, _)) => succeed
+              case List(ForemanBehavior.GuessSelection(_, _), ForemanBehavior.GuessSelection(_, _), ForemanBehavior.CardToGuess(_,_,_)) => succeed
               case m => fail("Unexpected messages: " + m)
-            
+
             testKit.shutdownTestKit()
+          }
+        }
+        describe("and a player exit") {
+          describe("re-rejoining before the timeout expires") {
+            it("should be recognized and the turn must be cancelled") {
+              import PlayerBehavior._
+              val testKit = ActorTestKit()
+              val probe = testKit.createTestProbe[ForemanBehavior.Command]()
+              val interactionWith0 = testKit.spawn(interactionTestActor("0"), "interaction1")
+              val interactionWith1 = testKit.spawn(interactionTestActor("1"), "interaction2")
+              val foreman = testKit.spawn(ForemanBehavior(logger = Option(probe.ref), 3), "foreman")
+              Thread.sleep(2000)
+              val player2 = testKit.spawn(PlayerBehavior(interactionExt = Option(interactionWith0)), "player2")
+              var player3 = testKit.spawn(PlayerBehavior(interactionExt = Option(interactionWith0)), "player3")
+              val player1 = testKit.spawn(PlayerBehavior(interactionExt = Option(interactionWith1)), "player1")
+              probe.expectMessage(20 seconds, ForemanBehavior.Start(Set(player1, player2, player3)))
+              testKit.stop(player3)
+              Thread.sleep(2000)
+              player3 = testKit.spawn(PlayerBehavior(interactionExt = Option(interactionWith0)), "player3")
+              val messages = probe.receiveMessages(4)
+              
+              messages.contains(ForemanBehavior.PlayerRejoined("akka://AsyncTestingExampleSpec")) match {
+                case true => succeed
+                case false => fail("Unexpected messages: " + messages)
+              }
+
+              testKit.shutdownTestKit()
+            }
+          }
+          describe("without re-joining") {
+            it("should be recognized and all players must be notified, in order to close the game") {
+                object AllDone extends Exception { }
+                val testKit = ActorTestKit("ClusterSystem")            
+                val interactionWith0 = utils.startupWithRole("interaction", "2600", "127.0.0.1")(interactionTestActor("0"))
+                val interactionWith1 = utils.startupWithRole("interaction", "2601", "127.0.0.1")(interactionTestActor("1"))
+                val player1 = utils.startupWithRole("player", "2555", "127.0.0.1")(PlayerBehavior(interactionExt = Option(interactionWith0)))
+                
+                val player2 = utils.startupWithRole("player", "2553", "127.0.0.1")(PlayerBehavior(interactionExt = Option(interactionWith0)))
+                val player3 = utils.startupWithRole("player", "2552", "127.0.0.1")(PlayerBehavior(interactionExt = Option(interactionWith1)))
+                val probe = testKit.createTestProbe[ForemanBehavior.Command]()
+                val foreman = utils.startupWithRole("foreman", "2554", "127.0.0.1")(ForemanBehavior(logger = Option(probe.ref), 3))
+                Thread.sleep(2000)
+                val messageStart = probe.receiveMessage(20 seconds)
+                
+                messageStart match {
+                case ForemanBehavior.Start(_) => succeed
+                case m => fail("Unexpected message instead of Start: " + m)
+                }
+                player3.terminate()
+                Thread.sleep(10000)
+                try {
+                  while( true ){
+                    // val messages = probe.receiveMessages(7, 35 seconds)
+                    // println("MESSAGES RECEIVED: " + messages)
+                    val messageStop = probe.receiveMessage(30 seconds)
+                    
+                    messageStop match {
+                      case ForemanBehavior.Stop => throw AllDone
+                      case m => () // fail("Unexpected message instead of Stop: " + m)
+                    }
+                  }
+                } catch {
+                  case AllDone =>
+                    testKit.shutdownTestKit()
+                    player2.terminate()
+                    player1.terminate()
+                    succeed
+                }
+            }
           }
         }
       }
