@@ -6,6 +6,8 @@ import akka.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors}
 import grpcService.client.actors.Message
 import grpcService.client.actors.behaviors.PlayerBehavior.*
 import grpcService.client.actors.behaviors.ForemanBehavior
+import grpcService.client.actors.PlayerClusterListener.Event
+import grpcService.client.actors.{PlayerClusterListener, Message}
 
 import concurrent.duration.DurationInt
 import scala.language.postfixOps
@@ -53,12 +55,17 @@ object PlayerBehavior:
           ctx.spawn(Behaviors.setup[InteractionBehavior.Command](ctx1 => InteractionGuiImpl(ctx1, ctx.self)), "gui")
       }
       val player = ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](context => new PlayerBehaviorImpl(context, interaction, ctx.self)), "player")
+      val listener = ctx.spawn(Behaviors.setup[Event | Receptionist.Listing](context => PlayerClusterListener(ctx.self)), "player-cluster-listener")
       player ! Start
       ctx.watch(interaction)
 
       Behaviors.receiveMessage[Command] {
         case GameInfo(msg) =>
           interaction ! InteractionBehavior.MessageError(msg)
+          logger match {
+            case Some(ref) => ref ! GameInfo(msg)
+            case _ =>
+          }
           Behaviors.same
         case msg: Command =>
           ctx.log.info("MESSAGGIO RICEVUTO: " + msg)
