@@ -90,7 +90,6 @@ class PlayersManagerBehaviorImpl(context: ActorContext[Command],
         timer.startSingleTimer(CheckMembers, 15000 milliseconds)
         gameOn(maxPlayers, currentPlayers, foreman)
       }
-    case _ => Behaviors.same
 
     case CheckMembers =>
       context.log.info("Checcko....")
