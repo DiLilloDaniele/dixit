@@ -162,12 +162,13 @@ class AsyncTestingExampleSpec
                 val testKit = ActorTestKit("ClusterSystem")            
                 val interactionWith0 = utils.startupWithRole("interaction", "2600", "127.0.0.1")(interactionTestActor("0"))
                 val interactionWith1 = utils.startupWithRole("interaction", "2601", "127.0.0.1")(interactionTestActor("1"))
+                val probe = testKit.createTestProbe[ForemanBehavior.Command]()
+                val foreman = utils.startupWithRole("foreman", "2554", "127.0.0.1")(ForemanBehavior(logger = Option(probe.ref), 3))
                 val player1 = utils.startupWithRole("player", "2555", "127.0.0.1")(PlayerBehavior(interactionExt = Option(interactionWith0)))
                 
                 val player2 = utils.startupWithRole("player", "2553", "127.0.0.1")(PlayerBehavior(interactionExt = Option(interactionWith0)))
                 val player3 = utils.startupWithRole("player", "2552", "127.0.0.1")(PlayerBehavior(interactionExt = Option(interactionWith1)))
-                val probe = testKit.createTestProbe[ForemanBehavior.Command]()
-                val foreman = utils.startupWithRole("foreman", "2554", "127.0.0.1")(ForemanBehavior(logger = Option(probe.ref), 3))
+                
                 Thread.sleep(2000)
                 val messageStart = probe.receiveMessage(20 seconds)
                 
@@ -184,7 +185,9 @@ class AsyncTestingExampleSpec
                     val messageStop = probe.receiveMessage(30 seconds)
                     
                     messageStop match {
-                      case ForemanBehavior.Stop => throw AllDone
+                      case ForemanBehavior.Stop => 
+                        println("Message Stop received")
+                        throw AllDone
                       case m => () // fail("Unexpected message instead of Stop: " + m)
                     }
                   }
@@ -193,6 +196,38 @@ class AsyncTestingExampleSpec
                     testKit.shutdownTestKit()
                     player2.terminate()
                     player1.terminate()
+                    interactionWith0.terminate()
+                    interactionWith1.terminate()
+                    succeed
+                }
+            }
+          }
+          describe("and the foreman exit") {
+            it("should be notified to all players") {
+              object AllDone extends Exception { }
+                val testKit = ActorTestKit("ClusterSystem")            
+                val interactionWith0 = utils.startupWithRole("interaction", "2605", "127.0.0.1")(interactionTestActor("0"))
+                val foreman = utils.startupWithRole("foreman", "2654", "127.0.0.1")(ForemanBehavior(maxPlayers = 2))
+                val probe = testKit.createTestProbe[PlayerBehavior.Command]()
+                val player1 = utils.startupWithRole("player", "2655", "127.0.0.1")(PlayerBehavior(logger = Option(probe.ref), interactionExt = Option(interactionWith0)))
+                val player2 = utils.startupWithRole("player", "2656", "127.0.0.1")(PlayerBehavior(logger = Option(probe.ref), interactionExt = Option(interactionWith0)))
+                
+                Thread.sleep(5000)
+                foreman.terminate()
+                try {
+                  while( true ){
+                    val messageStop = probe.receiveMessage(30 seconds)
+                    println("messaggino: " + messageStop)
+                    messageStop match {
+                      case PlayerBehavior.GameInfo(_) => throw AllDone
+                      case m => ()
+                    }
+                  }
+                } catch {
+                  case AllDone =>
+                    testKit.shutdownTestKit()
+                    player1.terminate()
+                    interactionWith0.terminate()
                     succeed
                 }
             }
