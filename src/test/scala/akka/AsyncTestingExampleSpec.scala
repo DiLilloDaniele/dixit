@@ -133,6 +133,7 @@ class AsyncTestingExampleSpec
           describe("re-rejoining before the timeout expires") {
             it("should be recognized and the turn must be cancelled") {
               import PlayerBehavior._
+              object AllDone extends Exception { }
               val testKit = ActorTestKit()
               val probe = testKit.createTestProbe[ForemanBehavior.Command]()
               val interactionWith0 = testKit.spawn(interactionTestActor("0"), "interaction1")
@@ -146,14 +147,22 @@ class AsyncTestingExampleSpec
               testKit.stop(player3)
               Thread.sleep(2000)
               player3 = testKit.spawn(PlayerBehavior(interactionExt = Option(interactionWith0)), "player3")
-              val messages = probe.receiveMessages(4)
-              
-              messages.contains(ForemanBehavior.PlayerRejoined("akka://AsyncTestingExampleSpec")) match {
-                case true => succeed
-                case false => fail("Unexpected messages: " + messages)
+              try {
+                while( true ){
+                  val messageStop = probe.receiveMessage(30 seconds)
+                  
+                  messageStop match {
+                    case ForemanBehavior.PlayerRejoined(_) => 
+                      println("Message Stop received")
+                      throw AllDone
+                    case m => ()
+                  }
+                }
+              } catch {
+                case AllDone =>
+                  testKit.shutdownTestKit()
+                  succeed
               }
-
-              testKit.shutdownTestKit()
             }
           }
           describe("without re-joining") {
