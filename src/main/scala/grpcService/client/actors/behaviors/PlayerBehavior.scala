@@ -152,8 +152,8 @@ class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], 
 
   def choose(replyTo: ActorRef[ForemanBehavior.Command]): Behavior[Command | Receptionist.Listing] = Behaviors.receiveMessage {
     case CardChoosenForTurn(cardId, title) =>
-      // TODO reset interaction
       replyTo ! ForemanBehavior.CardToGuess(cardId, title, rootActor)
+      interactionActor ! InteractionBehavior.ResetInteraction
       gameOn()
     case GuessedCardbyUser(cardId) =>
       replyTo ! ForemanBehavior.GuessSelection(cardId, rootActor)

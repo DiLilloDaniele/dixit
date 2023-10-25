@@ -23,6 +23,9 @@ object HomepageView:
       createAndShowGui()
     })
 
+  def main(args: Array[String]): Unit =
+    createAndShowGui()
+
   def createAndShowGui() =
     val clientImpl = ClientImpl()
     val controller = GameController(clientImpl)

@@ -83,6 +83,8 @@ class MainGui(val sendImage: (cardId: Int, title: String) => Unit,
       picLabel.addMouseListener(getListenerForGuessing(image._1))
       listPane.add(picLabel)
     }
+    listPane.revalidate();
+    listPane.repaint();
 
   def getImageForGuessingFromMine(cards: List[String], title: String) =
     resetListPane()
@@ -94,6 +96,8 @@ class MainGui(val sendImage: (cardId: Int, title: String) => Unit,
       picLabel.addMouseListener(getListenerForGuessingFromMine(image._1))
       listPane.add(picLabel)
     }
+    listPane.revalidate();
+    listPane.repaint();
 
   def getImageToChoose(cards: List[String]) =
     resetListPane()
@@ -105,6 +109,8 @@ class MainGui(val sendImage: (cardId: Int, title: String) => Unit,
       picLabel.addMouseListener(getListenerForChoose(image._1))
       listPane.add(picLabel)
     }
+    listPane.revalidate();
+    listPane.repaint();
 
   def changeWarnText(text: String) =
     SwingUtilities.invokeLater(() => {

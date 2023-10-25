@@ -160,7 +160,7 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
           case m if m == (playersList.size - 1) => 0
           case _ => turn + 1
 
-        if(turnsFinished < (maxTurns - 1))
+        if(turnsFinished < (maxTurns - 1) || !playersList.map { i => i._2 }.contains(30))
           Behaviors.withTimers { timers =>
             timers.startSingleTimer(NewTurn(newTurn), 5000 milliseconds)
             Behaviors.same

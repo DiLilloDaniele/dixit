@@ -3,7 +3,7 @@ package grpcService.client.actors.behaviors
 import akka.actor.typed.{ActorRef, Behavior, Terminated}
 import akka.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors}
 import grpcService.client.actors.Message
-import grpcService.client.actors.behaviors.InteractionBehavior.{CardsAssigned, ChooseTheCard, Command, GuessCard, MessageError, NewCard, ShowCardsProposed, Stop}
+import grpcService.client.actors.behaviors.InteractionBehavior.{ResetInteraction, CardsAssigned, ChooseTheCard, Command, GuessCard, MessageError, NewCard, ShowCardsProposed, Stop}
 import grpcService.client.controller.GameController
 import grpcService.client.ClientImpl
 import grpcService.client.view.MainGui
@@ -25,6 +25,7 @@ object InteractionBehavior:
   case class MessageError(message: String) extends Command
   case object Stop extends Command
   case class NewCard(card: String) extends Command
+  case object ResetInteraction extends Command
 
   def apply(): Behavior[Command] =
     Behaviors.setup[Command] { ctx =>
@@ -94,6 +95,10 @@ class InteractionGuiImpl(context: ActorContext[Command], replyTo: ActorRef[Playe
 
     case NewCard(card) =>
       cards = cards :+ card
+      Behaviors.same
+
+    case ResetInteraction =>
+      gui.resetListPane()
       Behaviors.same
 
     case Stop =>

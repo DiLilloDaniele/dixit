@@ -11,7 +11,7 @@ import grpcService.client.controller.GameControllerObj.SuccessFun
 import grpcService.client.view.HomepageView
 
 object Client {
-  def main(args: Array[String]): Unit = {
+  @main def startClient() = {
     // Boot akka
     implicit val sys = ActorSystem("HelloWorldClient")
     implicit val ec = sys.dispatcher
@@ -35,7 +35,7 @@ object Client {
 */
   }
   
-  @main def startClient() =
+  def main(args: Array[String]): Unit =
     val client = ClientImpl()
     
   
