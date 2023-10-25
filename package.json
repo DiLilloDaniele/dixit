@@ -1,0 +1,24 @@
+{
+  "name": "dixit",
+  "version": "1.0.0",
+  "description": "SD Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DiLilloDaniele/dixit.git"
+  },
+  "author": "Daniele Di Lillo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DiLilloDaniele/dixit/issues"
+  },
+  "homepage": "https://github.com/DiLilloDaniele/dixit#readme",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "semantic-release-preconfigured-conventional-commits": "latest"
+  }
+}
