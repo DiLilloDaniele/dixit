@@ -27,8 +27,9 @@ class AccessAdapter(val url: String, val port: String, val driver: String, val d
   def connectWithoutDbName(): Boolean =
     Class.forName("com.mysql.jdbc.Driver")
     val connectionWithoutDb = "jdbc:" + driver + "://" + url + ":" + port + "?autoReconnect=true&useSSL=false"
+    connection = DriverManager.getConnection(connectionString, username, password)
     try {
-      connection = DriverManager.getConnection(connectionString, username, password)
+      
       true
     } catch {
       case e: Exception => false
