@@ -13,7 +13,7 @@ object ServerLogic:
 
 case class ServerLogic(accessRepository: AccessRepository) {
 
-  var openGames: Set[Game] = Set(Game("127.0.0.1:8082", "Daniele"))
+  var openGames: Set[Game] = Set()
 
   def registerNewUser(user: User, password: String) = accessRepository.insertNewUser(user.name, password)
 

@@ -24,13 +24,23 @@ class AccessAdapter(val url: String, val port: String, val driver: String, val d
   val connectionString = "jdbc:" + driver + "://" + url + ":" + port + "/" + dbName + "?autoReconnect=true&useSSL=false"
   var connection: Connection = _
 
+  def connectWithoutDbName(): Boolean =
+    Class.forName("com.mysql.jdbc.Driver")
+    val connectionWithoutDb = "jdbc:" + driver + "://" + url + ":" + port + "?autoReconnect=true&useSSL=false"
+    try {
+      connection = DriverManager.getConnection(connectionString, username, password)
+      true
+    } catch {
+      case e: Exception => false
+    }
+
   def connect(): Unit =
     //jdbc:mysql://localhost:3306/DIXIT?autoReconnect=true&useSSL=false
-    Class.forName("com.mysql.jdbc.Driver");
+    Class.forName("com.mysql.jdbc.Driver")
     connection = DriverManager.getConnection(connectionString, username, password)
 
   def createDb(): Unit =
-    Class.forName("com.mysql.jdbc.Driver");
+    Class.forName("com.mysql.jdbc.Driver")
     val connection = DriverManager.getConnection(
       "jdbc:mysql://localhost:3306/?autoReconnect=true&useSSL=false", "root", "root")
 
@@ -47,6 +57,11 @@ class AccessAdapter(val url: String, val port: String, val driver: String, val d
         case e: SQLException => /* Ignored */
       }
     }
+
+  def close(): Unit =
+    connection match
+      case m => m.close
+      case _ => ()
 
   def checkDatabaseExist(): Boolean =
 
