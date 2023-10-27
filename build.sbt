@@ -32,7 +32,9 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.2.11" % Test,
   "com.typesafe.akka" %% "akka-remote" % akkaVersion, // For akka remote
   "com.typesafe.akka" %% "akka-cluster-typed" % akkaVersion, // akka clustering module
-  "com.typesafe.akka" %% "akka-serialization-jackson" % akkaVersion
+  "com.typesafe.akka" %% "akka-serialization-jackson" % akkaVersion,
+  "org.testcontainers" % "testcontainers" % "1.19.1",
+  "org.testcontainers" % "mysql" % "1.19.1"
 )
 
 val runApp = taskKey[Unit]("sbt equivalent of gradle's JavaExec")
@@ -49,6 +51,16 @@ val runNewPlayer = taskKey[Unit]("sbt equivalent of gradle's JavaExec")
 runNewPlayer := {
   (runner in Compile).value.run(
     mainClass = "grpcService.client.actors.StartNewPlayer",
+    classpath = (fullClasspath in Runtime).value.files,
+    options = Array(""),
+    log = streams.value.log
+  )
+}
+
+val runServer = taskKey[Unit]("sbt equivalent of gradle's JavaExec")
+runServer := {
+  (runner in Compile).value.run(
+    mainClass = "grpcService.server.applicationService.Service",
     classpath = (fullClasspath in Runtime).value.files,
     options = Array(""),
     log = streams.value.log
