@@ -6,7 +6,12 @@ import java.sql.{Connection, DriverManager, ResultSet, SQLException, Statement}
 
 object AccessAdapter:
 
-  def apply(url: String, port: String, driver: String, dbName: String, username: String, password: String): AccessAdapter = new AccessAdapter(url, port, driver, dbName, username, password)
+  def apply(url: String = "", 
+            port: String = "", 
+            driver: String = "",
+            dbName: String = "",
+            username: String = "",
+            password: String = ""): AccessAdapter = new AccessAdapter(url, port, driver, dbName, username, password)
 
   @main def main() =
     val adapter = apply("localhost", "3306", "mysql", "DIXIT", "root", "root")
