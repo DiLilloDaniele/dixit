@@ -20,7 +20,7 @@ class DomainUnitTest extends AnyFunSpec with Matchers {
             var username = mysql.getUsername();
             var password = mysql.getPassword();
             var jdbcUrl = mysql.getJdbcUrl();
-            val accessAdapter = AccessAdapter(jdbcUrl, "3306", "mysql", "", username, password)
+            val accessAdapter = AccessAdapter("localhost", "3306", "mysql", "", username, password)
             assert(accessAdapter.connectWithoutDbName())
             Thread.sleep(2000)
             accessAdapter.close()
