@@ -6,6 +6,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.funspec.AnyFunSpec
 import org.testcontainers.containers.ContainerLaunchException;
 import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.utility.DockerImageName
 
@@ -15,7 +16,7 @@ class DomainUnitTest extends AnyFunSpec with Matchers {
 
     describe("Starting new MySql container") {
         it("should work") {
-            var mysql = new MySQLContainer(DockerImageName.parse("mysql:5.7.34"))
+            var mysql: GenericContainer = new GenericContainer("mysql:5.7.34")
             mysql.withExposedPorts(3306, 33060).start()
             /*
                 container.getUsername(),
@@ -24,11 +25,13 @@ class DomainUnitTest extends AnyFunSpec with Matchers {
                 container.getMappedPort(33060),
                 container.getDatabase()
             */
+            /*
             var username = mysql.getUsername();
             var password = mysql.getPassword();
             var jdbcUrl = mysql.getJdbcUrl();
             var database = mysql.getDatabase();
-            val accessAdapter = AccessAdapter("localhost", "3306", "mysql", "", username, password)
+            */
+            val accessAdapter = AccessAdapter("localhost", "3306", "mysql", "", "root", "root")
             assert(accessAdapter.connectWithoutDbName())
             Thread.sleep(2000)
             accessAdapter.close()
