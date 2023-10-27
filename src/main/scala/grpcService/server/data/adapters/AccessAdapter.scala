@@ -19,17 +19,20 @@ object AccessAdapter:
 
 //il query wrapper viene passato dall'accessport all'access adapter, cosicché non venga eseguito codice malevolo nelle query
 //ho controllo sulla query inviata
-class AccessAdapter(val url: String, val port: String, val driver: String, val dbName: String, val username: String, val password: String):
+class AccessAdapter(val url: String = "",
+                    val port: String = "", 
+                    val driver: String = "", 
+                    val dbName: String = "", 
+                    val username: String = "", 
+                    val password: String = ""):
 
   val connectionString = "jdbc:" + driver + "://" + url + ":" + port + "/" + dbName + "?autoReconnect=true&useSSL=false"
   var connection: Connection = _
 
-  def connectWithoutDbName(): Boolean =
+  def connectWithUrl(url: String, user: String, pass: String): Boolean =
     Class.forName("com.mysql.jdbc.Driver")
-    val connectionWithoutDb = "jdbc:" + driver + "://" + url + ":" + port + "?autoReconnect=true&useSSL=false"
-    connection = DriverManager.getConnection(connectionString, username, password)
     try {
-      
+      connection = DriverManager.getConnection(url, user, pass)
       true
     } catch {
       case e: Exception => false

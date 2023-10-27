@@ -20,25 +20,12 @@ class DomainUnitTest extends AnyFunSpec with Matchers {
         it("should work") {
             var mysql = new MySQLContainer("mysql:5.7.34")
             mysql.start()
-            /*
-                container.getUsername(),
-                container.getUserPassword(),
-                container.getHost(),
-                container.getMappedPort(33060),
-                container.getDatabase()
-            */
-            /*
-            var username = mysql.getUsername();
-            var password = mysql.getPassword();
-            var jdbcUrl = mysql.getJdbcUrl();
-            var database = mysql.getDatabase();
-            */
-            //val accessAdapter = AccessAdapter(mysql.getHost(), "3306", "mysql", "", "root", "root")
+            val accessAdapter = AccessAdapter()
             val url = mysql.getJdbcUrl() + "?autoReconnect=true&useSSL=false&enabledTLSProtocols=TLSv1.2"
-            println(url)
             val user = mysql.getUsername()
             val pass = mysql.getPassword()
-            DriverManager.getConnection(url, user, pass)
+            //DriverManager.getConnection(url, user, pass)
+            assert(accessAdapter.connectWithUrl(url, user, pass))
             Thread.sleep(2000)
             mysql.stop()
 
