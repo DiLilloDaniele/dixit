@@ -37,9 +37,8 @@ class DomainUnitTest extends AnyFunSpec with Matchers {
             val url = mysql.getJdbcUrl()
             val user = mysql.getUsername()
             val pass = mysql.getPassword()
-            DriverManager.getConnection(connectionString, username, password)
+            DriverManager.getConnection(url, user, pass)
             Thread.sleep(2000)
-            accessAdapter.close()
             mysql.stop()
 
         }
