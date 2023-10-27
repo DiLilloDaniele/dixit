@@ -34,7 +34,8 @@ class DomainUnitTest extends AnyFunSpec with Matchers {
             var database = mysql.getDatabase();
             */
             //val accessAdapter = AccessAdapter(mysql.getHost(), "3306", "mysql", "", "root", "root")
-            val url = mysql.getJdbcUrl()
+            val url = mysql.getJdbcUrl() + "?autoReconnect=true&useSSL=false&enabledTLSProtocols=TLSv1.2"
+            println(url)
             val user = mysql.getUsername()
             val pass = mysql.getPassword()
             DriverManager.getConnection(url, user, pass)
