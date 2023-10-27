@@ -17,7 +17,10 @@ class DomainUnitTest extends AnyFunSpec with Matchers {
         it("should work") {
             var mysql = new MySQLContainer(DockerImageName.parse("mysql:5.7.34"))
             mysql.start()
-            val accessAdapter = AccessAdapter("localhost", "3306", "mysql", "", "", "")
+            var username = mysql.getUsername();
+            var password = mysql.getPassword();
+            var jdbcUrl = mysql.getJdbcUrl();
+            val accessAdapter = AccessAdapter(jdbcUrl, "3306", "mysql", "", username, password)
             assert(accessAdapter.connectWithoutDbName())
             Thread.sleep(2000)
             accessAdapter.close()
