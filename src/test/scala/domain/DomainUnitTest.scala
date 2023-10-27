@@ -16,7 +16,7 @@ class DomainUnitTest extends AnyFunSpec with Matchers {
 
     describe("Starting new MySql container") {
         it("should work") {
-            var mysql: GenericContainer = new GenericContainer("mysql:5.7.34")
+            var mysql = new GenericContainer("mysql:5.7.34")
             mysql.withExposedPorts(3306, 33060).start()
             /*
                 container.getUsername(),
@@ -31,7 +31,7 @@ class DomainUnitTest extends AnyFunSpec with Matchers {
             var jdbcUrl = mysql.getJdbcUrl();
             var database = mysql.getDatabase();
             */
-            val accessAdapter = AccessAdapter("localhost", "3306", "mysql", "", "root", "root")
+            val accessAdapter = AccessAdapter(mysql.getHost(), "3306", "mysql", "", "root", "root")
             assert(accessAdapter.connectWithoutDbName())
             Thread.sleep(2000)
             accessAdapter.close()
