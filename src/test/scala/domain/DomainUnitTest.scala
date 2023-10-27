@@ -15,8 +15,8 @@ class DomainUnitTest extends AnyFunSpec with Matchers {
 
     describe("Starting new MySql container") {
         it("should work") {
-            var mysql = new MySQLContainer(DockerImageName.parse("mysql:5.7.34")).withExposedPorts(3306, 33060)
-            mysql.start()
+            var mysql = new MySQLContainer(DockerImageName.parse("mysql:5.7.34"))
+            mysql.withExposedPorts(3306, 33060).start()
             /*
                 container.getUsername(),
                 container.getUserPassword(),
