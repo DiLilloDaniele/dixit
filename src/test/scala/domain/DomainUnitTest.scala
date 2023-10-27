@@ -12,12 +12,14 @@ import org.testcontainers.utility.DockerImageName
 
 import grpcService.server.data.adapters.AccessAdapter
 
+import java.sql.{Connection, DriverManager, ResultSet, SQLException, Statement}
+
 class DomainUnitTest extends AnyFunSpec with Matchers {
 
     describe("Starting new MySql container") {
         it("should work") {
-            var mysql = new GenericContainer("mysql:5.7.34")
-            mysql.withExposedPorts(3306, 33060).start()
+            var mysql = new MySQLContainer("mysql:5.7.34")
+            mysql.start()
             /*
                 container.getUsername(),
                 container.getUserPassword(),
@@ -31,8 +33,11 @@ class DomainUnitTest extends AnyFunSpec with Matchers {
             var jdbcUrl = mysql.getJdbcUrl();
             var database = mysql.getDatabase();
             */
-            val accessAdapter = AccessAdapter(mysql.getHost(), "3306", "mysql", "", "root", "root")
-            assert(accessAdapter.connectWithoutDbName())
+            //val accessAdapter = AccessAdapter(mysql.getHost(), "3306", "mysql", "", "root", "root")
+            val url = mysql.getJdbcUrl()
+            val user = mysql.getUsername()
+            val pass = mysql.getPassword()
+            DriverManager.getConnection(connectionString, username, password)
             Thread.sleep(2000)
             accessAdapter.close()
             mysql.stop()
