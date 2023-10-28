@@ -73,10 +73,13 @@ class AccessAdapter(val url: String = "",
       case m => m.close
       case _ => ()
 
-  def checkDatabaseExist(): Boolean =
+  def checkDatabaseExist(url: String = "", user: String = "", pass: String = ""): Boolean =
     //SHOW DATABASES LIKE 'dbname';
     try {
-      connect()
+      url match
+        case "" => connect()
+        case m => connection = DriverManager.getConnection(url, user, pass)
+      
       val statement: Statement = connection.createStatement()
       val query = "SHOW DATABASES LIKE 'DIXIT';"
       val resultSet = statement.executeQuery(query)
