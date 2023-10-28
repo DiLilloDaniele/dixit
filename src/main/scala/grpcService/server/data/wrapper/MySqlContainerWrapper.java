@@ -7,7 +7,7 @@ import org.testcontainers.containers.output.Slf4jLogConsumer;
 
 public class MySqlContainerWrapper {
 
-    MySQLContainer container = (MySQLContainer) new MySQLContainer("mysql:5.7.34").withEnv("MYSQL_ROOT_HOST", "%");
+    MySQLContainer container = (MySQLContainer) new MySQLContainer("mysql:5.7.34").withUsername("root").withPassword("").withEnv("MYSQL_ROOT_HOST", "%");
 
     public MySQLContainer getContainer() {
         return container;
