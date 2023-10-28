@@ -53,7 +53,7 @@ class AccessAdapter(val url: String = "",
     try {
       url match
         case "" => connection = DriverManager.getConnection(connectionString, username, password)
-        case m => connection = DriverManager.getConnection(url, user, pass)
+        case _ => connection = DriverManager.getConnection(url, user, pass)
       
       val statement: Statement = connection.createStatement()
       val query = "CREATE DATABASE IF NOT EXISTS DIXIT"
@@ -80,7 +80,7 @@ class AccessAdapter(val url: String = "",
     try {
       url match
         case "" => connect()
-        case m => connection = DriverManager.getConnection(url, user, pass)
+        case _ => connection = DriverManager.getConnection(url, user, pass)
       
       val statement: Statement = connection.createStatement()
       val query = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'DIXIT'"
