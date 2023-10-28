@@ -30,7 +30,7 @@ class DomainUnitTest extends AnyFunSpec with Matchers {
             //DriverManager.getConnection(url, user, pass)
             assert(accessAdapter.connectWithUrl(url, user, pass))
             accessAdapter.createDb(url, user, pass)
-            //assert(accessAdapter.checkDatabaseExist(url, user, pass))
+            assert(accessAdapter.checkDatabaseExist(url, user, pass))
             mysql.stop()
 
         }
