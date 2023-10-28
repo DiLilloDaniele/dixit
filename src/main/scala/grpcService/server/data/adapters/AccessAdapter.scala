@@ -60,7 +60,9 @@ class AccessAdapter(val url: String = "",
       //val result = statement.executeQuery(query)
       statement.executeUpdate(query)
     } catch {
-      case e: Exception => e.printStackTrace
+      case e: Exception => 
+        e.printStackTrace
+        throw e
     } finally {
       if (connection != null) try connection.close
       catch {
@@ -81,7 +83,9 @@ class AccessAdapter(val url: String = "",
         case m => connection = DriverManager.getConnection(url, user, pass)
       
       val statement: Statement = connection.createStatement()
-      val query = "SHOW DATABASES LIKE 'DIXIT';"
+      val query = "SELECT SCHEMA_NAME
+          FROM INFORMATION_SCHEMA.SCHEMATA
+        WHERE SCHEMA_NAME = 'DIXIT'"
       val resultSet = statement.executeQuery(query)
       resultSet.first() match
         case true => return true
