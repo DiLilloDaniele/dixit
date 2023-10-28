@@ -28,4 +28,11 @@ jobs:
         distribution: 'temurin'
         cache: 'sbt'
     - name: Run tests
-      run: sbt "testOnly domain.DomainUnitTest" #test
+      run: sbt clean coverage test #"testOnly domain.DomainUnitTest"
+    - name: Generate report
+      run: sbt coverageReport
+    - name: Archive code coverage results
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report
+          path: target/scala-3.2.0/scoverage-report
