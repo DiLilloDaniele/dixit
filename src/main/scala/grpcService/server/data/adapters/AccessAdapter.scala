@@ -13,9 +13,10 @@ object AccessAdapter:
             username: String = "",
             password: String = ""): AccessAdapter = new AccessAdapter(url, port, driver, dbName, username, password)
 
-  @main def main() =
+  def main(args: Array[String]): Unit =
     val adapter = apply("localhost", "3306", "mysql", "DIXIT", "root", "root")
     adapter.createDb()
+    println(adapter.checkDatabaseExist())
 
   @main def queryTest() =
     import grpcService.server.data.adapters.QueryBuilder
@@ -48,14 +49,14 @@ class AccessAdapter(val url: String = "",
     Class.forName("com.mysql.jdbc.Driver")
     connection = DriverManager.getConnection(connectionString, username, password)
 
-  def createDb(): Unit =
-    Class.forName("com.mysql.jdbc.Driver")
-    val connection = DriverManager.getConnection(
-      "jdbc:mysql://localhost:3306/?autoReconnect=true&useSSL=false", "root", "root")
-
+  def createDb(url: String = "", user: String = "", pass: String = ""): Unit =
     try {
+      url match
+        case "" => connection = DriverManager.getConnection(connectionString, username, password)
+        case m => connection = DriverManager.getConnection(url, user, pass)
+      
       val statement: Statement = connection.createStatement()
-      val query = "CREATE DATABASE DIXIT"
+      val query = "CREATE DATABASE IF NOT EXISTS DIXIT"
       //val result = statement.executeQuery(query)
       statement.executeUpdate(query)
     } catch {
@@ -73,8 +74,25 @@ class AccessAdapter(val url: String = "",
       case _ => ()
 
   def checkDatabaseExist(): Boolean =
-
-    return true
+    //SHOW DATABASES LIKE 'dbname';
+    try {
+      connect()
+      val statement: Statement = connection.createStatement()
+      val query = "SHOW DATABASES LIKE 'DIXT';"
+      val resultSet = statement.executeQuery(query)
+      resultSet.first() match
+        case true => return true
+        case _ => return false
+    } catch {
+      case e: 
+        Exception => e.printStackTrace
+        return false
+    } finally {
+      if (connection != null) try connection.close
+      catch {
+        case e: SQLException => return false /* Ignored */
+      }
+    }
 
   def selectSingleRow(queryWrapper: QueryBuilder): Option[User] =
     var user : Option[User] = Option.empty
