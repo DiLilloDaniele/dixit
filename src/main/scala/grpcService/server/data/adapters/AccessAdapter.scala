@@ -6,7 +6,12 @@ import java.sql.{Connection, DriverManager, ResultSet, SQLException, Statement}
 
 object AccessAdapter:
 
-  def apply(url: String, port: String, driver: String, dbName: String, username: String, password: String): AccessAdapter = new AccessAdapter(url, port, driver, dbName, username, password)
+  def apply(url: String = "", 
+            port: String = "", 
+            driver: String = "",
+            dbName: String = "",
+            username: String = "",
+            password: String = ""): AccessAdapter = new AccessAdapter(url, port, driver, dbName, username, password)
 
   @main def main() =
     val adapter = apply("localhost", "3306", "mysql", "DIXIT", "root", "root")
@@ -19,18 +24,32 @@ object AccessAdapter:
 
 //il query wrapper viene passato dall'accessport all'access adapter, cosicché non venga eseguito codice malevolo nelle query
 //ho controllo sulla query inviata
-class AccessAdapter(val url: String, val port: String, val driver: String, val dbName: String, val username: String, val password: String):
+class AccessAdapter(val url: String = "",
+                    val port: String = "", 
+                    val driver: String = "", 
+                    val dbName: String = "", 
+                    val username: String = "", 
+                    val password: String = ""):
 
   val connectionString = "jdbc:" + driver + "://" + url + ":" + port + "/" + dbName + "?autoReconnect=true&useSSL=false"
   var connection: Connection = _
 
+  def connectWithUrl(url: String, user: String, pass: String): Boolean =
+    Class.forName("com.mysql.jdbc.Driver")
+    try {
+      connection = DriverManager.getConnection(url, user, pass)
+      true
+    } catch {
+      case e: Exception => false
+    }
+
   def connect(): Unit =
     //jdbc:mysql://localhost:3306/DIXIT?autoReconnect=true&useSSL=false
-    Class.forName("com.mysql.jdbc.Driver");
+    Class.forName("com.mysql.jdbc.Driver")
     connection = DriverManager.getConnection(connectionString, username, password)
 
   def createDb(): Unit =
-    Class.forName("com.mysql.jdbc.Driver");
+    Class.forName("com.mysql.jdbc.Driver")
     val connection = DriverManager.getConnection(
       "jdbc:mysql://localhost:3306/?autoReconnect=true&useSSL=false", "root", "root")
 
@@ -47,6 +66,11 @@ class AccessAdapter(val url: String, val port: String, val driver: String, val d
         case e: SQLException => /* Ignored */
       }
     }
+
+  def close(): Unit =
+    connection match
+      case m => m.close
+      case _ => ()
 
   def checkDatabaseExist(): Boolean =
 
