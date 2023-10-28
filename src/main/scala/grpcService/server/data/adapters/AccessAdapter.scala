@@ -78,7 +78,7 @@ class AccessAdapter(val url: String = "",
     try {
       connect()
       val statement: Statement = connection.createStatement()
-      val query = "SHOW DATABASES LIKE 'DIXT';"
+      val query = "SHOW DATABASES LIKE 'DIXIT';"
       val resultSet = statement.executeQuery(query)
       resultSet.first() match
         case true => return true
