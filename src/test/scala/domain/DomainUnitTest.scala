@@ -12,13 +12,16 @@ import org.testcontainers.utility.DockerImageName
 
 import grpcService.server.data.adapters.AccessAdapter
 
+import grpcService.server.data.wrapper.MySqlContainerWrapper
+
 import java.sql.{Connection, DriverManager, ResultSet, SQLException, Statement}
 
 class DomainUnitTest extends AnyFunSpec with Matchers {
 
     describe("Starting new MySql container") {
         it("should work") {
-            var mysql = new MySQLContainer("mysql:5.7.34").withEnv("MYSQL_ROOT_HOST", "%").asInstanceOf[MySQLContainer]
+            //var mysql : MySQLContainer = new MySQLContainer("mysql:5.7.34").withEnv("MYSQL_ROOT_HOST", "%").asInstanceOf[MySQLContainer]
+            var mysql = new MySqlContainerWrapper().getContainer()
             mysql.start()
             val accessAdapter = AccessAdapter()
             val url = mysql.getJdbcUrl() + "?autoReconnect=true&useSSL=false&enabledTLSProtocols=TLSv1.2"
