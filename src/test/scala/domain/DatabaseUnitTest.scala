@@ -44,6 +44,7 @@ class DatabaseUnitTest extends AnyFunSpec with Matchers {
                 val accessPort = AccessPort(accessAdapter)
                 assert(accessAdapter.connectWithUrl(url, user, pass))
                 accessAdapter.createDb()
+                accessAdapter.createTable()
                 accessPort.insertNewUser("test", "passTest")
                 val userRetrieved: Option[User] = accessPort.selectUser("test")
                 assert(userRetrieved.nonEmpty)
