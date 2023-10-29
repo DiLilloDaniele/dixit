@@ -67,10 +67,10 @@ runServer := {
   )
 }
 
-val simpleTesting = taskKey[Unit]("sbt equivalent of gradle's JavaExec")
-simpleTesting := {
+val dbManualTest = taskKey[Unit]("sbt equivalent of gradle's JavaExec")
+dbManualTest := {
   (runner in Compile).value.run(
-    mainClass = "grpcService.client.SimpleTesting",
+    mainClass = "grpcService.server.data.adapters.AccessAdapter",
     classpath = (fullClasspath in Runtime).value.files,
     options = Array(""),
     log = streams.value.log
@@ -78,3 +78,4 @@ simpleTesting := {
 }
 
 enablePlugins(AkkaGrpcPlugin)
+
