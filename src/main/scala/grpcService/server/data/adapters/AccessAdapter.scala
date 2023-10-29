@@ -58,7 +58,7 @@ class AccessAdapter(val url: String = "",
         connection = DriverManager.getConnection(connectionStringExt, username, password)
     val statement: Statement = connection.createStatement()
     val query = """CREATE TABLE `User` (
-        `UserId` int NOT NULL,
+        `UserId` int NOT NULL AUTO_INCREMENT,
         `Name` varchar(200) NOT NULL,
         `Password` varchar(512) NOT NULL,
         `Points` int NOT NULL
