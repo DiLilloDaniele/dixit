@@ -11,28 +11,45 @@ import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.utility.DockerImageName
 
 import grpcService.server.data.adapters.AccessAdapter
+import grpcService.server.data.ports.AccessPort
+import grpcService.server.domain.model.User
 
 import grpcService.server.data.wrapper.MySqlContainerWrapper
 
 import java.sql.{Connection, DriverManager, ResultSet, SQLException, Statement}
 
-class DomainUnitTest extends AnyFunSpec with Matchers {
+class DatabaseUnitTest extends AnyFunSpec with Matchers {
 
     describe("Starting new MySql container") {
-        it("should work") {
-            //var mysql : MySQLContainer = new MySQLContainer("mysql:5.7.34").withEnv("MYSQL_ROOT_HOST", "%").asInstanceOf[MySQLContainer]
+        it("should create the database correctly") {
             var mysql = new MySqlContainerWrapper().getContainer()
             mysql.start()
             val accessAdapter = AccessAdapter()
             val url = mysql.getJdbcUrl() + "?autoReconnect=true&useSSL=false&enabledTLSProtocols=TLSv1.2"
             val user = mysql.getUsername()
             val pass = mysql.getPassword()
-            //DriverManager.getConnection(url, user, pass)
             assert(accessAdapter.connectWithUrl(url, user, pass))
             accessAdapter.createDb(url, user, pass)
             assert(accessAdapter.checkDatabaseExist(url, user, pass))
             mysql.stop()
-
+        }
+        describe("after created the database") {
+            it("should execute queries") {
+                var mysql = new MySqlContainerWrapper().getContainer()
+                mysql.start()
+                val accessAdapter = AccessAdapter()
+                val accessPort = AccessPort(accessAdapter)
+                val url = mysql.getJdbcUrl() + "?autoReconnect=true&useSSL=false&enabledTLSProtocols=TLSv1.2"
+                val user = mysql.getUsername()
+                val pass = mysql.getPassword()
+                assert(accessAdapter.connectWithUrl(url, user, pass))
+                accessAdapter.createDb(url, user, pass)
+                accessPort.insertNewUser("test", "passTest")
+                val userRetrieved: Option[User] = accessPort.selectUser("test")
+                assert(userRetrieved.nonEmpty)
+                assert(userRetrieved.get.name equals "test")
+                mysql.stop()
+            }
         }
     }
 
