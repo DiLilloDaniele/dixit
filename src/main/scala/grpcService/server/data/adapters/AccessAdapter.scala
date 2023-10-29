@@ -62,7 +62,7 @@ class AccessAdapter(val url: String = "",
         `Name` varchar(200) NOT NULL,
         `Password` varchar(512) NOT NULL,
         `Points` int NOT NULL
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;"""
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"""
     statement.executeUpdate(query)
     return true
   } catch {
