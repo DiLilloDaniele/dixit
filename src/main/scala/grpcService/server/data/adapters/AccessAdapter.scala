@@ -61,7 +61,8 @@ class AccessAdapter(val url: String = "",
         `UserId` int NOT NULL AUTO_INCREMENT,
         `Name` varchar(200) NOT NULL,
         `Password` varchar(512) NOT NULL,
-        `Points` int NOT NULL
+        `Points` int NOT NULL,
+        PRIMARY KEY (UserId)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"""
     statement.executeUpdate(query)
     return true
