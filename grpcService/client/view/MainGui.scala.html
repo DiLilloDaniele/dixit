@@ -1,0 +1,3950 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          grpcService/client/view/MainGui.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.client.view
+</span>2 <span style=''>
+</span>3 <span style=''>import java.awt.event.{MouseEvent, MouseListener, WindowAdapter, WindowEvent}
+</span>4 <span style=''>import java.awt.{BorderLayout, Color, Component, GridBagConstraints, GridBagLayout, Insets}
+</span>5 <span style=''>import java.io.File
+</span>6 <span style=''>import javax.imageio.ImageIO
+</span>7 <span style=''>import javax.swing.{BoxLayout, ImageIcon, JButton, JFrame, JLabel, JPanel, JTextField, SwingConstants, SwingUtilities, WindowConstants}
+</span>8 <span style=''>
+</span>9 <span style=''>object MainGui:
+</span>10 <span style=''>
+</span>11 <span style=''>  </span><span style='background: #F0ADAD'>@main def create</span><span style=''>() =
+</span>12 <span style=''>    </span><span style='background: #F0ADAD'>SwingUtilities.invokeLater(() =&gt; {
+</span>13 <span style=''></span><span style='background: #F0ADAD'>      createAndShowGui()
+</span>14 <span style=''></span><span style='background: #F0ADAD'>    })</span><span style=''>
+</span>15 <span style=''>
+</span>16 <span style=''>  </span><span style='background: #F0ADAD'>def createAndShowGui</span><span style=''>() =
+</span>17 <span style=''>    val frame = </span><span style='background: #F0ADAD'>JFrame(&quot;Test&quot;)</span><span style=''>
+</span>18 <span style=''>    val gui: MainGui = </span><span style='background: #F0ADAD'>MainGui(null, null, null, null)</span><span style=''>
+</span>19 <span style=''>    </span><span style='background: #F0ADAD'>frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)</span><span style=''>
+</span>20 <span style=''>    </span><span style='background: #F0ADAD'>frame.setContentPane (gui)</span><span style=''>
+</span>21 <span style=''>    </span><span style='background: #F0ADAD'>frame.pack ()</span><span style=''>
+</span>22 <span style=''>    </span><span style='background: #F0ADAD'>frame.setLocationRelativeTo (null)</span><span style=''>
+</span>23 <span style=''>    </span><span style='background: #F0ADAD'>frame.setVisible (true)</span><span style=''>
+</span>24 <span style=''>    </span><span style='background: #F0ADAD'>gui.getImageToChoose(List(&quot;1&quot;,&quot;1&quot;,&quot;1&quot;,&quot;1&quot;,&quot;1&quot;))</span><span style=''>
+</span>25 <span style=''>
+</span>26 <span style=''>class MainGui(val sendImage: (cardId: Int, title: String) =&gt; Unit,
+</span>27 <span style=''>              val guessCard: (id: Int) =&gt; Unit,
+</span>28 <span style=''>              val guessCardFromMine: (id: Int) =&gt; Unit,
+</span>29 <span style=''>              val closeEvent: () =&gt; Unit) extends </span><span style='background: #F0ADAD'>JPanel(BorderLayout())</span><span style=''>{
+</span>30 <span style=''>
+</span>31 <span style=''>  val resourceFolder = (</span><span style='background: #F0ADAD'>System.getProperty(&quot;user.dir&quot;).toString() + &quot;\\src\\main\\resources\\&quot;</span><span style=''>)
+</span>32 <span style=''>  val imagesFolder = &quot;carte&quot;
+</span>33 <span style=''>  val listPane: JPanel = </span><span style='background: #F0ADAD'>JPanel()</span><span style=''>
+</span>34 <span style=''>
+</span>35 <span style=''>  </span><span style='background: #F0ADAD'>listPane.setLayout(BoxLayout(listPane, BoxLayout.X_AXIS))</span><span style=''>
+</span>36 <span style=''>
+</span>37 <span style=''>  val images = </span><span style='background: #F0ADAD'>LazyList.iterate(1){i =&gt; i + 1}.map { i =&gt;
+</span>38 <span style=''></span><span style='background: #F0ADAD'>    (
+</span>39 <span style=''></span><span style='background: #F0ADAD'>      i,
+</span>40 <span style=''></span><span style='background: #F0ADAD'>      ImageIO.read(File(resourceFolder + File.separator + imagesFolder + File.separator + s&quot;$i.PNG&quot;))
+</span>41 <span style=''></span><span style='background: #F0ADAD'>    )}</span><span style=''>
+</span>42 <span style=''>
+</span>43 <span style=''>  val nameAndReg = </span><span style='background: #F0ADAD'>new JLabel(&quot;My details&quot;, SwingConstants.CENTER)</span><span style=''>
+</span>44 <span style=''>  val errorMsg = </span><span style='background: #F0ADAD'>new JLabel(&quot;The error message&quot;, SwingConstants.CENTER)</span><span style=''>
+</span>45 <span style=''>  </span><span style='background: #F0ADAD'>nameAndReg.setForeground(Color.blue)</span><span style=''>
+</span>46 <span style=''>
+</span>47 <span style=''>  val labsPanel = </span><span style='background: #F0ADAD'>new JPanel(new GridBagLayout)</span><span style=''>
+</span>48 <span style=''>
+</span>49 <span style=''>  </span><span style='background: #F0ADAD'>labsPanel.add(listPane)</span><span style=''>
+</span>50 <span style=''>
+</span>51 <span style=''>  val c = </span><span style='background: #F0ADAD'>new GridBagConstraints</span><span style=''>
+</span>52 <span style=''>  c.gridy = 1
+</span>53 <span style=''>  c.insets = </span><span style='background: #F0ADAD'>new Insets(5, 0, 0, 0)</span><span style=''>
+</span>54 <span style=''>  </span><span style='background: #F0ADAD'>labsPanel.add(errorMsg, c)</span><span style=''>
+</span>55 <span style=''>
+</span>56 <span style=''>  val butSubmit = </span><span style='background: #F0ADAD'>new JButton(&quot;Submit&quot;)</span><span style=''>
+</span>57 <span style=''>  val butReset = </span><span style='background: #F0ADAD'>new JButton(&quot;Reset&quot;)</span><span style=''>
+</span>58 <span style=''>
+</span>59 <span style=''>  val redVal = </span><span style='background: #F0ADAD'>new JTextField(20)</span><span style=''>
+</span>60 <span style=''>
+</span>61 <span style=''>  val butPanelSouth = </span><span style='background: #F0ADAD'>new JPanel</span><span style=''>
+</span>62 <span style=''>  val butPanelNorth = </span><span style='background: #F0ADAD'>new JPanel</span><span style=''>
+</span>63 <span style=''>
+</span>64 <span style=''>  </span><span style='background: #F0ADAD'>butPanelSouth.add(redVal)</span><span style=''>
+</span>65 <span style=''>  </span><span style='background: #F0ADAD'>butPanelSouth.add(butSubmit)</span><span style=''>
+</span>66 <span style=''>
+</span>67 <span style=''>  </span><span style='background: #F0ADAD'>butPanelNorth.add(butReset)</span><span style=''>
+</span>68 <span style=''>
+</span>69 <span style=''>  </span><span style='background: #F0ADAD'>add(labsPanel, BorderLayout.CENTER)</span><span style=''>
+</span>70 <span style=''>  </span><span style='background: #F0ADAD'>add(butPanelNorth, BorderLayout.NORTH)</span><span style=''>
+</span>71 <span style=''>  </span><span style='background: #F0ADAD'>add(butPanelSouth, BorderLayout.SOUTH)</span><span style=''>
+</span>72 <span style=''>
+</span>73 <span style=''>  </span><span style='background: #F0ADAD'>def resetListPane</span><span style=''>() =
+</span>74 <span style=''>    </span><span style='background: #F0ADAD'>listPane.removeAll()</span><span style=''>
+</span>75 <span style=''>
+</span>76 <span style=''>  </span><span style='background: #F0ADAD'>def getImageForGuessing</span><span style=''>(cards: List[String], title: String) =
+</span>77 <span style=''>    </span><span style='background: #F0ADAD'>resetListPane()</span><span style=''>
+</span>78 <span style=''>    </span><span style='background: #F0ADAD'>changeWarnText(s&quot;Titolo della carta: $title \n Qual è quella giusta?&quot;)</span><span style=''>
+</span>79 <span style=''>    </span><span style='background: #F0ADAD'>cards foreach { i =&gt;
+</span>80 <span style=''></span><span style='background: #F0ADAD'>      val image = images(i.toInt - 1)
+</span>81 <span style=''></span><span style='background: #F0ADAD'>      val picLabel = new JLabel(new ImageIcon(image._2))
+</span>82 <span style=''></span><span style='background: #F0ADAD'>      picLabel.setAlignmentX(Component.CENTER_ALIGNMENT)
+</span>83 <span style=''></span><span style='background: #F0ADAD'>      picLabel.addMouseListener(getListenerForGuessing(image._1))
+</span>84 <span style=''></span><span style='background: #F0ADAD'>      listPane.add(picLabel)
+</span>85 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
+</span>86 <span style=''>    </span><span style='background: #F0ADAD'>listPane.revalidate()</span><span style=''>;
+</span>87 <span style=''>    </span><span style='background: #F0ADAD'>listPane.repaint()</span><span style=''>;
+</span>88 <span style=''>
+</span>89 <span style=''>  </span><span style='background: #F0ADAD'>def getImageForGuessingFromMine</span><span style=''>(cards: List[String], title: String) =
+</span>90 <span style=''>    </span><span style='background: #F0ADAD'>resetListPane()</span><span style=''>
+</span>91 <span style=''>    </span><span style='background: #F0ADAD'>changeWarnText(s&quot;Titolo della carta: $title \n Scegli quella che reputi idonea&quot;)</span><span style=''>
+</span>92 <span style=''>    </span><span style='background: #F0ADAD'>cards foreach { i =&gt;
+</span>93 <span style=''></span><span style='background: #F0ADAD'>      val image = images(i.toInt - 1)
+</span>94 <span style=''></span><span style='background: #F0ADAD'>      val picLabel = new JLabel(new ImageIcon(image._2))
+</span>95 <span style=''></span><span style='background: #F0ADAD'>      picLabel.setAlignmentX(Component.CENTER_ALIGNMENT)
+</span>96 <span style=''></span><span style='background: #F0ADAD'>      picLabel.addMouseListener(getListenerForGuessingFromMine(image._1))
+</span>97 <span style=''></span><span style='background: #F0ADAD'>      listPane.add(picLabel)
+</span>98 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
+</span>99 <span style=''>    </span><span style='background: #F0ADAD'>listPane.revalidate()</span><span style=''>;
+</span>100 <span style=''>    </span><span style='background: #F0ADAD'>listPane.repaint()</span><span style=''>;
+</span>101 <span style=''>
+</span>102 <span style=''>  </span><span style='background: #F0ADAD'>def getImageToChoose</span><span style=''>(cards: List[String]) =
+</span>103 <span style=''>    </span><span style='background: #F0ADAD'>resetListPane()</span><span style=''>
+</span>104 <span style=''>    </span><span style='background: #F0ADAD'>changeWarnText(&quot;Scegli la carta e il titolo per il tuo turno&quot;)</span><span style=''>
+</span>105 <span style=''>    </span><span style='background: #F0ADAD'>cards foreach { i =&gt;
+</span>106 <span style=''></span><span style='background: #F0ADAD'>      val image = images(i.toInt - 1)
+</span>107 <span style=''></span><span style='background: #F0ADAD'>      val picLabel = new JLabel(new ImageIcon(image._2))
+</span>108 <span style=''></span><span style='background: #F0ADAD'>      picLabel.setAlignmentX(Component.CENTER_ALIGNMENT)
+</span>109 <span style=''></span><span style='background: #F0ADAD'>      picLabel.addMouseListener(getListenerForChoose(image._1))
+</span>110 <span style=''></span><span style='background: #F0ADAD'>      listPane.add(picLabel)
+</span>111 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
+</span>112 <span style=''>    </span><span style='background: #F0ADAD'>listPane.revalidate()</span><span style=''>;
+</span>113 <span style=''>    </span><span style='background: #F0ADAD'>listPane.repaint()</span><span style=''>;
+</span>114 <span style=''>
+</span>115 <span style=''>  </span><span style='background: #F0ADAD'>def changeWarnText</span><span style=''>(text: String) =
+</span>116 <span style=''>    </span><span style='background: #F0ADAD'>SwingUtilities.invokeLater(() =&gt; {
+</span>117 <span style=''></span><span style='background: #F0ADAD'>      errorMsg.setText(text)
+</span>118 <span style=''></span><span style='background: #F0ADAD'>    })</span><span style=''>
+</span>119 <span style=''>
+</span>120 <span style=''>  </span><span style='background: #F0ADAD'>def getListenerForChoose</span><span style=''>(index: Int): MouseListener =
+</span>121 <span style=''>    return new MouseListener {
+</span>122 <span style=''>      </span><span style='background: #F0ADAD'>override def mouseClicked</span><span style=''>(e: MouseEvent): Unit =
+</span>123 <span style=''>        </span><span style='background: #F0ADAD'>println(&quot;IMAGE CLICKED &quot; + index)</span><span style=''>
+</span>124 <span style=''>        </span><span style='background: #F0ADAD'>changeWarnText(s&quot;Attendi...&quot;)</span><span style=''>
+</span>125 <span style=''>        val title = </span><span style='background: #F0ADAD'>redVal.getText</span><span style=''>
+</span>126 <span style=''>        </span><span style='background: #F0ADAD'>sendImage(index, title)</span><span style=''>
+</span>127 <span style=''>
+</span>128 <span style=''>      </span><span style='background: #F0ADAD'>override def mousePressed</span><span style=''>(e: MouseEvent): Unit = ()
+</span>129 <span style=''>
+</span>130 <span style=''>      </span><span style='background: #F0ADAD'>override def mouseReleased</span><span style=''>(e: MouseEvent): Unit = ()
+</span>131 <span style=''>
+</span>132 <span style=''>      </span><span style='background: #F0ADAD'>override def mouseEntered</span><span style=''>(e: MouseEvent): Unit = ()
+</span>133 <span style=''>
+</span>134 <span style=''>      </span><span style='background: #F0ADAD'>override def mouseExited</span><span style=''>(e: MouseEvent): Unit = ()
+</span>135 <span style=''>    }
+</span>136 <span style=''>
+</span>137 <span style=''>  </span><span style='background: #F0ADAD'>def getListenerForGuessing</span><span style=''>(index: Int): MouseListener =
+</span>138 <span style=''>    return new MouseListener {
+</span>139 <span style=''>      </span><span style='background: #F0ADAD'>override def mouseClicked</span><span style=''>(e: MouseEvent): Unit =
+</span>140 <span style=''>        </span><span style='background: #F0ADAD'>println(&quot;IMAGE CLICKED &quot; + index)</span><span style=''>
+</span>141 <span style=''>        </span><span style='background: #F0ADAD'>changeWarnText(s&quot;Attendi...&quot;)</span><span style=''>
+</span>142 <span style=''>        </span><span style='background: #F0ADAD'>guessCard(index)</span><span style=''>
+</span>143 <span style=''>
+</span>144 <span style=''>      </span><span style='background: #F0ADAD'>override def mousePressed</span><span style=''>(e: MouseEvent): Unit = ()
+</span>145 <span style=''>
+</span>146 <span style=''>      </span><span style='background: #F0ADAD'>override def mouseReleased</span><span style=''>(e: MouseEvent): Unit = ()
+</span>147 <span style=''>
+</span>148 <span style=''>      </span><span style='background: #F0ADAD'>override def mouseEntered</span><span style=''>(e: MouseEvent): Unit = ()
+</span>149 <span style=''>
+</span>150 <span style=''>      </span><span style='background: #F0ADAD'>override def mouseExited</span><span style=''>(e: MouseEvent): Unit = ()
+</span>151 <span style=''>    }
+</span>152 <span style=''>
+</span>153 <span style=''>  </span><span style='background: #F0ADAD'>def getListenerForGuessingFromMine</span><span style=''>(index: Int): MouseListener =
+</span>154 <span style=''>    return new MouseListener {
+</span>155 <span style=''>      </span><span style='background: #F0ADAD'>override def mouseClicked</span><span style=''>(e: MouseEvent): Unit =
+</span>156 <span style=''>        </span><span style='background: #F0ADAD'>println(&quot;IMAGE CLICKED &quot; + index)</span><span style=''>
+</span>157 <span style=''>        </span><span style='background: #F0ADAD'>changeWarnText(s&quot;Attendi...&quot;)</span><span style=''>
+</span>158 <span style=''>        </span><span style='background: #F0ADAD'>guessCardFromMine(index)</span><span style=''>
+</span>159 <span style=''>
+</span>160 <span style=''>      </span><span style='background: #F0ADAD'>override def mousePressed</span><span style=''>(e: MouseEvent): Unit = ()
+</span>161 <span style=''>
+</span>162 <span style=''>      </span><span style='background: #F0ADAD'>override def mouseReleased</span><span style=''>(e: MouseEvent): Unit = ()
+</span>163 <span style=''>
+</span>164 <span style=''>      </span><span style='background: #F0ADAD'>override def mouseEntered</span><span style=''>(e: MouseEvent): Unit = ()
+</span>165 <span style=''>
+</span>166 <span style=''>      </span><span style='background: #F0ADAD'>override def mouseExited</span><span style=''>(e: MouseEvent): Unit = ()
+</span>167 <span style=''>    }
+</span>168 <span style=''>
+</span>169 <span style=''>  </span><span style='background: #F0ADAD'>def createAndShowGui</span><span style=''>() =
+</span>170 <span style=''>    val frame = </span><span style='background: #F0ADAD'>JFrame(&quot;Test&quot;)</span><span style=''>
+</span>171 <span style=''>    </span><span style='background: #F0ADAD'>frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)</span><span style=''>
+</span>172 <span style=''>    </span><span style='background: #F0ADAD'>frame.addWindowListener(new WindowAdapter() {
+</span>173 <span style=''></span><span style='background: #F0ADAD'>      override def windowClosed(windowEvent: WindowEvent): Unit = {
+</span>174 <span style=''></span><span style='background: #F0ADAD'>        closeEvent()
+</span>175 <span style=''></span><span style='background: #F0ADAD'>      }
+</span>176 <span style=''></span><span style='background: #F0ADAD'>    })</span><span style=''>
+</span>177 <span style=''>    </span><span style='background: #F0ADAD'>frame.setContentPane (this)</span><span style=''>
+</span>178 <span style=''>    </span><span style='background: #F0ADAD'>frame.pack ()</span><span style=''>
+</span>179 <span style=''>    </span><span style='background: #F0ADAD'>frame.setLocationRelativeTo (null)</span><span style=''>
+</span>180 <span style=''>    </span><span style='background: #F0ADAD'>frame.setVisible (true)</span><span style=''>
+</span>181 <span style=''>
+</span>182 <span style=''>}
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          10
+        </td>
+        <td>
+          1002
+        </td>
+        <td>
+          408
+          -
+          424
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          create
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          @main def create
+        </td>
+      </tr><tr>
+        <td>
+          11
+        </td>
+        <td>
+          1001
+        </td>
+        <td>
+          433
+          -
+          499
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          invokeLater
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          SwingUtilities.invokeLater(() =&gt; {
+      createAndShowGui()
+    })
+        </td>
+      </tr><tr>
+        <td>
+          12
+        </td>
+        <td>
+          1000
+        </td>
+        <td>
+          474
+          -
+          492
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          createAndShowGui
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          createAndShowGui()
+        </td>
+      </tr><tr>
+        <td>
+          15
+        </td>
+        <td>
+          1012
+        </td>
+        <td>
+          503
+          -
+          523
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          createAndShowGui
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def createAndShowGui
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          1003
+        </td>
+        <td>
+          544
+          -
+          558
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JFrame(&quot;Test&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          1004
+        </td>
+        <td>
+          582
+          -
+          613
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          MainGui(null, null, null, null)
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          1005
+        </td>
+        <td>
+          618
+          -
+          679
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setDefaultCloseOperation
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          1006
+        </td>
+        <td>
+          684
+          -
+          710
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setContentPane
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.setContentPane (gui)
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          1007
+        </td>
+        <td>
+          715
+          -
+          728
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          pack
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.pack ()
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          1008
+        </td>
+        <td>
+          733
+          -
+          767
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setLocationRelativeTo
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.setLocationRelativeTo (null)
+        </td>
+      </tr><tr>
+        <td>
+          22
+        </td>
+        <td>
+          1009
+        </td>
+        <td>
+          772
+          -
+          795
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setVisible
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.setVisible (true)
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          1010
+        </td>
+        <td>
+          821
+          -
+          846
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          List(&quot;1&quot;,&quot;1&quot;,&quot;1&quot;,&quot;1&quot;,&quot;1&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          1011
+        </td>
+        <td>
+          800
+          -
+          847
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getImageToChoose
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          gui.getImageToChoose(List(&quot;1&quot;,&quot;1&quot;,&quot;1&quot;,&quot;1&quot;,&quot;1&quot;))
+        </td>
+      </tr><tr>
+        <td>
+          28
+        </td>
+        <td>
+          1013
+        </td>
+        <td>
+          1077
+          -
+          1091
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          BorderLayout()
+        </td>
+      </tr><tr>
+        <td>
+          28
+        </td>
+        <td>
+          1014
+        </td>
+        <td>
+          1070
+          -
+          1092
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JPanel(BorderLayout())
+        </td>
+      </tr><tr>
+        <td>
+          30
+        </td>
+        <td>
+          1016
+        </td>
+        <td>
+          1119
+          -
+          1160
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          toString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          System.getProperty(&quot;user.dir&quot;).toString()
+        </td>
+      </tr><tr>
+        <td>
+          30
+        </td>
+        <td>
+          1015
+        </td>
+        <td>
+          1119
+          -
+          1149
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getProperty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          System.getProperty(&quot;user.dir&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          30
+        </td>
+        <td>
+          1017
+        </td>
+        <td>
+          1119
+          -
+          1189
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          System.getProperty(&quot;user.dir&quot;).toString() + &quot;\\src\\main\\resources\\&quot;
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          1018
+        </td>
+        <td>
+          1245
+          -
+          1253
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JPanel()
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1019
+        </td>
+        <td>
+          1276
+          -
+          1313
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          BoxLayout(listPane, BoxLayout.X_AXIS)
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1020
+        </td>
+        <td>
+          1257
+          -
+          1314
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setLayout
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          listPane.setLayout(BoxLayout(listPane, BoxLayout.X_AXIS))
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          1022
+        </td>
+        <td>
+          1331
+          -
+          1362
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          iterate
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          LazyList.iterate(1){i =&gt; i + 1}
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          1030
+        </td>
+        <td>
+          1331
+          -
+          1497
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          LazyList.iterate(1){i =&gt; i + 1}.map { i =&gt;
+    (
+      i,
+      ImageIO.read(File(resourceFolder + File.separator + imagesFolder + File.separator + s&quot;$i.PNG&quot;))
+    )}
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          1021
+        </td>
+        <td>
+          1331
+          -
+          1339
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          LazyList
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          LazyList
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          1028
+        </td>
+        <td>
+          1408
+          -
+          1489
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          File(resourceFolder + File.separator + imagesFolder + File.separator + s&quot;$i.PNG&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          1025
+        </td>
+        <td>
+          1413
+          -
+          1476
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          resourceFolder + File.separator + imagesFolder + File.separator
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          1024
+        </td>
+        <td>
+          1413
+          -
+          1459
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          resourceFolder + File.separator + imagesFolder
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          1027
+        </td>
+        <td>
+          1413
+          -
+          1488
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          resourceFolder + File.separator + imagesFolder + File.separator + s&quot;$i.PNG&quot;
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          1029
+        </td>
+        <td>
+          1395
+          -
+          1490
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          read
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ImageIO.read(File(resourceFolder + File.separator + imagesFolder + File.separator + s&quot;$i.PNG&quot;))
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          1023
+        </td>
+        <td>
+          1413
+          -
+          1444
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          resourceFolder + File.separator
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          1026
+        </td>
+        <td>
+          1479
+          -
+          1488
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;$i.PNG&quot;
+        </td>
+      </tr><tr>
+        <td>
+          42
+        </td>
+        <td>
+          1031
+        </td>
+        <td>
+          1518
+          -
+          1565
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new JLabel(&quot;My details&quot;, SwingConstants.CENTER)
+        </td>
+      </tr><tr>
+        <td>
+          43
+        </td>
+        <td>
+          1032
+        </td>
+        <td>
+          1583
+          -
+          1637
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new JLabel(&quot;The error message&quot;, SwingConstants.CENTER)
+        </td>
+      </tr><tr>
+        <td>
+          44
+        </td>
+        <td>
+          1033
+        </td>
+        <td>
+          1640
+          -
+          1676
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setForeground
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          nameAndReg.setForeground(Color.blue)
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          1034
+        </td>
+        <td>
+          1707
+          -
+          1724
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new GridBagLayout
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          1035
+        </td>
+        <td>
+          1696
+          -
+          1725
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new JPanel(new GridBagLayout)
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          1036
+        </td>
+        <td>
+          1729
+          -
+          1752
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          labsPanel.add(listPane)
+        </td>
+      </tr><tr>
+        <td>
+          50
+        </td>
+        <td>
+          1037
+        </td>
+        <td>
+          1764
+          -
+          1786
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new GridBagConstraints
+        </td>
+      </tr><tr>
+        <td>
+          52
+        </td>
+        <td>
+          1038
+        </td>
+        <td>
+          1814
+          -
+          1836
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new Insets(5, 0, 0, 0)
+        </td>
+      </tr><tr>
+        <td>
+          53
+        </td>
+        <td>
+          1039
+        </td>
+        <td>
+          1839
+          -
+          1865
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          labsPanel.add(errorMsg, c)
+        </td>
+      </tr><tr>
+        <td>
+          55
+        </td>
+        <td>
+          1040
+        </td>
+        <td>
+          1885
+          -
+          1906
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new JButton(&quot;Submit&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          56
+        </td>
+        <td>
+          1041
+        </td>
+        <td>
+          1924
+          -
+          1944
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new JButton(&quot;Reset&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          58
+        </td>
+        <td>
+          1042
+        </td>
+        <td>
+          1961
+          -
+          1979
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new JTextField(20)
+        </td>
+      </tr><tr>
+        <td>
+          60
+        </td>
+        <td>
+          1043
+        </td>
+        <td>
+          2003
+          -
+          2013
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new JPanel
+        </td>
+      </tr><tr>
+        <td>
+          61
+        </td>
+        <td>
+          1044
+        </td>
+        <td>
+          2036
+          -
+          2046
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new JPanel
+        </td>
+      </tr><tr>
+        <td>
+          63
+        </td>
+        <td>
+          1045
+        </td>
+        <td>
+          2050
+          -
+          2075
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          butPanelSouth.add(redVal)
+        </td>
+      </tr><tr>
+        <td>
+          64
+        </td>
+        <td>
+          1046
+        </td>
+        <td>
+          2078
+          -
+          2106
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          butPanelSouth.add(butSubmit)
+        </td>
+      </tr><tr>
+        <td>
+          66
+        </td>
+        <td>
+          1047
+        </td>
+        <td>
+          2110
+          -
+          2137
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          butPanelNorth.add(butReset)
+        </td>
+      </tr><tr>
+        <td>
+          68
+        </td>
+        <td>
+          1048
+        </td>
+        <td>
+          2141
+          -
+          2176
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          add(labsPanel, BorderLayout.CENTER)
+        </td>
+      </tr><tr>
+        <td>
+          69
+        </td>
+        <td>
+          1049
+        </td>
+        <td>
+          2179
+          -
+          2217
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          add(butPanelNorth, BorderLayout.NORTH)
+        </td>
+      </tr><tr>
+        <td>
+          70
+        </td>
+        <td>
+          1050
+        </td>
+        <td>
+          2220
+          -
+          2258
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          add(butPanelSouth, BorderLayout.SOUTH)
+        </td>
+      </tr><tr>
+        <td>
+          72
+        </td>
+        <td>
+          1052
+        </td>
+        <td>
+          2262
+          -
+          2279
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          resetListPane
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def resetListPane
+        </td>
+      </tr><tr>
+        <td>
+          73
+        </td>
+        <td>
+          1051
+        </td>
+        <td>
+          2288
+          -
+          2308
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          removeAll
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          listPane.removeAll()
+        </td>
+      </tr><tr>
+        <td>
+          75
+        </td>
+        <td>
+          1070
+        </td>
+        <td>
+          2312
+          -
+          2335
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getImageForGuessing
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def getImageForGuessing
+        </td>
+      </tr><tr>
+        <td>
+          76
+        </td>
+        <td>
+          1053
+        </td>
+        <td>
+          2378
+          -
+          2393
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          resetListPane
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          resetListPane()
+        </td>
+      </tr><tr>
+        <td>
+          77
+        </td>
+        <td>
+          1055
+        </td>
+        <td>
+          2398
+          -
+          2468
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          changeWarnText
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          changeWarnText(s&quot;Titolo della carta: $title \n Qual è quella giusta?&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          77
+        </td>
+        <td>
+          1054
+        </td>
+        <td>
+          2413
+          -
+          2467
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;Titolo della carta: $title \n Qual è quella giusta?&quot;
+        </td>
+      </tr><tr>
+        <td>
+          78
+        </td>
+        <td>
+          1067
+        </td>
+        <td>
+          2473
+          -
+          2746
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foreach
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          cards foreach { i =&gt;
+      val image = images(i.toInt - 1)
+      val picLabel = new JLabel(new ImageIcon(image._2))
+      picLabel.setAlignmentX(Component.CENTER_ALIGNMENT)
+      picLabel.addMouseListener(getListenerForGuessing(image._1))
+      listPane.add(picLabel)
+    }
+        </td>
+      </tr><tr>
+        <td>
+          79
+        </td>
+        <td>
+          1058
+        </td>
+        <td>
+          2512
+          -
+          2531
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          images(i.toInt - 1)
+        </td>
+      </tr><tr>
+        <td>
+          79
+        </td>
+        <td>
+          1057
+        </td>
+        <td>
+          2519
+          -
+          2526
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          toInt
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          i.toInt
+        </td>
+      </tr><tr>
+        <td>
+          79
+        </td>
+        <td>
+          1056
+        </td>
+        <td>
+          2519
+          -
+          2520
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          augmentString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          i
+        </td>
+      </tr><tr>
+        <td>
+          80
+        </td>
+        <td>
+          1061
+        </td>
+        <td>
+          2553
+          -
+          2588
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new JLabel(new ImageIcon(image._2))
+        </td>
+      </tr><tr>
+        <td>
+          80
+        </td>
+        <td>
+          1060
+        </td>
+        <td>
+          2564
+          -
+          2587
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new ImageIcon(image._2)
+        </td>
+      </tr><tr>
+        <td>
+          80
+        </td>
+        <td>
+          1059
+        </td>
+        <td>
+          2578
+          -
+          2586
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          image._2
+        </td>
+      </tr><tr>
+        <td>
+          81
+        </td>
+        <td>
+          1062
+        </td>
+        <td>
+          2595
+          -
+          2645
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setAlignmentX
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          picLabel.setAlignmentX(Component.CENTER_ALIGNMENT)
+        </td>
+      </tr><tr>
+        <td>
+          82
+        </td>
+        <td>
+          1064
+        </td>
+        <td>
+          2678
+          -
+          2710
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getListenerForGuessing
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          getListenerForGuessing(image._1)
+        </td>
+      </tr><tr>
+        <td>
+          82
+        </td>
+        <td>
+          1063
+        </td>
+        <td>
+          2701
+          -
+          2709
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          image._1
+        </td>
+      </tr><tr>
+        <td>
+          82
+        </td>
+        <td>
+          1065
+        </td>
+        <td>
+          2652
+          -
+          2711
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          addMouseListener
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          picLabel.addMouseListener(getListenerForGuessing(image._1))
+        </td>
+      </tr><tr>
+        <td>
+          83
+        </td>
+        <td>
+          1066
+        </td>
+        <td>
+          2718
+          -
+          2740
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          listPane.add(picLabel)
+        </td>
+      </tr><tr>
+        <td>
+          85
+        </td>
+        <td>
+          1068
+        </td>
+        <td>
+          2751
+          -
+          2772
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          revalidate
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          listPane.revalidate()
+        </td>
+      </tr><tr>
+        <td>
+          86
+        </td>
+        <td>
+          1069
+        </td>
+        <td>
+          2778
+          -
+          2796
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          repaint
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          listPane.repaint()
+        </td>
+      </tr><tr>
+        <td>
+          88
+        </td>
+        <td>
+          1088
+        </td>
+        <td>
+          2801
+          -
+          2832
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getImageForGuessingFromMine
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def getImageForGuessingFromMine
+        </td>
+      </tr><tr>
+        <td>
+          89
+        </td>
+        <td>
+          1071
+        </td>
+        <td>
+          2875
+          -
+          2890
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          resetListPane
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          resetListPane()
+        </td>
+      </tr><tr>
+        <td>
+          90
+        </td>
+        <td>
+          1073
+        </td>
+        <td>
+          2895
+          -
+          2975
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          changeWarnText
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          changeWarnText(s&quot;Titolo della carta: $title \n Scegli quella che reputi idonea&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          90
+        </td>
+        <td>
+          1072
+        </td>
+        <td>
+          2910
+          -
+          2974
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;Titolo della carta: $title \n Scegli quella che reputi idonea&quot;
+        </td>
+      </tr><tr>
+        <td>
+          91
+        </td>
+        <td>
+          1085
+        </td>
+        <td>
+          2980
+          -
+          3261
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foreach
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          cards foreach { i =&gt;
+      val image = images(i.toInt - 1)
+      val picLabel = new JLabel(new ImageIcon(image._2))
+      picLabel.setAlignmentX(Component.CENTER_ALIGNMENT)
+      picLabel.addMouseListener(getListenerForGuessingFromMine(image._1))
+      listPane.add(picLabel)
+    }
+        </td>
+      </tr><tr>
+        <td>
+          92
+        </td>
+        <td>
+          1076
+        </td>
+        <td>
+          3019
+          -
+          3038
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          images(i.toInt - 1)
+        </td>
+      </tr><tr>
+        <td>
+          92
+        </td>
+        <td>
+          1075
+        </td>
+        <td>
+          3026
+          -
+          3033
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          toInt
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          i.toInt
+        </td>
+      </tr><tr>
+        <td>
+          92
+        </td>
+        <td>
+          1074
+        </td>
+        <td>
+          3026
+          -
+          3027
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          augmentString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          i
+        </td>
+      </tr><tr>
+        <td>
+          93
+        </td>
+        <td>
+          1079
+        </td>
+        <td>
+          3060
+          -
+          3095
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new JLabel(new ImageIcon(image._2))
+        </td>
+      </tr><tr>
+        <td>
+          93
+        </td>
+        <td>
+          1078
+        </td>
+        <td>
+          3071
+          -
+          3094
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new ImageIcon(image._2)
+        </td>
+      </tr><tr>
+        <td>
+          93
+        </td>
+        <td>
+          1077
+        </td>
+        <td>
+          3085
+          -
+          3093
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          image._2
+        </td>
+      </tr><tr>
+        <td>
+          94
+        </td>
+        <td>
+          1080
+        </td>
+        <td>
+          3102
+          -
+          3152
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setAlignmentX
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          picLabel.setAlignmentX(Component.CENTER_ALIGNMENT)
+        </td>
+      </tr><tr>
+        <td>
+          95
+        </td>
+        <td>
+          1082
+        </td>
+        <td>
+          3185
+          -
+          3225
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getListenerForGuessingFromMine
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          getListenerForGuessingFromMine(image._1)
+        </td>
+      </tr><tr>
+        <td>
+          95
+        </td>
+        <td>
+          1081
+        </td>
+        <td>
+          3216
+          -
+          3224
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          image._1
+        </td>
+      </tr><tr>
+        <td>
+          95
+        </td>
+        <td>
+          1083
+        </td>
+        <td>
+          3159
+          -
+          3226
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          addMouseListener
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          picLabel.addMouseListener(getListenerForGuessingFromMine(image._1))
+        </td>
+      </tr><tr>
+        <td>
+          96
+        </td>
+        <td>
+          1084
+        </td>
+        <td>
+          3233
+          -
+          3255
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          listPane.add(picLabel)
+        </td>
+      </tr><tr>
+        <td>
+          98
+        </td>
+        <td>
+          1086
+        </td>
+        <td>
+          3266
+          -
+          3287
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          revalidate
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          listPane.revalidate()
+        </td>
+      </tr><tr>
+        <td>
+          99
+        </td>
+        <td>
+          1087
+        </td>
+        <td>
+          3293
+          -
+          3311
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          repaint
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          listPane.repaint()
+        </td>
+      </tr><tr>
+        <td>
+          101
+        </td>
+        <td>
+          1105
+        </td>
+        <td>
+          3316
+          -
+          3336
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getImageToChoose
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def getImageToChoose
+        </td>
+      </tr><tr>
+        <td>
+          102
+        </td>
+        <td>
+          1089
+        </td>
+        <td>
+          3364
+          -
+          3379
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          resetListPane
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          resetListPane()
+        </td>
+      </tr><tr>
+        <td>
+          103
+        </td>
+        <td>
+          1090
+        </td>
+        <td>
+          3384
+          -
+          3446
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          changeWarnText
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          changeWarnText(&quot;Scegli la carta e il titolo per il tuo turno&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          104
+        </td>
+        <td>
+          1102
+        </td>
+        <td>
+          3451
+          -
+          3722
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foreach
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          cards foreach { i =&gt;
+      val image = images(i.toInt - 1)
+      val picLabel = new JLabel(new ImageIcon(image._2))
+      picLabel.setAlignmentX(Component.CENTER_ALIGNMENT)
+      picLabel.addMouseListener(getListenerForChoose(image._1))
+      listPane.add(picLabel)
+    }
+        </td>
+      </tr><tr>
+        <td>
+          105
+        </td>
+        <td>
+          1091
+        </td>
+        <td>
+          3497
+          -
+          3498
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          augmentString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          i
+        </td>
+      </tr><tr>
+        <td>
+          105
+        </td>
+        <td>
+          1093
+        </td>
+        <td>
+          3490
+          -
+          3509
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          images(i.toInt - 1)
+        </td>
+      </tr><tr>
+        <td>
+          105
+        </td>
+        <td>
+          1092
+        </td>
+        <td>
+          3497
+          -
+          3504
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          toInt
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          i.toInt
+        </td>
+      </tr><tr>
+        <td>
+          106
+        </td>
+        <td>
+          1094
+        </td>
+        <td>
+          3556
+          -
+          3564
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          image._2
+        </td>
+      </tr><tr>
+        <td>
+          106
+        </td>
+        <td>
+          1096
+        </td>
+        <td>
+          3531
+          -
+          3566
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new JLabel(new ImageIcon(image._2))
+        </td>
+      </tr><tr>
+        <td>
+          106
+        </td>
+        <td>
+          1095
+        </td>
+        <td>
+          3542
+          -
+          3565
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new ImageIcon(image._2)
+        </td>
+      </tr><tr>
+        <td>
+          107
+        </td>
+        <td>
+          1097
+        </td>
+        <td>
+          3573
+          -
+          3623
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setAlignmentX
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          picLabel.setAlignmentX(Component.CENTER_ALIGNMENT)
+        </td>
+      </tr><tr>
+        <td>
+          108
+        </td>
+        <td>
+          1100
+        </td>
+        <td>
+          3630
+          -
+          3687
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          addMouseListener
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          picLabel.addMouseListener(getListenerForChoose(image._1))
+        </td>
+      </tr><tr>
+        <td>
+          108
+        </td>
+        <td>
+          1099
+        </td>
+        <td>
+          3656
+          -
+          3686
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getListenerForChoose
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          getListenerForChoose(image._1)
+        </td>
+      </tr><tr>
+        <td>
+          108
+        </td>
+        <td>
+          1098
+        </td>
+        <td>
+          3677
+          -
+          3685
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          image._1
+        </td>
+      </tr><tr>
+        <td>
+          109
+        </td>
+        <td>
+          1101
+        </td>
+        <td>
+          3694
+          -
+          3716
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          listPane.add(picLabel)
+        </td>
+      </tr><tr>
+        <td>
+          111
+        </td>
+        <td>
+          1103
+        </td>
+        <td>
+          3727
+          -
+          3748
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          revalidate
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          listPane.revalidate()
+        </td>
+      </tr><tr>
+        <td>
+          112
+        </td>
+        <td>
+          1104
+        </td>
+        <td>
+          3754
+          -
+          3772
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          repaint
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          listPane.repaint()
+        </td>
+      </tr><tr>
+        <td>
+          114
+        </td>
+        <td>
+          1108
+        </td>
+        <td>
+          3777
+          -
+          3795
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          changeWarnText
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def changeWarnText
+        </td>
+      </tr><tr>
+        <td>
+          115
+        </td>
+        <td>
+          1107
+        </td>
+        <td>
+          3816
+          -
+          3886
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          invokeLater
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          SwingUtilities.invokeLater(() =&gt; {
+      errorMsg.setText(text)
+    })
+        </td>
+      </tr><tr>
+        <td>
+          116
+        </td>
+        <td>
+          1106
+        </td>
+        <td>
+          3857
+          -
+          3879
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setText
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          errorMsg.setText(text)
+        </td>
+      </tr><tr>
+        <td>
+          119
+        </td>
+        <td>
+          1120
+        </td>
+        <td>
+          3890
+          -
+          3914
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getListenerForChoose
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def getListenerForChoose
+        </td>
+      </tr><tr>
+        <td>
+          121
+        </td>
+        <td>
+          1115
+        </td>
+        <td>
+          3981
+          -
+          4006
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          mouseClicked
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def mouseClicked
+        </td>
+      </tr><tr>
+        <td>
+          122
+        </td>
+        <td>
+          1109
+        </td>
+        <td>
+          4046
+          -
+          4070
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot;IMAGE CLICKED &quot; + index
+        </td>
+      </tr><tr>
+        <td>
+          122
+        </td>
+        <td>
+          1110
+        </td>
+        <td>
+          4038
+          -
+          4071
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(&quot;IMAGE CLICKED &quot; + index)
+        </td>
+      </tr><tr>
+        <td>
+          123
+        </td>
+        <td>
+          1111
+        </td>
+        <td>
+          4095
+          -
+          4108
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;Attendi...&quot;
+        </td>
+      </tr><tr>
+        <td>
+          123
+        </td>
+        <td>
+          1112
+        </td>
+        <td>
+          4080
+          -
+          4109
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          changeWarnText
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          changeWarnText(s&quot;Attendi...&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          124
+        </td>
+        <td>
+          1113
+        </td>
+        <td>
+          4130
+          -
+          4144
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getText
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          redVal.getText
+        </td>
+      </tr><tr>
+        <td>
+          125
+        </td>
+        <td>
+          1114
+        </td>
+        <td>
+          4153
+          -
+          4176
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          sendImage(index, title)
+        </td>
+      </tr><tr>
+        <td>
+          127
+        </td>
+        <td>
+          1116
+        </td>
+        <td>
+          4184
+          -
+          4209
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          mousePressed
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def mousePressed
+        </td>
+      </tr><tr>
+        <td>
+          129
+        </td>
+        <td>
+          1117
+        </td>
+        <td>
+          4243
+          -
+          4269
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          mouseReleased
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def mouseReleased
+        </td>
+      </tr><tr>
+        <td>
+          131
+        </td>
+        <td>
+          1118
+        </td>
+        <td>
+          4303
+          -
+          4328
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          mouseEntered
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def mouseEntered
+        </td>
+      </tr><tr>
+        <td>
+          133
+        </td>
+        <td>
+          1119
+        </td>
+        <td>
+          4362
+          -
+          4386
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          mouseExited
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def mouseExited
+        </td>
+      </tr><tr>
+        <td>
+          136
+        </td>
+        <td>
+          1131
+        </td>
+        <td>
+          4422
+          -
+          4448
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getListenerForGuessing
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def getListenerForGuessing
+        </td>
+      </tr><tr>
+        <td>
+          138
+        </td>
+        <td>
+          1126
+        </td>
+        <td>
+          4515
+          -
+          4540
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          mouseClicked
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def mouseClicked
+        </td>
+      </tr><tr>
+        <td>
+          139
+        </td>
+        <td>
+          1122
+        </td>
+        <td>
+          4572
+          -
+          4605
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(&quot;IMAGE CLICKED &quot; + index)
+        </td>
+      </tr><tr>
+        <td>
+          139
+        </td>
+        <td>
+          1121
+        </td>
+        <td>
+          4580
+          -
+          4604
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot;IMAGE CLICKED &quot; + index
+        </td>
+      </tr><tr>
+        <td>
+          140
+        </td>
+        <td>
+          1124
+        </td>
+        <td>
+          4614
+          -
+          4643
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          changeWarnText
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          changeWarnText(s&quot;Attendi...&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          140
+        </td>
+        <td>
+          1123
+        </td>
+        <td>
+          4629
+          -
+          4642
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;Attendi...&quot;
+        </td>
+      </tr><tr>
+        <td>
+          141
+        </td>
+        <td>
+          1125
+        </td>
+        <td>
+          4652
+          -
+          4668
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          guessCard(index)
+        </td>
+      </tr><tr>
+        <td>
+          143
+        </td>
+        <td>
+          1127
+        </td>
+        <td>
+          4676
+          -
+          4701
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          mousePressed
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def mousePressed
+        </td>
+      </tr><tr>
+        <td>
+          145
+        </td>
+        <td>
+          1128
+        </td>
+        <td>
+          4735
+          -
+          4761
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          mouseReleased
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def mouseReleased
+        </td>
+      </tr><tr>
+        <td>
+          147
+        </td>
+        <td>
+          1129
+        </td>
+        <td>
+          4795
+          -
+          4820
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          mouseEntered
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def mouseEntered
+        </td>
+      </tr><tr>
+        <td>
+          149
+        </td>
+        <td>
+          1130
+        </td>
+        <td>
+          4854
+          -
+          4878
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          mouseExited
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def mouseExited
+        </td>
+      </tr><tr>
+        <td>
+          152
+        </td>
+        <td>
+          1142
+        </td>
+        <td>
+          4914
+          -
+          4948
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getListenerForGuessingFromMine
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def getListenerForGuessingFromMine
+        </td>
+      </tr><tr>
+        <td>
+          154
+        </td>
+        <td>
+          1137
+        </td>
+        <td>
+          5015
+          -
+          5040
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          mouseClicked
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def mouseClicked
+        </td>
+      </tr><tr>
+        <td>
+          155
+        </td>
+        <td>
+          1133
+        </td>
+        <td>
+          5072
+          -
+          5105
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(&quot;IMAGE CLICKED &quot; + index)
+        </td>
+      </tr><tr>
+        <td>
+          155
+        </td>
+        <td>
+          1132
+        </td>
+        <td>
+          5080
+          -
+          5104
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot;IMAGE CLICKED &quot; + index
+        </td>
+      </tr><tr>
+        <td>
+          156
+        </td>
+        <td>
+          1135
+        </td>
+        <td>
+          5114
+          -
+          5143
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          changeWarnText
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          changeWarnText(s&quot;Attendi...&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          156
+        </td>
+        <td>
+          1134
+        </td>
+        <td>
+          5129
+          -
+          5142
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;Attendi...&quot;
+        </td>
+      </tr><tr>
+        <td>
+          157
+        </td>
+        <td>
+          1136
+        </td>
+        <td>
+          5152
+          -
+          5176
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          guessCardFromMine(index)
+        </td>
+      </tr><tr>
+        <td>
+          159
+        </td>
+        <td>
+          1138
+        </td>
+        <td>
+          5184
+          -
+          5209
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          mousePressed
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def mousePressed
+        </td>
+      </tr><tr>
+        <td>
+          161
+        </td>
+        <td>
+          1139
+        </td>
+        <td>
+          5243
+          -
+          5269
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          mouseReleased
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def mouseReleased
+        </td>
+      </tr><tr>
+        <td>
+          163
+        </td>
+        <td>
+          1140
+        </td>
+        <td>
+          5303
+          -
+          5328
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          mouseEntered
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def mouseEntered
+        </td>
+      </tr><tr>
+        <td>
+          165
+        </td>
+        <td>
+          1141
+        </td>
+        <td>
+          5362
+          -
+          5386
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          mouseExited
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def mouseExited
+        </td>
+      </tr><tr>
+        <td>
+          168
+        </td>
+        <td>
+          1153
+        </td>
+        <td>
+          5422
+          -
+          5442
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          createAndShowGui
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def createAndShowGui
+        </td>
+      </tr><tr>
+        <td>
+          169
+        </td>
+        <td>
+          1143
+        </td>
+        <td>
+          5463
+          -
+          5477
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JFrame(&quot;Test&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          170
+        </td>
+        <td>
+          1144
+        </td>
+        <td>
+          5482
+          -
+          5543
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setDefaultCloseOperation
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
+        </td>
+      </tr><tr>
+        <td>
+          171
+        </td>
+        <td>
+          1145
+        </td>
+        <td>
+          5576
+          -
+          5591
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          WindowAdapter()
+        </td>
+      </tr><tr>
+        <td>
+          171
+        </td>
+        <td>
+          1148
+        </td>
+        <td>
+          5548
+          -
+          5697
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          addWindowListener
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.addWindowListener(new WindowAdapter() {
+      override def windowClosed(windowEvent: WindowEvent): Unit = {
+        closeEvent()
+      }
+    })
+        </td>
+      </tr><tr>
+        <td>
+          172
+        </td>
+        <td>
+          1147
+        </td>
+        <td>
+          5600
+          -
+          5625
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          windowClosed
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def windowClosed
+        </td>
+      </tr><tr>
+        <td>
+          173
+        </td>
+        <td>
+          1146
+        </td>
+        <td>
+          5670
+          -
+          5682
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          closeEvent()
+        </td>
+      </tr><tr>
+        <td>
+          176
+        </td>
+        <td>
+          1149
+        </td>
+        <td>
+          5702
+          -
+          5729
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setContentPane
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.setContentPane (this)
+        </td>
+      </tr><tr>
+        <td>
+          177
+        </td>
+        <td>
+          1150
+        </td>
+        <td>
+          5734
+          -
+          5747
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          pack
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.pack ()
+        </td>
+      </tr><tr>
+        <td>
+          178
+        </td>
+        <td>
+          1151
+        </td>
+        <td>
+          5752
+          -
+          5786
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setLocationRelativeTo
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.setLocationRelativeTo (null)
+        </td>
+      </tr><tr>
+        <td>
+          179
+        </td>
+        <td>
+          1152
+        </td>
+        <td>
+          5791
+          -
+          5814
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setVisible
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.setVisible (true)
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>

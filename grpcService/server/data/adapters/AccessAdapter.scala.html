@@ -1,0 +1,3539 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          grpcService/server/data/adapters/AccessAdapter.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.server.data.adapters
+</span>2 <span style=''>
+</span>3 <span style=''>import grpcService.server.domain.model.User
+</span>4 <span style=''>
+</span>5 <span style=''>import java.sql.{Connection, DriverManager, ResultSet, SQLException, Statement}
+</span>6 <span style=''>
+</span>7 <span style=''>object AccessAdapter:
+</span>8 <span style=''>
+</span>9 <span style=''>  </span><span style='background: #AEF1AE'>def apply</span><span style=''>(url: String = &quot;&quot;, 
+</span>10 <span style=''>            port: String = &quot;&quot;, 
+</span>11 <span style=''>            driver: String = &quot;&quot;,
+</span>12 <span style=''>            dbName: String = &quot;&quot;,
+</span>13 <span style=''>            username: String = &quot;&quot;,
+</span>14 <span style=''>            password: String = &quot;&quot;): AccessAdapter = </span><span style='background: #AEF1AE'>new AccessAdapter(url, port, driver, dbName, username, password)</span><span style=''>
+</span>15 <span style=''>
+</span>16 <span style=''>  </span><span style='background: #F0ADAD'>def main</span><span style=''>(args: Array[String]): Unit =
+</span>17 <span style=''>    val adapter = </span><span style='background: #F0ADAD'>apply(&quot;localhost&quot;, &quot;3306&quot;, &quot;mysql&quot;, &quot;DIXIT&quot;, &quot;root&quot;, &quot;root&quot;)</span><span style=''>
+</span>18 <span style=''>    </span><span style='background: #F0ADAD'>adapter.createDb()</span><span style=''>
+</span>19 <span style=''>    </span><span style='background: #F0ADAD'>println(adapter.checkDatabaseExist())</span><span style=''>
+</span>20 <span style=''>
+</span>21 <span style=''>  </span><span style='background: #F0ADAD'>@main def queryTest</span><span style=''>() =
+</span>22 <span style=''>    import grpcService.server.data.adapters.QueryBuilder
+</span>23 <span style=''>    var queryWrapper = </span><span style='background: #F0ADAD'>QueryBuilder()</span><span style=''>
+</span>24 <span style=''>    </span><span style='background: #F0ADAD'>queryWrapper select &quot;this&quot; from &quot;table&quot; where &quot;cs&quot; equal &quot;&quot;</span><span style=''>
+</span>25 <span style=''>
+</span>26 <span style=''>//il query wrapper viene passato dall'accessport all'access adapter, cosicché non venga eseguito codice malevolo nelle query
+</span>27 <span style=''>//ho controllo sulla query inviata
+</span>28 <span style=''>class AccessAdapter(val url: String = &quot;&quot;,
+</span>29 <span style=''>                    val port: String = &quot;&quot;, 
+</span>30 <span style=''>                    val driver: String = &quot;&quot;, 
+</span>31 <span style=''>                    val dbName: String = &quot;&quot;, 
+</span>32 <span style=''>                    val username: String = &quot;&quot;, 
+</span>33 <span style=''>                    val password: String = &quot;&quot;):
+</span>34 <span style=''>
+</span>35 <span style=''>  val connectionString = </span><span style='background: #AEF1AE'>&quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot; + port + &quot;/&quot; + dbName + &quot;?autoReconnect=true&amp;useSSL=false&quot;</span><span style=''>
+</span>36 <span style=''>  var connection: Connection = _
+</span>37 <span style=''>
+</span>38 <span style=''>  </span><span style='background: #AEF1AE'>def connectWithUrl</span><span style=''>(url: String, user: String, pass: String): Boolean =
+</span>39 <span style=''>    </span><span style='background: #AEF1AE'>Class.forName(&quot;com.mysql.jdbc.Driver&quot;)</span><span style=''>
+</span>40 <span style=''>    try </span><span style='background: #AEF1AE'>{
+</span>41 <span style=''></span><span style='background: #AEF1AE'>      connection = DriverManager.getConnection(url, user, pass)
+</span>42 <span style=''></span><span style='background: #AEF1AE'>      true
+</span>43 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''> catch {
+</span>44 <span style=''>      </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; false
+</span>45 <span style=''>    }
+</span>46 <span style=''>
+</span>47 <span style=''>  </span><span style='background: #F0ADAD'>def connect</span><span style=''>(): Unit =
+</span>48 <span style=''>    //jdbc:mysql://localhost:3306/DIXIT?autoReconnect=true&amp;useSSL=false
+</span>49 <span style=''>    </span><span style='background: #F0ADAD'>Class.forName(&quot;com.mysql.jdbc.Driver&quot;)</span><span style=''>
+</span>50 <span style=''>    connection = </span><span style='background: #F0ADAD'>DriverManager.getConnection(connectionString, username, password)</span><span style=''>
+</span>51 <span style=''>
+</span>52 <span style=''>  </span><span style='background: #AEF1AE'>def createDb</span><span style=''>(url: String = &quot;&quot;, user: String = &quot;&quot;, pass: String = &quot;&quot;): Unit =
+</span>53 <span style=''>    try </span><span style='background: #AEF1AE'>{
+</span>54 <span style=''></span><span style='background: #AEF1AE'>      url match
+</span>55 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style='background: #AEF1AE'> =&gt; connection = </span><span style='background: #F0ADAD'>DriverManager.getConnection(connectionString, username, password)</span><span style='background: #AEF1AE'>
+</span>56 <span style=''></span><span style='background: #AEF1AE'>        case _ =&gt; connection = DriverManager.getConnection(url, user, pass)
+</span>57 <span style=''></span><span style='background: #AEF1AE'>      
+</span>58 <span style=''></span><span style='background: #AEF1AE'>      val statement: Statement = connection.createStatement()
+</span>59 <span style=''></span><span style='background: #AEF1AE'>      val query = &quot;CREATE DATABASE IF NOT EXISTS DIXIT&quot;
+</span>60 <span style=''></span><span style='background: #AEF1AE'>      //val result = statement.executeQuery(query)
+</span>61 <span style=''></span><span style='background: #AEF1AE'>      statement.executeUpdate(query)
+</span>62 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''> catch {
+</span>63 <span style=''>      </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; 
+</span>64 <span style=''>        </span><span style='background: #F0ADAD'>e.printStackTrace</span><span style=''>
+</span>65 <span style=''>        </span><span style='background: #F0ADAD'>throw e</span><span style=''>
+</span>66 <span style=''>    } finally </span><span style='background: #AEF1AE'>{
+</span>67 <span style=''></span><span style='background: #AEF1AE'>      if (connection != null) try connection.close
+</span>68 <span style=''></span><span style='background: #AEF1AE'>      catch {
+</span>69 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case e: SQLException</span><span style='background: #AEF1AE'> =&gt; /* Ignored */
+</span>70 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>71 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>72 <span style=''>
+</span>73 <span style=''>  </span><span style='background: #F0ADAD'>def close</span><span style=''>(): Unit =
+</span>74 <span style=''>    connection match
+</span>75 <span style=''>      </span><span style='background: #F0ADAD'>case m</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>m.close</span><span style=''>
+</span>76 <span style=''>      </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt; ()
+</span>77 <span style=''>
+</span>78 <span style=''>  </span><span style='background: #AEF1AE'>def checkDatabaseExist</span><span style=''>(url: String = &quot;&quot;, user: String = &quot;&quot;, pass: String = &quot;&quot;): Boolean =
+</span>79 <span style=''>    //SHOW DATABASES LIKE 'dbname';
+</span>80 <span style=''>    try </span><span style='background: #AEF1AE'>{
+</span>81 <span style=''></span><span style='background: #AEF1AE'>      url match
+</span>82 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>connect()</span><span style='background: #AEF1AE'>
+</span>83 <span style=''></span><span style='background: #AEF1AE'>        case _ =&gt; connection = DriverManager.getConnection(url, user, pass)
+</span>84 <span style=''></span><span style='background: #AEF1AE'>      
+</span>85 <span style=''></span><span style='background: #AEF1AE'>      val statement: Statement = connection.createStatement()
+</span>86 <span style=''></span><span style='background: #AEF1AE'>      val query = &quot;SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'DIXIT'&quot;
+</span>87 <span style=''></span><span style='background: #AEF1AE'>      val resultSet = statement.executeQuery(query)
+</span>88 <span style=''></span><span style='background: #AEF1AE'>      resultSet.first() match
+</span>89 <span style=''></span><span style='background: #AEF1AE'>        case true =&gt; return true
+</span>90 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt; return false
+</span>91 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''> catch {
+</span>92 <span style=''>      </span><span style='background: #F0ADAD'>case e: 
+</span>93 <span style=''></span><span style='background: #F0ADAD'>        Exception</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>e.printStackTrace</span><span style=''>
+</span>94 <span style=''>        return false
+</span>95 <span style=''>    } finally </span><span style='background: #AEF1AE'>{
+</span>96 <span style=''></span><span style='background: #AEF1AE'>      if (connection != null) try connection.close
+</span>97 <span style=''></span><span style='background: #AEF1AE'>      catch {
+</span>98 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case e: SQLException</span><span style='background: #AEF1AE'> =&gt; return false /* Ignored */
+</span>99 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>100 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>101 <span style=''>
+</span>102 <span style=''>  </span><span style='background: #F0ADAD'>def selectSingleRow</span><span style=''>(queryWrapper: QueryBuilder): Option[User] =
+</span>103 <span style=''>    var user : Option[User] = </span><span style='background: #F0ADAD'>Option.empty</span><span style=''>
+</span>104 <span style=''>    try </span><span style='background: #F0ADAD'>{
+</span>105 <span style=''></span><span style='background: #F0ADAD'>      connect()
+</span>106 <span style=''></span><span style='background: #F0ADAD'>      val statement: Statement = connection.createStatement()
+</span>107 <span style=''></span><span style='background: #F0ADAD'>      val query = queryWrapper.query
+</span>108 <span style=''></span><span style='background: #F0ADAD'>      val resultSet = statement.executeQuery(query)
+</span>109 <span style=''></span><span style='background: #F0ADAD'>      resultSet.first() match
+</span>110 <span style=''></span><span style='background: #F0ADAD'>        case true =&gt; user = Option(User(resultSet.getString(&quot;Name&quot;), resultSet.getInt(&quot;Points&quot;),
+</span>111 <span style=''></span><span style='background: #F0ADAD'>          resultSet.getString(&quot;Password&quot;)))
+</span>112 <span style=''></span><span style='background: #F0ADAD'>        case _ =&gt; user = Option.empty
+</span>113 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''> catch {
+</span>114 <span style=''>      </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>e.printStackTrace</span><span style=''>
+</span>115 <span style=''>    } finally </span><span style='background: #F0ADAD'>{
+</span>116 <span style=''></span><span style='background: #F0ADAD'>      if (connection != null) try connection.close
+</span>117 <span style=''></span><span style='background: #F0ADAD'>      catch {
+</span>118 <span style=''></span><span style='background: #F0ADAD'>        case e: SQLException =&gt; /* Ignored */
+</span>119 <span style=''></span><span style='background: #F0ADAD'>      }
+</span>120 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
+</span>121 <span style=''>    user
+</span>122 <span style=''>
+</span>123 <span style=''>  </span><span style='background: #F0ADAD'>def insertQuery</span><span style=''>(query: InsertBuilder): Unit =
+</span>124 <span style=''>    try </span><span style='background: #F0ADAD'>{
+</span>125 <span style=''></span><span style='background: #F0ADAD'>      connect()
+</span>126 <span style=''></span><span style='background: #F0ADAD'>      val statement: Statement = connection.createStatement()
+</span>127 <span style=''></span><span style='background: #F0ADAD'>      statement.executeUpdate(query.query)
+</span>128 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''> catch {
+</span>129 <span style=''>      </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>e.printStackTrace</span><span style=''>
+</span>130 <span style=''>    } finally </span><span style='background: #F0ADAD'>{
+</span>131 <span style=''></span><span style='background: #F0ADAD'>      if (connection != null) try connection.close
+</span>132 <span style=''></span><span style='background: #F0ADAD'>      catch {
+</span>133 <span style=''></span><span style='background: #F0ADAD'>        case e: SQLException =&gt; /* Ignored */
+</span>134 <span style=''></span><span style='background: #F0ADAD'>      }
+</span>135 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
+</span>136 <span style=''>
+</span>137 <span style=''>  </span><span style='background: #F0ADAD'>def update</span><span style=''>(query: UpdateBuilder): Boolean = try </span><span style='background: #F0ADAD'>{
+</span>138 <span style=''></span><span style='background: #F0ADAD'>    connect()
+</span>139 <span style=''></span><span style='background: #F0ADAD'>    val statement: Statement = connection.createStatement()
+</span>140 <span style=''></span><span style='background: #F0ADAD'>    statement.executeUpdate(query.query)
+</span>141 <span style=''></span><span style='background: #F0ADAD'>    return true
+</span>142 <span style=''></span><span style='background: #F0ADAD'>  }</span><span style=''> catch {
+</span>143 <span style=''>    </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>e.printStackTrace</span><span style=''>
+</span>144 <span style=''>      return false
+</span>145 <span style=''>  } finally </span><span style='background: #F0ADAD'>{
+</span>146 <span style=''></span><span style='background: #F0ADAD'>    if (connection != null) try connection.close
+</span>147 <span style=''></span><span style='background: #F0ADAD'>    catch {
+</span>148 <span style=''></span><span style='background: #F0ADAD'>      case e: SQLException =&gt; /* Ignored */
+</span>149 <span style=''></span><span style='background: #F0ADAD'>    }
+</span>150 <span style=''></span><span style='background: #F0ADAD'>  }</span><span style=''>
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          8
+        </td>
+        <td>
+          1219
+        </td>
+        <td>
+          217
+          -
+          217
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          apply$default$1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          
+        </td>
+      </tr><tr>
+        <td>
+          8
+        </td>
+        <td>
+          1218
+        </td>
+        <td>
+          193
+          -
+          202
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def apply
+        </td>
+      </tr><tr>
+        <td>
+          9
+        </td>
+        <td>
+          1220
+        </td>
+        <td>
+          249
+          -
+          249
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          apply$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          
+        </td>
+      </tr><tr>
+        <td>
+          10
+        </td>
+        <td>
+          1221
+        </td>
+        <td>
+          283
+          -
+          283
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          apply$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          
+        </td>
+      </tr><tr>
+        <td>
+          11
+        </td>
+        <td>
+          1222
+        </td>
+        <td>
+          316
+          -
+          316
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          apply$default$4
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          
+        </td>
+      </tr><tr>
+        <td>
+          12
+        </td>
+        <td>
+          1223
+        </td>
+        <td>
+          351
+          -
+          351
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          apply$default$5
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          
+        </td>
+      </tr><tr>
+        <td>
+          13
+        </td>
+        <td>
+          1224
+        </td>
+        <td>
+          386
+          -
+          386
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          apply$default$6
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          
+        </td>
+      </tr><tr>
+        <td>
+          13
+        </td>
+        <td>
+          1217
+        </td>
+        <td>
+          407
+          -
+          471
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          new AccessAdapter(url, port, driver, dbName, username, password)
+        </td>
+      </tr><tr>
+        <td>
+          15
+        </td>
+        <td>
+          1235
+        </td>
+        <td>
+          475
+          -
+          483
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          main
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def main
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          1225
+        </td>
+        <td>
+          531
+          -
+          591
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          apply(&quot;localhost&quot;, &quot;3306&quot;, &quot;mysql&quot;, &quot;DIXIT&quot;, &quot;root&quot;, &quot;root&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          1228
+        </td>
+        <td>
+          596
+          -
+          612
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          createDb$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          adapter.createDb
+        </td>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          1227
+        </td>
+        <td>
+          596
+          -
+          612
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          createDb$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          adapter.createDb
+        </td>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          1226
+        </td>
+        <td>
+          596
+          -
+          612
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          createDb$default$1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          adapter.createDb
+        </td>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          1229
+        </td>
+        <td>
+          596
+          -
+          614
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          createDb
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          adapter.createDb()
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          1231
+        </td>
+        <td>
+          627
+          -
+          653
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          checkDatabaseExist$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          adapter.checkDatabaseExist
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          1234
+        </td>
+        <td>
+          619
+          -
+          656
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(adapter.checkDatabaseExist())
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          1230
+        </td>
+        <td>
+          627
+          -
+          653
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          checkDatabaseExist$default$1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          adapter.checkDatabaseExist
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          1233
+        </td>
+        <td>
+          627
+          -
+          655
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          checkDatabaseExist
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          adapter.checkDatabaseExist()
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          1232
+        </td>
+        <td>
+          627
+          -
+          653
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          checkDatabaseExist$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          adapter.checkDatabaseExist
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          1241
+        </td>
+        <td>
+          660
+          -
+          679
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          queryTest
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          @main def queryTest
+        </td>
+      </tr><tr>
+        <td>
+          22
+        </td>
+        <td>
+          1236
+        </td>
+        <td>
+          764
+          -
+          778
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          QueryBuilder()
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          1237
+        </td>
+        <td>
+          783
+          -
+          809
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          select
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          queryWrapper select &quot;this&quot;
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          1240
+        </td>
+        <td>
+          783
+          -
+          842
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          equal
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          queryWrapper select &quot;this&quot; from &quot;table&quot; where &quot;cs&quot; equal &quot;&quot;
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          1239
+        </td>
+        <td>
+          783
+          -
+          833
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          where
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          queryWrapper select &quot;this&quot; from &quot;table&quot; where &quot;cs&quot;
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          1238
+        </td>
+        <td>
+          783
+          -
+          822
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          queryWrapper select &quot;this&quot; from &quot;table&quot;
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          1211
+        </td>
+        <td>
+          1042
+          -
+          1042
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          $lessinit$greater$default$1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          
+        </td>
+      </tr><tr>
+        <td>
+          28
+        </td>
+        <td>
+          1212
+        </td>
+        <td>
+          1085
+          -
+          1085
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          $lessinit$greater$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          
+        </td>
+      </tr><tr>
+        <td>
+          29
+        </td>
+        <td>
+          1213
+        </td>
+        <td>
+          1131
+          -
+          1131
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          $lessinit$greater$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          
+        </td>
+      </tr><tr>
+        <td>
+          30
+        </td>
+        <td>
+          1214
+        </td>
+        <td>
+          1177
+          -
+          1177
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          $lessinit$greater$default$4
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          
+        </td>
+      </tr><tr>
+        <td>
+          31
+        </td>
+        <td>
+          1215
+        </td>
+        <td>
+          1225
+          -
+          1225
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          $lessinit$greater$default$5
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          1216
+        </td>
+        <td>
+          1273
+          -
+          1273
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          $lessinit$greater$default$6
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1246
+        </td>
+        <td>
+          1304
+          -
+          1347
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot; + port
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1249
+        </td>
+        <td>
+          1304
+          -
+          1399
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot; + port + &quot;/&quot; + dbName + &quot;?autoReconnect=true&amp;useSSL=false&quot;
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1243
+        </td>
+        <td>
+          1304
+          -
+          1328
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;jdbc:&quot; + driver + &quot;://&quot;
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1245
+        </td>
+        <td>
+          1304
+          -
+          1340
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot;
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1248
+        </td>
+        <td>
+          1304
+          -
+          1362
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot; + port + &quot;/&quot; + dbName
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1242
+        </td>
+        <td>
+          1304
+          -
+          1320
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;jdbc:&quot; + driver
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1244
+        </td>
+        <td>
+          1304
+          -
+          1334
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;jdbc:&quot; + driver + &quot;://&quot; + url
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1247
+        </td>
+        <td>
+          1304
+          -
+          1353
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot; + port + &quot;/&quot;
+        </td>
+      </tr><tr>
+        <td>
+          37
+        </td>
+        <td>
+          1254
+        </td>
+        <td>
+          1436
+          -
+          1454
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          connectWithUrl
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def connectWithUrl
+        </td>
+      </tr><tr>
+        <td>
+          38
+        </td>
+        <td>
+          1250
+        </td>
+        <td>
+          1511
+          -
+          1549
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          forName
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Class.forName(&quot;com.mysql.jdbc.Driver&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          1252
+        </td>
+        <td>
+          1558
+          -
+          1640
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          {
+      connection = DriverManager.getConnection(url, user, pass)
+      true
+    }
+        </td>
+      </tr><tr>
+        <td>
+          40
+        </td>
+        <td>
+          1251
+        </td>
+        <td>
+          1579
+          -
+          1623
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getConnection
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          DriverManager.getConnection(url, user, pass)
+        </td>
+      </tr><tr>
+        <td>
+          43
+        </td>
+        <td>
+          1253
+        </td>
+        <td>
+          1655
+          -
+          1672
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case e: Exception
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          1257
+        </td>
+        <td>
+          1691
+          -
+          1702
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          connect
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def connect
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          1255
+        </td>
+        <td>
+          1789
+          -
+          1827
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          forName
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Class.forName(&quot;com.mysql.jdbc.Driver&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          1256
+        </td>
+        <td>
+          1845
+          -
+          1910
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getConnection
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          DriverManager.getConnection(connectionString, username, password)
+        </td>
+      </tr><tr>
+        <td>
+          51
+        </td>
+        <td>
+          1273
+        </td>
+        <td>
+          1914
+          -
+          1926
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          createDb
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def createDb
+        </td>
+      </tr><tr>
+        <td>
+          51
+        </td>
+        <td>
+          1276
+        </td>
+        <td>
+          1979
+          -
+          1979
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          createDb$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          
+        </td>
+      </tr><tr>
+        <td>
+          51
+        </td>
+        <td>
+          1275
+        </td>
+        <td>
+          1960
+          -
+          1960
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          createDb$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          
+        </td>
+      </tr><tr>
+        <td>
+          51
+        </td>
+        <td>
+          1274
+        </td>
+        <td>
+          1941
+          -
+          1941
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          createDb$default$1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          
+        </td>
+      </tr><tr>
+        <td>
+          52
+        </td>
+        <td>
+          1264
+        </td>
+        <td>
+          1999
+          -
+          2409
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          {
+      url match
+        case &quot;&quot; =&gt; connection = DriverManager.getConnection(connectionString, username, password)
+        case _ =&gt; connection = DriverManager.getConnection(url, user, pass)
+      
+      val statement: Statement = connection.createStatement()
+      val query = &quot;CREATE DATABASE IF NOT EXISTS DIXIT&quot;
+      //val result = statement.executeQuery(query)
+      statement.executeUpdate(query)
+    }
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          1258
+        </td>
+        <td>
+          2049
+          -
+          2114
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getConnection
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          DriverManager.getConnection(connectionString, username, password)
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          1259
+        </td>
+        <td>
+          2025
+          -
+          2032
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case &quot;&quot;
+        </td>
+      </tr><tr>
+        <td>
+          55
+        </td>
+        <td>
+          1261
+        </td>
+        <td>
+          2123
+          -
+          2129
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          55
+        </td>
+        <td>
+          1260
+        </td>
+        <td>
+          2146
+          -
+          2190
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getConnection
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          DriverManager.getConnection(url, user, pass)
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          1262
+        </td>
+        <td>
+          2231
+          -
+          2259
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          createStatement
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.createStatement()
+        </td>
+      </tr><tr>
+        <td>
+          60
+        </td>
+        <td>
+          1263
+        </td>
+        <td>
+          2373
+          -
+          2403
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          executeUpdate
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          statement.executeUpdate(query)
+        </td>
+      </tr><tr>
+        <td>
+          62
+        </td>
+        <td>
+          1267
+        </td>
+        <td>
+          2424
+          -
+          2441
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case e: Exception
+        </td>
+      </tr><tr>
+        <td>
+          63
+        </td>
+        <td>
+          1265
+        </td>
+        <td>
+          2454
+          -
+          2471
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          printStackTrace
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          e.printStackTrace
+        </td>
+      </tr><tr>
+        <td>
+          64
+        </td>
+        <td>
+          1266
+        </td>
+        <td>
+          2480
+          -
+          2487
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          throw
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          throw e
+        </td>
+      </tr><tr>
+        <td>
+          65
+        </td>
+        <td>
+          1272
+        </td>
+        <td>
+          2502
+          -
+          2628
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          {
+      if (connection != null) try connection.close
+      catch {
+        case e: SQLException =&gt; /* Ignored */
+      }
+    }
+        </td>
+      </tr><tr>
+        <td>
+          66
+        </td>
+        <td>
+          1269
+        </td>
+        <td>
+          2538
+          -
+          2554
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          66
+        </td>
+        <td>
+          1268
+        </td>
+        <td>
+          2538
+          -
+          2554
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          close
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          66
+        </td>
+        <td>
+          1271
+        </td>
+        <td>
+          2534
+          -
+          2622
+        </td>
+        <td>
+          Try
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          try connection.close
+      catch {
+        case e: SQLException =&gt; /* Ignored */
+      }
+        </td>
+      </tr><tr>
+        <td>
+          68
+        </td>
+        <td>
+          1270
+        </td>
+        <td>
+          2577
+          -
+          2597
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case e: SQLException
+        </td>
+      </tr><tr>
+        <td>
+          72
+        </td>
+        <td>
+          1280
+        </td>
+        <td>
+          2632
+          -
+          2641
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          close
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def close
+        </td>
+      </tr><tr>
+        <td>
+          74
+        </td>
+        <td>
+          1278
+        </td>
+        <td>
+          2679
+          -
+          2685
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case m
+        </td>
+      </tr><tr>
+        <td>
+          74
+        </td>
+        <td>
+          1277
+        </td>
+        <td>
+          2689
+          -
+          2696
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          close
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          m.close
+        </td>
+      </tr><tr>
+        <td>
+          75
+        </td>
+        <td>
+          1279
+        </td>
+        <td>
+          2703
+          -
+          2709
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          77
+        </td>
+        <td>
+          1300
+        </td>
+        <td>
+          2775
+          -
+          2775
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          checkDatabaseExist$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          
+        </td>
+      </tr><tr>
+        <td>
+          77
+        </td>
+        <td>
+          1299
+        </td>
+        <td>
+          2756
+          -
+          2756
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          checkDatabaseExist$default$1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          
+        </td>
+      </tr><tr>
+        <td>
+          77
+        </td>
+        <td>
+          1301
+        </td>
+        <td>
+          2794
+          -
+          2794
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          checkDatabaseExist$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          
+        </td>
+      </tr><tr>
+        <td>
+          77
+        </td>
+        <td>
+          1298
+        </td>
+        <td>
+          2719
+          -
+          2741
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          checkDatabaseExist
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def checkDatabaseExist
+        </td>
+      </tr><tr>
+        <td>
+          79
+        </td>
+        <td>
+          1290
+        </td>
+        <td>
+          2853
+          -
+          3296
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          {
+      url match
+        case &quot;&quot; =&gt; connect()
+        case _ =&gt; connection = DriverManager.getConnection(url, user, pass)
+      
+      val statement: Statement = connection.createStatement()
+      val query = &quot;SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'DIXIT'&quot;
+      val resultSet = statement.executeQuery(query)
+      resultSet.first() match
+        case true =&gt; return true
+        case _ =&gt; return false
+    }
+        </td>
+      </tr><tr>
+        <td>
+          81
+        </td>
+        <td>
+          1282
+        </td>
+        <td>
+          2879
+          -
+          2886
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case &quot;&quot;
+        </td>
+      </tr><tr>
+        <td>
+          81
+        </td>
+        <td>
+          1281
+        </td>
+        <td>
+          2890
+          -
+          2899
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          connect
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          connect()
+        </td>
+      </tr><tr>
+        <td>
+          82
+        </td>
+        <td>
+          1284
+        </td>
+        <td>
+          2908
+          -
+          2914
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          82
+        </td>
+        <td>
+          1283
+        </td>
+        <td>
+          2931
+          -
+          2975
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getConnection
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          DriverManager.getConnection(url, user, pass)
+        </td>
+      </tr><tr>
+        <td>
+          84
+        </td>
+        <td>
+          1285
+        </td>
+        <td>
+          3016
+          -
+          3044
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          createStatement
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.createStatement()
+        </td>
+      </tr><tr>
+        <td>
+          86
+        </td>
+        <td>
+          1286
+        </td>
+        <td>
+          3167
+          -
+          3196
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          executeQuery
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          statement.executeQuery(query)
+        </td>
+      </tr><tr>
+        <td>
+          87
+        </td>
+        <td>
+          1287
+        </td>
+        <td>
+          3203
+          -
+          3220
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          first
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          resultSet.first()
+        </td>
+      </tr><tr>
+        <td>
+          88
+        </td>
+        <td>
+          1288
+        </td>
+        <td>
+          3235
+          -
+          3244
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case true
+        </td>
+      </tr><tr>
+        <td>
+          89
+        </td>
+        <td>
+          1289
+        </td>
+        <td>
+          3268
+          -
+          3274
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          91
+        </td>
+        <td>
+          1292
+        </td>
+        <td>
+          3311
+          -
+          3337
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case e: 
+        Exception
+        </td>
+      </tr><tr>
+        <td>
+          92
+        </td>
+        <td>
+          1291
+        </td>
+        <td>
+          3341
+          -
+          3358
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          printStackTrace
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          e.printStackTrace
+        </td>
+      </tr><tr>
+        <td>
+          94
+        </td>
+        <td>
+          1297
+        </td>
+        <td>
+          3394
+          -
+          3533
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          {
+      if (connection != null) try connection.close
+      catch {
+        case e: SQLException =&gt; return false /* Ignored */
+      }
+    }
+        </td>
+      </tr><tr>
+        <td>
+          95
+        </td>
+        <td>
+          1294
+        </td>
+        <td>
+          3430
+          -
+          3446
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          95
+        </td>
+        <td>
+          1296
+        </td>
+        <td>
+          3426
+          -
+          3527
+        </td>
+        <td>
+          Try
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          try connection.close
+      catch {
+        case e: SQLException =&gt; return false /* Ignored */
+      }
+        </td>
+      </tr><tr>
+        <td>
+          95
+        </td>
+        <td>
+          1293
+        </td>
+        <td>
+          3430
+          -
+          3446
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          close
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          97
+        </td>
+        <td>
+          1295
+        </td>
+        <td>
+          3469
+          -
+          3489
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case e: SQLException
+        </td>
+      </tr><tr>
+        <td>
+          101
+        </td>
+        <td>
+          1322
+        </td>
+        <td>
+          3537
+          -
+          3556
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          selectSingleRow
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def selectSingleRow
+        </td>
+      </tr><tr>
+        <td>
+          102
+        </td>
+        <td>
+          1302
+        </td>
+        <td>
+          3631
+          -
+          3643
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          empty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Option.empty
+        </td>
+      </tr><tr>
+        <td>
+          103
+        </td>
+        <td>
+          1314
+        </td>
+        <td>
+          3652
+          -
+          4035
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          {
+      connect()
+      val statement: Statement = connection.createStatement()
+      val query = queryWrapper.query
+      val resultSet = statement.executeQuery(query)
+      resultSet.first() match
+        case true =&gt; user = Option(User(resultSet.getString(&quot;Name&quot;), resultSet.getInt(&quot;Points&quot;),
+          resultSet.getString(&quot;Password&quot;)))
+        case _ =&gt; user = Option.empty
+    }
+        </td>
+      </tr><tr>
+        <td>
+          104
+        </td>
+        <td>
+          1303
+        </td>
+        <td>
+          3660
+          -
+          3669
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          connect
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          connect()
+        </td>
+      </tr><tr>
+        <td>
+          105
+        </td>
+        <td>
+          1304
+        </td>
+        <td>
+          3703
+          -
+          3731
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          createStatement
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          connection.createStatement()
+        </td>
+      </tr><tr>
+        <td>
+          107
+        </td>
+        <td>
+          1305
+        </td>
+        <td>
+          3791
+          -
+          3820
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          executeQuery
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          statement.executeQuery(query)
+        </td>
+      </tr><tr>
+        <td>
+          108
+        </td>
+        <td>
+          1306
+        </td>
+        <td>
+          3827
+          -
+          3844
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          first
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          resultSet.first()
+        </td>
+      </tr><tr>
+        <td>
+          109
+        </td>
+        <td>
+          1308
+        </td>
+        <td>
+          3920
+          -
+          3946
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getInt
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          resultSet.getInt(&quot;Points&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          109
+        </td>
+        <td>
+          1311
+        </td>
+        <td>
+          3859
+          -
+          3868
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case true
+        </td>
+      </tr><tr>
+        <td>
+          109
+        </td>
+        <td>
+          1310
+        </td>
+        <td>
+          3879
+          -
+          3991
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Option(User(resultSet.getString(&quot;Name&quot;), resultSet.getInt(&quot;Points&quot;),
+          resultSet.getString(&quot;Password&quot;)))
+        </td>
+      </tr><tr>
+        <td>
+          109
+        </td>
+        <td>
+          1307
+        </td>
+        <td>
+          3891
+          -
+          3918
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          resultSet.getString(&quot;Name&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          110
+        </td>
+        <td>
+          1309
+        </td>
+        <td>
+          3958
+          -
+          3989
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          resultSet.getString(&quot;Password&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          111
+        </td>
+        <td>
+          1312
+        </td>
+        <td>
+          4017
+          -
+          4029
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          empty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Option.empty
+        </td>
+      </tr><tr>
+        <td>
+          111
+        </td>
+        <td>
+          1313
+        </td>
+        <td>
+          4000
+          -
+          4006
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          113
+        </td>
+        <td>
+          1315
+        </td>
+        <td>
+          4071
+          -
+          4088
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          printStackTrace
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          e.printStackTrace
+        </td>
+      </tr><tr>
+        <td>
+          113
+        </td>
+        <td>
+          1316
+        </td>
+        <td>
+          4050
+          -
+          4067
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case e: Exception
+        </td>
+      </tr><tr>
+        <td>
+          114
+        </td>
+        <td>
+          1321
+        </td>
+        <td>
+          4103
+          -
+          4229
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          {
+      if (connection != null) try connection.close
+      catch {
+        case e: SQLException =&gt; /* Ignored */
+      }
+    }
+        </td>
+      </tr><tr>
+        <td>
+          115
+        </td>
+        <td>
+          1318
+        </td>
+        <td>
+          4139
+          -
+          4155
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          115
+        </td>
+        <td>
+          1320
+        </td>
+        <td>
+          4135
+          -
+          4223
+        </td>
+        <td>
+          Try
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          try connection.close
+      catch {
+        case e: SQLException =&gt; /* Ignored */
+      }
+        </td>
+      </tr><tr>
+        <td>
+          115
+        </td>
+        <td>
+          1317
+        </td>
+        <td>
+          4139
+          -
+          4155
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          close
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          117
+        </td>
+        <td>
+          1319
+        </td>
+        <td>
+          4178
+          -
+          4198
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case e: SQLException
+        </td>
+      </tr><tr>
+        <td>
+          122
+        </td>
+        <td>
+          1334
+        </td>
+        <td>
+          4242
+          -
+          4257
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          insertQuery
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def insertQuery
+        </td>
+      </tr><tr>
+        <td>
+          123
+        </td>
+        <td>
+          1326
+        </td>
+        <td>
+          4296
+          -
+          4424
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          {
+      connect()
+      val statement: Statement = connection.createStatement()
+      statement.executeUpdate(query.query)
+    }
+        </td>
+      </tr><tr>
+        <td>
+          124
+        </td>
+        <td>
+          1323
+        </td>
+        <td>
+          4304
+          -
+          4313
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          connect
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          connect()
+        </td>
+      </tr><tr>
+        <td>
+          125
+        </td>
+        <td>
+          1324
+        </td>
+        <td>
+          4347
+          -
+          4375
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          createStatement
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          connection.createStatement()
+        </td>
+      </tr><tr>
+        <td>
+          126
+        </td>
+        <td>
+          1325
+        </td>
+        <td>
+          4382
+          -
+          4418
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          executeUpdate
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          statement.executeUpdate(query.query)
+        </td>
+      </tr><tr>
+        <td>
+          128
+        </td>
+        <td>
+          1327
+        </td>
+        <td>
+          4460
+          -
+          4477
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          printStackTrace
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          e.printStackTrace
+        </td>
+      </tr><tr>
+        <td>
+          128
+        </td>
+        <td>
+          1328
+        </td>
+        <td>
+          4439
+          -
+          4456
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case e: Exception
+        </td>
+      </tr><tr>
+        <td>
+          129
+        </td>
+        <td>
+          1333
+        </td>
+        <td>
+          4492
+          -
+          4618
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          {
+      if (connection != null) try connection.close
+      catch {
+        case e: SQLException =&gt; /* Ignored */
+      }
+    }
+        </td>
+      </tr><tr>
+        <td>
+          130
+        </td>
+        <td>
+          1330
+        </td>
+        <td>
+          4528
+          -
+          4544
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          130
+        </td>
+        <td>
+          1329
+        </td>
+        <td>
+          4528
+          -
+          4544
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          close
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          130
+        </td>
+        <td>
+          1332
+        </td>
+        <td>
+          4524
+          -
+          4612
+        </td>
+        <td>
+          Try
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          try connection.close
+      catch {
+        case e: SQLException =&gt; /* Ignored */
+      }
+        </td>
+      </tr><tr>
+        <td>
+          132
+        </td>
+        <td>
+          1331
+        </td>
+        <td>
+          4567
+          -
+          4587
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case e: SQLException
+        </td>
+      </tr><tr>
+        <td>
+          136
+        </td>
+        <td>
+          1338
+        </td>
+        <td>
+          4670
+          -
+          4806
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          {
+    connect()
+    val statement: Statement = connection.createStatement()
+    statement.executeUpdate(query.query)
+    return true
+  }
+        </td>
+      </tr><tr>
+        <td>
+          136
+        </td>
+        <td>
+          1346
+        </td>
+        <td>
+          4622
+          -
+          4632
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          update
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def update
+        </td>
+      </tr><tr>
+        <td>
+          137
+        </td>
+        <td>
+          1335
+        </td>
+        <td>
+          4676
+          -
+          4685
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          connect
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          connect()
+        </td>
+      </tr><tr>
+        <td>
+          138
+        </td>
+        <td>
+          1336
+        </td>
+        <td>
+          4717
+          -
+          4745
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          createStatement
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          connection.createStatement()
+        </td>
+      </tr><tr>
+        <td>
+          139
+        </td>
+        <td>
+          1337
+        </td>
+        <td>
+          4750
+          -
+          4786
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          executeUpdate
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          statement.executeUpdate(query.query)
+        </td>
+      </tr><tr>
+        <td>
+          142
+        </td>
+        <td>
+          1339
+        </td>
+        <td>
+          4840
+          -
+          4857
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          printStackTrace
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          e.printStackTrace
+        </td>
+      </tr><tr>
+        <td>
+          142
+        </td>
+        <td>
+          1340
+        </td>
+        <td>
+          4819
+          -
+          4836
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case e: Exception
+        </td>
+      </tr><tr>
+        <td>
+          144
+        </td>
+        <td>
+          1345
+        </td>
+        <td>
+          4889
+          -
+          5005
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          {
+    if (connection != null) try connection.close
+    catch {
+      case e: SQLException =&gt; /* Ignored */
+    }
+  }
+        </td>
+      </tr><tr>
+        <td>
+          145
+        </td>
+        <td>
+          1342
+        </td>
+        <td>
+          4923
+          -
+          4939
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          145
+        </td>
+        <td>
+          1341
+        </td>
+        <td>
+          4923
+          -
+          4939
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          close
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          145
+        </td>
+        <td>
+          1344
+        </td>
+        <td>
+          4919
+          -
+          5001
+        </td>
+        <td>
+          Try
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          try connection.close
+    catch {
+      case e: SQLException =&gt; /* Ignored */
+    }
+        </td>
+      </tr><tr>
+        <td>
+          147
+        </td>
+        <td>
+          1343
+        </td>
+        <td>
+          4958
+          -
+          4978
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case e: SQLException
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>

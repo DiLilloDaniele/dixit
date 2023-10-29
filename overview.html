@@ -1,0 +1,3474 @@
+<html>
+      <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      <title id="title">Scoverage Code Coverage</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+      <style>
+        .meter {
+        height: 14px;
+        position: relative;
+        background: #BB2020;
+}
+
+.meter span {
+	display: block;
+	height: 100%;
+	background-color: rgb(43,194,83);
+	background-image: -webkit-gradient(
+	  linear,
+	  left bottom,
+	  left top,
+	  color-stop(0, rgb(43,194,83)),
+	  color-stop(1, rgb(84,240,84))
+	 );
+	background-image: -webkit-linear-gradient(
+	  center bottom,
+	  rgb(43,194,83) 37%,
+	  rgb(84,240,84) 69%
+	 );
+	background-image: -moz-linear-gradient(
+	  center bottom,
+	  rgb(43,194,83) 37%,
+	  rgb(84,240,84) 69%
+	 );
+	background-image: -ms-linear-gradient(
+	  center bottom,
+	  rgb(43,194,83) 37%,
+	  rgb(84,240,84) 69%
+	 );
+	background-image: -o-linear-gradient(
+	  center bottom,
+	  rgb(43,194,83) 37%,
+	  rgb(84,240,84) 69%
+	 );
+	-webkit-box-shadow:
+	  inset 0 2px 9px  rgba(255,255,255,0.3),
+	  inset 0 -2px 6px rgba(0,0,0,0.4);
+	-moz-box-shadow:
+	  inset 0 2px 9px  rgba(255,255,255,0.3),
+	  inset 0 -2px 6px rgba(0,0,0,0.4);
+	position: relative;
+	overflow: hidden;
+}
+      </style>
+    </head><body style="font-family: monospace;">
+      <div class="alert alert-info">
+        <b>
+          SCoverage
+        </b>
+        generated at
+        Sun Oct 29 13:17:03 UTC 2023
+      </div>
+      <div class="overview">
+        <div class="stats">
+          <table class="table">
+      <tr>
+        <td>
+          Lines of code:
+        </td>
+        <td>
+          3243
+        </td>
+        <td>
+          Files:
+        </td>
+        <td>
+          40
+        </td>
+        <td>
+          Classes:
+        </td>
+        <td>
+          72
+        </td>
+        <td>
+          Methods:
+        </td>
+        <td>
+          432
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Lines per file:
+        </td>
+        <td>
+          81.08
+        </td>
+        <td>
+          Packages:
+        </td>
+        <td>
+          11
+        </td>
+        <td>
+          Classes per package:
+        </td>
+        <td>
+          6.55
+        </td>
+        <td>
+          Methods per class:
+        </td>
+        <td>
+          6.00
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Total statements:
+        </td>
+        <td>
+          2416
+        </td>
+        <td>
+          Invoked statements:
+        </td>
+        <td>
+          552
+        </td>
+        <td>
+          Total branches:
+        </td>
+        <td>
+          103
+        </td>
+        <td>
+          Invoked branches:
+        </td>
+        <td>
+          29
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Ignored statements:
+        </td>
+        <td>
+          0
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          Statement coverage:
+        </td>
+        <td>
+          22.85
+          %
+        </td>
+        <td colspan="2">
+          <div class="meter">
+            <span style="width: 23%"></span>
+          </div>
+        </td>
+        <td>
+          Branch coverage:
+        </td>
+        <td>
+          28.16
+          %
+        </td>
+        <td colspan="2">
+          <div class="meter">
+            <span style="width: 28%"></span>
+          </div>
+        </td>
+      </tr>
+    </table>
+        </div>
+        <div>
+          <table class="tablesorter table table-striped" style="font-size:13px">
+      <thead>
+        <tr>
+          <th>
+            Class
+          </th>
+          <th>
+            Source file
+          </th>
+          <th>
+            Lines
+          </th>
+          <th>
+            Methods
+          </th>
+          <th>
+            Statements
+          </th>
+          <th>
+            Invoked
+          </th>
+          <th>
+            Coverage
+          </th>
+          <th>
+          </th>
+          <th>
+            Branches
+          </th>
+          <th>
+            Invoked
+          </th>
+          <th>
+            Coverage
+          </th>
+          <th>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+      <td>
+        <a href="grpcService/client/actors/utils.scala.html">
+          ActorClass
+        </a>
+      </td>
+      <td>
+        utils.scala
+      </td>
+      <td>
+        92
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        12
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/actors/ClusterListener.scala.html">
+          ClusterListener$
+        </a>
+      </td>
+      <td>
+        ClusterListener.scala
+      </td>
+      <td>
+        70
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        49
+      </td>
+      <td>
+        40
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 82%"></span>
+        </div>
+      </td>
+      <td>
+        81.63
+        %
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 100%"></span>
+        </div>
+      </td>
+      <td>
+        100.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/actors/MainClass.scala.html">
+          MainClass$
+        </a>
+      </td>
+      <td>
+        MainClass.scala
+      </td>
+      <td>
+        4
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/actors/ManualTesting.scala.html">
+          ManualTesting$
+        </a>
+      </td>
+      <td>
+        ManualTesting.scala
+      </td>
+      <td>
+        31
+      </td>
+      <td>
+        5
+      </td>
+      <td>
+        17
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/actors/PlayerClusterListener.scala.html">
+          PlayerClusterListener$
+        </a>
+      </td>
+      <td>
+        PlayerClusterListener.scala
+      </td>
+      <td>
+        55
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        50
+      </td>
+      <td>
+        45
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 90%"></span>
+        </div>
+      </td>
+      <td>
+        90.00
+        %
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 100%"></span>
+        </div>
+      </td>
+      <td>
+        100.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/actors/StartNewPlayer.scala.html">
+          StartNewPlayer$
+        </a>
+      </td>
+      <td>
+        StartNewPlayer.scala
+      </td>
+      <td>
+        11
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        5
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/actors/utils.scala.html">
+          utils$
+        </a>
+      </td>
+      <td>
+        utils.scala
+      </td>
+      <td>
+        78
+      </td>
+      <td>
+        9
+      </td>
+      <td>
+        56
+      </td>
+      <td>
+        6
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 11%"></span>
+        </div>
+      </td>
+      <td>
+        10.71
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 100%"></span>
+        </div>
+      </td>
+      <td>
+        100.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/server/data/adapters/AccessAdapter.scala.html">
+          AccessAdapter
+        </a>
+      </td>
+      <td>
+        AccessAdapter.scala
+      </td>
+      <td>
+        147
+      </td>
+      <td>
+        15
+      </td>
+      <td>
+        105
+      </td>
+      <td>
+        34
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 32%"></span>
+        </div>
+      </td>
+      <td>
+        32.38
+        %
+      </td>
+      <td>
+        21
+      </td>
+      <td>
+        9
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 43%"></span>
+        </div>
+      </td>
+      <td>
+        42.86
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/server/data/adapters/AccessAdapter.scala.html">
+          AccessAdapter$
+        </a>
+      </td>
+      <td>
+        AccessAdapter.scala
+      </td>
+      <td>
+        32
+      </td>
+      <td>
+        15
+      </td>
+      <td>
+        31
+      </td>
+      <td>
+        8
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 26%"></span>
+        </div>
+      </td>
+      <td>
+        25.81
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 100%"></span>
+        </div>
+      </td>
+      <td>
+        100.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/server/data/adapters/InsertBuilder.scala.html">
+          InsertBuilder
+        </a>
+      </td>
+      <td>
+        InsertBuilder.scala
+      </td>
+      <td>
+        18
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        14
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/server/adapters/MyServerService.scala.html">
+          MyServerService
+        </a>
+      </td>
+      <td>
+        MyServerService.scala
+      </td>
+      <td>
+        38
+      </td>
+      <td>
+        6
+      </td>
+      <td>
+        31
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/server/adapters/ProtoToDomainAdapter.scala.html">
+          ProtoToDomainAdapter$
+        </a>
+      </td>
+      <td>
+        ProtoToDomainAdapter.scala
+      </td>
+      <td>
+        9
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        5
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/server/data/adapters/QueryBuilder.scala.html">
+          QueryBuilder
+        </a>
+      </td>
+      <td>
+        QueryBuilder.scala
+      </td>
+      <td>
+        54
+      </td>
+      <td>
+        7
+      </td>
+      <td>
+        49
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/server/data/adapters/UpdateBuilder.scala.html">
+          UpdateBuilder
+        </a>
+      </td>
+      <td>
+        UpdateBuilder.scala
+      </td>
+      <td>
+        32
+      </td>
+      <td>
+        4
+      </td>
+      <td>
+        27
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/server/applicationService/Service.scala.html">
+          Service
+        </a>
+      </td>
+      <td>
+        Service.scala
+      </td>
+      <td>
+        58
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        12
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/server/applicationService/Service.scala.html">
+          Service$
+        </a>
+      </td>
+      <td>
+        Service.scala
+      </td>
+      <td>
+        23
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        7
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/server/applicationService/ServiceLocator.scala.html">
+          ServiceLocator$
+        </a>
+      </td>
+      <td>
+        ServiceLocator.scala
+      </td>
+      <td>
+        6
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/actors/behaviors/ForemanBehavior.scala.html">
+          ForemanBehavior$
+        </a>
+      </td>
+      <td>
+        ForemanBehavior.scala
+      </td>
+      <td>
+        67
+      </td>
+      <td>
+        6
+      </td>
+      <td>
+        53
+      </td>
+      <td>
+        41
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 77%"></span>
+        </div>
+      </td>
+      <td>
+        77.36
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 100%"></span>
+        </div>
+      </td>
+      <td>
+        100.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/actors/behaviors/ForemanBehavior.scala.html">
+          ForemanBehaviorImpl
+        </a>
+      </td>
+      <td>
+        ForemanBehavior.scala
+      </td>
+      <td>
+        221
+      </td>
+      <td>
+        9
+      </td>
+      <td>
+        187
+      </td>
+      <td>
+        144
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 77%"></span>
+        </div>
+      </td>
+      <td>
+        77.01
+        %
+      </td>
+      <td>
+        11
+      </td>
+      <td>
+        10
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 91%"></span>
+        </div>
+      </td>
+      <td>
+        90.91
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/actors/behaviors/InteractionBehavior.scala.html">
+          InteractionBehavior$
+        </a>
+      </td>
+      <td>
+        InteractionBehavior.scala
+      </td>
+      <td>
+        39
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        17
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/actors/behaviors/InteractionBehavior.scala.html">
+          InteractionGuiImpl
+        </a>
+      </td>
+      <td>
+        InteractionBehavior.scala
+      </td>
+      <td>
+        108
+      </td>
+      <td>
+        7
+      </td>
+      <td>
+        61
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/actors/behaviors/PlayerBehavior.scala.html">
+          PlayerBehavior$
+        </a>
+      </td>
+      <td>
+        PlayerBehavior.scala
+      </td>
+      <td>
+        79
+      </td>
+      <td>
+        5
+      </td>
+      <td>
+        62
+      </td>
+      <td>
+        52
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 84%"></span>
+        </div>
+      </td>
+      <td>
+        83.87
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 100%"></span>
+        </div>
+      </td>
+      <td>
+        100.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/actors/behaviors/PlayerBehavior.scala.html">
+          PlayerBehaviorImpl
+        </a>
+      </td>
+      <td>
+        PlayerBehavior.scala
+      </td>
+      <td>
+        175
+      </td>
+      <td>
+        8
+      </td>
+      <td>
+        119
+      </td>
+      <td>
+        85
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 71%"></span>
+        </div>
+      </td>
+      <td>
+        71.43
+        %
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 100%"></span>
+        </div>
+      </td>
+      <td>
+        100.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/actors/behaviors/PlayersManagerBehavior.scala.html">
+          PlayersManagerBehavior$
+        </a>
+      </td>
+      <td>
+        PlayersManagerBehavior.scala
+      </td>
+      <td>
+        36
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        28
+      </td>
+      <td>
+        28
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 100%"></span>
+        </div>
+      </td>
+      <td>
+        100.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 100%"></span>
+        </div>
+      </td>
+      <td>
+        100.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/actors/behaviors/PlayersManagerBehavior.scala.html">
+          PlayersManagerBehaviorImpl
+        </a>
+      </td>
+      <td>
+        PlayersManagerBehavior.scala
+      </td>
+      <td>
+        107
+      </td>
+      <td>
+        5
+      </td>
+      <td>
+        75
+      </td>
+      <td>
+        63
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 84%"></span>
+        </div>
+      </td>
+      <td>
+        84.00
+        %
+      </td>
+      <td>
+        7
+      </td>
+      <td>
+        5
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 71%"></span>
+        </div>
+      </td>
+      <td>
+        71.43
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/Client.scala.html">
+          Client$
+        </a>
+      </td>
+      <td>
+        Client.scala
+      </td>
+      <td>
+        38
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        8
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/Client.scala.html">
+          ClientImpl
+        </a>
+      </td>
+      <td>
+        Client.scala
+      </td>
+      <td>
+        85
+      </td>
+      <td>
+        6
+      </td>
+      <td>
+        42
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/controller/GameController.scala.html">
+          GameController
+        </a>
+      </td>
+      <td>
+        GameController.scala
+      </td>
+      <td>
+        39
+      </td>
+      <td>
+        8
+      </td>
+      <td>
+        22
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/ClosingResponse.scala.html">
+          ClosingResponse
+        </a>
+      </td>
+      <td>
+        ClosingResponse.scala
+      </td>
+      <td>
+        35
+      </td>
+      <td>
+        9
+      </td>
+      <td>
+        18
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/ClosingResponse.scala.html">
+          ClosingResponse$
+        </a>
+      </td>
+      <td>
+        ClosingResponse.scala
+      </td>
+      <td>
+        76
+      </td>
+      <td>
+        12
+      </td>
+      <td>
+        40
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/ClosingResponse.scala.html">
+          ClosingResponseLens
+        </a>
+      </td>
+      <td>
+        ClosingResponse.scala
+      </td>
+      <td>
+        73
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/ServerClient.scala.html">
+          DefaultServerClient
+        </a>
+      </td>
+      <td>
+        ServerClient.scala
+      </td>
+      <td>
+        167
+      </td>
+      <td>
+        15
+      </td>
+      <td>
+        53
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/GameMessage.scala.html">
+          GameMessage
+        </a>
+      </td>
+      <td>
+        GameMessage.scala
+      </td>
+      <td>
+        82
+      </td>
+      <td>
+        11
+      </td>
+      <td>
+        41
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        9
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/GameMessage.scala.html">
+          GameMessage$
+        </a>
+      </td>
+      <td>
+        GameMessage.scala
+      </td>
+      <td>
+        141
+      </td>
+      <td>
+        14
+      </td>
+      <td>
+        60
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/GameMessage.scala.html">
+          GameMessageLens
+        </a>
+      </td>
+      <td>
+        GameMessage.scala
+      </td>
+      <td>
+        134
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        5
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/HelloMessage.scala.html">
+          HelloMessage
+        </a>
+      </td>
+      <td>
+        HelloMessage.scala
+      </td>
+      <td>
+        62
+      </td>
+      <td>
+        10
+      </td>
+      <td>
+        30
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        5
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/HelloMessage.scala.html">
+          HelloMessage$
+        </a>
+      </td>
+      <td>
+        HelloMessage.scala
+      </td>
+      <td>
+        112
+      </td>
+      <td>
+        13
+      </td>
+      <td>
+        50
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/HelloMessage.scala.html">
+          HelloMessageLens
+        </a>
+      </td>
+      <td>
+        HelloMessage.scala
+      </td>
+      <td>
+        107
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/LoginRequest.scala.html">
+          LoginRequest
+        </a>
+      </td>
+      <td>
+        LoginRequest.scala
+      </td>
+      <td>
+        82
+      </td>
+      <td>
+        11
+      </td>
+      <td>
+        41
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        9
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/LoginRequest.scala.html">
+          LoginRequest$
+        </a>
+      </td>
+      <td>
+        LoginRequest.scala
+      </td>
+      <td>
+        141
+      </td>
+      <td>
+        14
+      </td>
+      <td>
+        60
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/LoginRequest.scala.html">
+          LoginRequestLens
+        </a>
+      </td>
+      <td>
+        LoginRequest.scala
+      </td>
+      <td>
+        134
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        5
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/LoginResult.scala.html">
+          LoginResult
+        </a>
+      </td>
+      <td>
+        LoginResult.scala
+      </td>
+      <td>
+        62
+      </td>
+      <td>
+        10
+      </td>
+      <td>
+        28
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        5
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/LoginResult.scala.html">
+          LoginResult$
+        </a>
+      </td>
+      <td>
+        LoginResult.scala
+      </td>
+      <td>
+        112
+      </td>
+      <td>
+        13
+      </td>
+      <td>
+        50
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/LoginResult.scala.html">
+          LoginResultLens
+        </a>
+      </td>
+      <td>
+        LoginResult.scala
+      </td>
+      <td>
+        107
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/MessagesProto.scala.html">
+          MessagesProto$
+        </a>
+      </td>
+      <td>
+        MessagesProto.scala
+      </td>
+      <td>
+        46
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        15
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/Server.scala.html">
+          MethodDescriptors$
+        </a>
+      </td>
+      <td>
+        Server.scala
+      </td>
+      <td>
+        152
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        60
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/NewGameResponse.scala.html">
+          NewGameResponse
+        </a>
+      </td>
+      <td>
+        NewGameResponse.scala
+      </td>
+      <td>
+        35
+      </td>
+      <td>
+        9
+      </td>
+      <td>
+        18
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/NewGameResponse.scala.html">
+          NewGameResponse$
+        </a>
+      </td>
+      <td>
+        NewGameResponse.scala
+      </td>
+      <td>
+        76
+      </td>
+      <td>
+        12
+      </td>
+      <td>
+        40
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/NewGameResponse.scala.html">
+          NewGameResponseLens
+        </a>
+      </td>
+      <td>
+        NewGameResponse.scala
+      </td>
+      <td>
+        73
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/OpenedGames.scala.html">
+          OpenedGames
+        </a>
+      </td>
+      <td>
+        OpenedGames.scala
+      </td>
+      <td>
+        57
+      </td>
+      <td>
+        14
+      </td>
+      <td>
+        36
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/OpenedGames.scala.html">
+          OpenedGames$
+        </a>
+      </td>
+      <td>
+        OpenedGames.scala
+      </td>
+      <td>
+        107
+      </td>
+      <td>
+        13
+      </td>
+      <td>
+        57
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/OpenedGames.scala.html">
+          OpenedGamesLens
+        </a>
+      </td>
+      <td>
+        OpenedGames.scala
+      </td>
+      <td>
+        102
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/OpenedGamesRequest.scala.html">
+          OpenedGamesRequest
+        </a>
+      </td>
+      <td>
+        OpenedGamesRequest.scala
+      </td>
+      <td>
+        35
+      </td>
+      <td>
+        9
+      </td>
+      <td>
+        18
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/OpenedGamesRequest.scala.html">
+          OpenedGamesRequest$
+        </a>
+      </td>
+      <td>
+        OpenedGamesRequest.scala
+      </td>
+      <td>
+        76
+      </td>
+      <td>
+        12
+      </td>
+      <td>
+        40
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/OpenedGamesRequest.scala.html">
+          OpenedGamesRequestLens
+        </a>
+      </td>
+      <td>
+        OpenedGamesRequest.scala
+      </td>
+      <td>
+        73
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/Server.scala.html">
+          Serializers$
+        </a>
+      </td>
+      <td>
+        Server.scala
+      </td>
+      <td>
+        58
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        16
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/ServerClient.scala.html">
+          ServerClient$
+        </a>
+      </td>
+      <td>
+        ServerClient.scala
+      </td>
+      <td>
+        30
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        5
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/ServerClient.scala.html">
+          ServerClientPowerApi
+        </a>
+      </td>
+      <td>
+        ServerClient.scala
+      </td>
+      <td>
+        219
+      </td>
+      <td>
+        6
+      </td>
+      <td>
+        12
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/ServerHandler.scala.html">
+          ServerHandler$
+        </a>
+      </td>
+      <td>
+        ServerHandler.scala
+      </td>
+      <td>
+        158
+      </td>
+      <td>
+        8
+      </td>
+      <td>
+        95
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/model/PumpMyList.scala.html">
+          PumpMyList$
+        </a>
+      </td>
+      <td>
+        PumpMyList.scala
+      </td>
+      <td>
+        35
+      </td>
+      <td>
+        6
+      </td>
+      <td>
+        24
+      </td>
+      <td>
+        6
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 25%"></span>
+        </div>
+      </td>
+      <td>
+        25.00
+        %
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 100%"></span>
+        </div>
+      </td>
+      <td>
+        100.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/server/domain/model/User.scala.html">
+          User$
+        </a>
+      </td>
+      <td>
+        User.scala
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/server/data/ports/AccessPort.scala.html">
+          AccessPort
+        </a>
+      </td>
+      <td>
+        AccessPort.scala
+      </td>
+      <td>
+        43
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        29
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/server/data/ports/AccessPort.scala.html">
+          AccessPort$
+        </a>
+      </td>
+      <td>
+        AccessPort.scala
+      </td>
+      <td>
+        20
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        9
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/server/domain/ports/GamesManagementPort.scala.html">
+          GamesManagementPort
+        </a>
+      </td>
+      <td>
+        GamesManagementPort.scala
+      </td>
+      <td>
+        11
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        6
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/server/domain/ports/RegisterPort.scala.html">
+          RegisterPort
+        </a>
+      </td>
+      <td>
+        RegisterPort.scala
+      </td>
+      <td>
+        11
+      </td>
+      <td>
+        2
+      </td>
+      <td>
+        6
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/server/domain/service/ServerLogic.scala.html">
+          ServerLogic
+        </a>
+      </td>
+      <td>
+        ServerLogic.scala
+      </td>
+      <td>
+        31
+      </td>
+      <td>
+        8
+      </td>
+      <td>
+        16
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/server/domain/service/ServerLogic.scala.html">
+          ServerLogic$
+        </a>
+      </td>
+      <td>
+        ServerLogic.scala
+      </td>
+      <td>
+        11
+      </td>
+      <td>
+        1
+      </td>
+      <td>
+        6
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/view/MainGui.scala.html">
+          $anon
+        </a>
+      </td>
+      <td>
+        MainGui.scala
+      </td>
+      <td>
+        173
+      </td>
+      <td>
+        7
+      </td>
+      <td>
+        34
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/view/HomepageView.scala.html">
+          HomepageView
+        </a>
+      </td>
+      <td>
+        HomepageView.scala
+      </td>
+      <td>
+        155
+      </td>
+      <td>
+        5
+      </td>
+      <td>
+        96
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/view/HomepageView.scala.html">
+          HomepageView$
+        </a>
+      </td>
+      <td>
+        HomepageView.scala
+      </td>
+      <td>
+        36
+      </td>
+      <td>
+        4
+      </td>
+      <td>
+        15
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/view/MainGui.scala.html">
+          MainGui
+        </a>
+      </td>
+      <td>
+        MainGui.scala
+      </td>
+      <td>
+        179
+      </td>
+      <td>
+        11
+      </td>
+      <td>
+        107
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr><tr>
+      <td>
+        <a href="grpcService/client/view/MainGui.scala.html">
+          MainGui$
+        </a>
+      </td>
+      <td>
+        MainGui.scala
+      </td>
+      <td>
+        23
+      </td>
+      <td>
+        3
+      </td>
+      <td>
+        13
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        0
+      </td>
+      <td>
+        <div class="meter">
+          <span style="width: 0%"></span>
+        </div>
+      </td>
+      <td>
+        0.00
+        %
+      </td>
+    </tr>
+      </tbody>
+    </table>
+        </div>
+      </div>
+    </body>
+    </html>

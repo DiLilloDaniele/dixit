@@ -1,0 +1,485 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          grpcService/client/actors/ManualTesting.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.client.actors
+</span>2 <span style=''>
+</span>3 <span style=''>import grpcService.client.actors.{ClusterListener, utils}
+</span>4 <span style=''>import grpcService.client.actors.behaviors.{ForemanBehavior, InteractionBehavior, PlayerBehavior, PlayersManagerBehavior}
+</span>5 <span style=''>
+</span>6 <span style=''>object ManualTesting {
+</span>7 <span style=''>
+</span>8 <span style=''>  </span><span style='background: #F0ADAD'>def testInteractions</span><span style=''>() =
+</span>9 <span style=''>    import grpcService.client.actors.utils
+</span>10 <span style=''>    val foreman = </span><span style='background: #F0ADAD'>utils.startupWithRole(&quot;foreman&quot;, &quot;2551&quot;, &quot;127.0.0.1&quot;)(ForemanBehavior())</span><span style=''>
+</span>11 <span style=''>    
+</span>12 <span style=''>    </span><span style='background: #F0ADAD'>Thread.sleep(2000)</span><span style=''>
+</span>13 <span style=''>    </span><span style='background: #F0ADAD'>utils.startupWithRole(&quot;player&quot;, &quot;2555&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())</span><span style=''>
+</span>14 <span style=''>    </span><span style='background: #F0ADAD'>Thread.sleep(2000)</span><span style=''>
+</span>15 <span style=''>    </span><span style='background: #F0ADAD'>utils.startupWithRole(&quot;player&quot;, &quot;2553&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())</span><span style=''>
+</span>16 <span style=''>    </span><span style='background: #F0ADAD'>Thread.sleep(2000)</span><span style=''>
+</span>17 <span style=''>    </span><span style='background: #F0ADAD'>utils.startupWithRole(&quot;player&quot;, &quot;2554&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())</span><span style=''>
+</span>18 <span style=''>
+</span>19 <span style=''>
+</span>20 <span style=''>  </span><span style='background: #F0ADAD'>def executeForeman</span><span style=''>() =
+</span>21 <span style=''>    import grpcService.client.actors.utils
+</span>22 <span style=''>    val foreman = </span><span style='background: #F0ADAD'>utils.startupWithRole(&quot;foreman&quot;, &quot;2551&quot;, &quot;127.0.0.1&quot;)(ForemanBehavior())</span><span style=''>
+</span>23 <span style=''>    </span><span style='background: #F0ADAD'>utils.startupWithRole(&quot;player&quot;, &quot;2552&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())</span><span style=''>
+</span>24 <span style=''>
+</span>25 <span style=''>  </span><span style='background: #F0ADAD'>def executePlayer1</span><span style=''>() =
+</span>26 <span style=''>    </span><span style='background: #F0ADAD'>utils.startupWithRole(&quot;player&quot;, &quot;2553&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())</span><span style=''>
+</span>27 <span style=''>
+</span>28 <span style=''>  </span><span style='background: #F0ADAD'>def executePlayer2</span><span style=''>() =
+</span>29 <span style=''>    </span><span style='background: #F0ADAD'>utils.startupWithRole(&quot;player&quot;, &quot;2554&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())</span><span style=''>
+</span>30 <span style=''>
+</span>31 <span style=''>  </span><span style='background: #F0ADAD'>def main</span><span style=''>(args: Array[String]) = {
+</span>32 <span style=''>    </span><span style='background: #F0ADAD'>testInteractions()</span><span style=''>
+</span>33 <span style=''>  }
+</span>34 <span style=''>
+</span>35 <span style=''>}
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          7
+        </td>
+        <td>
+          108
+        </td>
+        <td>
+          242
+          -
+          262
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          testInteractions
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def testInteractions
+        </td>
+      </tr><tr>
+        <td>
+          9
+        </td>
+        <td>
+          101
+        </td>
+        <td>
+          328
+          -
+          400
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          startupWithRole
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          utils.startupWithRole(&quot;foreman&quot;, &quot;2551&quot;, &quot;127.0.0.1&quot;)(ForemanBehavior())
+        </td>
+      </tr><tr>
+        <td>
+          11
+        </td>
+        <td>
+          102
+        </td>
+        <td>
+          410
+          -
+          428
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          sleep
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Thread.sleep(2000)
+        </td>
+      </tr><tr>
+        <td>
+          12
+        </td>
+        <td>
+          103
+        </td>
+        <td>
+          433
+          -
+          503
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          startupWithRole
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          utils.startupWithRole(&quot;player&quot;, &quot;2555&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())
+        </td>
+      </tr><tr>
+        <td>
+          13
+        </td>
+        <td>
+          104
+        </td>
+        <td>
+          508
+          -
+          526
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          sleep
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Thread.sleep(2000)
+        </td>
+      </tr><tr>
+        <td>
+          14
+        </td>
+        <td>
+          105
+        </td>
+        <td>
+          531
+          -
+          601
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          startupWithRole
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          utils.startupWithRole(&quot;player&quot;, &quot;2553&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())
+        </td>
+      </tr><tr>
+        <td>
+          15
+        </td>
+        <td>
+          106
+        </td>
+        <td>
+          606
+          -
+          624
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          sleep
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Thread.sleep(2000)
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          107
+        </td>
+        <td>
+          629
+          -
+          699
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          startupWithRole
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          utils.startupWithRole(&quot;player&quot;, &quot;2554&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          111
+        </td>
+        <td>
+          704
+          -
+          722
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          executeForeman
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def executeForeman
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          109
+        </td>
+        <td>
+          788
+          -
+          860
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          startupWithRole
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          utils.startupWithRole(&quot;foreman&quot;, &quot;2551&quot;, &quot;127.0.0.1&quot;)(ForemanBehavior())
+        </td>
+      </tr><tr>
+        <td>
+          22
+        </td>
+        <td>
+          110
+        </td>
+        <td>
+          865
+          -
+          935
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          startupWithRole
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          utils.startupWithRole(&quot;player&quot;, &quot;2552&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())
+        </td>
+      </tr><tr>
+        <td>
+          24
+        </td>
+        <td>
+          113
+        </td>
+        <td>
+          939
+          -
+          957
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          executePlayer1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def executePlayer1
+        </td>
+      </tr><tr>
+        <td>
+          25
+        </td>
+        <td>
+          112
+        </td>
+        <td>
+          966
+          -
+          1036
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          startupWithRole
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          utils.startupWithRole(&quot;player&quot;, &quot;2553&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          115
+        </td>
+        <td>
+          1040
+          -
+          1058
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          executePlayer2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def executePlayer2
+        </td>
+      </tr><tr>
+        <td>
+          28
+        </td>
+        <td>
+          114
+        </td>
+        <td>
+          1067
+          -
+          1137
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          startupWithRole
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          utils.startupWithRole(&quot;player&quot;, &quot;2554&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())
+        </td>
+      </tr><tr>
+        <td>
+          30
+        </td>
+        <td>
+          117
+        </td>
+        <td>
+          1141
+          -
+          1149
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          main
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def main
+        </td>
+      </tr><tr>
+        <td>
+          31
+        </td>
+        <td>
+          116
+        </td>
+        <td>
+          1179
+          -
+          1197
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          testInteractions
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          testInteractions()
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>

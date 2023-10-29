@@ -1,0 +1,4693 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          grpcService/client/actors/behaviors/PlayerBehavior.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.client.actors.behaviors
+</span>2 <span style=''>
+</span>3 <span style=''>import akka.actor.typed.{ActorRef, Behavior, Terminated}
+</span>4 <span style=''>import akka.actor.typed.receptionist.{Receptionist, ServiceKey}
+</span>5 <span style=''>import akka.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors}
+</span>6 <span style=''>import grpcService.client.actors.Message
+</span>7 <span style=''>import grpcService.client.actors.behaviors.PlayerBehavior.*
+</span>8 <span style=''>import grpcService.client.actors.behaviors.ForemanBehavior
+</span>9 <span style=''>import grpcService.client.actors.PlayerClusterListener.Event
+</span>10 <span style=''>import grpcService.client.actors.{PlayerClusterListener, Message}
+</span>11 <span style=''>
+</span>12 <span style=''>import concurrent.duration.DurationInt
+</span>13 <span style=''>import scala.language.postfixOps
+</span>14 <span style=''>import scala.util.Random
+</span>15 <span style=''>
+</span>16 <span style=''>object PlayerBehavior:
+</span>17 <span style=''>
+</span>18 <span style=''>  val Service = </span><span style='background: #AEF1AE'>ServiceKey[Command](&quot;PlayersService&quot;)</span><span style=''>
+</span>19 <span style=''>
+</span>20 <span style=''>  sealed trait Command extends Message
+</span>21 <span style=''>  //entry messages
+</span>22 <span style=''>  case class AskToEnter(replyTo: ActorRef[PlayersManagerBehavior.Command]) extends Command
+</span>23 <span style=''>  case object MemberOK extends Command
+</span>24 <span style=''>  case object MemberKO extends Command
+</span>25 <span style=''>  case object Start extends Command
+</span>26 <span style=''>  case class TurnOf(val player: String) extends Command
+</span>27 <span style=''>  case class GameInfo(msg: String) extends Command
+</span>28 <span style=''>
+</span>29 <span style=''>  //turn messages
+</span>30 <span style=''>  case class YourTurn(val replyTo: ActorRef[ForemanBehavior.Command]) extends Command
+</span>31 <span style=''>
+</span>32 <span style=''>  //guess messages
+</span>33 <span style=''>  case class CardChoosenByOther(val title: String, val replyTo: ActorRef[ForemanBehavior.Command]) extends Command
+</span>34 <span style=''>  case class CardsSubmittedByOthers(val cards: List[String]) extends Command
+</span>35 <span style=''>  case class CardRevealed(val cardId: String) extends Command
+</span>36 <span style=''>  case class CardChoosenForTurn(val cardId: String, val title: String) extends Command
+</span>37 <span style=''>  case object EndTurn extends Command
+</span>38 <span style=''>  case class CardsAssigned(cardsId: List[String]) extends Command
+</span>39 <span style=''>  case class SingleCardSubmitted(cardId: String) extends Command
+</span>40 <span style=''>  case class GuessedCardbyUser(cardId: String) extends Command
+</span>41 <span style=''>  case object TurnCancelled extends Command
+</span>42 <span style=''>  case class EndGame(points: Int) extends Command
+</span>43 <span style=''>  case class NewCard(card: String) extends Command
+</span>44 <span style=''>
+</span>45 <span style=''>  </span><span style='background: #AEF1AE'>def apply</span><span style=''>(logger: Option[ActorRef[Command]] = </span><span style='background: #AEF1AE'>Option.empty</span><span style=''>, interactionExt: Option[ActorRef[InteractionBehavior.Command]] = </span><span style='background: #F0ADAD'>Option.empty</span><span style=''>): Behavior[Command] =
+</span>46 <span style=''>    </span><span style='background: #AEF1AE'>Behaviors.setup[Command] { ctx =&gt;
+</span>47 <span style=''></span><span style='background: #AEF1AE'>      ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
+</span>48 <span style=''></span><span style='background: #AEF1AE'>
+</span>49 <span style=''></span><span style='background: #AEF1AE'>      val interaction = interactionExt match {
+</span>50 <span style=''></span><span style='background: #AEF1AE'>        case Some(ref) =&gt;
+</span>51 <span style=''></span><span style='background: #AEF1AE'>          ctx.log.info(&quot;INTERACTION ESTERNO&quot;)
+</span>52 <span style=''></span><span style='background: #AEF1AE'>          ref
+</span>53 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt;
+</span>54 <span style=''></span><span style='background: #AEF1AE'>          </span><span style='background: #F0ADAD'>ctx.log.info(&quot;INTERACTION INTERNO&quot;)</span><span style='background: #AEF1AE'>
+</span>55 <span style=''></span><span style='background: #AEF1AE'>          </span><span style='background: #F0ADAD'>ctx.spawn(Behaviors.setup[InteractionBehavior.Command](ctx1 =&gt; InteractionGuiImpl(ctx1, ctx.self)), &quot;gui&quot;)</span><span style='background: #AEF1AE'>
+</span>56 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>57 <span style=''></span><span style='background: #AEF1AE'>      val player = ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](context =&gt; new PlayerBehaviorImpl(context, interaction, ctx.self)), &quot;player&quot;)
+</span>58 <span style=''></span><span style='background: #AEF1AE'>      val listener = ctx.spawn(Behaviors.setup[Event | Receptionist.Listing](context =&gt; PlayerClusterListener(ctx.self)), &quot;player-cluster-listener&quot;)
+</span>59 <span style=''></span><span style='background: #AEF1AE'>      player ! Start
+</span>60 <span style=''></span><span style='background: #AEF1AE'>      ctx.watch(interaction)
+</span>61 <span style=''></span><span style='background: #AEF1AE'>
+</span>62 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.receiveMessage[Command] {
+</span>63 <span style=''></span><span style='background: #AEF1AE'>        case GameInfo(msg) =&gt;
+</span>64 <span style=''></span><span style='background: #AEF1AE'>          interaction ! InteractionBehavior.MessageError(msg)
+</span>65 <span style=''></span><span style='background: #AEF1AE'>          logger match {
+</span>66 <span style=''></span><span style='background: #AEF1AE'>            case Some(ref) =&gt; ref ! GameInfo(msg)
+</span>67 <span style=''></span><span style='background: #AEF1AE'>            case _ =&gt;
+</span>68 <span style=''></span><span style='background: #AEF1AE'>          }
+</span>69 <span style=''></span><span style='background: #AEF1AE'>          Behaviors.same
+</span>70 <span style=''></span><span style='background: #AEF1AE'>        case msg: Command =&gt;
+</span>71 <span style=''></span><span style='background: #AEF1AE'>          ctx.log.info(&quot;MESSAGGIO RICEVUTO: &quot; + msg)
+</span>72 <span style=''></span><span style='background: #AEF1AE'>          logger match {
+</span>73 <span style=''></span><span style='background: #AEF1AE'>            case Some(ref) =&gt; ref ! msg
+</span>74 <span style=''></span><span style='background: #AEF1AE'>            case _ =&gt;
+</span>75 <span style=''></span><span style='background: #AEF1AE'>          }
+</span>76 <span style=''></span><span style='background: #AEF1AE'>          player ! msg
+</span>77 <span style=''></span><span style='background: #AEF1AE'>          Behaviors.same
+</span>78 <span style=''></span><span style='background: #AEF1AE'>      }.receiveSignal { case (ctx, t @ Terminated(_)) =&gt;
+</span>79 <span style=''></span><span style='background: #AEF1AE'>        ctx.log.info(&quot;System terminated [PLAYER]. Shutting down&quot;)
+</span>80 <span style=''></span><span style='background: #AEF1AE'>        Behaviors.stopped
+</span>81 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>82 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>83 <span style=''>
+</span>84 <span style=''>class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], interactionActor: ActorRef[InteractionBehavior.Command], rootActor: ActorRef[PlayerBehavior.Command]) extends </span><span style='background: #AEF1AE'>AbstractBehavior[Command | Receptionist.Listing](context)</span><span style=''>:
+</span>85 <span style=''>
+</span>86 <span style=''>  </span><span style='background: #AEF1AE'>override def onMessage</span><span style=''>(msg: Command | Receptionist.Listing): Behavior[Command | Receptionist.Listing] = msg match {
+</span>87 <span style=''>    </span><span style='background: #AEF1AE'>case msg: Receptionist.Listing</span><span style=''> =&gt;
+</span>88 <span style=''>      </span><span style='background: #AEF1AE'>context.log.info(&quot;RECEIVED SOMETHING&quot;)</span><span style=''>
+</span>89 <span style=''>      val services: List[ActorRef[PlayersManagerBehavior.Command]] = </span><span style='background: #AEF1AE'>msg.serviceInstances(PlayersManagerBehavior.Service).toList</span><span style=''>
+</span>90 <span style=''>      if(!</span><span style='background: #AEF1AE'>services.isEmpty</span><span style=''>)
+</span>91 <span style=''>        </span><span style='background: #AEF1AE'>context.self ! AskToEnter(services.head)</span><span style=''>
+</span>92 <span style=''>      </span><span style='background: #AEF1AE'>Behaviors.same</span><span style=''>
+</span>93 <span style=''>    </span><span style='background: #AEF1AE'>case Start</span><span style=''> =&gt;
+</span>94 <span style=''>      </span><span style='background: #AEF1AE'>context.system.receptionist ! Receptionist.Subscribe(PlayersManagerBehavior.Service, context.self)</span><span style=''>
+</span>95 <span style=''>      </span><span style='background: #AEF1AE'>Behaviors.same</span><span style=''>
+</span>96 <span style=''>    </span><span style='background: #AEF1AE'>case AskToEnter(replyTo)</span><span style=''> =&gt;
+</span>97 <span style=''>      </span><span style='background: #AEF1AE'>replyTo ! PlayersManagerBehavior.AskEnter(rootActor)</span><span style=''>
+</span>98 <span style=''>      </span><span style='background: #AEF1AE'>Behaviors.same</span><span style=''>
+</span>99 <span style=''>    </span><span style='background: #AEF1AE'>case MemberOK</span><span style=''> =&gt;
+</span>100 <span style=''>      </span><span style='background: #AEF1AE'>context.log.info(&quot;MEMBER OK&quot;)</span><span style=''>
+</span>101 <span style=''>      </span><span style='background: #AEF1AE'>waitForCards()</span><span style=''>
+</span>102 <span style=''>    </span><span style='background: #F0ADAD'>case MemberKO</span><span style=''> =&gt;
+</span>103 <span style=''>      </span><span style='background: #F0ADAD'>interactionActor ! InteractionBehavior.MessageError(&quot;Impossibile entrare&quot;)</span><span style=''>
+</span>104 <span style=''>      </span><span style='background: #F0ADAD'>Behaviors.stopped</span><span style=''>
+</span>105 <span style=''>    </span><span style='background: #F0ADAD'>case m</span><span style=''> =&gt;
+</span>106 <span style=''>      </span><span style='background: #F0ADAD'>context.log.info(&quot;Unknown message: &quot; + m.toString)</span><span style=''>
+</span>107 <span style=''>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style=''>
+</span>108 <span style=''>  }
+</span>109 <span style=''>
+</span>110 <span style=''>  </span><span style='background: #AEF1AE'>def waitForCards</span><span style=''>(): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
+</span>111 <span style=''></span><span style='background: #AEF1AE'>    case CardsAssigned(list) =&gt;
+</span>112 <span style=''></span><span style='background: #AEF1AE'>      //interaction actor deve ricevere le carte
+</span>113 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(&quot;Carte ottenute&quot;)
+</span>114 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.CardsAssigned(list)
+</span>115 <span style=''></span><span style='background: #AEF1AE'>      gameOn()
+</span>116 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>117 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>118 <span style=''>
+</span>119 <span style=''>  </span><span style='background: #AEF1AE'>def gameOn</span><span style=''>(): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
+</span>120 <span style=''></span><span style='background: #AEF1AE'>    case YourTurn(replyTo) =&gt; 
+</span>121 <span style=''></span><span style='background: #AEF1AE'>      // deve inviare un CardToGuess ad un attore InteractionActor, che può essere 
+</span>122 <span style=''></span><span style='background: #AEF1AE'>      // un attore che sceglie random una carta e la invia qui, o la gui vera e propria
+</span>123 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(&quot;SONO IL PLAYER, E' IL MIO TURNO&quot;)
+</span>124 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.ChooseTheCard(context.self)
+</span>125 <span style=''></span><span style='background: #AEF1AE'>      choose(replyTo)
+</span>126 <span style=''></span><span style='background: #AEF1AE'>    case CardChoosenByOther(title, replyTo) =&gt;
+</span>127 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.GuessCard(rootActor, title)
+</span>128 <span style=''></span><span style='background: #AEF1AE'>      guess(title, replyTo)
+</span>129 <span style=''></span><span style='background: #AEF1AE'>    case NewCard(card) =&gt;
+</span>130 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.NewCard(card)
+</span>131 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.same
+</span>132 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case TurnCancelled</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>133 <span style=''></span><span style='background: #AEF1AE'>
+</span>134 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case EndGame(points)</span><span style='background: #AEF1AE'> =&gt;
+</span>135 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>interactionActor ! InteractionBehavior.MessageError(s&quot;Gioco terminato, punti guadagnati: $points&quot;)</span><span style='background: #AEF1AE'>
+</span>136 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.stopped</span><span style='background: #AEF1AE'>
+</span>137 <span style=''></span><span style='background: #AEF1AE'>
+</span>138 <span style=''></span><span style='background: #AEF1AE'>    case _ =&gt; Behaviors.same
+</span>139 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>140 <span style=''>
+</span>141 <span style=''>  </span><span style='background: #AEF1AE'>def guess</span><span style=''>(title: String, replyTo: ActorRef[ForemanBehavior.Command]): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
+</span>142 <span style=''></span><span style='background: #AEF1AE'>    case SingleCardSubmitted(card) =&gt;
+</span>143 <span style=''></span><span style='background: #AEF1AE'>      replyTo ! ForemanBehavior.SelectionToApply(card, rootActor)
+</span>144 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.same
+</span>145 <span style=''></span><span style='background: #AEF1AE'>    case CardsSubmittedByOthers(cards) =&gt;
+</span>146 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.ShowCardsProposed(rootActor, cards, title)
+</span>147 <span style=''></span><span style='background: #AEF1AE'>      choose(replyTo)
+</span>148 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case TurnCancelled</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>gameOn()</span><span style='background: #AEF1AE'>
+</span>149 <span style=''></span><span style='background: #AEF1AE'>
+</span>150 <span style=''></span><span style='background: #AEF1AE'>    case _ =&gt; Behaviors.same
+</span>151 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>152 <span style=''>
+</span>153 <span style=''>  </span><span style='background: #AEF1AE'>def choose</span><span style=''>(replyTo: ActorRef[ForemanBehavior.Command]): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
+</span>154 <span style=''></span><span style='background: #AEF1AE'>    case CardChoosenForTurn(cardId, title) =&gt;
+</span>155 <span style=''></span><span style='background: #AEF1AE'>      replyTo ! ForemanBehavior.CardToGuess(cardId, title, rootActor)
+</span>156 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.ResetInteraction
+</span>157 <span style=''></span><span style='background: #AEF1AE'>      gameOn()
+</span>158 <span style=''></span><span style='background: #AEF1AE'>    case GuessedCardbyUser(cardId) =&gt;
+</span>159 <span style=''></span><span style='background: #AEF1AE'>      replyTo ! ForemanBehavior.GuessSelection(cardId, rootActor)
+</span>160 <span style=''></span><span style='background: #AEF1AE'>      waitForCardRevealed(replyTo)
+</span>161 <span style=''></span><span style='background: #AEF1AE'>
+</span>162 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case TurnCancelled</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>gameOn()</span><span style='background: #AEF1AE'>
+</span>163 <span style=''></span><span style='background: #AEF1AE'>
+</span>164 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case msg</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>context.log.info(&quot;Unknown message: &quot; + msg)</span><span style='background: #AEF1AE'>
+</span>165 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>166 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>167 <span style=''>
+</span>168 <span style=''>  </span><span style='background: #AEF1AE'>def waitForCardRevealed</span><span style=''>(replyTo: ActorRef[ForemanBehavior.Command]): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
+</span>169 <span style=''></span><span style='background: #AEF1AE'>    case CardRevealed(cardId) =&gt;
+</span>170 <span style=''></span><span style='background: #AEF1AE'>      // TODO reset interaction with image revealed (optional)
+</span>171 <span style=''></span><span style='background: #AEF1AE'>      gameOn()
+</span>172 <span style=''></span><span style='background: #AEF1AE'>
+</span>173 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case TurnCancelled</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>gameOn()</span><span style='background: #AEF1AE'>
+</span>174 <span style=''></span><span style='background: #AEF1AE'>
+</span>175 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case msg</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>context.log.info(&quot;Unknown message: &quot; + msg)</span><span style='background: #AEF1AE'>
+</span>176 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>177 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          491
+        </td>
+        <td>
+          669
+          -
+          706
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ServiceKey[Command](&quot;PlayersService&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          44
+        </td>
+        <td>
+          550
+        </td>
+        <td>
+          1970
+          -
+          1970
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          apply$default$1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          
+        </td>
+      </tr><tr>
+        <td>
+          44
+        </td>
+        <td>
+          549
+        </td>
+        <td>
+          1970
+          -
+          1982
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          empty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Option.empty
+        </td>
+      </tr><tr>
+        <td>
+          44
+        </td>
+        <td>
+          552
+        </td>
+        <td>
+          2048
+          -
+          2048
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          apply$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          
+        </td>
+      </tr><tr>
+        <td>
+          44
+        </td>
+        <td>
+          548
+        </td>
+        <td>
+          1924
+          -
+          1933
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def apply
+        </td>
+      </tr><tr>
+        <td>
+          44
+        </td>
+        <td>
+          551
+        </td>
+        <td>
+          2048
+          -
+          2060
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          empty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Option.empty
+        </td>
+      </tr><tr>
+        <td>
+          45
+        </td>
+        <td>
+          547
+        </td>
+        <td>
+          2087
+          -
+          3531
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setup
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.setup[Command] { ctx =&gt;
+      ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
+
+      val interaction = interactionExt match {
+        case Some(ref) =&gt;
+          ctx.log.info(&quot;INTERACTION ESTERNO&quot;)
+          ref
+        case _ =&gt;
+          ctx.log.info(&quot;INTERACTION INTERNO&quot;)
+          ctx.spawn(Behaviors.setup[InteractionBehavior.Command](ctx1 =&gt; InteractionGuiImpl(ctx1, ctx.self)), &quot;gui&quot;)
+      }
+      val player = ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](context =&gt; new PlayerBehaviorImpl(context, interaction, ctx.self)), &quot;player&quot;)
+      val listener = ctx.spawn(Behaviors.setup[Event | Receptionist.Listing](context =&gt; PlayerClusterListener(ctx.self)), &quot;player-cluster-listener&quot;)
+      player ! Start
+      ctx.watch(interaction)
+
+      Behaviors.receiveMessage[Command] {
+        case GameInfo(msg) =&gt;
+          interaction ! InteractionBehavior.MessageError(msg)
+          logger match {
+            case Some(ref) =&gt; ref ! GameInfo(msg)
+            case _ =&gt;
+          }
+          Behaviors.same
+        case msg: Command =&gt;
+          ctx.log.info(&quot;MESSAGGIO RICEVUTO: &quot; + msg)
+          logger match {
+            case Some(ref) =&gt; ref ! msg
+            case _ =&gt;
+          }
+          player ! msg
+          Behaviors.same
+      }.receiveSignal { case (ctx, t @ Terminated(_)) =&gt;
+        ctx.log.info(&quot;System terminated [PLAYER]. Shutting down&quot;)
+        Behaviors.stopped
+      }
+    }
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          496
+        </td>
+        <td>
+          2153
+          -
+          2193
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Receptionist.Register(Service, ctx.self)
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          492
+        </td>
+        <td>
+          2127
+          -
+          2137
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          system
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.system
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          495
+        </td>
+        <td>
+          2184
+          -
+          2192
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          self
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.self
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          497
+        </td>
+        <td>
+          2127
+          -
+          2193
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          494
+        </td>
+        <td>
+          2127
+          -
+          2150
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.system.receptionist
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          493
+        </td>
+        <td>
+          2127
+          -
+          2150
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          receptionist
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.system.receptionist
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          500
+        </td>
+        <td>
+          2250
+          -
+          2264
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case Some(ref)
+        </td>
+      </tr><tr>
+        <td>
+          50
+        </td>
+        <td>
+          499
+        </td>
+        <td>
+          2278
+          -
+          2313
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.log.info(&quot;INTERACTION ESTERNO&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          50
+        </td>
+        <td>
+          498
+        </td>
+        <td>
+          2278
+          -
+          2285
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.log
+        </td>
+      </tr><tr>
+        <td>
+          52
+        </td>
+        <td>
+          508
+        </td>
+        <td>
+          2336
+          -
+          2342
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          53
+        </td>
+        <td>
+          501
+        </td>
+        <td>
+          2356
+          -
+          2363
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ctx.log
+        </td>
+      </tr><tr>
+        <td>
+          53
+        </td>
+        <td>
+          502
+        </td>
+        <td>
+          2356
+          -
+          2391
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ctx.log.info(&quot;INTERACTION INTERNO&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          505
+        </td>
+        <td>
+          2412
+          -
+          2500
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setup
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.setup[InteractionBehavior.Command](ctx1 =&gt; InteractionGuiImpl(ctx1, ctx.self))
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          507
+        </td>
+        <td>
+          2402
+          -
+          2508
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          spawn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ctx.spawn(Behaviors.setup[InteractionBehavior.Command](ctx1 =&gt; InteractionGuiImpl(ctx1, ctx.self)), &quot;gui&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          504
+        </td>
+        <td>
+          2465
+          -
+          2499
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          InteractionGuiImpl(ctx1, ctx.self)
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          503
+        </td>
+        <td>
+          2490
+          -
+          2498
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          self
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ctx.self
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          506
+        </td>
+        <td>
+          2402
+          -
+          2411
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          spawn$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ctx.spawn
+        </td>
+      </tr><tr>
+        <td>
+          56
+        </td>
+        <td>
+          510
+        </td>
+        <td>
+          2605
+          -
+          2659
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          new PlayerBehaviorImpl(context, interaction, ctx.self)
+        </td>
+      </tr><tr>
+        <td>
+          56
+        </td>
+        <td>
+          513
+        </td>
+        <td>
+          2536
+          -
+          2671
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          spawn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](context =&gt; new PlayerBehaviorImpl(context, interaction, ctx.self)), &quot;player&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          56
+        </td>
+        <td>
+          512
+        </td>
+        <td>
+          2536
+          -
+          2545
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          spawn$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.spawn
+        </td>
+      </tr><tr>
+        <td>
+          56
+        </td>
+        <td>
+          509
+        </td>
+        <td>
+          2650
+          -
+          2658
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          self
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.self
+        </td>
+      </tr><tr>
+        <td>
+          56
+        </td>
+        <td>
+          511
+        </td>
+        <td>
+          2546
+          -
+          2660
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setup
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.setup[Command | Receptionist.Listing](context =&gt; new PlayerBehaviorImpl(context, interaction, ctx.self))
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          514
+        </td>
+        <td>
+          2782
+          -
+          2790
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          self
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.self
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          517
+        </td>
+        <td>
+          2693
+          -
+          2702
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          spawn$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.spawn
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          516
+        </td>
+        <td>
+          2703
+          -
+          2792
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setup
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.setup[Event | Receptionist.Listing](context =&gt; PlayerClusterListener(ctx.self))
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          515
+        </td>
+        <td>
+          2760
+          -
+          2791
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          PlayerClusterListener(ctx.self)
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          518
+        </td>
+        <td>
+          2693
+          -
+          2820
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          spawn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.spawn(Behaviors.setup[Event | Receptionist.Listing](context =&gt; PlayerClusterListener(ctx.self)), &quot;player-cluster-listener&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          58
+        </td>
+        <td>
+          519
+        </td>
+        <td>
+          2827
+          -
+          2833
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          player
+        </td>
+      </tr><tr>
+        <td>
+          58
+        </td>
+        <td>
+          520
+        </td>
+        <td>
+          2827
+          -
+          2841
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          player ! Start
+        </td>
+      </tr><tr>
+        <td>
+          59
+        </td>
+        <td>
+          521
+        </td>
+        <td>
+          2848
+          -
+          2870
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          watch
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.watch(interaction)
+        </td>
+      </tr><tr>
+        <td>
+          61
+        </td>
+        <td>
+          541
+        </td>
+        <td>
+          2878
+          -
+          3376
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          receiveMessage
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.receiveMessage[Command] {
+        case GameInfo(msg) =&gt;
+          interaction ! InteractionBehavior.MessageError(msg)
+          logger match {
+            case Some(ref) =&gt; ref ! GameInfo(msg)
+            case _ =&gt;
+          }
+          Behaviors.same
+        case msg: Command =&gt;
+          ctx.log.info(&quot;MESSAGGIO RICEVUTO: &quot; + msg)
+          logger match {
+            case Some(ref) =&gt; ref ! msg
+            case _ =&gt;
+          }
+          player ! msg
+          Behaviors.same
+      }
+        </td>
+      </tr><tr>
+        <td>
+          62
+        </td>
+        <td>
+          529
+        </td>
+        <td>
+          2922
+          -
+          2940
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case GameInfo(msg)
+        </td>
+      </tr><tr>
+        <td>
+          63
+        </td>
+        <td>
+          523
+        </td>
+        <td>
+          2954
+          -
+          3005
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interaction ! InteractionBehavior.MessageError(msg)
+        </td>
+      </tr><tr>
+        <td>
+          63
+        </td>
+        <td>
+          522
+        </td>
+        <td>
+          2954
+          -
+          2965
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interaction
+        </td>
+      </tr><tr>
+        <td>
+          65
+        </td>
+        <td>
+          525
+        </td>
+        <td>
+          3061
+          -
+          3080
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ref ! GameInfo(msg)
+        </td>
+      </tr><tr>
+        <td>
+          65
+        </td>
+        <td>
+          524
+        </td>
+        <td>
+          3061
+          -
+          3064
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ref
+        </td>
+      </tr><tr>
+        <td>
+          65
+        </td>
+        <td>
+          526
+        </td>
+        <td>
+          3043
+          -
+          3057
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case Some(ref)
+        </td>
+      </tr><tr>
+        <td>
+          66
+        </td>
+        <td>
+          527
+        </td>
+        <td>
+          3093
+          -
+          3099
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          68
+        </td>
+        <td>
+          528
+        </td>
+        <td>
+          3125
+          -
+          3139
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          69
+        </td>
+        <td>
+          540
+        </td>
+        <td>
+          3148
+          -
+          3165
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case msg: Command
+        </td>
+      </tr><tr>
+        <td>
+          70
+        </td>
+        <td>
+          532
+        </td>
+        <td>
+          3179
+          -
+          3221
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.log.info(&quot;MESSAGGIO RICEVUTO: &quot; + msg)
+        </td>
+      </tr><tr>
+        <td>
+          70
+        </td>
+        <td>
+          531
+        </td>
+        <td>
+          3192
+          -
+          3220
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;MESSAGGIO RICEVUTO: &quot; + msg
+        </td>
+      </tr><tr>
+        <td>
+          70
+        </td>
+        <td>
+          530
+        </td>
+        <td>
+          3179
+          -
+          3186
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.log
+        </td>
+      </tr><tr>
+        <td>
+          72
+        </td>
+        <td>
+          534
+        </td>
+        <td>
+          3277
+          -
+          3286
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ref ! msg
+        </td>
+      </tr><tr>
+        <td>
+          72
+        </td>
+        <td>
+          533
+        </td>
+        <td>
+          3277
+          -
+          3280
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ref
+        </td>
+      </tr><tr>
+        <td>
+          72
+        </td>
+        <td>
+          535
+        </td>
+        <td>
+          3259
+          -
+          3273
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case Some(ref)
+        </td>
+      </tr><tr>
+        <td>
+          73
+        </td>
+        <td>
+          536
+        </td>
+        <td>
+          3299
+          -
+          3305
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          75
+        </td>
+        <td>
+          537
+        </td>
+        <td>
+          3331
+          -
+          3337
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          player
+        </td>
+      </tr><tr>
+        <td>
+          75
+        </td>
+        <td>
+          538
+        </td>
+        <td>
+          3331
+          -
+          3343
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          player ! msg
+        </td>
+      </tr><tr>
+        <td>
+          76
+        </td>
+        <td>
+          539
+        </td>
+        <td>
+          3354
+          -
+          3368
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          77
+        </td>
+        <td>
+          546
+        </td>
+        <td>
+          2878
+          -
+          3525
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          receiveSignal
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.receiveMessage[Command] {
+        case GameInfo(msg) =&gt;
+          interaction ! InteractionBehavior.MessageError(msg)
+          logger match {
+            case Some(ref) =&gt; ref ! GameInfo(msg)
+            case _ =&gt;
+          }
+          Behaviors.same
+        case msg: Command =&gt;
+          ctx.log.info(&quot;MESSAGGIO RICEVUTO: &quot; + msg)
+          logger match {
+            case Some(ref) =&gt; ref ! msg
+            case _ =&gt;
+          }
+          player ! msg
+          Behaviors.same
+      }.receiveSignal { case (ctx, t @ Terminated(_)) =&gt;
+        ctx.log.info(&quot;System terminated [PLAYER]. Shutting down&quot;)
+        Behaviors.stopped
+      }
+        </td>
+      </tr><tr>
+        <td>
+          77
+        </td>
+        <td>
+          545
+        </td>
+        <td>
+          3393
+          -
+          3422
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case (ctx, t @ Terminated(_))
+        </td>
+      </tr><tr>
+        <td>
+          78
+        </td>
+        <td>
+          543
+        </td>
+        <td>
+          3434
+          -
+          3491
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.log.info(&quot;System terminated [PLAYER]. Shutting down&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          78
+        </td>
+        <td>
+          542
+        </td>
+        <td>
+          3434
+          -
+          3441
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.log
+        </td>
+      </tr><tr>
+        <td>
+          79
+        </td>
+        <td>
+          544
+        </td>
+        <td>
+          3500
+          -
+          3517
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          stopped
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.stopped
+        </td>
+      </tr><tr>
+        <td>
+          83
+        </td>
+        <td>
+          553
+        </td>
+        <td>
+          3723
+          -
+          3780
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          AbstractBehavior[Command | Receptionist.Listing](context)
+        </td>
+      </tr><tr>
+        <td>
+          85
+        </td>
+        <td>
+          591
+        </td>
+        <td>
+          3785
+          -
+          3807
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          onMessage
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          override def onMessage
+        </td>
+      </tr><tr>
+        <td>
+          86
+        </td>
+        <td>
+          565
+        </td>
+        <td>
+          3905
+          -
+          3935
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case msg: Receptionist.Listing
+        </td>
+      </tr><tr>
+        <td>
+          87
+        </td>
+        <td>
+          555
+        </td>
+        <td>
+          3945
+          -
+          3983
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log.info(&quot;RECEIVED SOMETHING&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          87
+        </td>
+        <td>
+          554
+        </td>
+        <td>
+          3945
+          -
+          3956
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          88
+        </td>
+        <td>
+          557
+        </td>
+        <td>
+          4053
+          -
+          4112
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          toList
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          msg.serviceInstances(PlayersManagerBehavior.Service).toList
+        </td>
+      </tr><tr>
+        <td>
+          88
+        </td>
+        <td>
+          556
+        </td>
+        <td>
+          4053
+          -
+          4105
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          serviceInstances
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          msg.serviceInstances(PlayersManagerBehavior.Service)
+        </td>
+      </tr><tr>
+        <td>
+          89
+        </td>
+        <td>
+          558
+        </td>
+        <td>
+          4123
+          -
+          4139
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          isEmpty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          services.isEmpty
+        </td>
+      </tr><tr>
+        <td>
+          90
+        </td>
+        <td>
+          559
+        </td>
+        <td>
+          4149
+          -
+          4161
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          self
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.self
+        </td>
+      </tr><tr>
+        <td>
+          90
+        </td>
+        <td>
+          561
+        </td>
+        <td>
+          4175
+          -
+          4188
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          head
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          services.head
+        </td>
+      </tr><tr>
+        <td>
+          90
+        </td>
+        <td>
+          563
+        </td>
+        <td>
+          4149
+          -
+          4189
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.self ! AskToEnter(services.head)
+        </td>
+      </tr><tr>
+        <td>
+          90
+        </td>
+        <td>
+          560
+        </td>
+        <td>
+          4149
+          -
+          4161
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.self
+        </td>
+      </tr><tr>
+        <td>
+          90
+        </td>
+        <td>
+          562
+        </td>
+        <td>
+          4149
+          -
+          4189
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.self ! AskToEnter(services.head)
+        </td>
+      </tr><tr>
+        <td>
+          91
+        </td>
+        <td>
+          564
+        </td>
+        <td>
+          4196
+          -
+          4210
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          92
+        </td>
+        <td>
+          573
+        </td>
+        <td>
+          4215
+          -
+          4225
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case Start
+        </td>
+      </tr><tr>
+        <td>
+          93
+        </td>
+        <td>
+          568
+        </td>
+        <td>
+          4235
+          -
+          4262
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.system.receptionist
+        </td>
+      </tr><tr>
+        <td>
+          93
+        </td>
+        <td>
+          567
+        </td>
+        <td>
+          4235
+          -
+          4262
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          receptionist
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.system.receptionist
+        </td>
+      </tr><tr>
+        <td>
+          93
+        </td>
+        <td>
+          570
+        </td>
+        <td>
+          4265
+          -
+          4333
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Receptionist.Subscribe(PlayersManagerBehavior.Service, context.self)
+        </td>
+      </tr><tr>
+        <td>
+          93
+        </td>
+        <td>
+          566
+        </td>
+        <td>
+          4235
+          -
+          4249
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          system
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.system
+        </td>
+      </tr><tr>
+        <td>
+          93
+        </td>
+        <td>
+          569
+        </td>
+        <td>
+          4320
+          -
+          4332
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          self
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.self
+        </td>
+      </tr><tr>
+        <td>
+          93
+        </td>
+        <td>
+          571
+        </td>
+        <td>
+          4235
+          -
+          4333
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.system.receptionist ! Receptionist.Subscribe(PlayersManagerBehavior.Service, context.self)
+        </td>
+      </tr><tr>
+        <td>
+          94
+        </td>
+        <td>
+          572
+        </td>
+        <td>
+          4340
+          -
+          4354
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          95
+        </td>
+        <td>
+          577
+        </td>
+        <td>
+          4359
+          -
+          4383
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case AskToEnter(replyTo)
+        </td>
+      </tr><tr>
+        <td>
+          96
+        </td>
+        <td>
+          575
+        </td>
+        <td>
+          4393
+          -
+          4445
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          replyTo ! PlayersManagerBehavior.AskEnter(rootActor)
+        </td>
+      </tr><tr>
+        <td>
+          96
+        </td>
+        <td>
+          574
+        </td>
+        <td>
+          4393
+          -
+          4400
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          replyTo
+        </td>
+      </tr><tr>
+        <td>
+          97
+        </td>
+        <td>
+          576
+        </td>
+        <td>
+          4452
+          -
+          4466
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          98
+        </td>
+        <td>
+          581
+        </td>
+        <td>
+          4471
+          -
+          4484
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case MemberOK
+        </td>
+      </tr><tr>
+        <td>
+          99
+        </td>
+        <td>
+          579
+        </td>
+        <td>
+          4494
+          -
+          4523
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log.info(&quot;MEMBER OK&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          99
+        </td>
+        <td>
+          578
+        </td>
+        <td>
+          4494
+          -
+          4505
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          100
+        </td>
+        <td>
+          580
+        </td>
+        <td>
+          4530
+          -
+          4544
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          waitForCards
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          waitForCards()
+        </td>
+      </tr><tr>
+        <td>
+          101
+        </td>
+        <td>
+          585
+        </td>
+        <td>
+          4549
+          -
+          4562
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case MemberKO
+        </td>
+      </tr><tr>
+        <td>
+          102
+        </td>
+        <td>
+          582
+        </td>
+        <td>
+          4572
+          -
+          4588
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          interactionActor
+        </td>
+      </tr><tr>
+        <td>
+          102
+        </td>
+        <td>
+          583
+        </td>
+        <td>
+          4572
+          -
+          4646
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          interactionActor ! InteractionBehavior.MessageError(&quot;Impossibile entrare&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          103
+        </td>
+        <td>
+          584
+        </td>
+        <td>
+          4653
+          -
+          4670
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          stopped
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.stopped
+        </td>
+      </tr><tr>
+        <td>
+          104
+        </td>
+        <td>
+          590
+        </td>
+        <td>
+          4675
+          -
+          4681
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case m
+        </td>
+      </tr><tr>
+        <td>
+          105
+        </td>
+        <td>
+          588
+        </td>
+        <td>
+          4691
+          -
+          4741
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log.info(&quot;Unknown message: &quot; + m.toString)
+        </td>
+      </tr><tr>
+        <td>
+          105
+        </td>
+        <td>
+          587
+        </td>
+        <td>
+          4708
+          -
+          4740
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot;Unknown message: &quot; + m.toString
+        </td>
+      </tr><tr>
+        <td>
+          105
+        </td>
+        <td>
+          586
+        </td>
+        <td>
+          4691
+          -
+          4702
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          106
+        </td>
+        <td>
+          589
+        </td>
+        <td>
+          4748
+          -
+          4762
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          109
+        </td>
+        <td>
+          600
+        </td>
+        <td>
+          4833
+          -
+          5094
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          receiveMessage
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.receiveMessage {
+    case CardsAssigned(list) =&gt;
+      //interaction actor deve ricevere le carte
+      context.log.info(&quot;Carte ottenute&quot;)
+      interactionActor ! InteractionBehavior.CardsAssigned(list)
+      gameOn()
+    case _ =&gt; Behaviors.same
+  }
+        </td>
+      </tr><tr>
+        <td>
+          109
+        </td>
+        <td>
+          601
+        </td>
+        <td>
+          4770
+          -
+          4786
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          waitForCards
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def waitForCards
+        </td>
+      </tr><tr>
+        <td>
+          110
+        </td>
+        <td>
+          597
+        </td>
+        <td>
+          4864
+          -
+          4888
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case CardsAssigned(list)
+        </td>
+      </tr><tr>
+        <td>
+          112
+        </td>
+        <td>
+          593
+        </td>
+        <td>
+          4947
+          -
+          4981
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log.info(&quot;Carte ottenute&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          112
+        </td>
+        <td>
+          592
+        </td>
+        <td>
+          4947
+          -
+          4958
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          113
+        </td>
+        <td>
+          594
+        </td>
+        <td>
+          4988
+          -
+          5004
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interactionActor
+        </td>
+      </tr><tr>
+        <td>
+          113
+        </td>
+        <td>
+          595
+        </td>
+        <td>
+          4988
+          -
+          5046
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interactionActor ! InteractionBehavior.CardsAssigned(list)
+        </td>
+      </tr><tr>
+        <td>
+          114
+        </td>
+        <td>
+          596
+        </td>
+        <td>
+          5053
+          -
+          5061
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          gameOn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          gameOn()
+        </td>
+      </tr><tr>
+        <td>
+          115
+        </td>
+        <td>
+          599
+        </td>
+        <td>
+          5066
+          -
+          5072
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          115
+        </td>
+        <td>
+          598
+        </td>
+        <td>
+          5076
+          -
+          5090
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          118
+        </td>
+        <td>
+          627
+        </td>
+        <td>
+          5098
+          -
+          5108
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          gameOn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def gameOn
+        </td>
+      </tr><tr>
+        <td>
+          118
+        </td>
+        <td>
+          626
+        </td>
+        <td>
+          5155
+          -
+          6024
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          receiveMessage
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.receiveMessage {
+    case YourTurn(replyTo) =&gt; 
+      // deve inviare un CardToGuess ad un attore InteractionActor, che può essere 
+      // un attore che sceglie random una carta e la invia qui, o la gui vera e propria
+      context.log.info(&quot;SONO IL PLAYER, E' IL MIO TURNO&quot;)
+      interactionActor ! InteractionBehavior.ChooseTheCard(context.self)
+      choose(replyTo)
+    case CardChoosenByOther(title, replyTo) =&gt;
+      interactionActor ! InteractionBehavior.GuessCard(rootActor, title)
+      guess(title, replyTo)
+    case NewCard(card) =&gt;
+      interactionActor ! InteractionBehavior.NewCard(card)
+      Behaviors.same
+    case TurnCancelled =&gt; Behaviors.same
+
+    case EndGame(points) =&gt;
+      interactionActor ! InteractionBehavior.MessageError(s&quot;Gioco terminato, punti guadagnati: $points&quot;)
+      Behaviors.stopped
+
+    case _ =&gt; Behaviors.same
+  }
+        </td>
+      </tr><tr>
+        <td>
+          119
+        </td>
+        <td>
+          608
+        </td>
+        <td>
+          5186
+          -
+          5208
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case YourTurn(replyTo)
+        </td>
+      </tr><tr>
+        <td>
+          122
+        </td>
+        <td>
+          603
+        </td>
+        <td>
+          5391
+          -
+          5442
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log.info(&quot;SONO IL PLAYER, E' IL MIO TURNO&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          122
+        </td>
+        <td>
+          602
+        </td>
+        <td>
+          5391
+          -
+          5402
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          123
+        </td>
+        <td>
+          606
+        </td>
+        <td>
+          5449
+          -
+          5515
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interactionActor ! InteractionBehavior.ChooseTheCard(context.self)
+        </td>
+      </tr><tr>
+        <td>
+          123
+        </td>
+        <td>
+          605
+        </td>
+        <td>
+          5502
+          -
+          5514
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          self
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.self
+        </td>
+      </tr><tr>
+        <td>
+          123
+        </td>
+        <td>
+          604
+        </td>
+        <td>
+          5449
+          -
+          5465
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interactionActor
+        </td>
+      </tr><tr>
+        <td>
+          124
+        </td>
+        <td>
+          607
+        </td>
+        <td>
+          5522
+          -
+          5537
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          choose
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          choose(replyTo)
+        </td>
+      </tr><tr>
+        <td>
+          125
+        </td>
+        <td>
+          612
+        </td>
+        <td>
+          5542
+          -
+          5581
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case CardChoosenByOther(title, replyTo)
+        </td>
+      </tr><tr>
+        <td>
+          126
+        </td>
+        <td>
+          609
+        </td>
+        <td>
+          5591
+          -
+          5607
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interactionActor
+        </td>
+      </tr><tr>
+        <td>
+          126
+        </td>
+        <td>
+          610
+        </td>
+        <td>
+          5591
+          -
+          5657
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interactionActor ! InteractionBehavior.GuessCard(rootActor, title)
+        </td>
+      </tr><tr>
+        <td>
+          127
+        </td>
+        <td>
+          611
+        </td>
+        <td>
+          5664
+          -
+          5685
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          guess
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          guess(title, replyTo)
+        </td>
+      </tr><tr>
+        <td>
+          128
+        </td>
+        <td>
+          616
+        </td>
+        <td>
+          5690
+          -
+          5708
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case NewCard(card)
+        </td>
+      </tr><tr>
+        <td>
+          129
+        </td>
+        <td>
+          614
+        </td>
+        <td>
+          5718
+          -
+          5770
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interactionActor ! InteractionBehavior.NewCard(card)
+        </td>
+      </tr><tr>
+        <td>
+          129
+        </td>
+        <td>
+          613
+        </td>
+        <td>
+          5718
+          -
+          5734
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interactionActor
+        </td>
+      </tr><tr>
+        <td>
+          130
+        </td>
+        <td>
+          615
+        </td>
+        <td>
+          5777
+          -
+          5791
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          131
+        </td>
+        <td>
+          618
+        </td>
+        <td>
+          5796
+          -
+          5814
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case TurnCancelled
+        </td>
+      </tr><tr>
+        <td>
+          131
+        </td>
+        <td>
+          617
+        </td>
+        <td>
+          5818
+          -
+          5832
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          133
+        </td>
+        <td>
+          623
+        </td>
+        <td>
+          5838
+          -
+          5858
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case EndGame(points)
+        </td>
+      </tr><tr>
+        <td>
+          134
+        </td>
+        <td>
+          621
+        </td>
+        <td>
+          5868
+          -
+          5966
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          interactionActor ! InteractionBehavior.MessageError(s&quot;Gioco terminato, punti guadagnati: $points&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          134
+        </td>
+        <td>
+          620
+        </td>
+        <td>
+          5920
+          -
+          5965
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;Gioco terminato, punti guadagnati: $points&quot;
+        </td>
+      </tr><tr>
+        <td>
+          134
+        </td>
+        <td>
+          619
+        </td>
+        <td>
+          5868
+          -
+          5884
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          interactionActor
+        </td>
+      </tr><tr>
+        <td>
+          135
+        </td>
+        <td>
+          622
+        </td>
+        <td>
+          5973
+          -
+          5990
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          stopped
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.stopped
+        </td>
+      </tr><tr>
+        <td>
+          137
+        </td>
+        <td>
+          624
+        </td>
+        <td>
+          6006
+          -
+          6020
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          137
+        </td>
+        <td>
+          625
+        </td>
+        <td>
+          5996
+          -
+          6002
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          140
+        </td>
+        <td>
+          641
+        </td>
+        <td>
+          6028
+          -
+          6037
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          guess
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def guess
+        </td>
+      </tr><tr>
+        <td>
+          140
+        </td>
+        <td>
+          640
+        </td>
+        <td>
+          6141
+          -
+          6513
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          receiveMessage
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.receiveMessage {
+    case SingleCardSubmitted(card) =&gt;
+      replyTo ! ForemanBehavior.SelectionToApply(card, rootActor)
+      Behaviors.same
+    case CardsSubmittedByOthers(cards) =&gt;
+      interactionActor ! InteractionBehavior.ShowCardsProposed(rootActor, cards, title)
+      choose(replyTo)
+    case TurnCancelled =&gt; gameOn()
+
+    case _ =&gt; Behaviors.same
+  }
+        </td>
+      </tr><tr>
+        <td>
+          141
+        </td>
+        <td>
+          631
+        </td>
+        <td>
+          6172
+          -
+          6202
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case SingleCardSubmitted(card)
+        </td>
+      </tr><tr>
+        <td>
+          142
+        </td>
+        <td>
+          629
+        </td>
+        <td>
+          6212
+          -
+          6271
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          replyTo ! ForemanBehavior.SelectionToApply(card, rootActor)
+        </td>
+      </tr><tr>
+        <td>
+          142
+        </td>
+        <td>
+          628
+        </td>
+        <td>
+          6212
+          -
+          6219
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          replyTo
+        </td>
+      </tr><tr>
+        <td>
+          143
+        </td>
+        <td>
+          630
+        </td>
+        <td>
+          6278
+          -
+          6292
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          144
+        </td>
+        <td>
+          635
+        </td>
+        <td>
+          6297
+          -
+          6331
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case CardsSubmittedByOthers(cards)
+        </td>
+      </tr><tr>
+        <td>
+          145
+        </td>
+        <td>
+          633
+        </td>
+        <td>
+          6341
+          -
+          6422
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interactionActor ! InteractionBehavior.ShowCardsProposed(rootActor, cards, title)
+        </td>
+      </tr><tr>
+        <td>
+          145
+        </td>
+        <td>
+          632
+        </td>
+        <td>
+          6341
+          -
+          6357
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interactionActor
+        </td>
+      </tr><tr>
+        <td>
+          146
+        </td>
+        <td>
+          634
+        </td>
+        <td>
+          6429
+          -
+          6444
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          choose
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          choose(replyTo)
+        </td>
+      </tr><tr>
+        <td>
+          147
+        </td>
+        <td>
+          636
+        </td>
+        <td>
+          6471
+          -
+          6479
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          gameOn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          gameOn()
+        </td>
+      </tr><tr>
+        <td>
+          147
+        </td>
+        <td>
+          637
+        </td>
+        <td>
+          6449
+          -
+          6467
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case TurnCancelled
+        </td>
+      </tr><tr>
+        <td>
+          149
+        </td>
+        <td>
+          639
+        </td>
+        <td>
+          6485
+          -
+          6491
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          149
+        </td>
+        <td>
+          638
+        </td>
+        <td>
+          6495
+          -
+          6509
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          152
+        </td>
+        <td>
+          660
+        </td>
+        <td>
+          6517
+          -
+          6527
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          choose
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def choose
+        </td>
+      </tr><tr>
+        <td>
+          152
+        </td>
+        <td>
+          659
+        </td>
+        <td>
+          6616
+          -
+          7096
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          receiveMessage
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.receiveMessage {
+    case CardChoosenForTurn(cardId, title) =&gt;
+      replyTo ! ForemanBehavior.CardToGuess(cardId, title, rootActor)
+      interactionActor ! InteractionBehavior.ResetInteraction
+      gameOn()
+    case GuessedCardbyUser(cardId) =&gt;
+      replyTo ! ForemanBehavior.GuessSelection(cardId, rootActor)
+      waitForCardRevealed(replyTo)
+
+    case TurnCancelled =&gt; gameOn()
+
+    case msg =&gt; context.log.info(&quot;Unknown message: &quot; + msg)
+      Behaviors.same
+  }
+        </td>
+      </tr><tr>
+        <td>
+          153
+        </td>
+        <td>
+          647
+        </td>
+        <td>
+          6647
+          -
+          6685
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case CardChoosenForTurn(cardId, title)
+        </td>
+      </tr><tr>
+        <td>
+          154
+        </td>
+        <td>
+          642
+        </td>
+        <td>
+          6695
+          -
+          6702
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          replyTo
+        </td>
+      </tr><tr>
+        <td>
+          154
+        </td>
+        <td>
+          643
+        </td>
+        <td>
+          6695
+          -
+          6758
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          replyTo ! ForemanBehavior.CardToGuess(cardId, title, rootActor)
+        </td>
+      </tr><tr>
+        <td>
+          155
+        </td>
+        <td>
+          645
+        </td>
+        <td>
+          6765
+          -
+          6820
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interactionActor ! InteractionBehavior.ResetInteraction
+        </td>
+      </tr><tr>
+        <td>
+          155
+        </td>
+        <td>
+          644
+        </td>
+        <td>
+          6765
+          -
+          6781
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interactionActor
+        </td>
+      </tr><tr>
+        <td>
+          156
+        </td>
+        <td>
+          646
+        </td>
+        <td>
+          6827
+          -
+          6835
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          gameOn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          gameOn()
+        </td>
+      </tr><tr>
+        <td>
+          157
+        </td>
+        <td>
+          651
+        </td>
+        <td>
+          6840
+          -
+          6870
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case GuessedCardbyUser(cardId)
+        </td>
+      </tr><tr>
+        <td>
+          158
+        </td>
+        <td>
+          648
+        </td>
+        <td>
+          6880
+          -
+          6887
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          replyTo
+        </td>
+      </tr><tr>
+        <td>
+          158
+        </td>
+        <td>
+          649
+        </td>
+        <td>
+          6880
+          -
+          6939
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          replyTo ! ForemanBehavior.GuessSelection(cardId, rootActor)
+        </td>
+      </tr><tr>
+        <td>
+          159
+        </td>
+        <td>
+          650
+        </td>
+        <td>
+          6946
+          -
+          6974
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          waitForCardRevealed
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          waitForCardRevealed(replyTo)
+        </td>
+      </tr><tr>
+        <td>
+          161
+        </td>
+        <td>
+          653
+        </td>
+        <td>
+          6980
+          -
+          6998
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case TurnCancelled
+        </td>
+      </tr><tr>
+        <td>
+          161
+        </td>
+        <td>
+          652
+        </td>
+        <td>
+          7002
+          -
+          7010
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          gameOn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          gameOn()
+        </td>
+      </tr><tr>
+        <td>
+          163
+        </td>
+        <td>
+          654
+        </td>
+        <td>
+          7028
+          -
+          7039
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          163
+        </td>
+        <td>
+          656
+        </td>
+        <td>
+          7028
+          -
+          7071
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log.info(&quot;Unknown message: &quot; + msg)
+        </td>
+      </tr><tr>
+        <td>
+          163
+        </td>
+        <td>
+          655
+        </td>
+        <td>
+          7045
+          -
+          7070
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot;Unknown message: &quot; + msg
+        </td>
+      </tr><tr>
+        <td>
+          163
+        </td>
+        <td>
+          658
+        </td>
+        <td>
+          7016
+          -
+          7024
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case msg
+        </td>
+      </tr><tr>
+        <td>
+          164
+        </td>
+        <td>
+          657
+        </td>
+        <td>
+          7078
+          -
+          7092
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          167
+        </td>
+        <td>
+          671
+        </td>
+        <td>
+          7100
+          -
+          7123
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          waitForCardRevealed
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def waitForCardRevealed
+        </td>
+      </tr><tr>
+        <td>
+          167
+        </td>
+        <td>
+          670
+        </td>
+        <td>
+          7212
+          -
+          7471
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          receiveMessage
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.receiveMessage {
+    case CardRevealed(cardId) =&gt;
+      // TODO reset interaction with image revealed (optional)
+      gameOn()
+
+    case TurnCancelled =&gt; gameOn()
+
+    case msg =&gt; context.log.info(&quot;Unknown message: &quot; + msg)
+      Behaviors.same
+  }
+        </td>
+      </tr><tr>
+        <td>
+          168
+        </td>
+        <td>
+          662
+        </td>
+        <td>
+          7243
+          -
+          7268
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case CardRevealed(cardId)
+        </td>
+      </tr><tr>
+        <td>
+          170
+        </td>
+        <td>
+          661
+        </td>
+        <td>
+          7341
+          -
+          7349
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          gameOn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          gameOn()
+        </td>
+      </tr><tr>
+        <td>
+          172
+        </td>
+        <td>
+          663
+        </td>
+        <td>
+          7377
+          -
+          7385
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          gameOn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          gameOn()
+        </td>
+      </tr><tr>
+        <td>
+          172
+        </td>
+        <td>
+          664
+        </td>
+        <td>
+          7355
+          -
+          7373
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case TurnCancelled
+        </td>
+      </tr><tr>
+        <td>
+          174
+        </td>
+        <td>
+          669
+        </td>
+        <td>
+          7391
+          -
+          7399
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case msg
+        </td>
+      </tr><tr>
+        <td>
+          174
+        </td>
+        <td>
+          666
+        </td>
+        <td>
+          7420
+          -
+          7445
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot;Unknown message: &quot; + msg
+        </td>
+      </tr><tr>
+        <td>
+          174
+        </td>
+        <td>
+          665
+        </td>
+        <td>
+          7403
+          -
+          7414
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          174
+        </td>
+        <td>
+          667
+        </td>
+        <td>
+          7403
+          -
+          7446
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log.info(&quot;Unknown message: &quot; + msg)
+        </td>
+      </tr><tr>
+        <td>
+          175
+        </td>
+        <td>
+          668
+        </td>
+        <td>
+          7453
+          -
+          7467
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.same
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>

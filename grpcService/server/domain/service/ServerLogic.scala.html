@@ -1,0 +1,604 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          grpcService/server/domain/service/ServerLogic.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.server.domain.service
+</span>2 <span style=''>
+</span>3 <span style=''>import grpcService.server.domain.model.{Game, User}
+</span>4 <span style=''>import grpcService.server.domain.repository.AccessRepository
+</span>5 <span style=''>
+</span>6 <span style=''>object ServerLogic:
+</span>7 <span style=''>
+</span>8 <span style=''>  </span><span style='background: #F0ADAD'>@main def testSet</span><span style=''>() =
+</span>9 <span style=''>    val opt = </span><span style='background: #F0ADAD'>Option.empty</span><span style=''>
+</span>10 <span style=''>    opt match
+</span>11 <span style=''>      </span><span style='background: #F0ADAD'>case Some(_user)</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>print(_user)</span><span style=''>
+</span>12 <span style=''>      </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>print(&quot;utente non esistente&quot;)</span><span style=''>
+</span>13 <span style=''>
+</span>14 <span style=''>case class ServerLogic(accessRepository: AccessRepository) {
+</span>15 <span style=''>
+</span>16 <span style=''>  var openGames: Set[Game] = </span><span style='background: #F0ADAD'>Set()</span><span style=''>
+</span>17 <span style=''>
+</span>18 <span style=''>  </span><span style='background: #F0ADAD'>def registerNewUser</span><span style=''>(user: User, password: String) = </span><span style='background: #F0ADAD'>accessRepository.insertNewUser(user.name, password)</span><span style=''>
+</span>19 <span style=''>
+</span>20 <span style=''>  </span><span style='background: #F0ADAD'>def retrieveUser</span><span style=''>(userId: String) = </span><span style='background: #F0ADAD'>accessRepository.selectUser(userId)</span><span style=''>
+</span>21 <span style=''>
+</span>22 <span style=''>  </span><span style='background: #F0ADAD'>def updateUser</span><span style=''>(user: User, pointsToAdd: Int) = </span><span style='background: #F0ADAD'>accessRepository.addPointsToUser(user.name, pointsToAdd)</span><span style=''>
+</span>23 <span style=''>
+</span>24 <span style=''>  </span><span style='background: #F0ADAD'>def removeGame</span><span style=''>(game: Game) = openGames = </span><span style='background: #F0ADAD'>openGames - game</span><span style=''>
+</span>25 <span style=''>
+</span>26 <span style=''>  </span><span style='background: #F0ADAD'>def getGames</span><span style=''>() = openGames
+</span>27 <span style=''>
+</span>28 <span style=''>  </span><span style='background: #F0ADAD'>def newGame</span><span style=''>(game: Game) = openGames = </span><span style='background: #F0ADAD'>openGames + game</span><span style=''>
+</span>29 <span style=''>
+</span>30 <span style=''>  </span><span style='background: #F0ADAD'>def login</span><span style=''>(user: User): Boolean = </span><span style='background: #F0ADAD'>accessRepository.selectUser(user.name)</span><span style=''> match
+</span>31 <span style=''>    </span><span style='background: #F0ADAD'>case Some(_user)</span><span style=''> =&gt; _user.password == user.password
+</span>32 <span style=''>    </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt; false
+</span>33 <span style=''>    
+</span>34 <span style=''>}
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          7
+        </td>
+        <td>
+          1494
+        </td>
+        <td>
+          180
+          -
+          197
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          testSet
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          @main def testSet
+        </td>
+      </tr><tr>
+        <td>
+          8
+        </td>
+        <td>
+          1489
+        </td>
+        <td>
+          216
+          -
+          228
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          empty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Option.empty
+        </td>
+      </tr><tr>
+        <td>
+          10
+        </td>
+        <td>
+          1491
+        </td>
+        <td>
+          249
+          -
+          265
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Some(_user)
+        </td>
+      </tr><tr>
+        <td>
+          10
+        </td>
+        <td>
+          1490
+        </td>
+        <td>
+          269
+          -
+          281
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          print
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          print(_user)
+        </td>
+      </tr><tr>
+        <td>
+          11
+        </td>
+        <td>
+          1492
+        </td>
+        <td>
+          298
+          -
+          327
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          print
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          print(&quot;utente non esistente&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          11
+        </td>
+        <td>
+          1493
+        </td>
+        <td>
+          288
+          -
+          294
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          15
+        </td>
+        <td>
+          1495
+        </td>
+        <td>
+          420
+          -
+          425
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Set()
+        </td>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          1497
+        </td>
+        <td>
+          429
+          -
+          448
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          registerNewUser
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def registerNewUser
+        </td>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          1496
+        </td>
+        <td>
+          481
+          -
+          532
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          insertNewUser
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          accessRepository.insertNewUser(user.name, password)
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          1499
+        </td>
+        <td>
+          536
+          -
+          552
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          retrieveUser
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def retrieveUser
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          1498
+        </td>
+        <td>
+          571
+          -
+          606
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          selectUser
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          accessRepository.selectUser(userId)
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          1501
+        </td>
+        <td>
+          610
+          -
+          624
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          updateUser
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def updateUser
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          1500
+        </td>
+        <td>
+          657
+          -
+          713
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          addPointsToUser
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          accessRepository.addPointsToUser(user.name, pointsToAdd)
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          1503
+        </td>
+        <td>
+          717
+          -
+          731
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          removeGame
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def removeGame
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          1502
+        </td>
+        <td>
+          758
+          -
+          774
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          -
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          openGames - game
+        </td>
+      </tr><tr>
+        <td>
+          25
+        </td>
+        <td>
+          1504
+        </td>
+        <td>
+          778
+          -
+          790
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getGames
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def getGames
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          1506
+        </td>
+        <td>
+          808
+          -
+          819
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          newGame
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def newGame
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          1505
+        </td>
+        <td>
+          846
+          -
+          862
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          openGames + game
+        </td>
+      </tr><tr>
+        <td>
+          29
+        </td>
+        <td>
+          1510
+        </td>
+        <td>
+          866
+          -
+          875
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          login
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def login
+        </td>
+      </tr><tr>
+        <td>
+          29
+        </td>
+        <td>
+          1507
+        </td>
+        <td>
+          899
+          -
+          937
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          selectUser
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          accessRepository.selectUser(user.name)
+        </td>
+      </tr><tr>
+        <td>
+          30
+        </td>
+        <td>
+          1508
+        </td>
+        <td>
+          948
+          -
+          964
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Some(_user)
+        </td>
+      </tr><tr>
+        <td>
+          31
+        </td>
+        <td>
+          1509
+        </td>
+        <td>
+          1004
+          -
+          1010
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>

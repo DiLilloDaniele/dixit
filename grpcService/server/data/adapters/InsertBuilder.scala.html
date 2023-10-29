@@ -1,0 +1,398 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          grpcService/server/data/adapters/InsertBuilder.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.server.data.adapters
+</span>2 <span style=''>
+</span>3 <span style=''>import java.sql.SQLException
+</span>4 <span style=''>
+</span>5 <span style=''>class InsertBuilder:
+</span>6 <span style=''>  var query = &quot;&quot;
+</span>7 <span style=''>
+</span>8 <span style=''>  </span><span style='background: #F0ADAD'>def insertInto</span><span style=''>(table: String) =
+</span>9 <span style=''>    table match
+</span>10 <span style=''>      </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>throw SQLException()</span><span style=''>
+</span>11 <span style=''>      </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt;
+</span>12 <span style=''>        query = </span><span style='background: #F0ADAD'>&quot;INSERT INTO &quot; + table</span><span style=''>
+</span>13 <span style=''>        this
+</span>14 <span style=''>
+</span>15 <span style=''>  </span><span style='background: #F0ADAD'>def values</span><span style=''>(values: String) =
+</span>16 <span style=''>    values match
+</span>17 <span style=''>      </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>throw SQLException()</span><span style=''>
+</span>18 <span style=''>      </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt;
+</span>19 <span style=''>        </span><span style='background: #F0ADAD'>query += &quot; VALUES (&quot; + values + &quot;)&quot;</span><span style=''>
+</span>20 <span style=''>        this
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          7
+        </td>
+        <td>
+          1352
+        </td>
+        <td>
+          113
+          -
+          127
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          insertInto
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def insertInto
+        </td>
+      </tr><tr>
+        <td>
+          9
+        </td>
+        <td>
+          1348
+        </td>
+        <td>
+          178
+          -
+          198
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          throw
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          throw SQLException()
+        </td>
+      </tr><tr>
+        <td>
+          9
+        </td>
+        <td>
+          1347
+        </td>
+        <td>
+          184
+          -
+          198
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          SQLException()
+        </td>
+      </tr><tr>
+        <td>
+          9
+        </td>
+        <td>
+          1349
+        </td>
+        <td>
+          167
+          -
+          174
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case &quot;&quot;
+        </td>
+      </tr><tr>
+        <td>
+          10
+        </td>
+        <td>
+          1351
+        </td>
+        <td>
+          205
+          -
+          211
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          11
+        </td>
+        <td>
+          1350
+        </td>
+        <td>
+          231
+          -
+          253
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot;INSERT INTO &quot; + table
+        </td>
+      </tr><tr>
+        <td>
+          14
+        </td>
+        <td>
+          1360
+        </td>
+        <td>
+          270
+          -
+          280
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          values
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def values
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          1354
+        </td>
+        <td>
+          333
+          -
+          353
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          throw
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          throw SQLException()
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          1353
+        </td>
+        <td>
+          339
+          -
+          353
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          SQLException()
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          1355
+        </td>
+        <td>
+          322
+          -
+          329
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case &quot;&quot;
+        </td>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          1359
+        </td>
+        <td>
+          360
+          -
+          366
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          1357
+        </td>
+        <td>
+          387
+          -
+          413
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot; VALUES (&quot; + values + &quot;)&quot;
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          1356
+        </td>
+        <td>
+          387
+          -
+          407
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot; VALUES (&quot; + values
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          1358
+        </td>
+        <td>
+          378
+          -
+          413
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          query += &quot; VALUES (&quot; + values + &quot;)&quot;
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>

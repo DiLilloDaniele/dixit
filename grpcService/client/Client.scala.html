@@ -1,0 +1,1351 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          grpcService/client/Client.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.client
+</span>2 <span style=''>
+</span>3 <span style=''>import akka.actor.ActorSystem
+</span>4 <span style=''>import akka.grpc.GrpcClientSettings
+</span>5 <span style=''>import grpcService.{GameMessage, HelloMessage, LoginRequest, OpenedGamesRequest, Server, ServerClient}
+</span>6 <span style=''>
+</span>7 <span style=''>import scala.concurrent.ExecutionContextExecutor
+</span>8 <span style=''>import scala.util.{Failure, Success}
+</span>9 <span style=''>import grpcService.client.controller.GameControllerObj
+</span>10 <span style=''>import grpcService.client.controller.GameControllerObj.SuccessFun
+</span>11 <span style=''>import grpcService.client.view.HomepageView
+</span>12 <span style=''>
+</span>13 <span style=''>object Client {
+</span>14 <span style=''>  </span><span style='background: #F0ADAD'>@main def startClient</span><span style=''>() = {
+</span>15 <span style=''>    // Boot akka
+</span>16 <span style=''>    implicit val sys = </span><span style='background: #F0ADAD'>ActorSystem(&quot;HelloWorldClient&quot;)</span><span style=''>
+</span>17 <span style=''>    implicit val ec = </span><span style='background: #F0ADAD'>sys.dispatcher</span><span style=''>
+</span>18 <span style=''>
+</span>19 <span style=''>    // Configure the client by code:
+</span>20 <span style=''>    val clientSettings = </span><span style='background: #F0ADAD'>GrpcClientSettings.connectToServiceAt(&quot;127.0.0.1&quot;, 8083).withTls(false)</span><span style=''>
+</span>21 <span style=''>
+</span>22 <span style=''>    // Or via application.conf:
+</span>23 <span style=''>    // val clientSettings = GrpcClientSettings.fromConfig(GreeterService.name)
+</span>24 <span style=''>
+</span>25 <span style=''>    // Create a client-side stub for the service
+</span>26 <span style=''>    val client: Server = </span><span style='background: #F0ADAD'>ServerClient(clientSettings)</span><span style=''>
+</span>27 <span style=''>/*
+</span>28 <span style=''>    val reply = client.hello(HelloMessage(&quot;Daniele&quot;))
+</span>29 <span style=''>    reply.onComplete {
+</span>30 <span style=''>      case Success(msg) =&gt;
+</span>31 <span style=''>        println(s&quot;got single reply: $msg&quot;)
+</span>32 <span style=''>      case Failure(e) =&gt;
+</span>33 <span style=''>        println(s&quot;Error sayHello: $e&quot;)
+</span>34 <span style=''>    }
+</span>35 <span style=''>*/
+</span>36 <span style=''>  }
+</span>37 <span style=''>  
+</span>38 <span style=''>  </span><span style='background: #F0ADAD'>def main</span><span style=''>(args: Array[String]): Unit =
+</span>39 <span style=''>    val client = </span><span style='background: #F0ADAD'>ClientImpl()</span><span style=''>
+</span>40 <span style=''>    
+</span>41 <span style=''>  
+</span>42 <span style=''>}
+</span>43 <span style=''>
+</span>44 <span style=''>class ClientImpl() {
+</span>45 <span style=''> 
+</span>46 <span style=''>  implicit val sys: ActorSystem = </span><span style='background: #F0ADAD'>ActorSystem(&quot;HelloWorldClient&quot;)</span><span style=''>
+</span>47 <span style=''>  implicit val ec: ExecutionContextExecutor = </span><span style='background: #F0ADAD'>sys.dispatcher</span><span style=''>
+</span>48 <span style=''>
+</span>49 <span style=''>  val clientSettings = </span><span style='background: #F0ADAD'>GrpcClientSettings.connectToServiceAt(&quot;127.0.0.1&quot;, 8083).withTls(false)</span><span style=''>
+</span>50 <span style=''>
+</span>51 <span style=''>  val client: Server = </span><span style='background: #F0ADAD'>ServerClient(clientSettings)</span><span style=''>
+</span>52 <span style=''>
+</span>53 <span style=''>  </span><span style='background: #F0ADAD'>def getAvailableGames</span><span style=''>(success: SuccessFun[List[String]]) =
+</span>54 <span style=''>    val reply = </span><span style='background: #F0ADAD'>client.getOpenedGames(OpenedGamesRequest())</span><span style=''>
+</span>55 <span style=''>    </span><span style='background: #F0ADAD'>reply.onComplete {
+</span>56 <span style=''></span><span style='background: #F0ADAD'>      case Success(msg) =&gt;
+</span>57 <span style=''></span><span style='background: #F0ADAD'>        success(msg.clusterName.toList)
+</span>58 <span style=''></span><span style='background: #F0ADAD'>      case Failure(e) =&gt;
+</span>59 <span style=''></span><span style='background: #F0ADAD'>        println(s&quot;Error sayHello: $e&quot;)
+</span>60 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
+</span>61 <span style=''>    
+</span>62 <span style=''>  </span><span style='background: #F0ADAD'>def login</span><span style=''>(username: String, password: String, success: SuccessFun[Boolean]) =
+</span>63 <span style=''>    val reply = </span><span style='background: #F0ADAD'>client.login(LoginRequest(username, password))</span><span style=''>
+</span>64 <span style=''>    </span><span style='background: #F0ADAD'>reply.onComplete {
+</span>65 <span style=''></span><span style='background: #F0ADAD'>      case Success(msg) =&gt;
+</span>66 <span style=''></span><span style='background: #F0ADAD'>        success(msg.response)
+</span>67 <span style=''></span><span style='background: #F0ADAD'>      case Failure(e) =&gt;
+</span>68 <span style=''></span><span style='background: #F0ADAD'>        println(s&quot;Error sayHello: $e&quot;)
+</span>69 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
+</span>70 <span style=''>    
+</span>71 <span style=''>  </span><span style='background: #F0ADAD'>def register</span><span style=''>(username: String, password: String, success: SuccessFun[Boolean]) =
+</span>72 <span style=''>    val reply = </span><span style='background: #F0ADAD'>client.register(LoginRequest(username, password))</span><span style=''>
+</span>73 <span style=''>    </span><span style='background: #F0ADAD'>reply.onComplete {
+</span>74 <span style=''></span><span style='background: #F0ADAD'>      case Success(msg) =&gt;
+</span>75 <span style=''></span><span style='background: #F0ADAD'>        success(msg.response)
+</span>76 <span style=''></span><span style='background: #F0ADAD'>      case Failure(e) =&gt;
+</span>77 <span style=''></span><span style='background: #F0ADAD'>        println(s&quot;Error sayHello: $e&quot;)
+</span>78 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
+</span>79 <span style=''>
+</span>80 <span style=''>  </span><span style='background: #F0ADAD'>def createGame</span><span style=''>(address: String, user: String, success: SuccessFun[Boolean]) =
+</span>81 <span style=''>    val reply = </span><span style='background: #F0ADAD'>client.newGame(GameMessage(address, user))</span><span style=''>
+</span>82 <span style=''>    </span><span style='background: #F0ADAD'>reply.onComplete {
+</span>83 <span style=''></span><span style='background: #F0ADAD'>      case Success(msg) =&gt;
+</span>84 <span style=''></span><span style='background: #F0ADAD'>        success(true)
+</span>85 <span style=''></span><span style='background: #F0ADAD'>      case Failure(e) =&gt;
+</span>86 <span style=''></span><span style='background: #F0ADAD'>        println(s&quot;Error sayHello: $e&quot;)
+</span>87 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
+</span>88 <span style=''>
+</span>89 <span style=''>}
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          13
+        </td>
+        <td>
+          5
+        </td>
+        <td>
+          468
+          -
+          489
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          startClient
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          @main def startClient
+        </td>
+      </tr><tr>
+        <td>
+          15
+        </td>
+        <td>
+          0
+        </td>
+        <td>
+          536
+          -
+          567
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ActorSystem(&quot;HelloWorldClient&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          1
+        </td>
+        <td>
+          590
+          -
+          604
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          dispatcher
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          sys.dispatcher
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          2
+        </td>
+        <td>
+          668
+          -
+          724
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          connectToServiceAt
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          GrpcClientSettings.connectToServiceAt(&quot;127.0.0.1&quot;, 8083)
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          3
+        </td>
+        <td>
+          668
+          -
+          739
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          withTls
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          GrpcClientSettings.connectToServiceAt(&quot;127.0.0.1&quot;, 8083).withTls(false)
+        </td>
+      </tr><tr>
+        <td>
+          25
+        </td>
+        <td>
+          4
+        </td>
+        <td>
+          927
+          -
+          955
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ServerClient(clientSettings)
+        </td>
+      </tr><tr>
+        <td>
+          37
+        </td>
+        <td>
+          7
+        </td>
+        <td>
+          1188
+          -
+          1196
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          main
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def main
+        </td>
+      </tr><tr>
+        <td>
+          38
+        </td>
+        <td>
+          6
+        </td>
+        <td>
+          1243
+          -
+          1255
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ClientImpl()
+        </td>
+      </tr><tr>
+        <td>
+          45
+        </td>
+        <td>
+          8
+        </td>
+        <td>
+          1324
+          -
+          1355
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ActorSystem(&quot;HelloWorldClient&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          9
+        </td>
+        <td>
+          1402
+          -
+          1416
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          dispatcher
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          sys.dispatcher
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          11
+        </td>
+        <td>
+          1441
+          -
+          1512
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          withTls
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          GrpcClientSettings.connectToServiceAt(&quot;127.0.0.1&quot;, 8083).withTls(false)
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          10
+        </td>
+        <td>
+          1441
+          -
+          1497
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          connectToServiceAt
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          GrpcClientSettings.connectToServiceAt(&quot;127.0.0.1&quot;, 8083)
+        </td>
+      </tr><tr>
+        <td>
+          50
+        </td>
+        <td>
+          12
+        </td>
+        <td>
+          1537
+          -
+          1565
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ServerClient(clientSettings)
+        </td>
+      </tr><tr>
+        <td>
+          52
+        </td>
+        <td>
+          22
+        </td>
+        <td>
+          1569
+          -
+          1590
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getAvailableGames
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def getAvailableGames
+        </td>
+      </tr><tr>
+        <td>
+          53
+        </td>
+        <td>
+          14
+        </td>
+        <td>
+          1644
+          -
+          1687
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getOpenedGames
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          client.getOpenedGames(OpenedGamesRequest())
+        </td>
+      </tr><tr>
+        <td>
+          53
+        </td>
+        <td>
+          13
+        </td>
+        <td>
+          1666
+          -
+          1684
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          $lessinit$greater$default$1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          OpenedGamesRequest
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          21
+        </td>
+        <td>
+          1692
+          -
+          1847
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          onComplete
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          reply.onComplete {
+      case Success(msg) =&gt;
+        success(msg.clusterName.toList)
+      case Failure(e) =&gt;
+        println(s&quot;Error sayHello: $e&quot;)
+    }
+        </td>
+      </tr><tr>
+        <td>
+          55
+        </td>
+        <td>
+          17
+        </td>
+        <td>
+          1717
+          -
+          1734
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Success(msg)
+        </td>
+      </tr><tr>
+        <td>
+          56
+        </td>
+        <td>
+          16
+        </td>
+        <td>
+          1746
+          -
+          1777
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          success(msg.clusterName.toList)
+        </td>
+      </tr><tr>
+        <td>
+          56
+        </td>
+        <td>
+          15
+        </td>
+        <td>
+          1754
+          -
+          1776
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          toList
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          msg.clusterName.toList
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          20
+        </td>
+        <td>
+          1784
+          -
+          1799
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Failure(e)
+        </td>
+      </tr><tr>
+        <td>
+          58
+        </td>
+        <td>
+          19
+        </td>
+        <td>
+          1811
+          -
+          1841
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(s&quot;Error sayHello: $e&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          58
+        </td>
+        <td>
+          18
+        </td>
+        <td>
+          1819
+          -
+          1840
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;Error sayHello: $e&quot;
+        </td>
+      </tr><tr>
+        <td>
+          61
+        </td>
+        <td>
+          31
+        </td>
+        <td>
+          1855
+          -
+          1864
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          login
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def login
+        </td>
+      </tr><tr>
+        <td>
+          62
+        </td>
+        <td>
+          23
+        </td>
+        <td>
+          1962
+          -
+          1974
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          $lessinit$greater$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          LoginRequest
+        </td>
+      </tr><tr>
+        <td>
+          62
+        </td>
+        <td>
+          24
+        </td>
+        <td>
+          1949
+          -
+          1995
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          login
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          client.login(LoginRequest(username, password))
+        </td>
+      </tr><tr>
+        <td>
+          63
+        </td>
+        <td>
+          30
+        </td>
+        <td>
+          2000
+          -
+          2145
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          onComplete
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          reply.onComplete {
+      case Success(msg) =&gt;
+        success(msg.response)
+      case Failure(e) =&gt;
+        println(s&quot;Error sayHello: $e&quot;)
+    }
+        </td>
+      </tr><tr>
+        <td>
+          64
+        </td>
+        <td>
+          26
+        </td>
+        <td>
+          2025
+          -
+          2042
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Success(msg)
+        </td>
+      </tr><tr>
+        <td>
+          65
+        </td>
+        <td>
+          25
+        </td>
+        <td>
+          2054
+          -
+          2075
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          success(msg.response)
+        </td>
+      </tr><tr>
+        <td>
+          66
+        </td>
+        <td>
+          29
+        </td>
+        <td>
+          2082
+          -
+          2097
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Failure(e)
+        </td>
+      </tr><tr>
+        <td>
+          67
+        </td>
+        <td>
+          28
+        </td>
+        <td>
+          2109
+          -
+          2139
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(s&quot;Error sayHello: $e&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          67
+        </td>
+        <td>
+          27
+        </td>
+        <td>
+          2117
+          -
+          2138
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;Error sayHello: $e&quot;
+        </td>
+      </tr><tr>
+        <td>
+          70
+        </td>
+        <td>
+          40
+        </td>
+        <td>
+          2153
+          -
+          2165
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          register
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def register
+        </td>
+      </tr><tr>
+        <td>
+          71
+        </td>
+        <td>
+          32
+        </td>
+        <td>
+          2266
+          -
+          2278
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          $lessinit$greater$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          LoginRequest
+        </td>
+      </tr><tr>
+        <td>
+          71
+        </td>
+        <td>
+          33
+        </td>
+        <td>
+          2250
+          -
+          2299
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          register
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          client.register(LoginRequest(username, password))
+        </td>
+      </tr><tr>
+        <td>
+          72
+        </td>
+        <td>
+          39
+        </td>
+        <td>
+          2304
+          -
+          2449
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          onComplete
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          reply.onComplete {
+      case Success(msg) =&gt;
+        success(msg.response)
+      case Failure(e) =&gt;
+        println(s&quot;Error sayHello: $e&quot;)
+    }
+        </td>
+      </tr><tr>
+        <td>
+          73
+        </td>
+        <td>
+          35
+        </td>
+        <td>
+          2329
+          -
+          2346
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Success(msg)
+        </td>
+      </tr><tr>
+        <td>
+          74
+        </td>
+        <td>
+          34
+        </td>
+        <td>
+          2358
+          -
+          2379
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          success(msg.response)
+        </td>
+      </tr><tr>
+        <td>
+          75
+        </td>
+        <td>
+          38
+        </td>
+        <td>
+          2386
+          -
+          2401
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Failure(e)
+        </td>
+      </tr><tr>
+        <td>
+          76
+        </td>
+        <td>
+          37
+        </td>
+        <td>
+          2413
+          -
+          2443
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(s&quot;Error sayHello: $e&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          76
+        </td>
+        <td>
+          36
+        </td>
+        <td>
+          2421
+          -
+          2442
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;Error sayHello: $e&quot;
+        </td>
+      </tr><tr>
+        <td>
+          79
+        </td>
+        <td>
+          49
+        </td>
+        <td>
+          2453
+          -
+          2467
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          createGame
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def createGame
+        </td>
+      </tr><tr>
+        <td>
+          80
+        </td>
+        <td>
+          41
+        </td>
+        <td>
+          2562
+          -
+          2573
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          $lessinit$greater$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          GameMessage
+        </td>
+      </tr><tr>
+        <td>
+          80
+        </td>
+        <td>
+          42
+        </td>
+        <td>
+          2547
+          -
+          2589
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          newGame
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          client.newGame(GameMessage(address, user))
+        </td>
+      </tr><tr>
+        <td>
+          81
+        </td>
+        <td>
+          48
+        </td>
+        <td>
+          2594
+          -
+          2731
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          onComplete
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          reply.onComplete {
+      case Success(msg) =&gt;
+        success(true)
+      case Failure(e) =&gt;
+        println(s&quot;Error sayHello: $e&quot;)
+    }
+        </td>
+      </tr><tr>
+        <td>
+          82
+        </td>
+        <td>
+          44
+        </td>
+        <td>
+          2619
+          -
+          2636
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Success(msg)
+        </td>
+      </tr><tr>
+        <td>
+          83
+        </td>
+        <td>
+          43
+        </td>
+        <td>
+          2648
+          -
+          2661
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          success(true)
+        </td>
+      </tr><tr>
+        <td>
+          84
+        </td>
+        <td>
+          47
+        </td>
+        <td>
+          2668
+          -
+          2683
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Failure(e)
+        </td>
+      </tr><tr>
+        <td>
+          85
+        </td>
+        <td>
+          46
+        </td>
+        <td>
+          2695
+          -
+          2725
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(s&quot;Error sayHello: $e&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          85
+        </td>
+        <td>
+          45
+        </td>
+        <td>
+          2703
+          -
+          2724
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;Error sayHello: $e&quot;
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>

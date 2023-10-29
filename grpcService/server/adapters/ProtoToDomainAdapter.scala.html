@@ -1,0 +1,172 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          grpcService/server/adapters/ProtoToDomainAdapter.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.server.adapters
+</span>2 <span style=''>
+</span>3 <span style=''>import grpcService.server.domain.model.Game
+</span>4 <span style=''>import grpcService.{LoginRequest, OpenedGames}
+</span>5 <span style=''>
+</span>6 <span style=''>object ProtoToDomainAdapter:
+</span>7 <span style=''>  
+</span>8 <span style=''>  </span><span style='background: #F0ADAD'>def protoToUserCredentials</span><span style=''>(req: LoginRequest): Tuple2[String, String] = (req.name, req.password)
+</span>9 <span style=''>
+</span>10 <span style=''>  </span><span style='background: #F0ADAD'>def protoToGames</span><span style=''>(game: Set[Game]): OpenedGames = </span><span style='background: #F0ADAD'>OpenedGames</span><span style=''>(</span><span style='background: #F0ADAD'>game.map(game =&gt; game.address).toSeq</span><span style=''>)
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          7
+        </td>
+        <td>
+          1185
+        </td>
+        <td>
+          163
+          -
+          189
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          protoToUserCredentials
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def protoToUserCredentials
+        </td>
+      </tr><tr>
+        <td>
+          9
+        </td>
+        <td>
+          1187
+        </td>
+        <td>
+          324
+          -
+          360
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          toSeq
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          game.map(game =&gt; game.address).toSeq
+        </td>
+      </tr><tr>
+        <td>
+          9
+        </td>
+        <td>
+          1186
+        </td>
+        <td>
+          324
+          -
+          354
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          game.map(game =&gt; game.address)
+        </td>
+      </tr><tr>
+        <td>
+          9
+        </td>
+        <td>
+          1189
+        </td>
+        <td>
+          263
+          -
+          279
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          protoToGames
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def protoToGames
+        </td>
+      </tr><tr>
+        <td>
+          9
+        </td>
+        <td>
+          1188
+        </td>
+        <td>
+          312
+          -
+          323
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          $lessinit$greater$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          OpenedGames
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>

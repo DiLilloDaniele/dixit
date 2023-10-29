@@ -1,0 +1,1004 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          grpcService/server/data/ports/AccessPort.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.server.data.ports
+</span>2 <span style=''>
+</span>3 <span style=''>import grpcService.server.applicationService.ServiceLocator
+</span>4 <span style=''>import grpcService.server.data.adapters.AccessAdapter
+</span>5 <span style=''>import grpcService.server.data.adapters.QueryBuilder
+</span>6 <span style=''>import grpcService.server.data.adapters.InsertBuilder
+</span>7 <span style=''>import grpcService.server.data.adapters.UpdateBuilder
+</span>8 <span style=''>import grpcService.server.domain.model.User
+</span>9 <span style=''>import grpcService.server.domain.repository.AccessRepository
+</span>10 <span style=''>
+</span>11 <span style=''>import java.sql.{ResultSet, SQLException}
+</span>12 <span style=''>
+</span>13 <span style=''>object AccessPort:
+</span>14 <span style=''>
+</span>15 <span style=''>  </span><span style='background: #F0ADAD'>@main def main</span><span style=''>() =
+</span>16 <span style=''>    val accessPort = </span><span style='background: #F0ADAD'>AccessPort(ServiceLocator.getDataAdapter())</span><span style=''>
+</span>17 <span style=''>    //accessPort.insertNewUser(&quot;Daniele&quot;, &quot;password&quot;)
+</span>18 <span style=''>    //accessPort.addPointsToUser(&quot;1&quot;, 10)
+</span>19 <span style=''>    </span><span style='background: #F0ADAD'>accessPort.selectUser(&quot;Daniele&quot;)</span><span style=''> match {
+</span>20 <span style=''>      </span><span style='background: #F0ADAD'>case Some(value)</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>println(value.name + &quot; - &quot; + value.password)</span><span style=''>
+</span>21 <span style=''>      </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt; ()
+</span>22 <span style=''>    }
+</span>23 <span style=''>
+</span>24 <span style=''>class AccessPort(accessAdapter: AccessAdapter) extends AccessRepository {
+</span>25 <span style=''>  
+</span>26 <span style=''>  </span><span style='background: #F0ADAD'>override def selectUser</span><span style=''>(userId: String): Option[User] =
+</span>27 <span style=''>    val queryWrapper = </span><span style='background: #F0ADAD'>QueryBuilder()</span><span style=''>
+</span>28 <span style=''>    val query = </span><span style='background: #F0ADAD'>queryWrapper select &quot;*&quot; from &quot;User&quot; where &quot;Name&quot; equal userId</span><span style=''>
+</span>29 <span style=''>    </span><span style='background: #F0ADAD'>println(query.query)</span><span style=''>
+</span>30 <span style=''>    </span><span style='background: #F0ADAD'>accessAdapter.selectSingleRow(query)</span><span style=''>
+</span>31 <span style=''>
+</span>32 <span style=''>  </span><span style='background: #F0ADAD'>override def insertNewUser</span><span style=''>(userName: String, password: String): Unit =
+</span>33 <span style=''>    val insertBuilder = </span><span style='background: #F0ADAD'>InsertBuilder()</span><span style=''>
+</span>34 <span style=''>    val query = </span><span style='background: #F0ADAD'>insertBuilder insertInto &quot;User(Name, Password, Points)&quot; values {
+</span>35 <span style=''></span><span style='background: #F0ADAD'>      &quot;'&quot; + userName + &quot;', '&quot; + password + &quot;', &quot; + 0
+</span>36 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
+</span>37 <span style=''>    </span><span style='background: #F0ADAD'>println(query.query)</span><span style=''>
+</span>38 <span style=''>    </span><span style='background: #F0ADAD'>accessAdapter.insertQuery(query)</span><span style=''>
+</span>39 <span style=''>
+</span>40 <span style=''>  </span><span style='background: #F0ADAD'>override def addPointsToUser</span><span style=''>(userId: String, points: Int): Boolean =
+</span>41 <span style=''>    val updateQuery = </span><span style='background: #F0ADAD'>UpdateBuilder()</span><span style=''>
+</span>42 <span style=''>    val query = </span><span style='background: #F0ADAD'>updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot; where s&quot;UserId = $userId&quot;</span><span style=''>
+</span>43 <span style=''>    </span><span style='background: #F0ADAD'>println(query.query)</span><span style=''>
+</span>44 <span style=''>    </span><span style='background: #F0ADAD'>accessAdapter.update(query)</span><span style=''>
+</span>45 <span style=''>    
+</span>46 <span style=''>  
+</span>47 <span style=''>}
+</span>48 <span style=''>  
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          14
+        </td>
+        <td>
+          1445
+        </td>
+        <td>
+          485
+          -
+          499
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          main
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          @main def main
+        </td>
+      </tr><tr>
+        <td>
+          15
+        </td>
+        <td>
+          1438
+        </td>
+        <td>
+          525
+          -
+          568
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          AccessPort(ServiceLocator.getDataAdapter())
+        </td>
+      </tr><tr>
+        <td>
+          15
+        </td>
+        <td>
+          1437
+        </td>
+        <td>
+          536
+          -
+          567
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getDataAdapter
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ServiceLocator.getDataAdapter()
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          1439
+        </td>
+        <td>
+          669
+          -
+          701
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          selectUser
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          accessPort.selectUser(&quot;Daniele&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          1441
+        </td>
+        <td>
+          744
+          -
+          779
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          value.name + &quot; - &quot; + value.password
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          1440
+        </td>
+        <td>
+          744
+          -
+          762
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          value.name + &quot; - &quot;
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          1443
+        </td>
+        <td>
+          716
+          -
+          732
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Some(value)
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          1442
+        </td>
+        <td>
+          736
+          -
+          780
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(value.name + &quot; - &quot; + value.password)
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          1444
+        </td>
+        <td>
+          787
+          -
+          793
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          25
+        </td>
+        <td>
+          1453
+        </td>
+        <td>
+          886
+          -
+          909
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          selectUser
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def selectUser
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          1446
+        </td>
+        <td>
+          965
+          -
+          979
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          QueryBuilder()
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          1447
+        </td>
+        <td>
+          996
+          -
+          1019
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          select
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          queryWrapper select &quot;*&quot;
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          1450
+        </td>
+        <td>
+          996
+          -
+          1057
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          equal
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          queryWrapper select &quot;*&quot; from &quot;User&quot; where &quot;Name&quot; equal userId
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          1449
+        </td>
+        <td>
+          996
+          -
+          1044
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          where
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          queryWrapper select &quot;*&quot; from &quot;User&quot; where &quot;Name&quot;
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          1448
+        </td>
+        <td>
+          996
+          -
+          1031
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          queryWrapper select &quot;*&quot; from &quot;User&quot;
+        </td>
+      </tr><tr>
+        <td>
+          28
+        </td>
+        <td>
+          1451
+        </td>
+        <td>
+          1062
+          -
+          1082
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(query.query)
+        </td>
+      </tr><tr>
+        <td>
+          29
+        </td>
+        <td>
+          1452
+        </td>
+        <td>
+          1087
+          -
+          1123
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          selectSingleRow
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          accessAdapter.selectSingleRow(query)
+        </td>
+      </tr><tr>
+        <td>
+          31
+        </td>
+        <td>
+          1464
+        </td>
+        <td>
+          1127
+          -
+          1153
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          insertNewUser
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def insertNewUser
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          1454
+        </td>
+        <td>
+          1222
+          -
+          1237
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          InsertBuilder()
+        </td>
+      </tr><tr>
+        <td>
+          33
+        </td>
+        <td>
+          1461
+        </td>
+        <td>
+          1254
+          -
+          1377
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          values
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          insertBuilder insertInto &quot;User(Name, Password, Points)&quot; values {
+      &quot;'&quot; + userName + &quot;', '&quot; + password + &quot;', &quot; + 0
+    }
+        </td>
+      </tr><tr>
+        <td>
+          33
+        </td>
+        <td>
+          1455
+        </td>
+        <td>
+          1254
+          -
+          1309
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          insertInto
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          insertBuilder insertInto &quot;User(Name, Password, Points)&quot;
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1456
+        </td>
+        <td>
+          1325
+          -
+          1339
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot;'&quot; + userName
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1459
+        </td>
+        <td>
+          1325
+          -
+          1367
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot;'&quot; + userName + &quot;', '&quot; + password + &quot;', &quot;
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1458
+        </td>
+        <td>
+          1325
+          -
+          1359
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot;'&quot; + userName + &quot;', '&quot; + password
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1457
+        </td>
+        <td>
+          1325
+          -
+          1348
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot;'&quot; + userName + &quot;', '&quot;
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1460
+        </td>
+        <td>
+          1325
+          -
+          1371
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot;'&quot; + userName + &quot;', '&quot; + password + &quot;', &quot; + 0
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          1462
+        </td>
+        <td>
+          1382
+          -
+          1402
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(query.query)
+        </td>
+      </tr><tr>
+        <td>
+          37
+        </td>
+        <td>
+          1463
+        </td>
+        <td>
+          1407
+          -
+          1439
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          insertQuery
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          accessAdapter.insertQuery(query)
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          1474
+        </td>
+        <td>
+          1443
+          -
+          1471
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          addPointsToUser
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def addPointsToUser
+        </td>
+      </tr><tr>
+        <td>
+          40
+        </td>
+        <td>
+          1465
+        </td>
+        <td>
+          1534
+          -
+          1549
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          UpdateBuilder()
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          1468
+        </td>
+        <td>
+          1613
+          -
+          1632
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;Points + $points&quot;
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          1467
+        </td>
+        <td>
+          1566
+          -
+          1604
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          set
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          updateQuery update &quot;User&quot; set &quot;Points&quot;
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          1470
+        </td>
+        <td>
+          1639
+          -
+          1658
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;UserId = $userId&quot;
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          1466
+        </td>
+        <td>
+          1566
+          -
+          1591
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          update
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          updateQuery update &quot;User&quot;
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          1469
+        </td>
+        <td>
+          1566
+          -
+          1632
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          equalTo
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot;
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          1471
+        </td>
+        <td>
+          1566
+          -
+          1658
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          where
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot; where s&quot;UserId = $userId&quot;
+        </td>
+      </tr><tr>
+        <td>
+          42
+        </td>
+        <td>
+          1472
+        </td>
+        <td>
+          1663
+          -
+          1683
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(query.query)
+        </td>
+      </tr><tr>
+        <td>
+          43
+        </td>
+        <td>
+          1473
+        </td>
+        <td>
+          1688
+          -
+          1715
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          update
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          accessAdapter.update(query)
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>

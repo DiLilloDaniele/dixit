@@ -1,0 +1,566 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          grpcService/server/applicationService/Service.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.server.applicationService
+</span>2 <span style=''>
+</span>3 <span style=''>import akka.actor.ActorSystem
+</span>4 <span style=''>import akka.http.scaladsl.Http
+</span>5 <span style=''>import akka.http.scaladsl.model.{HttpRequest, HttpResponse}
+</span>6 <span style=''>import com.typesafe.config.ConfigFactory
+</span>7 <span style=''>import grpcService.ServerHandler
+</span>8 <span style=''>import grpcService.server.adapters.MyServerService
+</span>9 <span style=''>import grpcService.server.applicationService.Service
+</span>10 <span style=''>import grpcService.server.data.ports.AccessPort
+</span>11 <span style=''>import grpcService.server.domain.ports.{InboundPorts, RegisterPort, GamesManagementPort}
+</span>12 <span style=''>import grpcService.server.domain.service.ServerLogic
+</span>13 <span style=''>
+</span>14 <span style=''>import scala.concurrent.{ExecutionContext, Future}
+</span>15 <span style=''>
+</span>16 <span style=''>object Service {
+</span>17 <span style=''>  </span><span style='background: #F0ADAD'>def main</span><span style=''>(args: Array[String]): Unit = {
+</span>18 <span style=''>    // Important: enable HTTP/2 in ActorSystem's config
+</span>19 <span style=''>    // We do it here programmatically, but you can also set it in the application.conf
+</span>20 <span style=''>    val conf = </span><span style='background: #F0ADAD'>ConfigFactory
+</span>21 <span style=''></span><span style='background: #F0ADAD'>      .parseString(&quot;akka.http.server.preview.enable-http2 = on&quot;)
+</span>22 <span style=''></span><span style='background: #F0ADAD'>      .withFallback(ConfigFactory.defaultApplication())</span><span style=''>
+</span>23 <span style=''>    val system = </span><span style='background: #F0ADAD'>ActorSystem(&quot;HelloWorld&quot;, conf)</span><span style=''>
+</span>24 <span style=''>    </span><span style='background: #F0ADAD'>new Service(system).run()</span><span style=''>
+</span>25 <span style=''>    // ActorSystem threads will keep the app alive until `system.terminate()` is called
+</span>26 <span style=''>  }
+</span>27 <span style=''>}
+</span>28 <span style=''>
+</span>29 <span style=''>/**
+</span>30 <span style=''> * usare using e given a catena
+</span>31 <span style=''> * qua istanzio porte e logica di dominio
+</span>32 <span style=''> * in MyServerService voglio come contesto le porte da utilizzare
+</span>33 <span style=''> * nelle porte voglio come contesto la logica di dominio
+</span>34 <span style=''> * @param system
+</span>35 <span style=''> */
+</span>36 <span style=''>class Service(system: ActorSystem) {
+</span>37 <span style=''>  given serverLogic: ServerLogic = ServerLogic {
+</span>38 <span style=''>    </span><span style='background: #F0ADAD'>AccessPort {
+</span>39 <span style=''></span><span style='background: #F0ADAD'>      ServiceLocator.getDataAdapter()
+</span>40 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
+</span>41 <span style=''>  }
+</span>42 <span style=''>  val registerPort = </span><span style='background: #F0ADAD'>RegisterPort()</span><span style=''>
+</span>43 <span style=''>  val managementPort = </span><span style='background: #F0ADAD'>GamesManagementPort()</span><span style=''>
+</span>44 <span style=''>
+</span>45 <span style=''>  </span><span style='background: #F0ADAD'>def run</span><span style=''>(): Future[Http.ServerBinding] = {
+</span>46 <span style=''>    // Akka boot up code
+</span>47 <span style=''>    given sys: ActorSystem = system
+</span>48 <span style=''>    given ec: ExecutionContext = </span><span style='background: #F0ADAD'>sys.dispatcher</span><span style=''>
+</span>49 <span style=''>    given inboundPorts: InboundPorts = InboundPorts(registerPort, managementPort)
+</span>50 <span style=''>
+</span>51 <span style=''>    // Create service handlers
+</span>52 <span style=''>    val service: HttpRequest =&gt; Future[HttpResponse] =
+</span>53 <span style=''>      </span><span style='background: #F0ADAD'>ServerHandler(new MyServerService())</span><span style=''>
+</span>54 <span style=''>
+</span>55 <span style=''>    // Bind service handler servers to localhost:8080/8081
+</span>56 <span style=''>    val binding = </span><span style='background: #F0ADAD'>Http().newServerAt(&quot;127.0.0.1&quot;, 8083).bind(service)</span><span style=''>
+</span>57 <span style=''>
+</span>58 <span style=''>    // report successful binding
+</span>59 <span style=''>    </span><span style='background: #F0ADAD'>binding.foreach { binding =&gt; println(s&quot;gRPC server bound to: ${binding.localAddress}&quot;) }</span><span style=''>
+</span>60 <span style=''>
+</span>61 <span style=''>    binding
+</span>62 <span style=''>  }
+</span>63 <span style=''>}
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          1196
+        </td>
+        <td>
+          608
+          -
+          616
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          main
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def main
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          1190
+        </td>
+        <td>
+          806
+          -
+          884
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          parseString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ConfigFactory
+      .parseString(&quot;akka.http.server.preview.enable-http2 = on&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          1192
+        </td>
+        <td>
+          806
+          -
+          940
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          withFallback
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ConfigFactory
+      .parseString(&quot;akka.http.server.preview.enable-http2 = on&quot;)
+      .withFallback(ConfigFactory.defaultApplication())
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          1191
+        </td>
+        <td>
+          905
+          -
+          939
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          defaultApplication
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ConfigFactory.defaultApplication()
+        </td>
+      </tr><tr>
+        <td>
+          22
+        </td>
+        <td>
+          1193
+        </td>
+        <td>
+          958
+          -
+          989
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ActorSystem(&quot;HelloWorld&quot;, conf)
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          1195
+        </td>
+        <td>
+          994
+          -
+          1019
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          run
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new Service(system).run()
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          1194
+        </td>
+        <td>
+          994
+          -
+          1013
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new Service(system)
+        </td>
+      </tr><tr>
+        <td>
+          37
+        </td>
+        <td>
+          1198
+        </td>
+        <td>
+          1427
+          -
+          1483
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          AccessPort {
+      ServiceLocator.getDataAdapter()
+    }
+        </td>
+      </tr><tr>
+        <td>
+          38
+        </td>
+        <td>
+          1197
+        </td>
+        <td>
+          1446
+          -
+          1477
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getDataAdapter
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ServiceLocator.getDataAdapter()
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          1199
+        </td>
+        <td>
+          1509
+          -
+          1523
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          RegisterPort()
+        </td>
+      </tr><tr>
+        <td>
+          42
+        </td>
+        <td>
+          1200
+        </td>
+        <td>
+          1547
+          -
+          1568
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          GamesManagementPort()
+        </td>
+      </tr><tr>
+        <td>
+          44
+        </td>
+        <td>
+          1208
+        </td>
+        <td>
+          1572
+          -
+          1579
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          run
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def run
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          1201
+        </td>
+        <td>
+          1708
+          -
+          1722
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          dispatcher
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          sys.dispatcher
+        </td>
+      </tr><tr>
+        <td>
+          52
+        </td>
+        <td>
+          1203
+        </td>
+        <td>
+          1898
+          -
+          1934
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ServerHandler(new MyServerService())
+        </td>
+      </tr><tr>
+        <td>
+          52
+        </td>
+        <td>
+          1202
+        </td>
+        <td>
+          1912
+          -
+          1933
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new MyServerService()
+        </td>
+      </tr><tr>
+        <td>
+          55
+        </td>
+        <td>
+          1205
+        </td>
+        <td>
+          2013
+          -
+          2050
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          newServerAt
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Http().newServerAt(&quot;127.0.0.1&quot;, 8083)
+        </td>
+      </tr><tr>
+        <td>
+          55
+        </td>
+        <td>
+          1204
+        </td>
+        <td>
+          2013
+          -
+          2019
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Http()
+        </td>
+      </tr><tr>
+        <td>
+          55
+        </td>
+        <td>
+          1206
+        </td>
+        <td>
+          2013
+          -
+          2064
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          bind
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Http().newServerAt(&quot;127.0.0.1&quot;, 8083).bind(service)
+        </td>
+      </tr><tr>
+        <td>
+          58
+        </td>
+        <td>
+          1207
+        </td>
+        <td>
+          2103
+          -
+          2191
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foreach
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          binding.foreach { binding =&gt; println(s&quot;gRPC server bound to: ${binding.localAddress}&quot;) }
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>

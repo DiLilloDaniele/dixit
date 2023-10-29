@@ -1,0 +1,2936 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          grpcService/client/view/HomepageView.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.client.view
+</span>2 <span style=''>
+</span>3 <span style=''>import grpcService.client.controller.{GameController, GameControllerObj}
+</span>4 <span style=''>
+</span>5 <span style=''>import java.awt.*
+</span>6 <span style=''>import java.awt.event.{MouseEvent, MouseListener}
+</span>7 <span style=''>import java.awt.image.BufferedImage
+</span>8 <span style=''>import java.io.{File, IOException}
+</span>9 <span style=''>import java.lang.ModuleLayer.Controller
+</span>10 <span style=''>import java.lang.Runnable
+</span>11 <span style=''>import javax.imageio.ImageIO
+</span>12 <span style=''>import javax.swing.*
+</span>13 <span style=''>import javax.swing.event.{ListSelectionEvent, ListSelectionListener}
+</span>14 <span style=''>import scala.util.{Failure, Success}
+</span>15 <span style=''>import grpcService.client.ClientImpl
+</span>16 <span style=''>
+</span>17 <span style=''>import java.util
+</span>18 <span style=''>
+</span>19 <span style=''>object HomepageView:
+</span>20 <span style=''>
+</span>21 <span style=''>  </span><span style='background: #F0ADAD'>@main def executeView</span><span style=''>() =
+</span>22 <span style=''>    </span><span style='background: #F0ADAD'>SwingUtilities.invokeLater(() =&gt; {
+</span>23 <span style=''></span><span style='background: #F0ADAD'>      createAndShowGui()
+</span>24 <span style=''></span><span style='background: #F0ADAD'>    })</span><span style=''>
+</span>25 <span style=''>
+</span>26 <span style=''>  </span><span style='background: #F0ADAD'>def main</span><span style=''>(args: Array[String]): Unit =
+</span>27 <span style=''>    </span><span style='background: #F0ADAD'>createAndShowGui()</span><span style=''>
+</span>28 <span style=''>
+</span>29 <span style=''>  </span><span style='background: #F0ADAD'>def createAndShowGui</span><span style=''>() =
+</span>30 <span style=''>    val clientImpl = </span><span style='background: #F0ADAD'>ClientImpl()</span><span style=''>
+</span>31 <span style=''>    val controller = </span><span style='background: #F0ADAD'>GameController(clientImpl)</span><span style=''>
+</span>32 <span style=''>    val frame = </span><span style='background: #F0ADAD'>JFrame(&quot;Test&quot;)</span><span style=''>
+</span>33 <span style=''>    </span><span style='background: #F0ADAD'>frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)</span><span style=''>
+</span>34 <span style=''>    </span><span style='background: #F0ADAD'>frame.setContentPane (HomepageView(controller))</span><span style=''>
+</span>35 <span style=''>    </span><span style='background: #F0ADAD'>frame.pack ()</span><span style=''>
+</span>36 <span style=''>    </span><span style='background: #F0ADAD'>frame.setLocationRelativeTo (null)</span><span style=''>
+</span>37 <span style=''>    </span><span style='background: #F0ADAD'>frame.setVisible (true)</span><span style=''>
+</span>38 <span style=''>
+</span>39 <span style=''>class HomepageView(val gameController : GameController) extends </span><span style='background: #F0ADAD'>JPanel()</span><span style=''> {
+</span>40 <span style=''>
+</span>41 <span style=''>  val resourceFolder = (</span><span style='background: #F0ADAD'>System.getProperty(&quot;user.dir&quot;).toString() + &quot;\\src\\main\\resources\\&quot;</span><span style=''>)
+</span>42 <span style=''>  var listPane = </span><span style='background: #F0ADAD'>JPanel()</span><span style=''>
+</span>43 <span style=''>  var cl: CardLayout = </span><span style='background: #F0ADAD'>CardLayout()</span><span style=''>
+</span>44 <span style=''>
+</span>45 <span style=''>  </span><span style='background: #F0ADAD'>setLayout(cl)</span><span style=''>
+</span>46 <span style=''>
+</span>47 <span style=''>  val borderLayout = </span><span style='background: #F0ADAD'>new JPanel(new BorderLayout())</span><span style=''>
+</span>48 <span style=''>  </span><span style='background: #F0ADAD'>listPane.setLayout(new BoxLayout(listPane, BoxLayout.X_AXIS))</span><span style=''>
+</span>49 <span style=''>
+</span>50 <span style=''>  val labsPanel = </span><span style='background: #F0ADAD'>new JPanel()</span><span style=''>
+</span>51 <span style=''>  </span><span style='background: #F0ADAD'>labsPanel.setLayout(new BoxLayout(labsPanel, BoxLayout.X_AXIS))</span><span style=''>
+</span>52 <span style=''>
+</span>53 <span style=''>  </span><span style='background: #F0ADAD'>labsPanel.add(listPane)</span><span style=''>
+</span>54 <span style=''>
+</span>55 <span style=''>  var myList: JList[String] = </span><span style='background: #F0ADAD'>new JList()</span><span style=''>
+</span>56 <span style=''>  </span><span style='background: #F0ADAD'>myList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION)</span><span style=''>
+</span>57 <span style=''>  </span><span style='background: #F0ADAD'>myList.addListSelectionListener((e) =&gt; {
+</span>58 <span style=''></span><span style='background: #F0ADAD'>    println(&quot;ELEMENTO CLICCATO: &quot; + myList.getSelectedValue)
+</span>59 <span style=''></span><span style='background: #F0ADAD'>  })</span><span style=''>
+</span>60 <span style=''>  </span><span style='background: #F0ADAD'>myList.setLayoutOrientation(JList.VERTICAL_WRAP)</span><span style=''>
+</span>61 <span style=''>  </span><span style='background: #F0ADAD'>myList.setVisibleRowCount(-1)</span><span style=''>
+</span>62 <span style=''>
+</span>63 <span style=''>  val listScroller: JScrollPane = </span><span style='background: #F0ADAD'>JScrollPane(myList)</span><span style=''>
+</span>64 <span style=''>  </span><span style='background: #F0ADAD'>listScroller.setPreferredSize(Dimension(500, 200))</span><span style=''>
+</span>65 <span style=''>
+</span>66 <span style=''>  </span><span style='background: #F0ADAD'>labsPanel.add(listScroller)</span><span style=''>
+</span>67 <span style=''>
+</span>68 <span style=''>  val butCreate = </span><span style='background: #F0ADAD'>JButton(&quot;Create game&quot;)</span><span style=''>
+</span>69 <span style=''>  val butSubmit = </span><span style='background: #F0ADAD'>JButton(&quot;Join&quot;)</span><span style=''>
+</span>70 <span style=''>  val butRefresh = </span><span style='background: #F0ADAD'>JButton(&quot;Refresh...&quot;)</span><span style=''>
+</span>71 <span style=''>  </span><span style='background: #F0ADAD'>butCreate.addActionListener((e) =&gt; {
+</span>72 <span style=''></span><span style='background: #F0ADAD'>    gameController.createGame()
+</span>73 <span style=''></span><span style='background: #F0ADAD'>  })</span><span style=''>
+</span>74 <span style=''>  </span><span style='background: #F0ADAD'>butRefresh.addActionListener((e) =&gt; {
+</span>75 <span style=''></span><span style='background: #F0ADAD'>    gameController.getGames((list) =&gt; {
+</span>76 <span style=''></span><span style='background: #F0ADAD'>      println(&quot;LISTA GAMES:&quot;)
+</span>77 <span style=''></span><span style='background: #F0ADAD'>      println(list)
+</span>78 <span style=''></span><span style='background: #F0ADAD'>      import javax.swing.DefaultListModel
+</span>79 <span style=''></span><span style='background: #F0ADAD'>      val model = new DefaultListModel[String]()
+</span>80 <span style=''></span><span style='background: #F0ADAD'>      model.addAll(getJavaList(list))
+</span>81 <span style=''></span><span style='background: #F0ADAD'>      myList.setModel(model)
+</span>82 <span style=''></span><span style='background: #F0ADAD'>    })
+</span>83 <span style=''></span><span style='background: #F0ADAD'>  })</span><span style=''>
+</span>84 <span style=''>
+</span>85 <span style=''>  val redVal = </span><span style='background: #F0ADAD'>JTextField(20)</span><span style=''>
+</span>86 <span style=''>
+</span>87 <span style=''>  val butPanelSouth = </span><span style='background: #F0ADAD'>JPanel()</span><span style=''>
+</span>88 <span style=''>  val butPanelNorth = </span><span style='background: #F0ADAD'>JPanel()</span><span style=''>
+</span>89 <span style=''>
+</span>90 <span style=''>  </span><span style='background: #F0ADAD'>butPanelSouth.add(redVal)</span><span style=''>
+</span>91 <span style=''>  </span><span style='background: #F0ADAD'>butPanelSouth.add(butCreate)</span><span style=''>
+</span>92 <span style=''>
+</span>93 <span style=''>  </span><span style='background: #F0ADAD'>butPanelNorth.add(butRefresh)</span><span style=''>
+</span>94 <span style=''>  </span><span style='background: #F0ADAD'>butPanelNorth.add(butSubmit)</span><span style=''>
+</span>95 <span style=''>
+</span>96 <span style=''>  val loginPanel = </span><span style='background: #F0ADAD'>JPanel()</span><span style=''>
+</span>97 <span style=''>  </span><span style='background: #F0ADAD'>loginPanel.setLayout(BoxLayout(loginPanel, BoxLayout.Y_AXIS))</span><span style=''>
+</span>98 <span style=''>  val usernameTextField = </span><span style='background: #F0ADAD'>JTextField(&quot;Inserisci il nome&quot;)</span><span style=''>
+</span>99 <span style=''>  val passwordTextField = </span><span style='background: #F0ADAD'>JTextField(&quot;Inserisci la password&quot;)</span><span style=''>
+</span>100 <span style=''>  </span><span style='background: #F0ADAD'>loginPanel.add(usernameTextField)</span><span style=''>
+</span>101 <span style=''>  </span><span style='background: #F0ADAD'>loginPanel.add(passwordTextField)</span><span style=''>
+</span>102 <span style=''>  val loginButton = </span><span style='background: #F0ADAD'>JButton(&quot;Accedi&quot;)</span><span style=''>
+</span>103 <span style=''>  val registerButton = </span><span style='background: #F0ADAD'>JButton(&quot;Registrati&quot;)</span><span style=''>
+</span>104 <span style=''>  </span><span style='background: #F0ADAD'>loginPanel.add(loginButton)</span><span style=''>
+</span>105 <span style=''>  </span><span style='background: #F0ADAD'>loginPanel.add(registerButton)</span><span style=''>
+</span>106 <span style=''>  </span><span style='background: #F0ADAD'>loginButton.addActionListener((ev) =&gt; {
+</span>107 <span style=''></span><span style='background: #F0ADAD'>    val username = usernameTextField.getText
+</span>108 <span style=''></span><span style='background: #F0ADAD'>    val password = passwordTextField.getText
+</span>109 <span style=''></span><span style='background: #F0ADAD'>    gameController.login(username, password, (res) =&gt; {
+</span>110 <span style=''></span><span style='background: #F0ADAD'>      res match {
+</span>111 <span style=''></span><span style='background: #F0ADAD'>        case true =&gt;
+</span>112 <span style=''></span><span style='background: #F0ADAD'>          gameController.username = username
+</span>113 <span style=''></span><span style='background: #F0ADAD'>          changeView()
+</span>114 <span style=''></span><span style='background: #F0ADAD'>        case _ =&gt; JOptionPane.showMessageDialog(null, &quot;Utente non registrato&quot;)
+</span>115 <span style=''></span><span style='background: #F0ADAD'>      }
+</span>116 <span style=''></span><span style='background: #F0ADAD'>    })
+</span>117 <span style=''></span><span style='background: #F0ADAD'>  })</span><span style=''>
+</span>118 <span style=''>  </span><span style='background: #F0ADAD'>registerButton.addActionListener((ev) =&gt; {
+</span>119 <span style=''></span><span style='background: #F0ADAD'>    val username = usernameTextField.getText
+</span>120 <span style=''></span><span style='background: #F0ADAD'>    val password = passwordTextField.getText
+</span>121 <span style=''></span><span style='background: #F0ADAD'>    gameController.register(username, password, (res) =&gt; {
+</span>122 <span style=''></span><span style='background: #F0ADAD'>      res match {
+</span>123 <span style=''></span><span style='background: #F0ADAD'>        case true =&gt;
+</span>124 <span style=''></span><span style='background: #F0ADAD'>          gameController.username = username
+</span>125 <span style=''></span><span style='background: #F0ADAD'>          changeView()
+</span>126 <span style=''></span><span style='background: #F0ADAD'>        case _ =&gt; JOptionPane.showMessageDialog(null, &quot;Utente non registrato&quot;)
+</span>127 <span style=''></span><span style='background: #F0ADAD'>      }
+</span>128 <span style=''></span><span style='background: #F0ADAD'>    })
+</span>129 <span style=''></span><span style='background: #F0ADAD'>  })</span><span style=''>
+</span>130 <span style=''>
+</span>131 <span style=''>  </span><span style='background: #F0ADAD'>borderLayout.add(labsPanel, BorderLayout.CENTER)</span><span style=''>
+</span>132 <span style=''>  </span><span style='background: #F0ADAD'>borderLayout.add(butPanelNorth, BorderLayout.NORTH)</span><span style=''>
+</span>133 <span style=''>  </span><span style='background: #F0ADAD'>borderLayout.add(butPanelSouth, BorderLayout.SOUTH)</span><span style=''>
+</span>134 <span style=''>
+</span>135 <span style=''>  </span><span style='background: #F0ADAD'>add(loginPanel, &quot;empty&quot;)</span><span style=''>
+</span>136 <span style=''>  </span><span style='background: #F0ADAD'>add(borderLayout, &quot;listpane&quot;)</span><span style=''>
+</span>137 <span style=''>  
+</span>138 <span style=''>  </span><span style='background: #F0ADAD'>def createAndShowGui</span><span style=''>() =
+</span>139 <span style=''>    </span><span style='background: #F0ADAD'>SwingUtilities.invokeLater(() =&gt; {
+</span>140 <span style=''></span><span style='background: #F0ADAD'>      val frame = JFrame(&quot;Main GUI&quot;)
+</span>141 <span style=''></span><span style='background: #F0ADAD'>      frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
+</span>142 <span style=''></span><span style='background: #F0ADAD'>      frame.setContentPane (this)
+</span>143 <span style=''></span><span style='background: #F0ADAD'>      frame.pack()
+</span>144 <span style=''></span><span style='background: #F0ADAD'>      frame.setLocationRelativeTo (null)
+</span>145 <span style=''></span><span style='background: #F0ADAD'>      frame.setVisible (true)
+</span>146 <span style=''></span><span style='background: #F0ADAD'>    })</span><span style=''>
+</span>147 <span style=''>
+</span>148 <span style=''>  </span><span style='background: #F0ADAD'>def changeView</span><span style=''>() =
+</span>149 <span style=''>    </span><span style='background: #F0ADAD'>SwingUtilities.invokeLater(() =&gt; {
+</span>150 <span style=''></span><span style='background: #F0ADAD'>      cl.show(this, &quot;listpane&quot;)
+</span>151 <span style=''></span><span style='background: #F0ADAD'>    })</span><span style=''>
+</span>152 <span style=''>
+</span>153 <span style=''>  </span><span style='background: #F0ADAD'>def getJavaList</span><span style=''>[A](list: scala.List[A]) =
+</span>154 <span style=''>    val javaList: util.ArrayList[A] = </span><span style='background: #F0ADAD'>util.ArrayList()</span><span style=''>
+</span>155 <span style=''>    </span><span style='background: #F0ADAD'>list.foreach((el) =&gt; {
+</span>156 <span style=''></span><span style='background: #F0ADAD'>      javaList.add(el)
+</span>157 <span style=''></span><span style='background: #F0ADAD'>    })</span><span style=''>
+</span>158 <span style=''>    javaList
+</span>159 <span style=''>
+</span>160 <span style=''>
+</span>161 <span style=''>}
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          891
+        </td>
+        <td>
+          548
+          -
+          569
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          executeView
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          @main def executeView
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          890
+        </td>
+        <td>
+          578
+          -
+          644
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          invokeLater
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          SwingUtilities.invokeLater(() =&gt; {
+      createAndShowGui()
+    })
+        </td>
+      </tr><tr>
+        <td>
+          22
+        </td>
+        <td>
+          889
+        </td>
+        <td>
+          619
+          -
+          637
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          createAndShowGui
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          createAndShowGui()
+        </td>
+      </tr><tr>
+        <td>
+          25
+        </td>
+        <td>
+          893
+        </td>
+        <td>
+          648
+          -
+          656
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          main
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def main
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          892
+        </td>
+        <td>
+          690
+          -
+          708
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          createAndShowGui
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          createAndShowGui()
+        </td>
+      </tr><tr>
+        <td>
+          28
+        </td>
+        <td>
+          903
+        </td>
+        <td>
+          712
+          -
+          732
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          createAndShowGui
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def createAndShowGui
+        </td>
+      </tr><tr>
+        <td>
+          29
+        </td>
+        <td>
+          894
+        </td>
+        <td>
+          758
+          -
+          770
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ClientImpl()
+        </td>
+      </tr><tr>
+        <td>
+          30
+        </td>
+        <td>
+          895
+        </td>
+        <td>
+          792
+          -
+          818
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          GameController(clientImpl)
+        </td>
+      </tr><tr>
+        <td>
+          31
+        </td>
+        <td>
+          896
+        </td>
+        <td>
+          835
+          -
+          849
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JFrame(&quot;Test&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          897
+        </td>
+        <td>
+          854
+          -
+          915
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setDefaultCloseOperation
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
+        </td>
+      </tr><tr>
+        <td>
+          33
+        </td>
+        <td>
+          899
+        </td>
+        <td>
+          920
+          -
+          967
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setContentPane
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.setContentPane (HomepageView(controller))
+        </td>
+      </tr><tr>
+        <td>
+          33
+        </td>
+        <td>
+          898
+        </td>
+        <td>
+          942
+          -
+          966
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          HomepageView(controller)
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          900
+        </td>
+        <td>
+          972
+          -
+          985
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          pack
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.pack ()
+        </td>
+      </tr><tr>
+        <td>
+          35
+        </td>
+        <td>
+          901
+        </td>
+        <td>
+          990
+          -
+          1024
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setLocationRelativeTo
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.setLocationRelativeTo (null)
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          902
+        </td>
+        <td>
+          1029
+          -
+          1052
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setVisible
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.setVisible (true)
+        </td>
+      </tr><tr>
+        <td>
+          38
+        </td>
+        <td>
+          904
+        </td>
+        <td>
+          1118
+          -
+          1126
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JPanel()
+        </td>
+      </tr><tr>
+        <td>
+          40
+        </td>
+        <td>
+          905
+        </td>
+        <td>
+          1154
+          -
+          1184
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getProperty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          System.getProperty(&quot;user.dir&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          40
+        </td>
+        <td>
+          907
+        </td>
+        <td>
+          1154
+          -
+          1224
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          System.getProperty(&quot;user.dir&quot;).toString() + &quot;\\src\\main\\resources\\&quot;
+        </td>
+      </tr><tr>
+        <td>
+          40
+        </td>
+        <td>
+          906
+        </td>
+        <td>
+          1154
+          -
+          1195
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          toString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          System.getProperty(&quot;user.dir&quot;).toString()
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          908
+        </td>
+        <td>
+          1243
+          -
+          1251
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JPanel()
+        </td>
+      </tr><tr>
+        <td>
+          42
+        </td>
+        <td>
+          909
+        </td>
+        <td>
+          1275
+          -
+          1287
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          CardLayout()
+        </td>
+      </tr><tr>
+        <td>
+          44
+        </td>
+        <td>
+          910
+        </td>
+        <td>
+          1291
+          -
+          1304
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setLayout
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          setLayout(cl)
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          911
+        </td>
+        <td>
+          1338
+          -
+          1356
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new BorderLayout()
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          912
+        </td>
+        <td>
+          1327
+          -
+          1357
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new JPanel(new BorderLayout())
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          914
+        </td>
+        <td>
+          1360
+          -
+          1421
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setLayout
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          listPane.setLayout(new BoxLayout(listPane, BoxLayout.X_AXIS))
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          913
+        </td>
+        <td>
+          1379
+          -
+          1420
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new BoxLayout(listPane, BoxLayout.X_AXIS)
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          915
+        </td>
+        <td>
+          1441
+          -
+          1453
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new JPanel()
+        </td>
+      </tr><tr>
+        <td>
+          50
+        </td>
+        <td>
+          917
+        </td>
+        <td>
+          1456
+          -
+          1519
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setLayout
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          labsPanel.setLayout(new BoxLayout(labsPanel, BoxLayout.X_AXIS))
+        </td>
+      </tr><tr>
+        <td>
+          50
+        </td>
+        <td>
+          916
+        </td>
+        <td>
+          1476
+          -
+          1518
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new BoxLayout(labsPanel, BoxLayout.X_AXIS)
+        </td>
+      </tr><tr>
+        <td>
+          52
+        </td>
+        <td>
+          918
+        </td>
+        <td>
+          1523
+          -
+          1546
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          labsPanel.add(listPane)
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          919
+        </td>
+        <td>
+          1578
+          -
+          1589
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new JList()
+        </td>
+      </tr><tr>
+        <td>
+          55
+        </td>
+        <td>
+          920
+        </td>
+        <td>
+          1592
+          -
+          1661
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setSelectionMode
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION)
+        </td>
+      </tr><tr>
+        <td>
+          56
+        </td>
+        <td>
+          924
+        </td>
+        <td>
+          1664
+          -
+          1770
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          addListSelectionListener
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myList.addListSelectionListener((e) =&gt; {
+    println(&quot;ELEMENTO CLICCATO: &quot; + myList.getSelectedValue)
+  })
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          923
+        </td>
+        <td>
+          1709
+          -
+          1765
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(&quot;ELEMENTO CLICCATO: &quot; + myList.getSelectedValue)
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          922
+        </td>
+        <td>
+          1717
+          -
+          1764
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot;ELEMENTO CLICCATO: &quot; + myList.getSelectedValue
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          921
+        </td>
+        <td>
+          1741
+          -
+          1764
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getSelectedValue
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myList.getSelectedValue
+        </td>
+      </tr><tr>
+        <td>
+          59
+        </td>
+        <td>
+          925
+        </td>
+        <td>
+          1773
+          -
+          1821
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setLayoutOrientation
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myList.setLayoutOrientation(JList.VERTICAL_WRAP)
+        </td>
+      </tr><tr>
+        <td>
+          60
+        </td>
+        <td>
+          926
+        </td>
+        <td>
+          1824
+          -
+          1853
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setVisibleRowCount
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myList.setVisibleRowCount(-1)
+        </td>
+      </tr><tr>
+        <td>
+          62
+        </td>
+        <td>
+          927
+        </td>
+        <td>
+          1889
+          -
+          1908
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JScrollPane(myList)
+        </td>
+      </tr><tr>
+        <td>
+          63
+        </td>
+        <td>
+          929
+        </td>
+        <td>
+          1911
+          -
+          1961
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setPreferredSize
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          listScroller.setPreferredSize(Dimension(500, 200))
+        </td>
+      </tr><tr>
+        <td>
+          63
+        </td>
+        <td>
+          928
+        </td>
+        <td>
+          1941
+          -
+          1960
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Dimension(500, 200)
+        </td>
+      </tr><tr>
+        <td>
+          65
+        </td>
+        <td>
+          930
+        </td>
+        <td>
+          1965
+          -
+          1992
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          labsPanel.add(listScroller)
+        </td>
+      </tr><tr>
+        <td>
+          67
+        </td>
+        <td>
+          931
+        </td>
+        <td>
+          2012
+          -
+          2034
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JButton(&quot;Create game&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          68
+        </td>
+        <td>
+          932
+        </td>
+        <td>
+          2053
+          -
+          2068
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JButton(&quot;Join&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          69
+        </td>
+        <td>
+          933
+        </td>
+        <td>
+          2088
+          -
+          2109
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JButton(&quot;Refresh...&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          70
+        </td>
+        <td>
+          937
+        </td>
+        <td>
+          2112
+          -
+          2185
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          addActionListener
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          butCreate.addActionListener((e) =&gt; {
+    gameController.createGame()
+  })
+        </td>
+      </tr><tr>
+        <td>
+          71
+        </td>
+        <td>
+          935
+        </td>
+        <td>
+          2153
+          -
+          2178
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          createGame$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          gameController.createGame
+        </td>
+      </tr><tr>
+        <td>
+          71
+        </td>
+        <td>
+          934
+        </td>
+        <td>
+          2153
+          -
+          2178
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          createGame$default$1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          gameController.createGame
+        </td>
+      </tr><tr>
+        <td>
+          71
+        </td>
+        <td>
+          936
+        </td>
+        <td>
+          2153
+          -
+          2180
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          createGame
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          gameController.createGame()
+        </td>
+      </tr><tr>
+        <td>
+          73
+        </td>
+        <td>
+          945
+        </td>
+        <td>
+          2188
+          -
+          2485
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          addActionListener
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          butRefresh.addActionListener((e) =&gt; {
+    gameController.getGames((list) =&gt; {
+      println(&quot;LISTA GAMES:&quot;)
+      println(list)
+      import javax.swing.DefaultListModel
+      val model = new DefaultListModel[String]()
+      model.addAll(getJavaList(list))
+      myList.setModel(model)
+    })
+  })
+        </td>
+      </tr><tr>
+        <td>
+          74
+        </td>
+        <td>
+          944
+        </td>
+        <td>
+          2230
+          -
+          2480
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getGames
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          gameController.getGames((list) =&gt; {
+      println(&quot;LISTA GAMES:&quot;)
+      println(list)
+      import javax.swing.DefaultListModel
+      val model = new DefaultListModel[String]()
+      model.addAll(getJavaList(list))
+      myList.setModel(model)
+    })
+        </td>
+      </tr><tr>
+        <td>
+          75
+        </td>
+        <td>
+          938
+        </td>
+        <td>
+          2272
+          -
+          2295
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(&quot;LISTA GAMES:&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          76
+        </td>
+        <td>
+          939
+        </td>
+        <td>
+          2302
+          -
+          2315
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(list)
+        </td>
+      </tr><tr>
+        <td>
+          78
+        </td>
+        <td>
+          940
+        </td>
+        <td>
+          2376
+          -
+          2406
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new DefaultListModel[String]()
+        </td>
+      </tr><tr>
+        <td>
+          79
+        </td>
+        <td>
+          941
+        </td>
+        <td>
+          2426
+          -
+          2443
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getJavaList
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          getJavaList(list)
+        </td>
+      </tr><tr>
+        <td>
+          79
+        </td>
+        <td>
+          942
+        </td>
+        <td>
+          2413
+          -
+          2444
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          addAll
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          model.addAll(getJavaList(list))
+        </td>
+      </tr><tr>
+        <td>
+          80
+        </td>
+        <td>
+          943
+        </td>
+        <td>
+          2451
+          -
+          2473
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setModel
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myList.setModel(model)
+        </td>
+      </tr><tr>
+        <td>
+          84
+        </td>
+        <td>
+          946
+        </td>
+        <td>
+          2502
+          -
+          2516
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JTextField(20)
+        </td>
+      </tr><tr>
+        <td>
+          86
+        </td>
+        <td>
+          947
+        </td>
+        <td>
+          2540
+          -
+          2548
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JPanel()
+        </td>
+      </tr><tr>
+        <td>
+          87
+        </td>
+        <td>
+          948
+        </td>
+        <td>
+          2571
+          -
+          2579
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JPanel()
+        </td>
+      </tr><tr>
+        <td>
+          89
+        </td>
+        <td>
+          949
+        </td>
+        <td>
+          2583
+          -
+          2608
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          butPanelSouth.add(redVal)
+        </td>
+      </tr><tr>
+        <td>
+          90
+        </td>
+        <td>
+          950
+        </td>
+        <td>
+          2611
+          -
+          2639
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          butPanelSouth.add(butCreate)
+        </td>
+      </tr><tr>
+        <td>
+          92
+        </td>
+        <td>
+          951
+        </td>
+        <td>
+          2643
+          -
+          2672
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          butPanelNorth.add(butRefresh)
+        </td>
+      </tr><tr>
+        <td>
+          93
+        </td>
+        <td>
+          952
+        </td>
+        <td>
+          2675
+          -
+          2703
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          butPanelNorth.add(butSubmit)
+        </td>
+      </tr><tr>
+        <td>
+          95
+        </td>
+        <td>
+          953
+        </td>
+        <td>
+          2724
+          -
+          2732
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JPanel()
+        </td>
+      </tr><tr>
+        <td>
+          96
+        </td>
+        <td>
+          955
+        </td>
+        <td>
+          2735
+          -
+          2796
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setLayout
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          loginPanel.setLayout(BoxLayout(loginPanel, BoxLayout.Y_AXIS))
+        </td>
+      </tr><tr>
+        <td>
+          96
+        </td>
+        <td>
+          954
+        </td>
+        <td>
+          2756
+          -
+          2795
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          BoxLayout(loginPanel, BoxLayout.Y_AXIS)
+        </td>
+      </tr><tr>
+        <td>
+          97
+        </td>
+        <td>
+          956
+        </td>
+        <td>
+          2823
+          -
+          2854
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JTextField(&quot;Inserisci il nome&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          98
+        </td>
+        <td>
+          957
+        </td>
+        <td>
+          2881
+          -
+          2916
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JTextField(&quot;Inserisci la password&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          99
+        </td>
+        <td>
+          958
+        </td>
+        <td>
+          2919
+          -
+          2952
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          loginPanel.add(usernameTextField)
+        </td>
+      </tr><tr>
+        <td>
+          100
+        </td>
+        <td>
+          959
+        </td>
+        <td>
+          2955
+          -
+          2988
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          loginPanel.add(passwordTextField)
+        </td>
+      </tr><tr>
+        <td>
+          101
+        </td>
+        <td>
+          960
+        </td>
+        <td>
+          3009
+          -
+          3026
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JButton(&quot;Accedi&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          102
+        </td>
+        <td>
+          961
+        </td>
+        <td>
+          3050
+          -
+          3071
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JButton(&quot;Registrati&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          103
+        </td>
+        <td>
+          962
+        </td>
+        <td>
+          3074
+          -
+          3101
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          loginPanel.add(loginButton)
+        </td>
+      </tr><tr>
+        <td>
+          104
+        </td>
+        <td>
+          963
+        </td>
+        <td>
+          3104
+          -
+          3134
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          loginPanel.add(registerButton)
+        </td>
+      </tr><tr>
+        <td>
+          105
+        </td>
+        <td>
+          971
+        </td>
+        <td>
+          3137
+          -
+          3528
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          addActionListener
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          loginButton.addActionListener((ev) =&gt; {
+    val username = usernameTextField.getText
+    val password = passwordTextField.getText
+    gameController.login(username, password, (res) =&gt; {
+      res match {
+        case true =&gt;
+          gameController.username = username
+          changeView()
+        case _ =&gt; JOptionPane.showMessageDialog(null, &quot;Utente non registrato&quot;)
+      }
+    })
+  })
+        </td>
+      </tr><tr>
+        <td>
+          106
+        </td>
+        <td>
+          964
+        </td>
+        <td>
+          3196
+          -
+          3221
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getText
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          usernameTextField.getText
+        </td>
+      </tr><tr>
+        <td>
+          107
+        </td>
+        <td>
+          965
+        </td>
+        <td>
+          3241
+          -
+          3266
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getText
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          passwordTextField.getText
+        </td>
+      </tr><tr>
+        <td>
+          108
+        </td>
+        <td>
+          970
+        </td>
+        <td>
+          3271
+          -
+          3523
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          login
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          gameController.login(username, password, (res) =&gt; {
+      res match {
+        case true =&gt;
+          gameController.username = username
+          changeView()
+        case _ =&gt; JOptionPane.showMessageDialog(null, &quot;Utente non registrato&quot;)
+      }
+    })
+        </td>
+      </tr><tr>
+        <td>
+          110
+        </td>
+        <td>
+          967
+        </td>
+        <td>
+          3349
+          -
+          3358
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case true
+        </td>
+      </tr><tr>
+        <td>
+          112
+        </td>
+        <td>
+          966
+        </td>
+        <td>
+          3417
+          -
+          3429
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          changeView
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          changeView()
+        </td>
+      </tr><tr>
+        <td>
+          113
+        </td>
+        <td>
+          968
+        </td>
+        <td>
+          3448
+          -
+          3508
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          showMessageDialog
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JOptionPane.showMessageDialog(null, &quot;Utente non registrato&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          113
+        </td>
+        <td>
+          969
+        </td>
+        <td>
+          3438
+          -
+          3444
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          117
+        </td>
+        <td>
+          979
+        </td>
+        <td>
+          3531
+          -
+          3928
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          addActionListener
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          registerButton.addActionListener((ev) =&gt; {
+    val username = usernameTextField.getText
+    val password = passwordTextField.getText
+    gameController.register(username, password, (res) =&gt; {
+      res match {
+        case true =&gt;
+          gameController.username = username
+          changeView()
+        case _ =&gt; JOptionPane.showMessageDialog(null, &quot;Utente non registrato&quot;)
+      }
+    })
+  })
+        </td>
+      </tr><tr>
+        <td>
+          118
+        </td>
+        <td>
+          972
+        </td>
+        <td>
+          3593
+          -
+          3618
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getText
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          usernameTextField.getText
+        </td>
+      </tr><tr>
+        <td>
+          119
+        </td>
+        <td>
+          973
+        </td>
+        <td>
+          3638
+          -
+          3663
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getText
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          passwordTextField.getText
+        </td>
+      </tr><tr>
+        <td>
+          120
+        </td>
+        <td>
+          978
+        </td>
+        <td>
+          3668
+          -
+          3923
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          register
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          gameController.register(username, password, (res) =&gt; {
+      res match {
+        case true =&gt;
+          gameController.username = username
+          changeView()
+        case _ =&gt; JOptionPane.showMessageDialog(null, &quot;Utente non registrato&quot;)
+      }
+    })
+        </td>
+      </tr><tr>
+        <td>
+          122
+        </td>
+        <td>
+          975
+        </td>
+        <td>
+          3749
+          -
+          3758
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case true
+        </td>
+      </tr><tr>
+        <td>
+          124
+        </td>
+        <td>
+          974
+        </td>
+        <td>
+          3817
+          -
+          3829
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          changeView
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          changeView()
+        </td>
+      </tr><tr>
+        <td>
+          125
+        </td>
+        <td>
+          977
+        </td>
+        <td>
+          3838
+          -
+          3844
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          125
+        </td>
+        <td>
+          976
+        </td>
+        <td>
+          3848
+          -
+          3908
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          showMessageDialog
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JOptionPane.showMessageDialog(null, &quot;Utente non registrato&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          130
+        </td>
+        <td>
+          980
+        </td>
+        <td>
+          3932
+          -
+          3980
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          borderLayout.add(labsPanel, BorderLayout.CENTER)
+        </td>
+      </tr><tr>
+        <td>
+          131
+        </td>
+        <td>
+          981
+        </td>
+        <td>
+          3983
+          -
+          4034
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          borderLayout.add(butPanelNorth, BorderLayout.NORTH)
+        </td>
+      </tr><tr>
+        <td>
+          132
+        </td>
+        <td>
+          982
+        </td>
+        <td>
+          4037
+          -
+          4088
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          borderLayout.add(butPanelSouth, BorderLayout.SOUTH)
+        </td>
+      </tr><tr>
+        <td>
+          134
+        </td>
+        <td>
+          983
+        </td>
+        <td>
+          4092
+          -
+          4116
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          add(loginPanel, &quot;empty&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          135
+        </td>
+        <td>
+          984
+        </td>
+        <td>
+          4119
+          -
+          4148
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          add(borderLayout, &quot;listpane&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          137
+        </td>
+        <td>
+          992
+        </td>
+        <td>
+          4154
+          -
+          4174
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          createAndShowGui
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def createAndShowGui
+        </td>
+      </tr><tr>
+        <td>
+          138
+        </td>
+        <td>
+          991
+        </td>
+        <td>
+          4183
+          -
+          4453
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          invokeLater
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          SwingUtilities.invokeLater(() =&gt; {
+      val frame = JFrame(&quot;Main GUI&quot;)
+      frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
+      frame.setContentPane (this)
+      frame.pack()
+      frame.setLocationRelativeTo (null)
+      frame.setVisible (true)
+    })
+        </td>
+      </tr><tr>
+        <td>
+          139
+        </td>
+        <td>
+          985
+        </td>
+        <td>
+          4236
+          -
+          4254
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          JFrame(&quot;Main GUI&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          140
+        </td>
+        <td>
+          986
+        </td>
+        <td>
+          4261
+          -
+          4322
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setDefaultCloseOperation
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
+        </td>
+      </tr><tr>
+        <td>
+          141
+        </td>
+        <td>
+          987
+        </td>
+        <td>
+          4329
+          -
+          4356
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setContentPane
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.setContentPane (this)
+        </td>
+      </tr><tr>
+        <td>
+          142
+        </td>
+        <td>
+          988
+        </td>
+        <td>
+          4363
+          -
+          4375
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          pack
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.pack()
+        </td>
+      </tr><tr>
+        <td>
+          143
+        </td>
+        <td>
+          989
+        </td>
+        <td>
+          4382
+          -
+          4416
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setLocationRelativeTo
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.setLocationRelativeTo (null)
+        </td>
+      </tr><tr>
+        <td>
+          144
+        </td>
+        <td>
+          990
+        </td>
+        <td>
+          4423
+          -
+          4446
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setVisible
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          frame.setVisible (true)
+        </td>
+      </tr><tr>
+        <td>
+          147
+        </td>
+        <td>
+          995
+        </td>
+        <td>
+          4457
+          -
+          4471
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          changeView
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def changeView
+        </td>
+      </tr><tr>
+        <td>
+          148
+        </td>
+        <td>
+          994
+        </td>
+        <td>
+          4480
+          -
+          4553
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          invokeLater
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          SwingUtilities.invokeLater(() =&gt; {
+      cl.show(this, &quot;listpane&quot;)
+    })
+        </td>
+      </tr><tr>
+        <td>
+          149
+        </td>
+        <td>
+          993
+        </td>
+        <td>
+          4521
+          -
+          4546
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          show
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          cl.show(this, &quot;listpane&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          152
+        </td>
+        <td>
+          999
+        </td>
+        <td>
+          4557
+          -
+          4572
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getJavaList
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def getJavaList
+        </td>
+      </tr><tr>
+        <td>
+          153
+        </td>
+        <td>
+          996
+        </td>
+        <td>
+          4637
+          -
+          4653
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          util.ArrayList()
+        </td>
+      </tr><tr>
+        <td>
+          154
+        </td>
+        <td>
+          998
+        </td>
+        <td>
+          4658
+          -
+          4710
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foreach
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          list.foreach((el) =&gt; {
+      javaList.add(el)
+    })
+        </td>
+      </tr><tr>
+        <td>
+          155
+        </td>
+        <td>
+          997
+        </td>
+        <td>
+          4687
+          -
+          4703
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          add
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          javaList.add(el)
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>

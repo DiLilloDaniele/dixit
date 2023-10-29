@@ -1,0 +1,6228 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          grpcService/client/actors/behaviors/ForemanBehavior.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.client.actors.behaviors
+</span>2 <span style=''>
+</span>3 <span style=''>import akka.actor.typed.{ActorRef, Behavior, Terminated}
+</span>4 <span style=''>import akka.actor.typed.receptionist.Receptionist
+</span>5 <span style=''>import akka.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors}
+</span>6 <span style=''>import grpcService.client.actors.ClusterListener.Event
+</span>7 <span style=''>import grpcService.client.actors.{ClusterListener, Message}
+</span>8 <span style=''>import grpcService.client.actors.behaviors.ForemanBehavior.{Stop, CardToGuess, Command, GuessSelection, NewTurn, PlayerRejoined, SelectionToApply, Start, list}
+</span>9 <span style=''>import grpcService.client.actors.behaviors.PlayerBehavior
+</span>10 <span style=''>import grpcService.client.actors.behaviors.PlayerBehavior.{CardChoosenByOther, CardRevealed, CardsSubmittedByOthers, YourTurn}
+</span>11 <span style=''>import grpcService.client.model.PlayerSelection
+</span>12 <span style=''>import grpcService.client.model.PumpMyList.filterMap
+</span>13 <span style=''>import grpcService.client.model.GameSettings.{MAX_CARDS, MAX_TURNS}
+</span>14 <span style=''>
+</span>15 <span style=''>import concurrent.duration.DurationInt
+</span>16 <span style=''>import scala.language.postfixOps
+</span>17 <span style=''>import scala.util.Random
+</span>18 <span style=''>
+</span>19 <span style=''>object ForemanBehavior:
+</span>20 <span style=''>
+</span>21 <span style=''>  import grpcService.client.actors.ClusterListener
+</span>22 <span style=''>
+</span>23 <span style=''>  sealed trait Command extends Message
+</span>24 <span style=''>
+</span>25 <span style=''>  case class Start(playersList: Set[ActorRef[PlayerBehavior.Command]]) extends Command
+</span>26 <span style=''>  case class CardToGuess(val cardId: String, val title: String, val replyTo: ActorRef[PlayerBehavior.Command]) extends Command
+</span>27 <span style=''>  case class SelectionToApply(val cardId: String, val replyTo: ActorRef[PlayerBehavior.Command]) extends Command
+</span>28 <span style=''>  case class GuessSelection(val cardId: String, val replyTo: ActorRef[PlayerBehavior.Command]) extends Command
+</span>29 <span style=''>  case class NewTurn(turnIndex: Int) extends Command
+</span>30 <span style=''>  case class PlayerRejoined(address: String) extends Command
+</span>31 <span style=''>  case object Stop extends Command
+</span>32 <span style=''>
+</span>33 <span style=''>  val list = </span><span style='background: #AEF1AE'>LazyList.iterate(1) { i =&gt; i + 1}.take(100).map { i =&gt; s&quot;$i&quot;}.toList</span><span style=''>
+</span>34 <span style=''>
+</span>35 <span style=''>  </span><span style='background: #F0ADAD'>@main def test</span><span style=''> =
+</span>36 <span style=''>    var myList = </span><span style='background: #F0ADAD'>Random.shuffle(list)</span><span style=''>
+</span>37 <span style=''>    </span><span style='background: #F0ADAD'>LazyList.iterate(1) { i =&gt; i + 1}.take(3).foreach { i =&gt;
+</span>38 <span style=''></span><span style='background: #F0ADAD'>      val myNewList = myList.take(10)
+</span>39 <span style=''></span><span style='background: #F0ADAD'>      myList = myList.drop(10)
+</span>40 <span style=''></span><span style='background: #F0ADAD'>      println(myNewList)
+</span>41 <span style=''></span><span style='background: #F0ADAD'>      println(&quot;----&quot;)
+</span>42 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
+</span>43 <span style=''>  // inconsistenza MAXTURNS e maxPlayers???
+</span>44 <span style=''>  </span><span style='background: #AEF1AE'>def apply</span><span style=''>(logger: Option[ActorRef[Command]] = </span><span style='background: #AEF1AE'>Option.empty</span><span style=''>,
+</span>45 <span style=''>            maxPlayers: Int = 3): Behavior[Command] =
+</span>46 <span style=''>    </span><span style='background: #AEF1AE'>Behaviors.setup[Command] { ctx =&gt;
+</span>47 <span style=''></span><span style='background: #AEF1AE'>      val rootActorRef = ctx.self
+</span>48 <span style=''></span><span style='background: #AEF1AE'>      val master = ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](ctx =&gt; new ForemanBehaviorImpl(ctx, rootActorRef, MAX_TURNS)), &quot;root&quot;)
+</span>49 <span style=''></span><span style='background: #AEF1AE'>      val listener = ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx =&gt; PlayersManagerBehavior(maxPlayers, rootActorRef)), &quot;event-listener&quot;)
+</span>50 <span style=''></span><span style='background: #AEF1AE'>      val clusterManager = ctx.spawn(Behaviors.setup[ClusterListener.Command | Event | Receptionist.Listing](ctx =&gt; ClusterListener(listener)), &quot;cluster-listener&quot;)
+</span>51 <span style=''></span><span style='background: #AEF1AE'>      ctx.watch(listener)
+</span>52 <span style=''></span><span style='background: #AEF1AE'>
+</span>53 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.receiveMessage[Command] {
+</span>54 <span style=''></span><span style='background: #AEF1AE'>        case msg =&gt;
+</span>55 <span style=''></span><span style='background: #AEF1AE'>          logger match {
+</span>56 <span style=''></span><span style='background: #AEF1AE'>            case Some(ref) =&gt; ref ! msg
+</span>57 <span style=''></span><span style='background: #AEF1AE'>            case _ =&gt;
+</span>58 <span style=''></span><span style='background: #AEF1AE'>          }
+</span>59 <span style=''></span><span style='background: #AEF1AE'>          master ! msg
+</span>60 <span style=''></span><span style='background: #AEF1AE'>          Behaviors.same
+</span>61 <span style=''></span><span style='background: #AEF1AE'>      }.receiveSignal { case (ctx, t @ Terminated(_)) =&gt;
+</span>62 <span style=''></span><span style='background: #AEF1AE'>        ctx.log.info(&quot;System terminated (FOREMAN). Shutting down&quot;)
+</span>63 <span style=''></span><span style='background: #AEF1AE'>        // master e event-listener ! close
+</span>64 <span style=''></span><span style='background: #AEF1AE'>        logger match {
+</span>65 <span style=''></span><span style='background: #AEF1AE'>            case Some(ref) =&gt; ref ! Stop
+</span>66 <span style=''></span><span style='background: #AEF1AE'>            </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt;
+</span>67 <span style=''></span><span style='background: #AEF1AE'>          }
+</span>68 <span style=''></span><span style='background: #AEF1AE'>        Behaviors.stopped
+</span>69 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>70 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>71 <span style=''>
+</span>72 <span style=''>class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], root: ActorRef[Command], maxTurns: Int) extends </span><span style='background: #AEF1AE'>AbstractBehavior[Command | Receptionist.Listing](context)</span><span style=''>:
+</span>73 <span style=''>
+</span>74 <span style=''>  var playersList: List[(ActorRef[PlayerBehavior.Command], Int)] = </span><span style='background: #AEF1AE'>List()</span><span style=''>
+</span>75 <span style=''>  var playersSelection: List[PlayerSelection[PlayerBehavior.Command]] = </span><span style='background: #AEF1AE'>List()</span><span style=''>
+</span>76 <span style=''>  var playersGuessing: List[PlayerSelection[PlayerBehavior.Command]] = </span><span style='background: #AEF1AE'>List()</span><span style=''>
+</span>77 <span style=''>  var myList = </span><span style='background: #AEF1AE'>Random.shuffle(list)</span><span style=''>
+</span>78 <span style=''>  var turnsFinished = 0
+</span>79 <span style=''>
+</span>80 <span style=''>  </span><span style='background: #AEF1AE'>override def onMessage</span><span style=''>(msg: Command | Receptionist.Listing): Behavior[Command | Receptionist.Listing] = msg match {
+</span>81 <span style=''>    </span><span style='background: #AEF1AE'>case Start(players)</span><span style=''> =&gt;
+</span>82 <span style=''>      </span><span style='background: #AEF1AE'>context.log.info(&quot;START: &quot; + players.toString)</span><span style=''>
+</span>83 <span style=''>      playersList = </span><span style='background: #AEF1AE'>players.map { i =&gt; Tuple2(i, 0)}.toList</span><span style=''>
+</span>84 <span style=''>      </span><span style='background: #AEF1AE'>playersList.foreach { p =&gt;
+</span>85 <span style=''></span><span style='background: #AEF1AE'>        context.log.info(&quot;INVIO LE CARTE AI PLAYER&quot;)
+</span>86 <span style=''></span><span style='background: #AEF1AE'>        p._1 ! PlayerBehavior.CardsAssigned(pickCards(MAX_CARDS))
+</span>87 <span style=''></span><span style='background: #AEF1AE'>      }</span><span style=''>
+</span>88 <span style=''>      </span><span style='background: #AEF1AE'>players.head ! YourTurn(root)</span><span style=''>
+</span>89 <span style=''>      </span><span style='background: #AEF1AE'>manageTurnOf(players.head, 0)</span><span style=''>
+</span>90 <span style=''>      // context.system.receptionist ! Receptionist.Subscribe(PlayerBehavior.Service, context.self)
+</span>91 <span style=''>    </span><span style='background: #F0ADAD'>case msg: Receptionist.Listing</span><span style=''> =&gt;
+</span>92 <span style=''>      // val services: List[ActorRef[PlayerBehavior.Command]] = msg.serviceInstances(PlayerBehavior.Service).toList
+</span>93 <span style=''>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style=''>
+</span>94 <span style=''>
+</span>95 <span style=''>    </span><span style='background: #F0ADAD'>case Stop</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>Behaviors.stopped</span><span style=''>
+</span>96 <span style=''>
+</span>97 <span style=''>    </span><span style='background: #F0ADAD'>case m</span><span style=''> =&gt;
+</span>98 <span style=''>      </span><span style='background: #F0ADAD'>context.log.info(&quot;Unknown message: &quot; + m.toString)</span><span style=''>
+</span>99 <span style=''>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style=''>
+</span>100 <span style=''>  }
+</span>101 <span style=''>  // TODO fine gioco
+</span>102 <span style=''>  </span><span style='background: #AEF1AE'>def manageTurnOf</span><span style=''>(actor: ActorRef[PlayerBehavior.Command], turn: Int): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
+</span>103 <span style=''></span><span style='background: #AEF1AE'>    case CardToGuess(card, title, replyTo) if replyTo.path == actor.path =&gt;
+</span>104 <span style=''></span><span style='background: #AEF1AE'>      playersSelection = List()
+</span>105 <span style=''></span><span style='background: #AEF1AE'>      println(&quot;INVIO LE CARTEEEE&quot;)
+</span>106 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(playersList.toString())
+</span>107 <span style=''></span><span style='background: #AEF1AE'>      playersList.map { i =&gt; i._1 }.foreach { i =&gt;
+</span>108 <span style=''></span><span style='background: #AEF1AE'>        if(i.path != actor.path)
+</span>109 <span style=''></span><span style='background: #AEF1AE'>          println(&quot;INVIATOOO&quot;)
+</span>110 <span style=''></span><span style='background: #AEF1AE'>          i ! CardChoosenByOther(title, root)
+</span>111 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>112 <span style=''></span><span style='background: #AEF1AE'>      waitForSelections(actor, turn, card)
+</span>113 <span style=''></span><span style='background: #AEF1AE'>
+</span>114 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case PlayerRejoined(address)</span><span style='background: #AEF1AE'> =&gt;
+</span>115 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>playerRejoinedProcedure(address, maxTurns - turnsFinished)</span><span style='background: #AEF1AE'>
+</span>116 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>actor ! YourTurn(root)</span><span style='background: #AEF1AE'>
+</span>117 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>118 <span style=''></span><span style='background: #AEF1AE'>
+</span>119 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case Stop</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.stopped</span><span style='background: #AEF1AE'>
+</span>120 <span style=''></span><span style='background: #AEF1AE'>      
+</span>121 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>122 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>123 <span style=''>  
+</span>124 <span style=''>  </span><span style='background: #AEF1AE'>def waitForSelections</span><span style=''>(actor: ActorRef[PlayerBehavior.Command], turn: Int, cardSelected: String): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
+</span>125 <span style=''></span><span style='background: #AEF1AE'>    case SelectionToApply(cardId, replyTo) =&gt;
+</span>126 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(&quot;UNA SCELTA RICEVUTA&quot;)
+</span>127 <span style=''></span><span style='background: #AEF1AE'>      playersSelection = playersSelection :+ PlayerSelection(cardId, replyTo)
+</span>128 <span style=''></span><span style='background: #AEF1AE'>      if(playersSelection.size &lt; (playersList.size - 1))
+</span>129 <span style=''></span><span style='background: #AEF1AE'>        Behaviors.same
+</span>130 <span style=''></span><span style='background: #AEF1AE'>      else
+</span>131 <span style=''></span><span style='background: #AEF1AE'>        context.log.info(&quot;RICEVUTO LE CARTE DA TUTTI&quot;)
+</span>132 <span style=''></span><span style='background: #AEF1AE'>        val playersSubmissions = playersSelection.map { i =&gt; i.card }.toList :+ cardSelected
+</span>133 <span style=''></span><span style='background: #AEF1AE'>        playersList foreach { i =&gt;
+</span>134 <span style=''></span><span style='background: #AEF1AE'>          if(i._1.path != actor.path)
+</span>135 <span style=''></span><span style='background: #AEF1AE'>            i._1 ! CardsSubmittedByOthers(playersSubmissions)
+</span>136 <span style=''></span><span style='background: #AEF1AE'>        }
+</span>137 <span style=''></span><span style='background: #AEF1AE'>        waitForGuessing(actor, turn, cardSelected)
+</span>138 <span style=''></span><span style='background: #AEF1AE'>
+</span>139 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case PlayerRejoined(address)</span><span style='background: #AEF1AE'> =&gt;
+</span>140 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>playerRejoinedProcedure(address, maxTurns - turnsFinished)</span><span style='background: #AEF1AE'>
+</span>141 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>actor ! YourTurn(root)</span><span style='background: #AEF1AE'>
+</span>142 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>manageTurnOf(actor, turn)</span><span style='background: #AEF1AE'>
+</span>143 <span style=''></span><span style='background: #AEF1AE'>
+</span>144 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case Stop</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.stopped</span><span style='background: #AEF1AE'>
+</span>145 <span style=''></span><span style='background: #AEF1AE'>
+</span>146 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>147 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>148 <span style=''>
+</span>149 <span style=''>  </span><span style='background: #AEF1AE'>def waitForGuessing</span><span style=''>(actor: ActorRef[PlayerBehavior.Command], turn: Int, cardSelected: String): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
+</span>150 <span style=''></span><span style='background: #AEF1AE'>    case GuessSelection(cardId, replyTo) =&gt;
+</span>151 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(&quot;UNA GUESS RICEVUTA&quot;)
+</span>152 <span style=''></span><span style='background: #AEF1AE'>      playersGuessing = playersGuessing :+ PlayerSelection(cardId, replyTo)
+</span>153 <span style=''></span><span style='background: #AEF1AE'>      if(playersGuessing.size &lt; (playersList.size - 1))
+</span>154 <span style=''></span><span style='background: #AEF1AE'>        Behaviors.same
+</span>155 <span style=''></span><span style='background: #AEF1AE'>      else
+</span>156 <span style=''></span><span style='background: #AEF1AE'>        context.log.info(&quot;GUESSED LE CARTE DA TUTTI&quot;)
+</span>157 <span style=''></span><span style='background: #AEF1AE'>        executeResults(playersGuessing, cardSelected, actor)
+</span>158 <span style=''></span><span style='background: #AEF1AE'>
+</span>159 <span style=''></span><span style='background: #AEF1AE'>        val newTurn = turn match
+</span>160 <span style=''></span><span style='background: #AEF1AE'>          </span><span style='background: #F0ADAD'>case m if m == (playersList.size - 1</span><span style='background: #AEF1AE'>) =&gt; 0
+</span>161 <span style=''></span><span style='background: #AEF1AE'>          case _ =&gt; turn + 1
+</span>162 <span style=''></span><span style='background: #AEF1AE'>
+</span>163 <span style=''></span><span style='background: #AEF1AE'>        if(turnsFinished &lt; (maxTurns - 1) || !playersList.map { i =&gt; i._2 }.contains(30))
+</span>164 <span style=''></span><span style='background: #AEF1AE'>          Behaviors.withTimers { timers =&gt;
+</span>165 <span style=''></span><span style='background: #AEF1AE'>            timers.startSingleTimer(NewTurn(newTurn), 5000 milliseconds)
+</span>166 <span style=''></span><span style='background: #AEF1AE'>            Behaviors.same
+</span>167 <span style=''></span><span style='background: #AEF1AE'>          }
+</span>168 <span style=''></span><span style='background: #AEF1AE'>        else
+</span>169 <span style=''></span><span style='background: #AEF1AE'>          </span><span style='background: #F0ADAD'>context.log.info(&quot;FINE GIOCO&quot;)
+</span>170 <span style=''></span><span style='background: #F0ADAD'>          playersList foreach { i =&gt;
+</span>171 <span style=''></span><span style='background: #F0ADAD'>            i._1 ! PlayerBehavior.EndGame(i._2)
+</span>172 <span style=''></span><span style='background: #F0ADAD'>          }
+</span>173 <span style=''></span><span style='background: #F0ADAD'>          Behaviors.stopped</span><span style='background: #AEF1AE'>
+</span>174 <span style=''></span><span style='background: #AEF1AE'>
+</span>175 <span style=''></span><span style='background: #AEF1AE'>    case NewTurn(turnIndex) =&gt;
+</span>176 <span style=''></span><span style='background: #AEF1AE'>      turnsFinished = turnsFinished + 1
+</span>177 <span style=''></span><span style='background: #AEF1AE'>      playersList foreach { i =&gt;
+</span>178 <span style=''></span><span style='background: #AEF1AE'>        i._1 ! PlayerBehavior.NewCard(pickCards(1).head)
+</span>179 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>180 <span style=''></span><span style='background: #AEF1AE'>      playersList(turnIndex)._1 ! YourTurn(root)
+</span>181 <span style=''></span><span style='background: #AEF1AE'>      manageTurnOf(playersList(turnIndex)._1, turnIndex)
+</span>182 <span style=''></span><span style='background: #AEF1AE'>
+</span>183 <span style=''></span><span style='background: #AEF1AE'>    case PlayerRejoined(address) =&gt;
+</span>184 <span style=''></span><span style='background: #AEF1AE'>      playerRejoinedProcedure(address, maxTurns - turnsFinished)
+</span>185 <span style=''></span><span style='background: #AEF1AE'>      actor ! YourTurn(root)
+</span>186 <span style=''></span><span style='background: #AEF1AE'>      manageTurnOf(actor, turn)
+</span>187 <span style=''></span><span style='background: #AEF1AE'>
+</span>188 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case Stop</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.stopped</span><span style='background: #AEF1AE'>
+</span>189 <span style=''></span><span style='background: #AEF1AE'>      
+</span>190 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>191 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>192 <span style=''>  
+</span>193 <span style=''>  </span><span style='background: #AEF1AE'>def playerRejoinedProcedure</span><span style=''>(address: String, numCarte: Int): Unit =
+</span>194 <span style=''>    </span><span style='background: #AEF1AE'>playersList.foreach { p =&gt;
+</span>195 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(&quot;REINVIO LE CARTE A &quot; + address)
+</span>196 <span style=''></span><span style='background: #AEF1AE'>      if(p._1.path.address.toString == address)
+</span>197 <span style=''></span><span style='background: #AEF1AE'>
+</span>198 <span style=''></span><span style='background: #AEF1AE'>        p._1 ! PlayerBehavior.CardsAssigned(pickCards(numCarte))
+</span>199 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>200 <span style=''>
+</span>201 <span style=''>  </span><span style='background: #AEF1AE'>def pickCards</span><span style=''>(numCarte: Int): List[String] =
+</span>202 <span style=''>    val myNewList = </span><span style='background: #AEF1AE'>myList.take(numCarte)</span><span style=''>
+</span>203 <span style=''>    myList = </span><span style='background: #AEF1AE'>myList.drop(numCarte)</span><span style=''>
+</span>204 <span style=''>    myNewList
+</span>205 <span style=''>
+</span>206 <span style=''>  </span><span style='background: #AEF1AE'>def executeResults</span><span style=''>(playersCards: List[PlayerSelection[PlayerBehavior.Command]], cardChosen: String, foremanPlayer: ActorRef[PlayerBehavior.Command]) =
+</span>207 <span style=''>    val totalVotes = </span><span style='background: #AEF1AE'>playersCards.filter { p =&gt;
+</span>208 <span style=''></span><span style='background: #AEF1AE'>      p.card == cardChosen
+</span>209 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>210 <span style=''>
+</span>211 <span style=''>    // gives points to users
+</span>212 <span style=''>    if(</span><span style='background: #AEF1AE'>totalVotes.size</span><span style=''> == (</span><span style='background: #AEF1AE'>playersList.size</span><span style=''> - 1) || </span><span style='background: #AEF1AE'>totalVotes.isEmpty</span><span style=''>)
+</span>213 <span style=''>      </span><span style='background: #AEF1AE'>playersList = playersList.filterMap { i =&gt;
+</span>214 <span style=''></span><span style='background: #AEF1AE'>        i._1.path.address != foremanPlayer.path.address
+</span>215 <span style=''></span><span style='background: #AEF1AE'>      } { i =&gt; Tuple2(</span><span style='background: #F0ADAD'>i._1</span><span style='background: #AEF1AE'>, </span><span style='background: #F0ADAD'>i._2</span><span style='background: #AEF1AE'> + 2) }</span><span style=''>
+</span>216 <span style=''>    else
+</span>217 <span style=''>      </span><span style='background: #AEF1AE'>playersList = playersList.filterMap { i =&gt;
+</span>218 <span style=''></span><span style='background: #AEF1AE'>        i._1.path.address == foremanPlayer.path.address || totalVotes.exists { c =&gt; c.player == i._1 }
+</span>219 <span style=''></span><span style='background: #AEF1AE'>      } { i =&gt; Tuple2(i._1, i._2 + 3) }</span><span style=''>
+</span>220 <span style=''>
+</span>221 <span style=''>    </span><span style='background: #AEF1AE'>playersList foreach { i =&gt;
+</span>222 <span style=''></span><span style='background: #AEF1AE'>      i._1 ! CardRevealed(cardChosen)
+</span>223 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          173
+        </td>
+        <td>
+          1675
+          -
+          1683
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          LazyList
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          LazyList
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          176
+        </td>
+        <td>
+          1730
+          -
+          1735
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          s&quot;$i&quot;
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          175
+        </td>
+        <td>
+          1675
+          -
+          1718
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          take
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          LazyList.iterate(1) { i =&gt; i + 1}.take(100)
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          178
+        </td>
+        <td>
+          1675
+          -
+          1743
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          toList
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          LazyList.iterate(1) { i =&gt; i + 1}.take(100).map { i =&gt; s&quot;$i&quot;}.toList
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          174
+        </td>
+        <td>
+          1675
+          -
+          1708
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          iterate
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          LazyList.iterate(1) { i =&gt; i + 1}
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          177
+        </td>
+        <td>
+          1675
+          -
+          1736
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          LazyList.iterate(1) { i =&gt; i + 1}.take(100).map { i =&gt; s&quot;$i&quot;}
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          188
+        </td>
+        <td>
+          1747
+          -
+          1761
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          test
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          @main def test
+        </td>
+      </tr><tr>
+        <td>
+          35
+        </td>
+        <td>
+          179
+        </td>
+        <td>
+          1781
+          -
+          1801
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          shuffle
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Random.shuffle(list)
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          182
+        </td>
+        <td>
+          1806
+          -
+          1847
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          take
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          LazyList.iterate(1) { i =&gt; i + 1}.take(3)
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          187
+        </td>
+        <td>
+          1806
+          -
+          1984
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foreach
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          LazyList.iterate(1) { i =&gt; i + 1}.take(3).foreach { i =&gt;
+      val myNewList = myList.take(10)
+      myList = myList.drop(10)
+      println(myNewList)
+      println(&quot;----&quot;)
+    }
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          181
+        </td>
+        <td>
+          1806
+          -
+          1839
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          iterate
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          LazyList.iterate(1) { i =&gt; i + 1}
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          180
+        </td>
+        <td>
+          1806
+          -
+          1814
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          LazyList
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          LazyList
+        </td>
+      </tr><tr>
+        <td>
+          37
+        </td>
+        <td>
+          183
+        </td>
+        <td>
+          1885
+          -
+          1900
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          take
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myList.take(10)
+        </td>
+      </tr><tr>
+        <td>
+          38
+        </td>
+        <td>
+          184
+        </td>
+        <td>
+          1916
+          -
+          1931
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          drop
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myList.drop(10)
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          185
+        </td>
+        <td>
+          1938
+          -
+          1956
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(myNewList)
+        </td>
+      </tr><tr>
+        <td>
+          40
+        </td>
+        <td>
+          186
+        </td>
+        <td>
+          1963
+          -
+          1978
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(&quot;----&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          43
+        </td>
+        <td>
+          223
+        </td>
+        <td>
+          2077
+          -
+          2089
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          empty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Option.empty
+        </td>
+      </tr><tr>
+        <td>
+          43
+        </td>
+        <td>
+          222
+        </td>
+        <td>
+          2031
+          -
+          2040
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def apply
+        </td>
+      </tr><tr>
+        <td>
+          43
+        </td>
+        <td>
+          224
+        </td>
+        <td>
+          2077
+          -
+          2077
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          apply$default$1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          
+        </td>
+      </tr><tr>
+        <td>
+          44
+        </td>
+        <td>
+          225
+        </td>
+        <td>
+          2121
+          -
+          2121
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          apply$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          
+        </td>
+      </tr><tr>
+        <td>
+          45
+        </td>
+        <td>
+          221
+        </td>
+        <td>
+          2149
+          -
+          3224
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setup
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.setup[Command] { ctx =&gt;
+      val rootActorRef = ctx.self
+      val master = ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](ctx =&gt; new ForemanBehaviorImpl(ctx, rootActorRef, MAX_TURNS)), &quot;root&quot;)
+      val listener = ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx =&gt; PlayersManagerBehavior(maxPlayers, rootActorRef)), &quot;event-listener&quot;)
+      val clusterManager = ctx.spawn(Behaviors.setup[ClusterListener.Command | Event | Receptionist.Listing](ctx =&gt; ClusterListener(listener)), &quot;cluster-listener&quot;)
+      ctx.watch(listener)
+
+      Behaviors.receiveMessage[Command] {
+        case msg =&gt;
+          logger match {
+            case Some(ref) =&gt; ref ! msg
+            case _ =&gt;
+          }
+          master ! msg
+          Behaviors.same
+      }.receiveSignal { case (ctx, t @ Terminated(_)) =&gt;
+        ctx.log.info(&quot;System terminated (FOREMAN). Shutting down&quot;)
+        // master e event-listener ! close
+        logger match {
+            case Some(ref) =&gt; ref ! Stop
+            case _ =&gt;
+          }
+        Behaviors.stopped
+      }
+    }
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          189
+        </td>
+        <td>
+          2208
+          -
+          2216
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          self
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.self
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          191
+        </td>
+        <td>
+          2246
+          -
+          2355
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setup
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.setup[Command | Receptionist.Listing](ctx =&gt; new ForemanBehaviorImpl(ctx, rootActorRef, MAX_TURNS))
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          193
+        </td>
+        <td>
+          2236
+          -
+          2364
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          spawn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](ctx =&gt; new ForemanBehaviorImpl(ctx, rootActorRef, MAX_TURNS)), &quot;root&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          190
+        </td>
+        <td>
+          2301
+          -
+          2354
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          new ForemanBehaviorImpl(ctx, rootActorRef, MAX_TURNS)
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          192
+        </td>
+        <td>
+          2236
+          -
+          2245
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          spawn$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.spawn
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          194
+        </td>
+        <td>
+          2451
+          -
+          2499
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          PlayersManagerBehavior(maxPlayers, rootActorRef)
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          196
+        </td>
+        <td>
+          2386
+          -
+          2395
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          spawn$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.spawn
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          195
+        </td>
+        <td>
+          2396
+          -
+          2500
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setup
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.setup[PlayersManagerBehavior.Command](ctx =&gt; PlayersManagerBehavior(maxPlayers, rootActorRef))
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          197
+        </td>
+        <td>
+          2386
+          -
+          2519
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          spawn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx =&gt; PlayersManagerBehavior(maxPlayers, rootActorRef)), &quot;event-listener&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          200
+        </td>
+        <td>
+          2547
+          -
+          2556
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          spawn$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.spawn
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          199
+        </td>
+        <td>
+          2557
+          -
+          2662
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setup
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.setup[ClusterListener.Command | Event | Receptionist.Listing](ctx =&gt; ClusterListener(listener))
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          198
+        </td>
+        <td>
+          2636
+          -
+          2661
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ClusterListener(listener)
+        </td>
+      </tr><tr>
+        <td>
+          49
+        </td>
+        <td>
+          201
+        </td>
+        <td>
+          2547
+          -
+          2683
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          spawn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.spawn(Behaviors.setup[ClusterListener.Command | Event | Receptionist.Listing](ctx =&gt; ClusterListener(listener)), &quot;cluster-listener&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          50
+        </td>
+        <td>
+          202
+        </td>
+        <td>
+          2690
+          -
+          2709
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          watch
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.watch(listener)
+        </td>
+      </tr><tr>
+        <td>
+          52
+        </td>
+        <td>
+          211
+        </td>
+        <td>
+          2717
+          -
+          2927
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          receiveMessage
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.receiveMessage[Command] {
+        case msg =&gt;
+          logger match {
+            case Some(ref) =&gt; ref ! msg
+            case _ =&gt;
+          }
+          master ! msg
+          Behaviors.same
+      }
+        </td>
+      </tr><tr>
+        <td>
+          53
+        </td>
+        <td>
+          210
+        </td>
+        <td>
+          2761
+          -
+          2769
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case msg
+        </td>
+      </tr><tr>
+        <td>
+          55
+        </td>
+        <td>
+          205
+        </td>
+        <td>
+          2810
+          -
+          2824
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case Some(ref)
+        </td>
+      </tr><tr>
+        <td>
+          55
+        </td>
+        <td>
+          204
+        </td>
+        <td>
+          2828
+          -
+          2837
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ref ! msg
+        </td>
+      </tr><tr>
+        <td>
+          55
+        </td>
+        <td>
+          203
+        </td>
+        <td>
+          2828
+          -
+          2831
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ref
+        </td>
+      </tr><tr>
+        <td>
+          56
+        </td>
+        <td>
+          206
+        </td>
+        <td>
+          2850
+          -
+          2856
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          58
+        </td>
+        <td>
+          208
+        </td>
+        <td>
+          2882
+          -
+          2894
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          master ! msg
+        </td>
+      </tr><tr>
+        <td>
+          58
+        </td>
+        <td>
+          207
+        </td>
+        <td>
+          2882
+          -
+          2888
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          master
+        </td>
+      </tr><tr>
+        <td>
+          59
+        </td>
+        <td>
+          209
+        </td>
+        <td>
+          2905
+          -
+          2919
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          60
+        </td>
+        <td>
+          220
+        </td>
+        <td>
+          2717
+          -
+          3218
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          receiveSignal
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.receiveMessage[Command] {
+        case msg =&gt;
+          logger match {
+            case Some(ref) =&gt; ref ! msg
+            case _ =&gt;
+          }
+          master ! msg
+          Behaviors.same
+      }.receiveSignal { case (ctx, t @ Terminated(_)) =&gt;
+        ctx.log.info(&quot;System terminated (FOREMAN). Shutting down&quot;)
+        // master e event-listener ! close
+        logger match {
+            case Some(ref) =&gt; ref ! Stop
+            case _ =&gt;
+          }
+        Behaviors.stopped
+      }
+        </td>
+      </tr><tr>
+        <td>
+          60
+        </td>
+        <td>
+          219
+        </td>
+        <td>
+          2944
+          -
+          2973
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case (ctx, t @ Terminated(_))
+        </td>
+      </tr><tr>
+        <td>
+          61
+        </td>
+        <td>
+          213
+        </td>
+        <td>
+          2985
+          -
+          3043
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.log.info(&quot;System terminated (FOREMAN). Shutting down&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          61
+        </td>
+        <td>
+          212
+        </td>
+        <td>
+          2985
+          -
+          2992
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.log
+        </td>
+      </tr><tr>
+        <td>
+          64
+        </td>
+        <td>
+          214
+        </td>
+        <td>
+          3140
+          -
+          3143
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ref
+        </td>
+      </tr><tr>
+        <td>
+          64
+        </td>
+        <td>
+          216
+        </td>
+        <td>
+          3122
+          -
+          3136
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case Some(ref)
+        </td>
+      </tr><tr>
+        <td>
+          64
+        </td>
+        <td>
+          215
+        </td>
+        <td>
+          3140
+          -
+          3150
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ref ! Stop
+        </td>
+      </tr><tr>
+        <td>
+          65
+        </td>
+        <td>
+          217
+        </td>
+        <td>
+          3163
+          -
+          3169
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          67
+        </td>
+        <td>
+          218
+        </td>
+        <td>
+          3193
+          -
+          3210
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          stopped
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.stopped
+        </td>
+      </tr><tr>
+        <td>
+          71
+        </td>
+        <td>
+          226
+        </td>
+        <td>
+          3355
+          -
+          3412
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          AbstractBehavior[Command | Receptionist.Listing](context)
+        </td>
+      </tr><tr>
+        <td>
+          73
+        </td>
+        <td>
+          227
+        </td>
+        <td>
+          3482
+          -
+          3488
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          List()
+        </td>
+      </tr><tr>
+        <td>
+          74
+        </td>
+        <td>
+          228
+        </td>
+        <td>
+          3561
+          -
+          3567
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          List()
+        </td>
+      </tr><tr>
+        <td>
+          75
+        </td>
+        <td>
+          229
+        </td>
+        <td>
+          3639
+          -
+          3645
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          List()
+        </td>
+      </tr><tr>
+        <td>
+          76
+        </td>
+        <td>
+          230
+        </td>
+        <td>
+          3661
+          -
+          3681
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          shuffle
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Random.shuffle(list)
+        </td>
+      </tr><tr>
+        <td>
+          79
+        </td>
+        <td>
+          259
+        </td>
+        <td>
+          3709
+          -
+          3731
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          onMessage
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          override def onMessage
+        </td>
+      </tr><tr>
+        <td>
+          80
+        </td>
+        <td>
+          249
+        </td>
+        <td>
+          3829
+          -
+          3848
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case Start(players)
+        </td>
+      </tr><tr>
+        <td>
+          81
+        </td>
+        <td>
+          232
+        </td>
+        <td>
+          3887
+          -
+          3903
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          toString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          players.toString
+        </td>
+      </tr><tr>
+        <td>
+          81
+        </td>
+        <td>
+          234
+        </td>
+        <td>
+          3858
+          -
+          3904
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log.info(&quot;START: &quot; + players.toString)
+        </td>
+      </tr><tr>
+        <td>
+          81
+        </td>
+        <td>
+          231
+        </td>
+        <td>
+          3858
+          -
+          3869
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          81
+        </td>
+        <td>
+          233
+        </td>
+        <td>
+          3875
+          -
+          3903
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;START: &quot; + players.toString
+        </td>
+      </tr><tr>
+        <td>
+          82
+        </td>
+        <td>
+          236
+        </td>
+        <td>
+          3925
+          -
+          3964
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          toList
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          players.map { i =&gt; Tuple2(i, 0)}.toList
+        </td>
+      </tr><tr>
+        <td>
+          82
+        </td>
+        <td>
+          235
+        </td>
+        <td>
+          3925
+          -
+          3957
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          players.map { i =&gt; Tuple2(i, 0)}
+        </td>
+      </tr><tr>
+        <td>
+          83
+        </td>
+        <td>
+          243
+        </td>
+        <td>
+          3971
+          -
+          4124
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foreach
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList.foreach { p =&gt;
+        context.log.info(&quot;INVIO LE CARTE AI PLAYER&quot;)
+        p._1 ! PlayerBehavior.CardsAssigned(pickCards(MAX_CARDS))
+      }
+        </td>
+      </tr><tr>
+        <td>
+          84
+        </td>
+        <td>
+          238
+        </td>
+        <td>
+          4006
+          -
+          4050
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log.info(&quot;INVIO LE CARTE AI PLAYER&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          84
+        </td>
+        <td>
+          237
+        </td>
+        <td>
+          4006
+          -
+          4017
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          85
+        </td>
+        <td>
+          241
+        </td>
+        <td>
+          4095
+          -
+          4115
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          pickCards
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          pickCards(MAX_CARDS)
+        </td>
+      </tr><tr>
+        <td>
+          85
+        </td>
+        <td>
+          240
+        </td>
+        <td>
+          4059
+          -
+          4063
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          p._1
+        </td>
+      </tr><tr>
+        <td>
+          85
+        </td>
+        <td>
+          239
+        </td>
+        <td>
+          4059
+          -
+          4063
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          p._1
+        </td>
+      </tr><tr>
+        <td>
+          85
+        </td>
+        <td>
+          242
+        </td>
+        <td>
+          4059
+          -
+          4116
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          p._1 ! PlayerBehavior.CardsAssigned(pickCards(MAX_CARDS))
+        </td>
+      </tr><tr>
+        <td>
+          87
+        </td>
+        <td>
+          245
+        </td>
+        <td>
+          4131
+          -
+          4143
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          players.head
+        </td>
+      </tr><tr>
+        <td>
+          87
+        </td>
+        <td>
+          244
+        </td>
+        <td>
+          4131
+          -
+          4143
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          head
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          players.head
+        </td>
+      </tr><tr>
+        <td>
+          87
+        </td>
+        <td>
+          246
+        </td>
+        <td>
+          4131
+          -
+          4160
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          players.head ! YourTurn(root)
+        </td>
+      </tr><tr>
+        <td>
+          88
+        </td>
+        <td>
+          247
+        </td>
+        <td>
+          4180
+          -
+          4192
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          head
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          players.head
+        </td>
+      </tr><tr>
+        <td>
+          88
+        </td>
+        <td>
+          248
+        </td>
+        <td>
+          4167
+          -
+          4196
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          manageTurnOf
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          manageTurnOf(players.head, 0)
+        </td>
+      </tr><tr>
+        <td>
+          90
+        </td>
+        <td>
+          251
+        </td>
+        <td>
+          4301
+          -
+          4331
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case msg: Receptionist.Listing
+        </td>
+      </tr><tr>
+        <td>
+          92
+        </td>
+        <td>
+          250
+        </td>
+        <td>
+          4457
+          -
+          4471
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          94
+        </td>
+        <td>
+          253
+        </td>
+        <td>
+          4477
+          -
+          4486
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Stop
+        </td>
+      </tr><tr>
+        <td>
+          94
+        </td>
+        <td>
+          252
+        </td>
+        <td>
+          4490
+          -
+          4507
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          stopped
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.stopped
+        </td>
+      </tr><tr>
+        <td>
+          96
+        </td>
+        <td>
+          258
+        </td>
+        <td>
+          4513
+          -
+          4519
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case m
+        </td>
+      </tr><tr>
+        <td>
+          97
+        </td>
+        <td>
+          254
+        </td>
+        <td>
+          4529
+          -
+          4540
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          97
+        </td>
+        <td>
+          256
+        </td>
+        <td>
+          4529
+          -
+          4579
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log.info(&quot;Unknown message: &quot; + m.toString)
+        </td>
+      </tr><tr>
+        <td>
+          97
+        </td>
+        <td>
+          255
+        </td>
+        <td>
+          4546
+          -
+          4578
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot;Unknown message: &quot; + m.toString
+        </td>
+      </tr><tr>
+        <td>
+          98
+        </td>
+        <td>
+          257
+        </td>
+        <td>
+          4586
+          -
+          4600
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          101
+        </td>
+        <td>
+          288
+        </td>
+        <td>
+          4628
+          -
+          4644
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          manageTurnOf
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def manageTurnOf
+        </td>
+      </tr><tr>
+        <td>
+          101
+        </td>
+        <td>
+          287
+        </td>
+        <td>
+          4741
+          -
+          5397
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          receiveMessage
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.receiveMessage {
+    case CardToGuess(card, title, replyTo) if replyTo.path == actor.path =&gt;
+      playersSelection = List()
+      println(&quot;INVIO LE CARTEEEE&quot;)
+      context.log.info(playersList.toString())
+      playersList.map { i =&gt; i._1 }.foreach { i =&gt;
+        if(i.path != actor.path)
+          println(&quot;INVIATOOO&quot;)
+          i ! CardChoosenByOther(title, root)
+      }
+      waitForSelections(actor, turn, card)
+
+    case PlayerRejoined(address) =&gt;
+      playerRejoinedProcedure(address, maxTurns - turnsFinished)
+      actor ! YourTurn(root)
+      Behaviors.same
+
+    case Stop =&gt; Behaviors.stopped
+      
+    case _ =&gt; Behaviors.same
+  }
+        </td>
+      </tr><tr>
+        <td>
+          102
+        </td>
+        <td>
+          277
+        </td>
+        <td>
+          4830
+          -
+          4840
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          path
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          actor.path
+        </td>
+      </tr><tr>
+        <td>
+          102
+        </td>
+        <td>
+          276
+        </td>
+        <td>
+          4814
+          -
+          4826
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          path
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          replyTo.path
+        </td>
+      </tr><tr>
+        <td>
+          102
+        </td>
+        <td>
+          275
+        </td>
+        <td>
+          4772
+          -
+          4840
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case CardToGuess(card, title, replyTo) if replyTo.path == actor.path
+        </td>
+      </tr><tr>
+        <td>
+          103
+        </td>
+        <td>
+          260
+        </td>
+        <td>
+          4869
+          -
+          4875
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          List()
+        </td>
+      </tr><tr>
+        <td>
+          104
+        </td>
+        <td>
+          261
+        </td>
+        <td>
+          4882
+          -
+          4910
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          println(&quot;INVIO LE CARTEEEE&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          105
+        </td>
+        <td>
+          262
+        </td>
+        <td>
+          4917
+          -
+          4928
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          105
+        </td>
+        <td>
+          264
+        </td>
+        <td>
+          4917
+          -
+          4957
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log.info(playersList.toString())
+        </td>
+      </tr><tr>
+        <td>
+          105
+        </td>
+        <td>
+          263
+        </td>
+        <td>
+          4934
+          -
+          4956
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          toString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList.toString()
+        </td>
+      </tr><tr>
+        <td>
+          106
+        </td>
+        <td>
+          265
+        </td>
+        <td>
+          4987
+          -
+          4991
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i._1
+        </td>
+      </tr><tr>
+        <td>
+          106
+        </td>
+        <td>
+          273
+        </td>
+        <td>
+          4964
+          -
+          5126
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foreach
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList.map { i =&gt; i._1 }.foreach { i =&gt;
+        if(i.path != actor.path)
+          println(&quot;INVIATOOO&quot;)
+          i ! CardChoosenByOther(title, root)
+      }
+        </td>
+      </tr><tr>
+        <td>
+          106
+        </td>
+        <td>
+          266
+        </td>
+        <td>
+          4964
+          -
+          4993
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList.map { i =&gt; i._1 }
+        </td>
+      </tr><tr>
+        <td>
+          107
+        </td>
+        <td>
+          268
+        </td>
+        <td>
+          5030
+          -
+          5040
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          path
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          actor.path
+        </td>
+      </tr><tr>
+        <td>
+          107
+        </td>
+        <td>
+          267
+        </td>
+        <td>
+          5020
+          -
+          5026
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          path
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i.path
+        </td>
+      </tr><tr>
+        <td>
+          108
+        </td>
+        <td>
+          272
+        </td>
+        <td>
+          5052
+          -
+          5118
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          println(&quot;INVIATOOO&quot;)
+          i ! CardChoosenByOther(title, root)
+        </td>
+      </tr><tr>
+        <td>
+          108
+        </td>
+        <td>
+          269
+        </td>
+        <td>
+          5052
+          -
+          5072
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          println(&quot;INVIATOOO&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          109
+        </td>
+        <td>
+          271
+        </td>
+        <td>
+          5083
+          -
+          5118
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i ! CardChoosenByOther(title, root)
+        </td>
+      </tr><tr>
+        <td>
+          109
+        </td>
+        <td>
+          270
+        </td>
+        <td>
+          5083
+          -
+          5084
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i
+        </td>
+      </tr><tr>
+        <td>
+          111
+        </td>
+        <td>
+          274
+        </td>
+        <td>
+          5133
+          -
+          5169
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          waitForSelections
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          waitForSelections(actor, turn, card)
+        </td>
+      </tr><tr>
+        <td>
+          113
+        </td>
+        <td>
+          282
+        </td>
+        <td>
+          5175
+          -
+          5203
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case PlayerRejoined(address)
+        </td>
+      </tr><tr>
+        <td>
+          114
+        </td>
+        <td>
+          278
+        </td>
+        <td>
+          5213
+          -
+          5271
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          playerRejoinedProcedure
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          playerRejoinedProcedure(address, maxTurns - turnsFinished)
+        </td>
+      </tr><tr>
+        <td>
+          115
+        </td>
+        <td>
+          280
+        </td>
+        <td>
+          5278
+          -
+          5300
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          actor ! YourTurn(root)
+        </td>
+      </tr><tr>
+        <td>
+          115
+        </td>
+        <td>
+          279
+        </td>
+        <td>
+          5278
+          -
+          5283
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          actor
+        </td>
+      </tr><tr>
+        <td>
+          116
+        </td>
+        <td>
+          281
+        </td>
+        <td>
+          5307
+          -
+          5321
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          118
+        </td>
+        <td>
+          283
+        </td>
+        <td>
+          5340
+          -
+          5357
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          stopped
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.stopped
+        </td>
+      </tr><tr>
+        <td>
+          118
+        </td>
+        <td>
+          284
+        </td>
+        <td>
+          5327
+          -
+          5336
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Stop
+        </td>
+      </tr><tr>
+        <td>
+          120
+        </td>
+        <td>
+          286
+        </td>
+        <td>
+          5369
+          -
+          5375
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          120
+        </td>
+        <td>
+          285
+        </td>
+        <td>
+          5379
+          -
+          5393
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          123
+        </td>
+        <td>
+          322
+        </td>
+        <td>
+          5403
+          -
+          5424
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          waitForSelections
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def waitForSelections
+        </td>
+      </tr><tr>
+        <td>
+          123
+        </td>
+        <td>
+          321
+        </td>
+        <td>
+          5543
+          -
+          6407
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          receiveMessage
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.receiveMessage {
+    case SelectionToApply(cardId, replyTo) =&gt;
+      context.log.info(&quot;UNA SCELTA RICEVUTA&quot;)
+      playersSelection = playersSelection :+ PlayerSelection(cardId, replyTo)
+      if(playersSelection.size &lt; (playersList.size - 1))
+        Behaviors.same
+      else
+        context.log.info(&quot;RICEVUTO LE CARTE DA TUTTI&quot;)
+        val playersSubmissions = playersSelection.map { i =&gt; i.card }.toList :+ cardSelected
+        playersList foreach { i =&gt;
+          if(i._1.path != actor.path)
+            i._1 ! CardsSubmittedByOthers(playersSubmissions)
+        }
+        waitForGuessing(actor, turn, cardSelected)
+
+    case PlayerRejoined(address) =&gt;
+      playerRejoinedProcedure(address, maxTurns - turnsFinished)
+      actor ! YourTurn(root)
+      manageTurnOf(actor, turn)
+
+    case Stop =&gt; Behaviors.stopped
+
+    case _ =&gt; Behaviors.same
+  }
+        </td>
+      </tr><tr>
+        <td>
+          124
+        </td>
+        <td>
+          311
+        </td>
+        <td>
+          5574
+          -
+          5612
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case SelectionToApply(cardId, replyTo)
+        </td>
+      </tr><tr>
+        <td>
+          125
+        </td>
+        <td>
+          289
+        </td>
+        <td>
+          5622
+          -
+          5633
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          125
+        </td>
+        <td>
+          290
+        </td>
+        <td>
+          5622
+          -
+          5661
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log.info(&quot;UNA SCELTA RICEVUTA&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          126
+        </td>
+        <td>
+          291
+        </td>
+        <td>
+          5687
+          -
+          5739
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          :+
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersSelection :+ PlayerSelection(cardId, replyTo)
+        </td>
+      </tr><tr>
+        <td>
+          127
+        </td>
+        <td>
+          292
+        </td>
+        <td>
+          5749
+          -
+          5770
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          size
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersSelection.size
+        </td>
+      </tr><tr>
+        <td>
+          127
+        </td>
+        <td>
+          293
+        </td>
+        <td>
+          5774
+          -
+          5790
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          size
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList.size
+        </td>
+      </tr><tr>
+        <td>
+          128
+        </td>
+        <td>
+          295
+        </td>
+        <td>
+          5805
+          -
+          5819
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          128
+        </td>
+        <td>
+          294
+        </td>
+        <td>
+          5805
+          -
+          5819
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          130
+        </td>
+        <td>
+          310
+        </td>
+        <td>
+          5839
+          -
+          6174
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log.info(&quot;RICEVUTO LE CARTE DA TUTTI&quot;)
+        val playersSubmissions = playersSelection.map { i =&gt; i.card }.toList :+ cardSelected
+        playersList foreach { i =&gt;
+          if(i._1.path != actor.path)
+            i._1 ! CardsSubmittedByOthers(playersSubmissions)
+        }
+        waitForGuessing(actor, turn, cardSelected)
+        </td>
+      </tr><tr>
+        <td>
+          130
+        </td>
+        <td>
+          297
+        </td>
+        <td>
+          5839
+          -
+          5885
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log.info(&quot;RICEVUTO LE CARTE DA TUTTI&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          130
+        </td>
+        <td>
+          296
+        </td>
+        <td>
+          5839
+          -
+          5850
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          131
+        </td>
+        <td>
+          298
+        </td>
+        <td>
+          5919
+          -
+          5955
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersSelection.map { i =&gt; i.card }
+        </td>
+      </tr><tr>
+        <td>
+          131
+        </td>
+        <td>
+          300
+        </td>
+        <td>
+          5919
+          -
+          5978
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          :+
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersSelection.map { i =&gt; i.card }.toList :+ cardSelected
+        </td>
+      </tr><tr>
+        <td>
+          131
+        </td>
+        <td>
+          299
+        </td>
+        <td>
+          5919
+          -
+          5962
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          toList
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersSelection.map { i =&gt; i.card }.toList
+        </td>
+      </tr><tr>
+        <td>
+          132
+        </td>
+        <td>
+          308
+        </td>
+        <td>
+          5987
+          -
+          6123
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foreach
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList foreach { i =&gt;
+          if(i._1.path != actor.path)
+            i._1 ! CardsSubmittedByOthers(playersSubmissions)
+        }
+        </td>
+      </tr><tr>
+        <td>
+          133
+        </td>
+        <td>
+          301
+        </td>
+        <td>
+          6027
+          -
+          6031
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i._1
+        </td>
+      </tr><tr>
+        <td>
+          133
+        </td>
+        <td>
+          303
+        </td>
+        <td>
+          6040
+          -
+          6050
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          path
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          actor.path
+        </td>
+      </tr><tr>
+        <td>
+          133
+        </td>
+        <td>
+          302
+        </td>
+        <td>
+          6027
+          -
+          6036
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          path
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i._1.path
+        </td>
+      </tr><tr>
+        <td>
+          134
+        </td>
+        <td>
+          304
+        </td>
+        <td>
+          6064
+          -
+          6068
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i._1
+        </td>
+      </tr><tr>
+        <td>
+          134
+        </td>
+        <td>
+          307
+        </td>
+        <td>
+          6064
+          -
+          6113
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i._1 ! CardsSubmittedByOthers(playersSubmissions)
+        </td>
+      </tr><tr>
+        <td>
+          134
+        </td>
+        <td>
+          306
+        </td>
+        <td>
+          6064
+          -
+          6113
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i._1 ! CardsSubmittedByOthers(playersSubmissions)
+        </td>
+      </tr><tr>
+        <td>
+          134
+        </td>
+        <td>
+          305
+        </td>
+        <td>
+          6064
+          -
+          6068
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i._1
+        </td>
+      </tr><tr>
+        <td>
+          136
+        </td>
+        <td>
+          309
+        </td>
+        <td>
+          6132
+          -
+          6174
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          waitForGuessing
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          waitForGuessing(actor, turn, cardSelected)
+        </td>
+      </tr><tr>
+        <td>
+          138
+        </td>
+        <td>
+          316
+        </td>
+        <td>
+          6180
+          -
+          6208
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case PlayerRejoined(address)
+        </td>
+      </tr><tr>
+        <td>
+          139
+        </td>
+        <td>
+          312
+        </td>
+        <td>
+          6218
+          -
+          6276
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          playerRejoinedProcedure
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          playerRejoinedProcedure(address, maxTurns - turnsFinished)
+        </td>
+      </tr><tr>
+        <td>
+          140
+        </td>
+        <td>
+          313
+        </td>
+        <td>
+          6283
+          -
+          6288
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          actor
+        </td>
+      </tr><tr>
+        <td>
+          140
+        </td>
+        <td>
+          314
+        </td>
+        <td>
+          6283
+          -
+          6305
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          actor ! YourTurn(root)
+        </td>
+      </tr><tr>
+        <td>
+          141
+        </td>
+        <td>
+          315
+        </td>
+        <td>
+          6312
+          -
+          6337
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          manageTurnOf
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          manageTurnOf(actor, turn)
+        </td>
+      </tr><tr>
+        <td>
+          143
+        </td>
+        <td>
+          318
+        </td>
+        <td>
+          6343
+          -
+          6352
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Stop
+        </td>
+      </tr><tr>
+        <td>
+          143
+        </td>
+        <td>
+          317
+        </td>
+        <td>
+          6356
+          -
+          6373
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          stopped
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.stopped
+        </td>
+      </tr><tr>
+        <td>
+          145
+        </td>
+        <td>
+          319
+        </td>
+        <td>
+          6389
+          -
+          6403
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          145
+        </td>
+        <td>
+          320
+        </td>
+        <td>
+          6379
+          -
+          6385
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          148
+        </td>
+        <td>
+          379
+        </td>
+        <td>
+          6411
+          -
+          6430
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          waitForGuessing
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def waitForGuessing
+        </td>
+      </tr><tr>
+        <td>
+          148
+        </td>
+        <td>
+          378
+        </td>
+        <td>
+          6549
+          -
+          8001
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          receiveMessage
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.receiveMessage {
+    case GuessSelection(cardId, replyTo) =&gt;
+      context.log.info(&quot;UNA GUESS RICEVUTA&quot;)
+      playersGuessing = playersGuessing :+ PlayerSelection(cardId, replyTo)
+      if(playersGuessing.size &lt; (playersList.size - 1))
+        Behaviors.same
+      else
+        context.log.info(&quot;GUESSED LE CARTE DA TUTTI&quot;)
+        executeResults(playersGuessing, cardSelected, actor)
+
+        val newTurn = turn match
+          case m if m == (playersList.size - 1) =&gt; 0
+          case _ =&gt; turn + 1
+
+        if(turnsFinished &lt; (maxTurns - 1) || !playersList.map { i =&gt; i._2 }.contains(30))
+          Behaviors.withTimers { timers =&gt;
+            timers.startSingleTimer(NewTurn(newTurn), 5000 milliseconds)
+            Behaviors.same
+          }
+        else
+          context.log.info(&quot;FINE GIOCO&quot;)
+          playersList foreach { i =&gt;
+            i._1 ! PlayerBehavior.EndGame(i._2)
+          }
+          Behaviors.stopped
+
+    case NewTurn(turnIndex) =&gt;
+      turnsFinished = turnsFinished + 1
+      playersList foreach { i =&gt;
+        i._1 ! PlayerBehavior.NewCard(pickCards(1).head)
+      }
+      playersList(turnIndex)._1 ! YourTurn(root)
+      manageTurnOf(playersList(turnIndex)._1, turnIndex)
+
+    case PlayerRejoined(address) =&gt;
+      playerRejoinedProcedure(address, maxTurns - turnsFinished)
+      actor ! YourTurn(root)
+      manageTurnOf(actor, turn)
+
+    case Stop =&gt; Behaviors.stopped
+      
+    case _ =&gt; Behaviors.same
+  }
+        </td>
+      </tr><tr>
+        <td>
+          149
+        </td>
+        <td>
+          354
+        </td>
+        <td>
+          6580
+          -
+          6616
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case GuessSelection(cardId, replyTo)
+        </td>
+      </tr><tr>
+        <td>
+          150
+        </td>
+        <td>
+          324
+        </td>
+        <td>
+          6626
+          -
+          6664
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log.info(&quot;UNA GUESS RICEVUTA&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          150
+        </td>
+        <td>
+          323
+        </td>
+        <td>
+          6626
+          -
+          6637
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          151
+        </td>
+        <td>
+          325
+        </td>
+        <td>
+          6689
+          -
+          6740
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          :+
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersGuessing :+ PlayerSelection(cardId, replyTo)
+        </td>
+      </tr><tr>
+        <td>
+          152
+        </td>
+        <td>
+          327
+        </td>
+        <td>
+          6774
+          -
+          6790
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          size
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList.size
+        </td>
+      </tr><tr>
+        <td>
+          152
+        </td>
+        <td>
+          326
+        </td>
+        <td>
+          6750
+          -
+          6770
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          size
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersGuessing.size
+        </td>
+      </tr><tr>
+        <td>
+          153
+        </td>
+        <td>
+          328
+        </td>
+        <td>
+          6805
+          -
+          6819
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          153
+        </td>
+        <td>
+          329
+        </td>
+        <td>
+          6805
+          -
+          6819
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          155
+        </td>
+        <td>
+          331
+        </td>
+        <td>
+          6839
+          -
+          6884
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log.info(&quot;GUESSED LE CARTE DA TUTTI&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          155
+        </td>
+        <td>
+          330
+        </td>
+        <td>
+          6839
+          -
+          6850
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          155
+        </td>
+        <td>
+          353
+        </td>
+        <td>
+          6839
+          -
+          7486
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log.info(&quot;GUESSED LE CARTE DA TUTTI&quot;)
+        executeResults(playersGuessing, cardSelected, actor)
+
+        val newTurn = turn match
+          case m if m == (playersList.size - 1) =&gt; 0
+          case _ =&gt; turn + 1
+
+        if(turnsFinished &lt; (maxTurns - 1) || !playersList.map { i =&gt; i._2 }.contains(30))
+          Behaviors.withTimers { timers =&gt;
+            timers.startSingleTimer(NewTurn(newTurn), 5000 milliseconds)
+            Behaviors.same
+          }
+        else
+          context.log.info(&quot;FINE GIOCO&quot;)
+          playersList foreach { i =&gt;
+            i._1 ! PlayerBehavior.EndGame(i._2)
+          }
+          Behaviors.stopped
+        </td>
+      </tr><tr>
+        <td>
+          156
+        </td>
+        <td>
+          332
+        </td>
+        <td>
+          6893
+          -
+          6945
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          executeResults
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          executeResults(playersGuessing, cardSelected, actor)
+        </td>
+      </tr><tr>
+        <td>
+          159
+        </td>
+        <td>
+          334
+        </td>
+        <td>
+          7006
+          -
+          7022
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          size
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList.size
+        </td>
+      </tr><tr>
+        <td>
+          159
+        </td>
+        <td>
+          333
+        </td>
+        <td>
+          6990
+          -
+          7026
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case m if m == (playersList.size - 1
+        </td>
+      </tr><tr>
+        <td>
+          160
+        </td>
+        <td>
+          335
+        </td>
+        <td>
+          7043
+          -
+          7049
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          162
+        </td>
+        <td>
+          337
+        </td>
+        <td>
+          7109
+          -
+          7138
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList.map { i =&gt; i._2 }
+        </td>
+      </tr><tr>
+        <td>
+          162
+        </td>
+        <td>
+          336
+        </td>
+        <td>
+          7132
+          -
+          7136
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i._2
+        </td>
+      </tr><tr>
+        <td>
+          162
+        </td>
+        <td>
+          338
+        </td>
+        <td>
+          7109
+          -
+          7151
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          contains
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList.map { i =&gt; i._2 }.contains(30)
+        </td>
+      </tr><tr>
+        <td>
+          163
+        </td>
+        <td>
+          343
+        </td>
+        <td>
+          7163
+          -
+          7307
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.withTimers { timers =&gt;
+            timers.startSingleTimer(NewTurn(newTurn), 5000 milliseconds)
+            Behaviors.same
+          }
+        </td>
+      </tr><tr>
+        <td>
+          163
+        </td>
+        <td>
+          342
+        </td>
+        <td>
+          7163
+          -
+          7307
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          withTimers
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.withTimers { timers =&gt;
+            timers.startSingleTimer(NewTurn(newTurn), 5000 milliseconds)
+            Behaviors.same
+          }
+        </td>
+      </tr><tr>
+        <td>
+          164
+        </td>
+        <td>
+          340
+        </td>
+        <td>
+          7208
+          -
+          7268
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          startSingleTimer
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          timers.startSingleTimer(NewTurn(newTurn), 5000 milliseconds)
+        </td>
+      </tr><tr>
+        <td>
+          164
+        </td>
+        <td>
+          339
+        </td>
+        <td>
+          7250
+          -
+          7267
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          milliseconds
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          5000 milliseconds
+        </td>
+      </tr><tr>
+        <td>
+          165
+        </td>
+        <td>
+          341
+        </td>
+        <td>
+          7281
+          -
+          7295
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          168
+        </td>
+        <td>
+          352
+        </td>
+        <td>
+          7331
+          -
+          7486
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log.info(&quot;FINE GIOCO&quot;)
+          playersList foreach { i =&gt;
+            i._1 ! PlayerBehavior.EndGame(i._2)
+          }
+          Behaviors.stopped
+        </td>
+      </tr><tr>
+        <td>
+          168
+        </td>
+        <td>
+          345
+        </td>
+        <td>
+          7331
+          -
+          7361
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log.info(&quot;FINE GIOCO&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          168
+        </td>
+        <td>
+          344
+        </td>
+        <td>
+          7331
+          -
+          7342
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          169
+        </td>
+        <td>
+          350
+        </td>
+        <td>
+          7372
+          -
+          7458
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foreach
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          playersList foreach { i =&gt;
+            i._1 ! PlayerBehavior.EndGame(i._2)
+          }
+        </td>
+      </tr><tr>
+        <td>
+          170
+        </td>
+        <td>
+          346
+        </td>
+        <td>
+          7411
+          -
+          7415
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          i._1
+        </td>
+      </tr><tr>
+        <td>
+          170
+        </td>
+        <td>
+          349
+        </td>
+        <td>
+          7411
+          -
+          7446
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          i._1 ! PlayerBehavior.EndGame(i._2)
+        </td>
+      </tr><tr>
+        <td>
+          170
+        </td>
+        <td>
+          348
+        </td>
+        <td>
+          7441
+          -
+          7445
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          i._2
+        </td>
+      </tr><tr>
+        <td>
+          170
+        </td>
+        <td>
+          347
+        </td>
+        <td>
+          7411
+          -
+          7415
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          i._1
+        </td>
+      </tr><tr>
+        <td>
+          172
+        </td>
+        <td>
+          351
+        </td>
+        <td>
+          7469
+          -
+          7486
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          stopped
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.stopped
+        </td>
+      </tr><tr>
+        <td>
+          174
+        </td>
+        <td>
+          368
+        </td>
+        <td>
+          7492
+          -
+          7515
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case NewTurn(turnIndex)
+        </td>
+      </tr><tr>
+        <td>
+          176
+        </td>
+        <td>
+          360
+        </td>
+        <td>
+          7565
+          -
+          7656
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foreach
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList foreach { i =&gt;
+        i._1 ! PlayerBehavior.NewCard(pickCards(1).head)
+      }
+        </td>
+      </tr><tr>
+        <td>
+          177
+        </td>
+        <td>
+          355
+        </td>
+        <td>
+          7600
+          -
+          7604
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i._1
+        </td>
+      </tr><tr>
+        <td>
+          177
+        </td>
+        <td>
+          358
+        </td>
+        <td>
+          7630
+          -
+          7647
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          head
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          pickCards(1).head
+        </td>
+      </tr><tr>
+        <td>
+          177
+        </td>
+        <td>
+          357
+        </td>
+        <td>
+          7630
+          -
+          7642
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          pickCards
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          pickCards(1)
+        </td>
+      </tr><tr>
+        <td>
+          177
+        </td>
+        <td>
+          359
+        </td>
+        <td>
+          7600
+          -
+          7648
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i._1 ! PlayerBehavior.NewCard(pickCards(1).head)
+        </td>
+      </tr><tr>
+        <td>
+          177
+        </td>
+        <td>
+          356
+        </td>
+        <td>
+          7600
+          -
+          7604
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i._1
+        </td>
+      </tr><tr>
+        <td>
+          179
+        </td>
+        <td>
+          364
+        </td>
+        <td>
+          7663
+          -
+          7705
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList(turnIndex)._1 ! YourTurn(root)
+        </td>
+      </tr><tr>
+        <td>
+          179
+        </td>
+        <td>
+          361
+        </td>
+        <td>
+          7663
+          -
+          7685
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList(turnIndex)
+        </td>
+      </tr><tr>
+        <td>
+          179
+        </td>
+        <td>
+          363
+        </td>
+        <td>
+          7663
+          -
+          7688
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList(turnIndex)._1
+        </td>
+      </tr><tr>
+        <td>
+          179
+        </td>
+        <td>
+          362
+        </td>
+        <td>
+          7663
+          -
+          7688
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList(turnIndex)._1
+        </td>
+      </tr><tr>
+        <td>
+          180
+        </td>
+        <td>
+          367
+        </td>
+        <td>
+          7712
+          -
+          7762
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          manageTurnOf
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          manageTurnOf(playersList(turnIndex)._1, turnIndex)
+        </td>
+      </tr><tr>
+        <td>
+          180
+        </td>
+        <td>
+          366
+        </td>
+        <td>
+          7725
+          -
+          7750
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList(turnIndex)._1
+        </td>
+      </tr><tr>
+        <td>
+          180
+        </td>
+        <td>
+          365
+        </td>
+        <td>
+          7725
+          -
+          7747
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList(turnIndex)
+        </td>
+      </tr><tr>
+        <td>
+          182
+        </td>
+        <td>
+          373
+        </td>
+        <td>
+          7768
+          -
+          7796
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case PlayerRejoined(address)
+        </td>
+      </tr><tr>
+        <td>
+          183
+        </td>
+        <td>
+          369
+        </td>
+        <td>
+          7806
+          -
+          7864
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          playerRejoinedProcedure
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playerRejoinedProcedure(address, maxTurns - turnsFinished)
+        </td>
+      </tr><tr>
+        <td>
+          184
+        </td>
+        <td>
+          370
+        </td>
+        <td>
+          7871
+          -
+          7876
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          actor
+        </td>
+      </tr><tr>
+        <td>
+          184
+        </td>
+        <td>
+          371
+        </td>
+        <td>
+          7871
+          -
+          7893
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          actor ! YourTurn(root)
+        </td>
+      </tr><tr>
+        <td>
+          185
+        </td>
+        <td>
+          372
+        </td>
+        <td>
+          7900
+          -
+          7925
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          manageTurnOf
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          manageTurnOf(actor, turn)
+        </td>
+      </tr><tr>
+        <td>
+          187
+        </td>
+        <td>
+          375
+        </td>
+        <td>
+          7931
+          -
+          7940
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Stop
+        </td>
+      </tr><tr>
+        <td>
+          187
+        </td>
+        <td>
+          374
+        </td>
+        <td>
+          7944
+          -
+          7961
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          stopped
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.stopped
+        </td>
+      </tr><tr>
+        <td>
+          189
+        </td>
+        <td>
+          376
+        </td>
+        <td>
+          7983
+          -
+          7997
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          189
+        </td>
+        <td>
+          377
+        </td>
+        <td>
+          7973
+          -
+          7979
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          192
+        </td>
+        <td>
+          392
+        </td>
+        <td>
+          8007
+          -
+          8034
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          playerRejoinedProcedure
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def playerRejoinedProcedure
+        </td>
+      </tr><tr>
+        <td>
+          193
+        </td>
+        <td>
+          391
+        </td>
+        <td>
+          8079
+          -
+          8281
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foreach
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList.foreach { p =&gt;
+      context.log.info(&quot;REINVIO LE CARTE A &quot; + address)
+      if(p._1.path.address.toString == address)
+
+        p._1 ! PlayerBehavior.CardsAssigned(pickCards(numCarte))
+    }
+        </td>
+      </tr><tr>
+        <td>
+          194
+        </td>
+        <td>
+          382
+        </td>
+        <td>
+          8112
+          -
+          8161
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log.info(&quot;REINVIO LE CARTE A &quot; + address)
+        </td>
+      </tr><tr>
+        <td>
+          194
+        </td>
+        <td>
+          381
+        </td>
+        <td>
+          8129
+          -
+          8160
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;REINVIO LE CARTE A &quot; + address
+        </td>
+      </tr><tr>
+        <td>
+          194
+        </td>
+        <td>
+          380
+        </td>
+        <td>
+          8112
+          -
+          8123
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          195
+        </td>
+        <td>
+          385
+        </td>
+        <td>
+          8171
+          -
+          8188
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          address
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          p._1.path.address
+        </td>
+      </tr><tr>
+        <td>
+          195
+        </td>
+        <td>
+          384
+        </td>
+        <td>
+          8171
+          -
+          8180
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          path
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          p._1.path
+        </td>
+      </tr><tr>
+        <td>
+          195
+        </td>
+        <td>
+          383
+        </td>
+        <td>
+          8171
+          -
+          8175
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          p._1
+        </td>
+      </tr><tr>
+        <td>
+          197
+        </td>
+        <td>
+          388
+        </td>
+        <td>
+          8255
+          -
+          8274
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          pickCards
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          pickCards(numCarte)
+        </td>
+      </tr><tr>
+        <td>
+          197
+        </td>
+        <td>
+          387
+        </td>
+        <td>
+          8219
+          -
+          8223
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          p._1
+        </td>
+      </tr><tr>
+        <td>
+          197
+        </td>
+        <td>
+          390
+        </td>
+        <td>
+          8219
+          -
+          8275
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          p._1 ! PlayerBehavior.CardsAssigned(pickCards(numCarte))
+        </td>
+      </tr><tr>
+        <td>
+          197
+        </td>
+        <td>
+          386
+        </td>
+        <td>
+          8219
+          -
+          8223
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          p._1
+        </td>
+      </tr><tr>
+        <td>
+          197
+        </td>
+        <td>
+          389
+        </td>
+        <td>
+          8219
+          -
+          8275
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          p._1 ! PlayerBehavior.CardsAssigned(pickCards(numCarte))
+        </td>
+      </tr><tr>
+        <td>
+          200
+        </td>
+        <td>
+          395
+        </td>
+        <td>
+          8285
+          -
+          8298
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          pickCards
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def pickCards
+        </td>
+      </tr><tr>
+        <td>
+          201
+        </td>
+        <td>
+          393
+        </td>
+        <td>
+          8350
+          -
+          8371
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          take
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          myList.take(numCarte)
+        </td>
+      </tr><tr>
+        <td>
+          202
+        </td>
+        <td>
+          394
+        </td>
+        <td>
+          8385
+          -
+          8406
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          drop
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          myList.drop(numCarte)
+        </td>
+      </tr><tr>
+        <td>
+          205
+        </td>
+        <td>
+          412
+        </td>
+        <td>
+          8424
+          -
+          8442
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          executeResults
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def executeResults
+        </td>
+      </tr><tr>
+        <td>
+          206
+        </td>
+        <td>
+          396
+        </td>
+        <td>
+          8596
+          -
+          8655
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          filter
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersCards.filter { p =&gt;
+      p.card == cardChosen
+    }
+        </td>
+      </tr><tr>
+        <td>
+          211
+        </td>
+        <td>
+          397
+        </td>
+        <td>
+          8693
+          -
+          8708
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          size
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          totalVotes.size
+        </td>
+      </tr><tr>
+        <td>
+          211
+        </td>
+        <td>
+          399
+        </td>
+        <td>
+          8738
+          -
+          8756
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          isEmpty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          totalVotes.isEmpty
+        </td>
+      </tr><tr>
+        <td>
+          211
+        </td>
+        <td>
+          398
+        </td>
+        <td>
+          8713
+          -
+          8729
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          size
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList.size
+        </td>
+      </tr><tr>
+        <td>
+          212
+        </td>
+        <td>
+          403
+        </td>
+        <td>
+          8764
+          -
+          8902
+        </td>
+        <td>
+          Assign
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList = playersList.filterMap { i =&gt;
+        i._1.path.address != foremanPlayer.path.address
+      } { i =&gt; Tuple2(i._1, i._2 + 2) }
+        </td>
+      </tr><tr>
+        <td>
+          214
+        </td>
+        <td>
+          400
+        </td>
+        <td>
+          8885
+          -
+          8889
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          i._1
+        </td>
+      </tr><tr>
+        <td>
+          214
+        </td>
+        <td>
+          402
+        </td>
+        <td>
+          8778
+          -
+          8902
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          filterMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList.filterMap { i =&gt;
+        i._1.path.address != foremanPlayer.path.address
+      } { i =&gt; Tuple2(i._1, i._2 + 2) }
+        </td>
+      </tr><tr>
+        <td>
+          214
+        </td>
+        <td>
+          401
+        </td>
+        <td>
+          8891
+          -
+          8895
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          i._2
+        </td>
+      </tr><tr>
+        <td>
+          216
+        </td>
+        <td>
+          407
+        </td>
+        <td>
+          8918
+          -
+          9103
+        </td>
+        <td>
+          Assign
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList = playersList.filterMap { i =&gt;
+        i._1.path.address == foremanPlayer.path.address || totalVotes.exists { c =&gt; c.player == i._1 }
+      } { i =&gt; Tuple2(i._1, i._2 + 3) }
+        </td>
+      </tr><tr>
+        <td>
+          218
+        </td>
+        <td>
+          406
+        </td>
+        <td>
+          8932
+          -
+          9103
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          filterMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList.filterMap { i =&gt;
+        i._1.path.address == foremanPlayer.path.address || totalVotes.exists { c =&gt; c.player == i._1 }
+      } { i =&gt; Tuple2(i._1, i._2 + 3) }
+        </td>
+      </tr><tr>
+        <td>
+          218
+        </td>
+        <td>
+          405
+        </td>
+        <td>
+          9092
+          -
+          9096
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i._2
+        </td>
+      </tr><tr>
+        <td>
+          218
+        </td>
+        <td>
+          404
+        </td>
+        <td>
+          9086
+          -
+          9090
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i._1
+        </td>
+      </tr><tr>
+        <td>
+          220
+        </td>
+        <td>
+          411
+        </td>
+        <td>
+          9109
+          -
+          9179
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          foreach
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          playersList foreach { i =&gt;
+      i._1 ! CardRevealed(cardChosen)
+    }
+        </td>
+      </tr><tr>
+        <td>
+          221
+        </td>
+        <td>
+          409
+        </td>
+        <td>
+          9142
+          -
+          9146
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i._1
+        </td>
+      </tr><tr>
+        <td>
+          221
+        </td>
+        <td>
+          408
+        </td>
+        <td>
+          9142
+          -
+          9146
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i._1
+        </td>
+      </tr><tr>
+        <td>
+          221
+        </td>
+        <td>
+          410
+        </td>
+        <td>
+          9142
+          -
+          9173
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i._1 ! CardRevealed(cardChosen)
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>
