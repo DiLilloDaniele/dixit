@@ -30,25 +30,25 @@
 </span>6 <span style=''>class QueryBuilder():
 </span>7 <span style=''>  var query = &quot;&quot;
 </span>8 <span style=''>
-</span>9 <span style=''>  </span><span style='background: #F0ADAD'>def select</span><span style=''>(what: String) =
+</span>9 <span style=''>  </span><span style='background: #AEF1AE'>def select</span><span style=''>(what: String) =
 </span>10 <span style=''>    what match
 </span>11 <span style=''>      </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>throw SQLException()</span><span style=''>
-</span>12 <span style=''>      </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt;
-</span>13 <span style=''>        query = </span><span style='background: #F0ADAD'>&quot;select &quot; + what</span><span style=''>
+</span>12 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
+</span>13 <span style=''>        query = </span><span style='background: #AEF1AE'>&quot;select &quot; + what</span><span style=''>
 </span>14 <span style=''>        this
 </span>15 <span style=''>
-</span>16 <span style=''>  </span><span style='background: #F0ADAD'>def from</span><span style=''>(from: String) =
+</span>16 <span style=''>  </span><span style='background: #AEF1AE'>def from</span><span style=''>(from: String) =
 </span>17 <span style=''>    from match
 </span>18 <span style=''>      </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>throw SQLException()</span><span style=''>
-</span>19 <span style=''>      </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt;
-</span>20 <span style=''>        </span><span style='background: #F0ADAD'>query += &quot; from &quot; + from</span><span style=''>
+</span>19 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
+</span>20 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; from &quot; + from</span><span style=''>
 </span>21 <span style=''>        this
 </span>22 <span style=''>
-</span>23 <span style=''>  </span><span style='background: #F0ADAD'>def where</span><span style=''>(cond: String) =
+</span>23 <span style=''>  </span><span style='background: #AEF1AE'>def where</span><span style=''>(cond: String) =
 </span>24 <span style=''>    cond match
 </span>25 <span style=''>      </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>throw SQLException()</span><span style=''>
-</span>26 <span style=''>      </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt;
-</span>27 <span style=''>        </span><span style='background: #F0ADAD'>query += &quot; where &quot; + cond</span><span style=''>
+</span>26 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
+</span>27 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; where &quot; + cond</span><span style=''>
 </span>28 <span style=''>        this
 </span>29 <span style=''>
 </span>30 <span style=''>  </span><span style='background: #F0ADAD'>def and</span><span style=''>(cond: String) =
@@ -65,11 +65,11 @@
 </span>41 <span style=''>        </span><span style='background: #F0ADAD'>query += &quot; AND &quot; + cond</span><span style=''>
 </span>42 <span style=''>        this
 </span>43 <span style=''>
-</span>44 <span style=''>  </span><span style='background: #F0ADAD'>def equal</span><span style=''>(cond: String) =
+</span>44 <span style=''>  </span><span style='background: #AEF1AE'>def equal</span><span style=''>(cond: String) =
 </span>45 <span style=''>    cond match
 </span>46 <span style=''>      </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>throw SQLException()</span><span style=''>
-</span>47 <span style=''>      </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt;
-</span>48 <span style=''>        </span><span style='background: #F0ADAD'>query += &quot; = '&quot; + cond + &quot;'&quot;</span><span style=''>
+</span>47 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
+</span>48 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; = '&quot; + cond + &quot;'&quot;</span><span style=''>
 </span>49 <span style=''>        this
 </span>50 <span style=''>
 </span>51 <span style=''>  </span><span style='background: #F0ADAD'>def disequal</span><span style=''>(cond: String) =
@@ -95,7 +95,7 @@
           8
         </td>
         <td>
-          1366
+          1382
         </td>
         <td>
           246
@@ -111,7 +111,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def select
         </td>
       </tr><tr>
@@ -119,31 +119,7 @@
           10
         </td>
         <td>
-          1363
-        </td>
-        <td>
-          294
-          -
-          301
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case &quot;&quot;
-        </td>
-      </tr><tr>
-        <td>
-          10
-        </td>
-        <td>
-          1362
+          1378
         </td>
         <td>
           305
@@ -167,7 +143,7 @@
           10
         </td>
         <td>
-          1361
+          1377
         </td>
         <td>
           311
@@ -188,87 +164,15 @@
         </td>
       </tr><tr>
         <td>
-          11
+          10
         </td>
         <td>
-          1365
+          1379
         </td>
         <td>
-          332
+          294
           -
-          338
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case _
-        </td>
-      </tr><tr>
-        <td>
-          12
-        </td>
-        <td>
-          1364
-        </td>
-        <td>
-          358
-          -
-          374
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          &quot;select &quot; + what
-        </td>
-      </tr><tr>
-        <td>
-          15
-        </td>
-        <td>
-          1373
-        </td>
-        <td>
-          391
-          -
-          399
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          from
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          def from
-        </td>
-      </tr><tr>
-        <td>
-          17
-        </td>
-        <td>
-          1369
-        </td>
-        <td>
-          437
-          -
-          444
+          301
         </td>
         <td>
           Block
@@ -284,10 +188,82 @@
         </td>
       </tr><tr>
         <td>
+          11
+        </td>
+        <td>
+          1381
+        </td>
+        <td>
+          332
+          -
+          338
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          12
+        </td>
+        <td>
+          1380
+        </td>
+        <td>
+          358
+          -
+          374
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;select &quot; + what
+        </td>
+      </tr><tr>
+        <td>
+          15
+        </td>
+        <td>
+          1389
+        </td>
+        <td>
+          391
+          -
+          399
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def from
+        </td>
+      </tr><tr>
+        <td>
           17
         </td>
         <td>
-          1368
+          1384
         </td>
         <td>
           448
@@ -311,7 +287,7 @@
           17
         </td>
         <td>
-          1367
+          1383
         </td>
         <td>
           454
@@ -332,10 +308,34 @@
         </td>
       </tr><tr>
         <td>
+          17
+        </td>
+        <td>
+          1385
+        </td>
+        <td>
+          437
+          -
+          444
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case &quot;&quot;
+        </td>
+      </tr><tr>
+        <td>
           18
         </td>
         <td>
-          1372
+          1388
         </td>
         <td>
           475
@@ -351,7 +351,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case _
         </td>
       </tr><tr>
@@ -359,7 +359,7 @@
           19
         </td>
         <td>
-          1371
+          1387
         </td>
         <td>
           493
@@ -375,7 +375,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           query += &quot; from &quot; + from
         </td>
       </tr><tr>
@@ -383,7 +383,7 @@
           19
         </td>
         <td>
-          1370
+          1386
         </td>
         <td>
           502
@@ -399,7 +399,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           &quot; from &quot; + from
         </td>
       </tr><tr>
@@ -407,7 +407,7 @@
           22
         </td>
         <td>
-          1380
+          1396
         </td>
         <td>
           534
@@ -423,7 +423,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def where
         </td>
       </tr><tr>
@@ -431,31 +431,7 @@
           24
         </td>
         <td>
-          1375
-        </td>
-        <td>
-          592
-          -
-          612
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          throw
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          throw SQLException()
-        </td>
-      </tr><tr>
-        <td>
-          24
-        </td>
-        <td>
-          1374
+          1390
         </td>
         <td>
           598
@@ -479,7 +455,7 @@
           24
         </td>
         <td>
-          1376
+          1392
         </td>
         <td>
           581
@@ -500,10 +476,34 @@
         </td>
       </tr><tr>
         <td>
+          24
+        </td>
+        <td>
+          1391
+        </td>
+        <td>
+          592
+          -
+          612
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          throw
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          throw SQLException()
+        </td>
+      </tr><tr>
+        <td>
           25
         </td>
         <td>
-          1379
+          1395
         </td>
         <td>
           619
@@ -519,7 +519,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case _
         </td>
       </tr><tr>
@@ -527,31 +527,7 @@
           26
         </td>
         <td>
-          1378
-        </td>
-        <td>
-          637
-          -
-          662
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          query += &quot; where &quot; + cond
-        </td>
-      </tr><tr>
-        <td>
-          26
-        </td>
-        <td>
-          1377
+          1393
         </td>
         <td>
           646
@@ -567,15 +543,39 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           &quot; where &quot; + cond
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          1394
+        </td>
+        <td>
+          637
+          -
+          662
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          query += &quot; where &quot; + cond
         </td>
       </tr><tr>
         <td>
           29
         </td>
         <td>
-          1387
+          1403
         </td>
         <td>
           679
@@ -599,31 +599,7 @@
           31
         </td>
         <td>
-          1381
-        </td>
-        <td>
-          741
-          -
-          755
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          &lt;init&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          SQLException()
-        </td>
-      </tr><tr>
-        <td>
-          31
-        </td>
-        <td>
-          1383
+          1399
         </td>
         <td>
           724
@@ -647,7 +623,7 @@
           31
         </td>
         <td>
-          1382
+          1398
         </td>
         <td>
           735
@@ -668,10 +644,34 @@
         </td>
       </tr><tr>
         <td>
+          31
+        </td>
+        <td>
+          1397
+        </td>
+        <td>
+          741
+          -
+          755
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          SQLException()
+        </td>
+      </tr><tr>
+        <td>
           32
         </td>
         <td>
-          1386
+          1402
         </td>
         <td>
           762
@@ -695,31 +695,7 @@
           33
         </td>
         <td>
-          1384
-        </td>
-        <td>
-          789
-          -
-          803
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          &quot; AND &quot; + cond
-        </td>
-      </tr><tr>
-        <td>
-          33
-        </td>
-        <td>
-          1385
+          1401
         </td>
         <td>
           780
@@ -740,10 +716,34 @@
         </td>
       </tr><tr>
         <td>
+          33
+        </td>
+        <td>
+          1400
+        </td>
+        <td>
+          789
+          -
+          803
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot; AND &quot; + cond
+        </td>
+      </tr><tr>
+        <td>
           36
         </td>
         <td>
-          1394
+          1410
         </td>
         <td>
           820
@@ -767,31 +767,7 @@
           38
         </td>
         <td>
-          1390
-        </td>
-        <td>
-          864
-          -
-          871
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case &quot;&quot;
-        </td>
-      </tr><tr>
-        <td>
-          38
-        </td>
-        <td>
-          1389
+          1405
         </td>
         <td>
           875
@@ -815,7 +791,7 @@
           38
         </td>
         <td>
-          1388
+          1404
         </td>
         <td>
           881
@@ -836,10 +812,34 @@
         </td>
       </tr><tr>
         <td>
+          38
+        </td>
+        <td>
+          1406
+        </td>
+        <td>
+          864
+          -
+          871
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case &quot;&quot;
+        </td>
+      </tr><tr>
+        <td>
           39
         </td>
         <td>
-          1393
+          1409
         </td>
         <td>
           902
@@ -863,7 +863,7 @@
           40
         </td>
         <td>
-          1392
+          1408
         </td>
         <td>
           920
@@ -887,7 +887,7 @@
           40
         </td>
         <td>
-          1391
+          1407
         </td>
         <td>
           929
@@ -911,7 +911,7 @@
           43
         </td>
         <td>
-          1402
+          1418
         </td>
         <td>
           960
@@ -927,7 +927,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def equal
         </td>
       </tr><tr>
@@ -935,31 +935,7 @@
           45
         </td>
         <td>
-          1396
-        </td>
-        <td>
-          1018
-          -
-          1038
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          throw
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          throw SQLException()
-        </td>
-      </tr><tr>
-        <td>
-          45
-        </td>
-        <td>
-          1395
+          1411
         </td>
         <td>
           1024
@@ -983,7 +959,7 @@
           45
         </td>
         <td>
-          1397
+          1413
         </td>
         <td>
           1007
@@ -1004,10 +980,34 @@
         </td>
       </tr><tr>
         <td>
+          45
+        </td>
+        <td>
+          1412
+        </td>
+        <td>
+          1018
+          -
+          1038
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          throw
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          throw SQLException()
+        </td>
+      </tr><tr>
+        <td>
           46
         </td>
         <td>
-          1401
+          1417
         </td>
         <td>
           1045
@@ -1023,7 +1023,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case _
         </td>
       </tr><tr>
@@ -1031,31 +1031,7 @@
           47
         </td>
         <td>
-          1399
-        </td>
-        <td>
-          1072
-          -
-          1091
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          &quot; = '&quot; + cond + &quot;'&quot;
-        </td>
-      </tr><tr>
-        <td>
-          47
-        </td>
-        <td>
-          1398
+          1414
         </td>
         <td>
           1072
@@ -1071,7 +1047,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           &quot; = '&quot; + cond
         </td>
       </tr><tr>
@@ -1079,7 +1055,7 @@
           47
         </td>
         <td>
-          1400
+          1416
         </td>
         <td>
           1063
@@ -1095,15 +1071,39 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           query += &quot; = '&quot; + cond + &quot;'&quot;
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          1415
+        </td>
+        <td>
+          1072
+          -
+          1091
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot; = '&quot; + cond + &quot;'&quot;
         </td>
       </tr><tr>
         <td>
           50
         </td>
         <td>
-          1409
+          1425
         </td>
         <td>
           1108
@@ -1127,31 +1127,7 @@
           52
         </td>
         <td>
-          1405
-        </td>
-        <td>
-          1158
-          -
-          1165
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case &quot;&quot;
-        </td>
-      </tr><tr>
-        <td>
-          52
-        </td>
-        <td>
-          1404
+          1420
         </td>
         <td>
           1169
@@ -1175,7 +1151,7 @@
           52
         </td>
         <td>
-          1403
+          1419
         </td>
         <td>
           1175
@@ -1196,10 +1172,34 @@
         </td>
       </tr><tr>
         <td>
+          52
+        </td>
+        <td>
+          1421
+        </td>
+        <td>
+          1158
+          -
+          1165
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case &quot;&quot;
+        </td>
+      </tr><tr>
+        <td>
           53
         </td>
         <td>
-          1408
+          1424
         </td>
         <td>
           1196
@@ -1223,7 +1223,7 @@
           54
         </td>
         <td>
-          1407
+          1423
         </td>
         <td>
           1214
@@ -1247,7 +1247,7 @@
           54
         </td>
         <td>
-          1406
+          1422
         </td>
         <td>
           1223
