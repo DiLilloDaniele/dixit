@@ -12,7 +12,8 @@ on:
     branches: [ "master" ]
 
 permissions:
-  contents: read
+  contents: write
+  checks: write
 
 jobs:
   build:
@@ -29,13 +30,13 @@ jobs:
         cache: 'sbt'
     - name: Run tests
       run: sbt clean coverage test #"testOnly domain.DomainUnitTest"
-    - name: Generate report
-      run: sbt coverageReport
-    - name: Upload coverage to GitHubPage
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        folder: target/scala-3.2.0/scoverage-report # The folder the action should deploy.
-        branch: coverage-deploy
+    # - name: Generate report
+    #  run: sbt coverageReport
+    # - name: Upload coverage to GitHubPage
+    #   uses: JamesIves/github-pages-deploy-action@v4
+    #   with:
+    #     folder: target/scala-3.2.0/scoverage-report # The folder the action should deploy.
+    #     branch: coverage-deploy
     # - name: Archive code coverage results
     #   uses: actions/upload-artifact@v3
     #   with:
