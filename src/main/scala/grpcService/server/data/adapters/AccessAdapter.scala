@@ -51,6 +51,31 @@ class AccessAdapter(val url: String = "",
     Class.forName("com.mysql.jdbc.Driver")
     connection = DriverManager.getConnection(connectionString, username, password)
 
+  def createTable(): Boolean = try {
+    if(connectionStringExt == "")
+        connect()
+      else
+        connection = DriverManager.getConnection(connectionStringExt, username, password)
+    val statement: Statement = connection.createStatement()
+    val query = """CREATE TABLE `User` (
+        `UserId` int NOT NULL,
+        `Name` varchar(200) NOT NULL,
+        `Password` varchar(512) NOT NULL,
+        `Points` int NOT NULL
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;"""
+    statement.executeUpdate(query)
+    return true
+  } catch {
+    case e: Exception => e.printStackTrace
+      return false
+  } finally {
+    if (connection != null) try connection.close
+    catch {
+      case e: SQLException => /* Ignored */
+    }
+  }
+  
+
   def createDb(): Unit =
     try {
       connectionStringExt match
