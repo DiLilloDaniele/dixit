@@ -29,21 +29,21 @@ class DatabaseUnitTest extends AnyFunSpec with Matchers {
             val user = mysql.getUsername()
             val pass = mysql.getPassword()
             assert(accessAdapter.connectWithUrl(url, user, pass))
-            accessAdapter.createDb(url, user, pass)
-            assert(accessAdapter.checkDatabaseExist(url, user, pass))
+            accessAdapter.createDb()
+            assert(accessAdapter.checkDatabaseExist())
             mysql.stop()
         }
         describe("after created the database") {
             it("should execute queries") {
                 var mysql = new MySqlContainerWrapper().getContainer()
                 mysql.start()
-                val accessAdapter = AccessAdapter()
-                val accessPort = AccessPort(accessAdapter)
                 val url = mysql.getJdbcUrl() + "?autoReconnect=true&useSSL=false&enabledTLSProtocols=TLSv1.2"
                 val user = mysql.getUsername()
                 val pass = mysql.getPassword()
+                val accessAdapter = AccessAdapter(username = user, password = pass, connectionStringExt = url)
+                val accessPort = AccessPort(accessAdapter)
                 assert(accessAdapter.connectWithUrl(url, user, pass))
-                accessAdapter.createDb(url, user, pass)
+                accessAdapter.createDb()
                 accessPort.insertNewUser("test", "passTest")
                 val userRetrieved: Option[User] = accessPort.selectUser("test")
                 assert(userRetrieved.nonEmpty)

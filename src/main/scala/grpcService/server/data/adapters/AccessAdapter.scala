@@ -11,7 +11,8 @@ object AccessAdapter:
             driver: String = "",
             dbName: String = "",
             username: String = "",
-            password: String = ""): AccessAdapter = new AccessAdapter(url, port, driver, dbName, username, password)
+            password: String = "",
+            connectionStringExt: String = ""): AccessAdapter = new AccessAdapter(url, port, driver, dbName, username, password, connectionStringExt)
 
   def main(args: Array[String]): Unit =
     val adapter = apply("localhost", "3306", "mysql", "DIXIT", "root", "root")
@@ -30,7 +31,8 @@ class AccessAdapter(val url: String = "",
                     val driver: String = "", 
                     val dbName: String = "", 
                     val username: String = "", 
-                    val password: String = ""):
+                    val password: String = "",
+                    val connectionStringExt: String = ""):
 
   val connectionString = "jdbc:" + driver + "://" + url + ":" + port + "/" + dbName + "?autoReconnect=true&useSSL=false"
   var connection: Connection = _
@@ -49,11 +51,11 @@ class AccessAdapter(val url: String = "",
     Class.forName("com.mysql.jdbc.Driver")
     connection = DriverManager.getConnection(connectionString, username, password)
 
-  def createDb(url: String = "", user: String = "", pass: String = ""): Unit =
+  def createDb(): Unit =
     try {
-      url match
-        case "" => connection = DriverManager.getConnection(connectionString, username, password)
-        case _ => connection = DriverManager.getConnection(url, user, pass)
+      connectionStringExt match
+        case "" => connect()
+        case _ => connection = DriverManager.getConnection(connectionStringExt, username, password)
       
       val statement: Statement = connection.createStatement()
       val query = "CREATE DATABASE IF NOT EXISTS DIXIT"
@@ -75,12 +77,12 @@ class AccessAdapter(val url: String = "",
       case m => m.close
       case _ => ()
 
-  def checkDatabaseExist(url: String = "", user: String = "", pass: String = ""): Boolean =
+  def checkDatabaseExist(): Boolean =
     //SHOW DATABASES LIKE 'dbname';
     try {
-      url match
+      connectionStringExt match
         case "" => connect()
-        case _ => connection = DriverManager.getConnection(url, user, pass)
+        case _ => connection = DriverManager.getConnection(connectionStringExt, username, password)
       
       val statement: Statement = connection.createStatement()
       val query = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'DIXIT'"
@@ -102,7 +104,10 @@ class AccessAdapter(val url: String = "",
   def selectSingleRow(queryWrapper: QueryBuilder): Option[User] =
     var user : Option[User] = Option.empty
     try {
-      connect()
+      if(connectionStringExt == "")
+        connect()
+      else
+        connection = DriverManager.getConnection(connectionStringExt, username, password)
       val statement: Statement = connection.createStatement()
       val query = queryWrapper.query
       val resultSet = statement.executeQuery(query)
@@ -122,7 +127,10 @@ class AccessAdapter(val url: String = "",
 
   def insertQuery(query: InsertBuilder): Unit =
     try {
-      connect()
+      if(connectionStringExt == "")
+        connect()
+      else
+        connection = DriverManager.getConnection(connectionStringExt, username, password)
       val statement: Statement = connection.createStatement()
       statement.executeUpdate(query.query)
     } catch {
@@ -135,7 +143,10 @@ class AccessAdapter(val url: String = "",
     }
 
   def update(query: UpdateBuilder): Boolean = try {
-    connect()
+    if(connectionStringExt == "")
+        connect()
+      else
+        connection = DriverManager.getConnection(connectionStringExt, username, password)
     val statement: Statement = connection.createStatement()
     statement.executeUpdate(query.query)
     return true
