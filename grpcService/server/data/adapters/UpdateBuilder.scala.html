@@ -29,32 +29,32 @@
 </span>5 <span style=''>class UpdateBuilder:
 </span>6 <span style=''>  var query = &quot;&quot;
 </span>7 <span style=''>
-</span>8 <span style=''>  </span><span style='background: #F0ADAD'>def update</span><span style=''>(table: String) =
+</span>8 <span style=''>  </span><span style='background: #AEF1AE'>def update</span><span style=''>(table: String) =
 </span>9 <span style=''>    table match
 </span>10 <span style=''>      </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>throw SQLException()</span><span style=''>
-</span>11 <span style=''>      </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt;
-</span>12 <span style=''>        query = </span><span style='background: #F0ADAD'>&quot;UPDATE &quot; + table</span><span style=''>
+</span>11 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
+</span>12 <span style=''>        query = </span><span style='background: #AEF1AE'>&quot;UPDATE &quot; + table</span><span style=''>
 </span>13 <span style=''>        this
 </span>14 <span style=''>
-</span>15 <span style=''>  </span><span style='background: #F0ADAD'>def set</span><span style=''>(parameter: String) =
+</span>15 <span style=''>  </span><span style='background: #AEF1AE'>def set</span><span style=''>(parameter: String) =
 </span>16 <span style=''>    parameter match
 </span>17 <span style=''>      </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>throw SQLException()</span><span style=''>
-</span>18 <span style=''>      </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt;
-</span>19 <span style=''>        </span><span style='background: #F0ADAD'>query += &quot; SET &quot; + parameter</span><span style=''>
+</span>18 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
+</span>19 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; SET &quot; + parameter</span><span style=''>
 </span>20 <span style=''>        this
 </span>21 <span style=''>
-</span>22 <span style=''>  </span><span style='background: #F0ADAD'>def equalTo</span><span style=''>(value: String) =
+</span>22 <span style=''>  </span><span style='background: #AEF1AE'>def equalTo</span><span style=''>(value: String) =
 </span>23 <span style=''>    value match
 </span>24 <span style=''>      </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>throw SQLException()</span><span style=''>
-</span>25 <span style=''>      </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt;
-</span>26 <span style=''>        </span><span style='background: #F0ADAD'>query += &quot; = &quot; + value</span><span style=''>
+</span>25 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
+</span>26 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; = &quot; + value</span><span style=''>
 </span>27 <span style=''>        this
 </span>28 <span style=''>
-</span>29 <span style=''>  </span><span style='background: #F0ADAD'>def where</span><span style=''>(cond: String) =
+</span>29 <span style=''>  </span><span style='background: #AEF1AE'>def where</span><span style=''>(cond: String) =
 </span>30 <span style=''>    cond match
 </span>31 <span style=''>      </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>throw SQLException()</span><span style=''>
-</span>32 <span style=''>      </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt;
-</span>33 <span style=''>        </span><span style='background: #F0ADAD'>query += &quot; WHERE &quot; + cond</span><span style=''>
+</span>32 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
+</span>33 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; WHERE &quot; + cond</span><span style=''>
 </span>34 <span style=''>        this
 </span></pre>
           </div>
@@ -73,7 +73,7 @@
           7
         </td>
         <td>
-          1431
+          1432
         </td>
         <td>
           113
@@ -89,7 +89,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def update
         </td>
       </tr><tr>
@@ -97,7 +97,7 @@
           9
         </td>
         <td>
-          1428
+          1429
         </td>
         <td>
           163
@@ -121,7 +121,7 @@
           9
         </td>
         <td>
-          1427
+          1428
         </td>
         <td>
           174
@@ -145,7 +145,7 @@
           9
         </td>
         <td>
-          1426
+          1427
         </td>
         <td>
           180
@@ -169,7 +169,7 @@
           10
         </td>
         <td>
-          1430
+          1431
         </td>
         <td>
           201
@@ -185,7 +185,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case _
         </td>
       </tr><tr>
@@ -193,7 +193,7 @@
           11
         </td>
         <td>
-          1429
+          1430
         </td>
         <td>
           227
@@ -209,7 +209,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           &quot;UPDATE &quot; + table
         </td>
       </tr><tr>
@@ -217,7 +217,7 @@
           14
         </td>
         <td>
-          1438
+          1439
         </td>
         <td>
           261
@@ -233,7 +233,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def set
         </td>
       </tr><tr>
@@ -241,7 +241,31 @@
           16
         </td>
         <td>
-          1432
+          1434
+        </td>
+        <td>
+          327
+          -
+          347
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          throw
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          throw SQLException()
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          1433
         </td>
         <td>
           333
@@ -265,7 +289,7 @@
           16
         </td>
         <td>
-          1434
+          1435
         </td>
         <td>
           316
@@ -286,34 +310,10 @@
         </td>
       </tr><tr>
         <td>
-          16
-        </td>
-        <td>
-          1433
-        </td>
-        <td>
-          327
-          -
-          347
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          throw
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          throw SQLException()
-        </td>
-      </tr><tr>
-        <td>
           17
         </td>
         <td>
-          1437
+          1438
         </td>
         <td>
           354
@@ -329,7 +329,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case _
         </td>
       </tr><tr>
@@ -337,7 +337,7 @@
           18
         </td>
         <td>
-          1436
+          1437
         </td>
         <td>
           372
@@ -353,7 +353,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           query += &quot; SET &quot; + parameter
         </td>
       </tr><tr>
@@ -361,7 +361,7 @@
           18
         </td>
         <td>
-          1435
+          1436
         </td>
         <td>
           381
@@ -377,7 +377,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           &quot; SET &quot; + parameter
         </td>
       </tr><tr>
@@ -385,7 +385,7 @@
           21
         </td>
         <td>
-          1445
+          1446
         </td>
         <td>
           417
@@ -401,7 +401,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def equalTo
         </td>
       </tr><tr>
@@ -410,30 +410,6 @@
         </td>
         <td>
           1441
-        </td>
-        <td>
-          468
-          -
-          475
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case &quot;&quot;
-        </td>
-      </tr><tr>
-        <td>
-          23
-        </td>
-        <td>
-          1440
         </td>
         <td>
           479
@@ -457,7 +433,7 @@
           23
         </td>
         <td>
-          1439
+          1440
         </td>
         <td>
           485
@@ -478,10 +454,34 @@
         </td>
       </tr><tr>
         <td>
+          23
+        </td>
+        <td>
+          1442
+        </td>
+        <td>
+          468
+          -
+          475
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case &quot;&quot;
+        </td>
+      </tr><tr>
+        <td>
           24
         </td>
         <td>
-          1444
+          1445
         </td>
         <td>
           506
@@ -497,7 +497,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case _
         </td>
       </tr><tr>
@@ -506,30 +506,6 @@
         </td>
         <td>
           1443
-        </td>
-        <td>
-          524
-          -
-          546
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          query += &quot; = &quot; + value
-        </td>
-      </tr><tr>
-        <td>
-          25
-        </td>
-        <td>
-          1442
         </td>
         <td>
           533
@@ -545,15 +521,39 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           &quot; = &quot; + value
+        </td>
+      </tr><tr>
+        <td>
+          25
+        </td>
+        <td>
+          1444
+        </td>
+        <td>
+          524
+          -
+          546
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          query += &quot; = &quot; + value
         </td>
       </tr><tr>
         <td>
           28
         </td>
         <td>
-          1452
+          1453
         </td>
         <td>
           563
@@ -569,7 +569,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def where
         </td>
       </tr><tr>
@@ -578,30 +578,6 @@
         </td>
         <td>
           1447
-        </td>
-        <td>
-          621
-          -
-          641
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          throw
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          throw SQLException()
-        </td>
-      </tr><tr>
-        <td>
-          30
-        </td>
-        <td>
-          1446
         </td>
         <td>
           627
@@ -625,7 +601,7 @@
           30
         </td>
         <td>
-          1448
+          1449
         </td>
         <td>
           610
@@ -646,10 +622,34 @@
         </td>
       </tr><tr>
         <td>
+          30
+        </td>
+        <td>
+          1448
+        </td>
+        <td>
+          621
+          -
+          641
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          throw
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          throw SQLException()
+        </td>
+      </tr><tr>
+        <td>
           31
         </td>
         <td>
-          1451
+          1452
         </td>
         <td>
           648
@@ -665,7 +665,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case _
         </td>
       </tr><tr>
@@ -674,30 +674,6 @@
         </td>
         <td>
           1450
-        </td>
-        <td>
-          666
-          -
-          691
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          query += &quot; WHERE &quot; + cond
-        </td>
-      </tr><tr>
-        <td>
-          32
-        </td>
-        <td>
-          1449
         </td>
         <td>
           675
@@ -713,8 +689,32 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           &quot; WHERE &quot; + cond
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          1451
+        </td>
+        <td>
+          666
+          -
+          691
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          query += &quot; WHERE &quot; + cond
         </td>
       </tr>
     </table>

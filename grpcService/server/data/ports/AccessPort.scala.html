@@ -61,11 +61,11 @@
 </span>37 <span style=''>    </span><span style='background: #AEF1AE'>println(query.query)</span><span style=''>
 </span>38 <span style=''>    </span><span style='background: #AEF1AE'>accessAdapter.insertQuery(query)</span><span style=''>
 </span>39 <span style=''>
-</span>40 <span style=''>  </span><span style='background: #F0ADAD'>override def addPointsToUser</span><span style=''>(userId: String, points: Int): Boolean =
-</span>41 <span style=''>    val updateQuery = </span><span style='background: #F0ADAD'>UpdateBuilder()</span><span style=''>
-</span>42 <span style=''>    val query = </span><span style='background: #F0ADAD'>updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot; where s&quot;UserId = $userId&quot;</span><span style=''>
-</span>43 <span style=''>    </span><span style='background: #F0ADAD'>println(query.query)</span><span style=''>
-</span>44 <span style=''>    </span><span style='background: #F0ADAD'>accessAdapter.update(query)</span><span style=''>
+</span>40 <span style=''>  </span><span style='background: #AEF1AE'>override def addPointsToUser</span><span style=''>(userId: String, points: Int): Boolean =
+</span>41 <span style=''>    val updateQuery = </span><span style='background: #AEF1AE'>UpdateBuilder()</span><span style=''>
+</span>42 <span style=''>    val query = </span><span style='background: #AEF1AE'>updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot; where s&quot;UserId = $userId&quot;</span><span style=''>
+</span>43 <span style=''>    </span><span style='background: #AEF1AE'>println(query.query)</span><span style=''>
+</span>44 <span style=''>    </span><span style='background: #AEF1AE'>accessAdapter.update(query)</span><span style=''>
 </span>45 <span style=''>    
 </span>46 <span style=''>  
 </span>47 <span style=''>}
@@ -87,7 +87,7 @@
           14
         </td>
         <td>
-          1461
+          1462
         </td>
         <td>
           485
@@ -111,7 +111,7 @@
           15
         </td>
         <td>
-          1454
+          1455
         </td>
         <td>
           525
@@ -135,7 +135,7 @@
           15
         </td>
         <td>
-          1453
+          1454
         </td>
         <td>
           536
@@ -159,7 +159,7 @@
           18
         </td>
         <td>
-          1455
+          1456
         </td>
         <td>
           669
@@ -183,55 +183,7 @@
           19
         </td>
         <td>
-          1456
-        </td>
-        <td>
-          744
-          -
-          762
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          value.name + &quot; - &quot;
-        </td>
-      </tr><tr>
-        <td>
-          19
-        </td>
-        <td>
           1459
-        </td>
-        <td>
-          716
-          -
-          732
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case Some(value)
-        </td>
-      </tr><tr>
-        <td>
-          19
-        </td>
-        <td>
-          1458
         </td>
         <td>
           736
@@ -255,7 +207,7 @@
           19
         </td>
         <td>
-          1457
+          1458
         </td>
         <td>
           744
@@ -276,10 +228,58 @@
         </td>
       </tr><tr>
         <td>
-          20
+          19
+        </td>
+        <td>
+          1457
+        </td>
+        <td>
+          744
+          -
+          762
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          value.name + &quot; - &quot;
+        </td>
+      </tr><tr>
+        <td>
+          19
         </td>
         <td>
           1460
+        </td>
+        <td>
+          716
+          -
+          732
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Some(value)
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          1461
         </td>
         <td>
           787
@@ -303,7 +303,7 @@
           25
         </td>
         <td>
-          1469
+          1470
         </td>
         <td>
           886
@@ -327,7 +327,7 @@
           26
         </td>
         <td>
-          1462
+          1463
         </td>
         <td>
           965
@@ -356,30 +356,6 @@
         <td>
           996
           -
-          1044
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          where
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          queryWrapper select &quot;*&quot; from &quot;User&quot; where &quot;Name&quot;
-        </td>
-      </tr><tr>
-        <td>
-          27
-        </td>
-        <td>
-          1464
-        </td>
-        <td>
-          996
-          -
           1031
         </td>
         <td>
@@ -399,7 +375,31 @@
           27
         </td>
         <td>
-          1463
+          1467
+        </td>
+        <td>
+          996
+          -
+          1057
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          equal
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          queryWrapper select &quot;*&quot; from &quot;User&quot; where &quot;Name&quot; equal userId
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          1464
         </td>
         <td>
           996
@@ -428,26 +428,26 @@
         <td>
           996
           -
-          1057
+          1044
         </td>
         <td>
           Apply
         </td>
         <td>
-          equal
+          where
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          queryWrapper select &quot;*&quot; from &quot;User&quot; where &quot;Name&quot; equal userId
+          queryWrapper select &quot;*&quot; from &quot;User&quot; where &quot;Name&quot;
         </td>
       </tr><tr>
         <td>
           28
         </td>
         <td>
-          1467
+          1468
         </td>
         <td>
           1062
@@ -471,7 +471,7 @@
           29
         </td>
         <td>
-          1468
+          1469
         </td>
         <td>
           1087
@@ -495,7 +495,7 @@
           31
         </td>
         <td>
-          1480
+          1481
         </td>
         <td>
           1127
@@ -519,7 +519,7 @@
           32
         </td>
         <td>
-          1470
+          1471
         </td>
         <td>
           1222
@@ -543,7 +543,31 @@
           33
         </td>
         <td>
-          1477
+          1472
+        </td>
+        <td>
+          1254
+          -
+          1309
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          insertInto
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          insertBuilder insertInto &quot;User(Name, Password, Points)&quot;
+        </td>
+      </tr><tr>
+        <td>
+          33
+        </td>
+        <td>
+          1478
         </td>
         <td>
           1254
@@ -566,82 +590,10 @@
         </td>
       </tr><tr>
         <td>
-          33
-        </td>
-        <td>
-          1471
-        </td>
-        <td>
-          1254
-          -
-          1309
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          insertInto
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          insertBuilder insertInto &quot;User(Name, Password, Points)&quot;
-        </td>
-      </tr><tr>
-        <td>
           34
         </td>
         <td>
           1474
-        </td>
-        <td>
-          1325
-          -
-          1359
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          &quot;'&quot; + userName + &quot;', '&quot; + password
-        </td>
-      </tr><tr>
-        <td>
-          34
-        </td>
-        <td>
-          1476
-        </td>
-        <td>
-          1325
-          -
-          1371
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          &quot;'&quot; + userName + &quot;', '&quot; + password + &quot;', &quot; + 0
-        </td>
-      </tr><tr>
-        <td>
-          34
-        </td>
-        <td>
-          1473
         </td>
         <td>
           1325
@@ -665,7 +617,31 @@
           34
         </td>
         <td>
-          1472
+          1476
+        </td>
+        <td>
+          1325
+          -
+          1367
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;'&quot; + userName + &quot;', '&quot; + password + &quot;', &quot;
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1473
         </td>
         <td>
           1325
@@ -694,7 +670,7 @@
         <td>
           1325
           -
-          1367
+          1359
         </td>
         <td>
           Apply
@@ -706,14 +682,38 @@
           
         </td>
         <td style="background: #AEF1AE">
-          &quot;'&quot; + userName + &quot;', '&quot; + password + &quot;', &quot;
+          &quot;'&quot; + userName + &quot;', '&quot; + password
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1477
+        </td>
+        <td>
+          1325
+          -
+          1371
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;'&quot; + userName + &quot;', '&quot; + password + &quot;', &quot; + 0
         </td>
       </tr><tr>
         <td>
           36
         </td>
         <td>
-          1478
+          1479
         </td>
         <td>
           1382
@@ -737,7 +737,7 @@
           37
         </td>
         <td>
-          1479
+          1480
         </td>
         <td>
           1407
@@ -761,7 +761,7 @@
           39
         </td>
         <td>
-          1490
+          1491
         </td>
         <td>
           1443
@@ -777,7 +777,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           override def addPointsToUser
         </td>
       </tr><tr>
@@ -785,7 +785,7 @@
           40
         </td>
         <td>
-          1481
+          1482
         </td>
         <td>
           1534
@@ -801,7 +801,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           UpdateBuilder()
         </td>
       </tr><tr>
@@ -810,54 +810,6 @@
         </td>
         <td>
           1483
-        </td>
-        <td>
-          1566
-          -
-          1604
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          set
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          updateQuery update &quot;User&quot; set &quot;Points&quot;
-        </td>
-      </tr><tr>
-        <td>
-          41
-        </td>
-        <td>
-          1485
-        </td>
-        <td>
-          1566
-          -
-          1632
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          equalTo
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot;
-        </td>
-      </tr><tr>
-        <td>
-          41
-        </td>
-        <td>
-          1482
         </td>
         <td>
           1566
@@ -873,7 +825,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           updateQuery update &quot;User&quot;
         </td>
       </tr><tr>
@@ -881,7 +833,7 @@
           41
         </td>
         <td>
-          1484
+          1485
         </td>
         <td>
           1613
@@ -897,7 +849,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           s&quot;Points + $points&quot;
         </td>
       </tr><tr>
@@ -905,7 +857,7 @@
           41
         </td>
         <td>
-          1487
+          1488
         </td>
         <td>
           1566
@@ -921,7 +873,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot; where s&quot;UserId = $userId&quot;
         </td>
       </tr><tr>
@@ -929,7 +881,31 @@
           41
         </td>
         <td>
-          1486
+          1484
+        </td>
+        <td>
+          1566
+          -
+          1604
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          set
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          updateQuery update &quot;User&quot; set &quot;Points&quot;
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          1487
         </td>
         <td>
           1639
@@ -945,15 +921,39 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           s&quot;UserId = $userId&quot;
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          1486
+        </td>
+        <td>
+          1566
+          -
+          1632
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          equalTo
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot;
         </td>
       </tr><tr>
         <td>
           42
         </td>
         <td>
-          1488
+          1489
         </td>
         <td>
           1663
@@ -969,7 +969,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           println(query.query)
         </td>
       </tr><tr>
@@ -977,7 +977,7 @@
           43
         </td>
         <td>
-          1489
+          1490
         </td>
         <td>
           1688
@@ -993,7 +993,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           accessAdapter.update(query)
         </td>
       </tr>

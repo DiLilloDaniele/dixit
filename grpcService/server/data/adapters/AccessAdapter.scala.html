@@ -83,7 +83,7 @@
 </span>59 <span style=''></span><span style='background: #AEF1AE'>    val statement: Statement = connection.createStatement()
 </span>60 <span style=''></span><span style='background: #AEF1AE'>    val query = &quot;&quot;&quot;CREATE TABLE `User` (
 </span>61 <span style=''></span><span style='background: #AEF1AE'>        `UserId` int NOT NULL AUTO_INCREMENT,
-</span>62 <span style=''></span><span style='background: #AEF1AE'>        `Name` varchar(200) NOT NULL,
+</span>62 <span style=''></span><span style='background: #AEF1AE'>        `Name` varchar(200) NOT NULL UNIQUE,
 </span>63 <span style=''></span><span style='background: #AEF1AE'>        `Password` varchar(512) NOT NULL,
 </span>64 <span style=''></span><span style='background: #AEF1AE'>        `Points` int NOT NULL,
 </span>65 <span style=''></span><span style='background: #AEF1AE'>        PRIMARY KEY (UserId)
@@ -163,7 +163,7 @@
 </span>139 <span style=''></span><span style='background: #AEF1AE'>      val resultSet = statement.executeQuery(query)
 </span>140 <span style=''></span><span style='background: #AEF1AE'>      resultSet.first() match
 </span>141 <span style=''></span><span style='background: #AEF1AE'>        case true =&gt; user = Option(User(resultSet.getString(&quot;Name&quot;), resultSet.getInt(&quot;Points&quot;),
-</span>142 <span style=''></span><span style='background: #AEF1AE'>          resultSet.getString(&quot;Password&quot;)))
+</span>142 <span style=''></span><span style='background: #AEF1AE'>          resultSet.getString(&quot;Password&quot;), resultSet.getString(&quot;UserId&quot;)))
 </span>143 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt; user = </span><span style='background: #F0ADAD'>Option.empty</span><span style='background: #AEF1AE'>
 </span>144 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''> catch {
 </span>145 <span style=''>      </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>e.printStackTrace</span><span style=''>
@@ -192,23 +192,23 @@
 </span>168 <span style=''></span><span style='background: #AEF1AE'>      }
 </span>169 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
 </span>170 <span style=''>
-</span>171 <span style=''>  </span><span style='background: #F0ADAD'>def update</span><span style=''>(query: UpdateBuilder): Boolean = try </span><span style='background: #F0ADAD'>{
-</span>172 <span style=''></span><span style='background: #F0ADAD'>    if(connectionStringExt == &quot;&quot;)
-</span>173 <span style=''></span><span style='background: #F0ADAD'>        connect()
-</span>174 <span style=''></span><span style='background: #F0ADAD'>      else
-</span>175 <span style=''></span><span style='background: #F0ADAD'>        connection = DriverManager.getConnection(connectionStringExt, username, password)
-</span>176 <span style=''></span><span style='background: #F0ADAD'>    val statement: Statement = connection.createStatement()
-</span>177 <span style=''></span><span style='background: #F0ADAD'>    statement.executeUpdate(query.query)
-</span>178 <span style=''></span><span style='background: #F0ADAD'>    return true
-</span>179 <span style=''></span><span style='background: #F0ADAD'>  }</span><span style=''> catch {
+</span>171 <span style=''>  </span><span style='background: #AEF1AE'>def update</span><span style=''>(query: UpdateBuilder): Boolean = try </span><span style='background: #AEF1AE'>{
+</span>172 <span style=''></span><span style='background: #AEF1AE'>    if(connectionStringExt == &quot;&quot;)
+</span>173 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>connect()</span><span style='background: #AEF1AE'>
+</span>174 <span style=''></span><span style='background: #AEF1AE'>      else
+</span>175 <span style=''></span><span style='background: #AEF1AE'>        connection = DriverManager.getConnection(connectionStringExt, username, password)
+</span>176 <span style=''></span><span style='background: #AEF1AE'>    val statement: Statement = connection.createStatement()
+</span>177 <span style=''></span><span style='background: #AEF1AE'>    statement.executeUpdate(query.query)
+</span>178 <span style=''></span><span style='background: #AEF1AE'>    return true
+</span>179 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''> catch {
 </span>180 <span style=''>    </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>e.printStackTrace</span><span style=''>
 </span>181 <span style=''>      return false
-</span>182 <span style=''>  } finally </span><span style='background: #F0ADAD'>{
-</span>183 <span style=''></span><span style='background: #F0ADAD'>    if (connection != null) try connection.close
-</span>184 <span style=''></span><span style='background: #F0ADAD'>    catch {
-</span>185 <span style=''></span><span style='background: #F0ADAD'>      case e: SQLException =&gt; /* Ignored */
-</span>186 <span style=''></span><span style='background: #F0ADAD'>    }
-</span>187 <span style=''></span><span style='background: #F0ADAD'>  }</span><span style=''>
+</span>182 <span style=''>  } finally </span><span style='background: #AEF1AE'>{
+</span>183 <span style=''></span><span style='background: #AEF1AE'>    if (connection != null) try connection.close
+</span>184 <span style=''></span><span style='background: #AEF1AE'>    catch {
+</span>185 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case e: SQLException</span><span style='background: #AEF1AE'> =&gt; /* Ignored */
+</span>186 <span style=''></span><span style='background: #AEF1AE'>    }
+</span>187 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -1314,7 +1314,7 @@
         <td>
           2072
           -
-          2618
+          2625
         </td>
         <td>
           Block
@@ -1334,7 +1334,7 @@
     val statement: Statement = connection.createStatement()
     val query = &quot;&quot;&quot;CREATE TABLE `User` (
         `UserId` int NOT NULL AUTO_INCREMENT,
-        `Name` varchar(200) NOT NULL,
+        `Name` varchar(200) NOT NULL UNIQUE,
         `Password` varchar(512) NOT NULL,
         `Points` int NOT NULL,
         PRIMARY KEY (UserId)
@@ -1471,9 +1471,9 @@
           1261
         </td>
         <td>
-          2568
+          2575
           -
-          2598
+          2605
         </td>
         <td>
           Apply
@@ -1495,9 +1495,9 @@
           1264
         </td>
         <td>
-          2631
+          2638
           -
-          2648
+          2655
         </td>
         <td>
           Block
@@ -1519,9 +1519,9 @@
           1263
         </td>
         <td>
-          2652
+          2659
           -
-          2669
+          2676
         </td>
         <td>
           Apply
@@ -1543,9 +1543,9 @@
           1269
         </td>
         <td>
-          2701
+          2708
           -
-          2817
+          2824
         </td>
         <td>
           Block
@@ -1572,9 +1572,9 @@
           1266
         </td>
         <td>
-          2735
+          2742
           -
-          2751
+          2758
         </td>
         <td>
           Block
@@ -1596,9 +1596,9 @@
           1268
         </td>
         <td>
-          2731
+          2738
           -
-          2813
+          2820
         </td>
         <td>
           Try
@@ -1623,9 +1623,9 @@
           1265
         </td>
         <td>
-          2735
+          2742
           -
-          2751
+          2758
         </td>
         <td>
           Apply
@@ -1647,9 +1647,9 @@
           1267
         </td>
         <td>
-          2770
+          2777
           -
-          2790
+          2797
         </td>
         <td>
           Block
@@ -1671,9 +1671,9 @@
           1286
         </td>
         <td>
-          2824
+          2831
           -
-          2836
+          2843
         </td>
         <td>
           DefDef
@@ -1695,9 +1695,9 @@
           1277
         </td>
         <td>
-          2855
+          2862
           -
-          3236
+          3243
         </td>
         <td>
           Block
@@ -1728,9 +1728,9 @@
           1272
         </td>
         <td>
-          2897
-          -
           2904
+          -
+          2911
         </td>
         <td>
           Block
@@ -1752,9 +1752,9 @@
           1271
         </td>
         <td>
-          2908
+          2915
           -
-          2917
+          2924
         </td>
         <td>
           Apply
@@ -1776,9 +1776,9 @@
           1273
         </td>
         <td>
-          2949
+          2956
           -
-          3017
+          3024
         </td>
         <td>
           Apply
@@ -1800,9 +1800,9 @@
           1274
         </td>
         <td>
-          2926
+          2933
           -
-          2932
+          2939
         </td>
         <td>
           Block
@@ -1824,9 +1824,9 @@
           1275
         </td>
         <td>
-          3058
+          3065
           -
-          3086
+          3093
         </td>
         <td>
           Apply
@@ -1848,9 +1848,9 @@
           1276
         </td>
         <td>
-          3200
+          3207
           -
-          3230
+          3237
         </td>
         <td>
           Apply
@@ -1872,9 +1872,9 @@
           1280
         </td>
         <td>
-          3251
+          3258
           -
-          3268
+          3275
         </td>
         <td>
           Block
@@ -1896,9 +1896,9 @@
           1278
         </td>
         <td>
-          3281
+          3288
           -
-          3298
+          3305
         </td>
         <td>
           Apply
@@ -1920,9 +1920,9 @@
           1279
         </td>
         <td>
-          3307
-          -
           3314
+          -
+          3321
         </td>
         <td>
           Apply
@@ -1944,9 +1944,9 @@
           1285
         </td>
         <td>
-          3329
+          3336
           -
-          3455
+          3462
         </td>
         <td>
           Block
@@ -1973,9 +1973,9 @@
           1282
         </td>
         <td>
-          3365
+          3372
           -
-          3381
+          3388
         </td>
         <td>
           Block
@@ -1997,9 +1997,9 @@
           1281
         </td>
         <td>
-          3365
+          3372
           -
-          3381
+          3388
         </td>
         <td>
           Apply
@@ -2021,9 +2021,9 @@
           1284
         </td>
         <td>
-          3361
+          3368
           -
-          3449
+          3456
         </td>
         <td>
           Try
@@ -2048,9 +2048,9 @@
           1283
         </td>
         <td>
-          3404
+          3411
           -
-          3424
+          3431
         </td>
         <td>
           Block
@@ -2072,9 +2072,9 @@
           1290
         </td>
         <td>
-          3459
+          3466
           -
-          3468
+          3475
         </td>
         <td>
           DefDef
@@ -2096,9 +2096,9 @@
           1288
         </td>
         <td>
-          3506
+          3513
           -
-          3512
+          3519
         </td>
         <td>
           Block
@@ -2120,9 +2120,9 @@
           1287
         </td>
         <td>
-          3516
-          -
           3523
+          -
+          3530
         </td>
         <td>
           Apply
@@ -2144,9 +2144,9 @@
           1289
         </td>
         <td>
-          3530
+          3537
           -
-          3536
+          3543
         </td>
         <td>
           Block
@@ -2168,9 +2168,9 @@
           1308
         </td>
         <td>
-          3546
+          3553
           -
-          3568
+          3575
         </td>
         <td>
           DefDef
@@ -2192,9 +2192,9 @@
           1300
         </td>
         <td>
-          3626
+          3633
           -
-          4109
+          4116
         </td>
         <td>
           Block
@@ -2227,9 +2227,9 @@
           1291
         </td>
         <td>
-          3679
+          3686
           -
-          3688
+          3695
         </td>
         <td>
           Apply
@@ -2251,9 +2251,9 @@
           1292
         </td>
         <td>
-          3668
-          -
           3675
+          -
+          3682
         </td>
         <td>
           Block
@@ -2275,9 +2275,9 @@
           1294
         </td>
         <td>
-          3697
+          3704
           -
-          3703
+          3710
         </td>
         <td>
           Block
@@ -2299,9 +2299,9 @@
           1293
         </td>
         <td>
-          3720
+          3727
           -
-          3788
+          3795
         </td>
         <td>
           Apply
@@ -2323,9 +2323,9 @@
           1295
         </td>
         <td>
-          3829
+          3836
           -
-          3857
+          3864
         </td>
         <td>
           Apply
@@ -2347,9 +2347,9 @@
           1296
         </td>
         <td>
-          3980
+          3987
           -
-          4009
+          4016
         </td>
         <td>
           Apply
@@ -2371,9 +2371,9 @@
           1297
         </td>
         <td>
-          4016
+          4023
           -
-          4033
+          4040
         </td>
         <td>
           Apply
@@ -2395,9 +2395,9 @@
           1298
         </td>
         <td>
-          4048
+          4055
           -
-          4057
+          4064
         </td>
         <td>
           Block
@@ -2419,9 +2419,9 @@
           1299
         </td>
         <td>
-          4081
+          4088
           -
-          4087
+          4094
         </td>
         <td>
           Block
@@ -2443,9 +2443,9 @@
           1302
         </td>
         <td>
-          4124
+          4131
           -
-          4150
+          4157
         </td>
         <td>
           Block
@@ -2468,9 +2468,9 @@
           1301
         </td>
         <td>
-          4154
+          4161
           -
-          4171
+          4178
         </td>
         <td>
           Apply
@@ -2492,9 +2492,9 @@
           1307
         </td>
         <td>
-          4207
+          4214
           -
-          4346
+          4353
         </td>
         <td>
           Block
@@ -2521,9 +2521,9 @@
           1306
         </td>
         <td>
-          4239
+          4246
           -
-          4340
+          4347
         </td>
         <td>
           Try
@@ -2548,9 +2548,9 @@
           1303
         </td>
         <td>
-          4243
+          4250
           -
-          4259
+          4266
         </td>
         <td>
           Apply
@@ -2572,9 +2572,9 @@
           1304
         </td>
         <td>
-          4243
+          4250
           -
-          4259
+          4266
         </td>
         <td>
           Block
@@ -2596,9 +2596,9 @@
           1305
         </td>
         <td>
-          4282
+          4289
           -
-          4302
+          4309
         </td>
         <td>
           Block
@@ -2617,12 +2617,12 @@
           129
         </td>
         <td>
-          1332
+          1333
         </td>
         <td>
-          4350
+          4357
           -
-          4369
+          4376
         </td>
         <td>
           DefDef
@@ -2644,9 +2644,9 @@
           1309
         </td>
         <td>
-          4444
+          4451
           -
-          4456
+          4463
         </td>
         <td>
           Select
@@ -2665,12 +2665,12 @@
           131
         </td>
         <td>
-          1324
+          1325
         </td>
         <td>
-          4465
+          4472
           -
-          4987
+          5025
         </td>
         <td>
           Block
@@ -2692,7 +2692,7 @@
       val resultSet = statement.executeQuery(query)
       resultSet.first() match
         case true =&gt; user = Option(User(resultSet.getString(&quot;Name&quot;), resultSet.getInt(&quot;Points&quot;),
-          resultSet.getString(&quot;Password&quot;)))
+          resultSet.getString(&quot;Password&quot;), resultSet.getString(&quot;UserId&quot;)))
         case _ =&gt; user = Option.empty
     }
         </td>
@@ -2704,9 +2704,9 @@
           1311
         </td>
         <td>
-          4511
+          4518
           -
-          4520
+          4527
         </td>
         <td>
           Block
@@ -2728,9 +2728,9 @@
           1310
         </td>
         <td>
-          4511
+          4518
           -
-          4520
+          4527
         </td>
         <td>
           Apply
@@ -2752,9 +2752,9 @@
           1312
         </td>
         <td>
-          4553
+          4560
           -
-          4621
+          4628
         </td>
         <td>
           Apply
@@ -2776,9 +2776,9 @@
           1313
         </td>
         <td>
-          4540
+          4547
           -
-          4621
+          4628
         </td>
         <td>
           Assign
@@ -2800,9 +2800,9 @@
           1314
         </td>
         <td>
-          4655
+          4662
           -
-          4683
+          4690
         </td>
         <td>
           Apply
@@ -2824,9 +2824,9 @@
           1315
         </td>
         <td>
-          4743
+          4750
           -
-          4772
+          4779
         </td>
         <td>
           Apply
@@ -2848,9 +2848,9 @@
           1316
         </td>
         <td>
-          4779
+          4786
           -
-          4796
+          4803
         </td>
         <td>
           Apply
@@ -2872,9 +2872,9 @@
           1318
         </td>
         <td>
-          4872
+          4879
           -
-          4898
+          4905
         </td>
         <td>
           Apply
@@ -2896,33 +2896,9 @@
           1321
         </td>
         <td>
-          4811
+          4838
           -
-          4820
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          case true
-        </td>
-      </tr><tr>
-        <td>
-          140
-        </td>
-        <td>
-          1320
-        </td>
-        <td>
-          4831
-          -
-          4943
+          4981
         </td>
         <td>
           Apply
@@ -2935,7 +2911,7 @@
         </td>
         <td style="background: #AEF1AE">
           Option(User(resultSet.getString(&quot;Name&quot;), resultSet.getInt(&quot;Points&quot;),
-          resultSet.getString(&quot;Password&quot;)))
+          resultSet.getString(&quot;Password&quot;), resultSet.getString(&quot;UserId&quot;)))
         </td>
       </tr><tr>
         <td>
@@ -2945,9 +2921,9 @@
           1317
         </td>
         <td>
-          4843
+          4850
           -
-          4870
+          4877
         </td>
         <td>
           Apply
@@ -2963,15 +2939,63 @@
         </td>
       </tr><tr>
         <td>
+          140
+        </td>
+        <td>
+          1322
+        </td>
+        <td>
+          4818
+          -
+          4827
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case true
+        </td>
+      </tr><tr>
+        <td>
+          141
+        </td>
+        <td>
+          1320
+        </td>
+        <td>
+          4950
+          -
+          4979
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          resultSet.getString(&quot;UserId&quot;)
+        </td>
+      </tr><tr>
+        <td>
           141
         </td>
         <td>
           1319
         </td>
         <td>
-          4910
+          4917
           -
-          4941
+          4948
         </td>
         <td>
           Apply
@@ -2990,12 +3014,12 @@
           142
         </td>
         <td>
-          1323
+          1324
         </td>
         <td>
-          4952
+          4990
           -
-          4958
+          4996
         </td>
         <td>
           Block
@@ -3014,12 +3038,12 @@
           142
         </td>
         <td>
-          1322
+          1323
         </td>
         <td>
-          4969
+          5007
           -
-          4981
+          5019
         </td>
         <td>
           Select
@@ -3038,12 +3062,12 @@
           144
         </td>
         <td>
-          1326
+          1327
         </td>
         <td>
-          5002
+          5040
           -
-          5019
+          5057
         </td>
         <td>
           Block
@@ -3062,12 +3086,12 @@
           144
         </td>
         <td>
-          1325
+          1326
         </td>
         <td>
-          5023
+          5061
           -
-          5040
+          5078
         </td>
         <td>
           Apply
@@ -3086,12 +3110,12 @@
           145
         </td>
         <td>
-          1331
+          1332
         </td>
         <td>
-          5055
+          5093
           -
-          5181
+          5219
         </td>
         <td>
           Block
@@ -3115,12 +3139,36 @@
           146
         </td>
         <td>
-          1327
+          1329
         </td>
         <td>
-          5091
+          5129
           -
-          5107
+          5145
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          146
+        </td>
+        <td>
+          1328
+        </td>
+        <td>
+          5129
+          -
+          5145
         </td>
         <td>
           Apply
@@ -3139,12 +3187,12 @@
           146
         </td>
         <td>
-          1330
+          1331
         </td>
         <td>
-          5087
+          5125
           -
-          5175
+          5213
         </td>
         <td>
           Try
@@ -3163,39 +3211,15 @@
         </td>
       </tr><tr>
         <td>
-          146
-        </td>
-        <td>
-          1328
-        </td>
-        <td>
-          5091
-          -
-          5107
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          connection.close
-        </td>
-      </tr><tr>
-        <td>
           148
         </td>
         <td>
-          1329
+          1330
         </td>
         <td>
-          5130
+          5168
           -
-          5150
+          5188
         </td>
         <td>
           Block
@@ -3214,12 +3238,12 @@
           153
         </td>
         <td>
-          1347
+          1348
         </td>
         <td>
-          5194
+          5232
           -
-          5209
+          5247
         </td>
         <td>
           DefDef
@@ -3238,12 +3262,12 @@
           154
         </td>
         <td>
-          1339
+          1340
         </td>
         <td>
-          5248
+          5286
           -
-          5515
+          5553
         </td>
         <td>
           Block
@@ -3269,36 +3293,12 @@
           156
         </td>
         <td>
-          1333
+          1335
         </td>
         <td>
-          5294
+          5332
           -
-          5303
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          connect
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          connect()
-        </td>
-      </tr><tr>
-        <td>
-          156
-        </td>
-        <td>
-          1334
-        </td>
-        <td>
-          5294
-          -
-          5303
+          5341
         </td>
         <td>
           Block
@@ -3314,39 +3314,39 @@
         </td>
       </tr><tr>
         <td>
-          158
+          156
         </td>
         <td>
-          1336
+          1334
         </td>
         <td>
-          5323
+          5332
           -
-          5404
+          5341
         </td>
         <td>
-          Assign
+          Apply
         </td>
         <td>
-          &lt;none&gt;
+          connect
         </td>
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
-          connection = DriverManager.getConnection(connectionStringExt, username, password)
+        <td style="background: #F0ADAD">
+          connect()
         </td>
       </tr><tr>
         <td>
           158
         </td>
         <td>
-          1335
+          1336
         </td>
         <td>
-          5336
+          5374
           -
-          5404
+          5442
         </td>
         <td>
           Apply
@@ -3362,15 +3362,39 @@
         </td>
       </tr><tr>
         <td>
-          159
+          158
         </td>
         <td>
           1337
         </td>
         <td>
-          5438
+          5361
           -
-          5466
+          5442
+        </td>
+        <td>
+          Assign
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection = DriverManager.getConnection(connectionStringExt, username, password)
+        </td>
+      </tr><tr>
+        <td>
+          159
+        </td>
+        <td>
+          1338
+        </td>
+        <td>
+          5476
+          -
+          5504
         </td>
         <td>
           Apply
@@ -3389,12 +3413,12 @@
           160
         </td>
         <td>
-          1338
+          1339
         </td>
         <td>
-          5473
+          5511
           -
-          5509
+          5547
         </td>
         <td>
           Apply
@@ -3413,12 +3437,12 @@
           162
         </td>
         <td>
-          1341
+          1342
         </td>
         <td>
-          5530
+          5568
           -
-          5547
+          5585
         </td>
         <td>
           Block
@@ -3437,12 +3461,12 @@
           162
         </td>
         <td>
-          1340
+          1341
         </td>
         <td>
-          5551
+          5589
           -
-          5568
+          5606
         </td>
         <td>
           Apply
@@ -3461,12 +3485,12 @@
           163
         </td>
         <td>
-          1346
+          1347
         </td>
         <td>
-          5583
+          5621
           -
-          5709
+          5747
         </td>
         <td>
           Block
@@ -3490,12 +3514,36 @@
           164
         </td>
         <td>
-          1342
+          1344
         </td>
         <td>
-          5619
+          5657
           -
-          5635
+          5673
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          164
+        </td>
+        <td>
+          1343
+        </td>
+        <td>
+          5657
+          -
+          5673
         </td>
         <td>
           Apply
@@ -3514,12 +3562,12 @@
           164
         </td>
         <td>
-          1345
+          1346
         </td>
         <td>
-          5615
+          5653
           -
-          5703
+          5741
         </td>
         <td>
           Try
@@ -3538,39 +3586,15 @@
         </td>
       </tr><tr>
         <td>
-          164
-        </td>
-        <td>
-          1343
-        </td>
-        <td>
-          5619
-          -
-          5635
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          connection.close
-        </td>
-      </tr><tr>
-        <td>
           166
         </td>
         <td>
-          1344
+          1345
         </td>
         <td>
-          5658
+          5696
           -
-          5678
+          5716
         </td>
         <td>
           Block
@@ -3589,12 +3613,36 @@
           170
         </td>
         <td>
-          1354
+          1363
         </td>
         <td>
-          5761
+          5751
           -
-          6036
+          5761
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          update
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def update
+        </td>
+      </tr><tr>
+        <td>
+          170
+        </td>
+        <td>
+          1355
+        </td>
+        <td>
+          5799
+          -
+          6074
         </td>
         <td>
           Block
@@ -3605,7 +3653,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           {
     if(connectionStringExt == &quot;&quot;)
         connect()
@@ -3618,45 +3666,21 @@
         </td>
       </tr><tr>
         <td>
-          170
-        </td>
-        <td>
-          1362
-        </td>
-        <td>
-          5713
-          -
-          5723
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          update
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          def update
-        </td>
-      </tr><tr>
-        <td>
           172
         </td>
         <td>
-          1348
+          1350
         </td>
         <td>
-          5805
+          5843
           -
-          5814
+          5852
         </td>
         <td>
-          Apply
+          Block
         </td>
         <td>
-          connect
+          &lt;none&gt;
         </td>
         <td>
           
@@ -3672,15 +3696,15 @@
           1349
         </td>
         <td>
-          5805
+          5843
           -
-          5814
+          5852
         </td>
         <td>
-          Block
+          Apply
         </td>
         <td>
-          &lt;none&gt;
+          connect
         </td>
         <td>
           
@@ -3696,33 +3720,9 @@
           1351
         </td>
         <td>
-          5834
+          5885
           -
-          5915
-        </td>
-        <td>
-          Assign
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          connection = DriverManager.getConnection(connectionStringExt, username, password)
-        </td>
-      </tr><tr>
-        <td>
-          174
-        </td>
-        <td>
-          1350
-        </td>
-        <td>
-          5847
-          -
-          5915
+          5953
         </td>
         <td>
           Apply
@@ -3733,20 +3733,44 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           DriverManager.getConnection(connectionStringExt, username, password)
+        </td>
+      </tr><tr>
+        <td>
+          174
+        </td>
+        <td>
+          1352
+        </td>
+        <td>
+          5872
+          -
+          5953
+        </td>
+        <td>
+          Assign
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection = DriverManager.getConnection(connectionStringExt, username, password)
         </td>
       </tr><tr>
         <td>
           175
         </td>
         <td>
-          1352
+          1353
         </td>
         <td>
-          5947
+          5985
           -
-          5975
+          6013
         </td>
         <td>
           Apply
@@ -3757,7 +3781,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           connection.createStatement()
         </td>
       </tr><tr>
@@ -3765,12 +3789,12 @@
           176
         </td>
         <td>
-          1353
+          1354
         </td>
         <td>
-          5980
+          6018
           -
-          6016
+          6054
         </td>
         <td>
           Apply
@@ -3781,7 +3805,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           statement.executeUpdate(query.query)
         </td>
       </tr><tr>
@@ -3789,12 +3813,12 @@
           179
         </td>
         <td>
-          1356
+          1357
         </td>
         <td>
-          6049
+          6087
           -
-          6066
+          6104
         </td>
         <td>
           Block
@@ -3813,12 +3837,12 @@
           179
         </td>
         <td>
-          1355
+          1356
         </td>
         <td>
-          6070
+          6108
           -
-          6087
+          6125
         </td>
         <td>
           Apply
@@ -3837,12 +3861,12 @@
           181
         </td>
         <td>
-          1361
+          1362
         </td>
         <td>
-          6119
+          6157
           -
-          6235
+          6273
         </td>
         <td>
           Block
@@ -3853,7 +3877,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           {
     if (connection != null) try connection.close
     catch {
@@ -3866,23 +3890,23 @@
           182
         </td>
         <td>
-          1357
+          1359
         </td>
         <td>
-          6153
+          6191
           -
-          6169
+          6207
         </td>
         <td>
-          Apply
+          Block
         </td>
         <td>
-          close
+          &lt;none&gt;
         </td>
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           connection.close
         </td>
       </tr><tr>
@@ -3890,12 +3914,12 @@
           182
         </td>
         <td>
-          1360
+          1361
         </td>
         <td>
-          6149
+          6187
           -
-          6231
+          6269
         </td>
         <td>
           Try
@@ -3906,7 +3930,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           try connection.close
     catch {
       case e: SQLException =&gt; /* Ignored */
@@ -3920,20 +3944,20 @@
           1358
         </td>
         <td>
-          6153
+          6191
           -
-          6169
+          6207
         </td>
         <td>
-          Block
+          Apply
         </td>
         <td>
-          &lt;none&gt;
+          close
         </td>
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           connection.close
         </td>
       </tr><tr>
@@ -3941,12 +3965,12 @@
           184
         </td>
         <td>
-          1359
+          1360
         </td>
         <td>
-          6188
+          6226
           -
-          6208
+          6246
         </td>
         <td>
           Block
