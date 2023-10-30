@@ -33,8 +33,8 @@ class DatabaseUnitTest extends AnyFunSpec with Matchers {
             assert(accessAdapter.checkDatabaseExist())
             mysql.stop()
         }
-        describe("after created the database") {
-            it("should execute queries") {
+        describe("after creating the database") {
+            it("should execute select, insert and update queries") {
                 var mysql = new MySqlContainerWrapper().getContainer()
                 mysql.start()
                 val url = mysql.getJdbcUrl() + "?autoReconnect=true&useSSL=false&enabledTLSProtocols=TLSv1.2"
@@ -49,6 +49,9 @@ class DatabaseUnitTest extends AnyFunSpec with Matchers {
                 val userRetrieved: Option[User] = accessPort.selectUser("test")
                 assert(userRetrieved.nonEmpty)
                 assert(userRetrieved.get.name equals "test")
+                accessPort.addPointsToUser("test", 5)
+                val newUserRetrieved: Option[User] = accessPort.selectUser("test")
+                assert(newUserRetrieved.get.points == 5)
                 mysql.stop()
             }
         }
