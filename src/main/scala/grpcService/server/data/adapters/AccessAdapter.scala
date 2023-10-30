@@ -59,7 +59,7 @@ class AccessAdapter(val url: String = "",
     val statement: Statement = connection.createStatement()
     val query = """CREATE TABLE `User` (
         `UserId` int NOT NULL AUTO_INCREMENT,
-        `Name` varchar(200) NOT NULL,
+        `Name` varchar(200) NOT NULL UNIQUE,
         `Password` varchar(512) NOT NULL,
         `Points` int NOT NULL,
         PRIMARY KEY (UserId)
@@ -139,7 +139,7 @@ class AccessAdapter(val url: String = "",
       val resultSet = statement.executeQuery(query)
       resultSet.first() match
         case true => user = Option(User(resultSet.getString("Name"), resultSet.getInt("Points"),
-          resultSet.getString("Password")))
+          resultSet.getString("Password"), resultSet.getString("UserId")))
         case _ => user = Option.empty
     } catch {
       case e: Exception => e.printStackTrace
