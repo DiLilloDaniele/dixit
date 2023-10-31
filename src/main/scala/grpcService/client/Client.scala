@@ -10,6 +10,8 @@ import grpcService.client.controller.GameControllerObj
 import grpcService.client.controller.GameControllerObj.SuccessFun
 import grpcService.client.view.HomepageView
 
+import scala.concurrent.Future
+
 object Client {
   @main def startClient() = {
     // Boot akka
@@ -49,6 +51,8 @@ class ClientImpl() {
   val clientSettings = GrpcClientSettings.connectToServiceAt("127.0.0.1", 8083).withTls(false)
 
   val client: Server = ServerClient(clientSettings)
+
+  def helloMessage(string: String): Future[HelloMessage] = client.hello(HelloMessage(string))
 
   def getAvailableGames(success: SuccessFun[List[String]]) =
     val reply = client.getOpenedGames(OpenedGamesRequest())

@@ -14,16 +14,23 @@ import grpcService.server.domain.service.ServerLogic
 import scala.concurrent.{ExecutionContext, Future}
 
 object Service {
+
   def main(args: Array[String]): Unit = {
+    createService()
+  }
+
+  def createService(): Service = 
     // Important: enable HTTP/2 in ActorSystem's config
     // We do it here programmatically, but you can also set it in the application.conf
     val conf = ConfigFactory
       .parseString("akka.http.server.preview.enable-http2 = on")
       .withFallback(ConfigFactory.defaultApplication())
     val system = ActorSystem("HelloWorld", conf)
-    new Service(system).run()
+    val service = new Service(system)
+    service.run()
+    return service
     // ActorSystem threads will keep the app alive until `system.terminate()` is called
-  }
+
 }
 
 /**
@@ -41,6 +48,8 @@ class Service(system: ActorSystem) {
   }
   val registerPort = RegisterPort()
   val managementPort = GamesManagementPort()
+
+  def close(): Unit = system.terminate()
 
   def run(): Future[Http.ServerBinding] = {
     // Akka boot up code
