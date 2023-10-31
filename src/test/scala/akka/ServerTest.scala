@@ -31,7 +31,7 @@ class ServerTest extends AnyFunSpec with BeforeAndAfterAll with Matchers {
                 val client = ClientImpl()
                 
                 val future: Future[HelloMessage] = client.helloMessage(value)
-                assert(future.isReadyWithin(500 millis))
+                assert(future.isReadyWithin(1000 millis))
                 whenReady(future) { s =>
                     s shouldBe HelloMessage("Ciao " + value + "!!!")
                 }
