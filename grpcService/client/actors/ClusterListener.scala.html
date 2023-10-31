@@ -54,47 +54,47 @@
 </span>30 <span style=''>
 </span>31 <span style=''>  import Event.*
 </span>32 <span style=''>
-</span>33 <span style=''>  </span><span style='background: #AEF1AE'>def apply</span><span style=''>(manager: ActorRef[PlayersManagerBehavior.Command]): Behavior[Command | Event | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.setup { ctx =&gt;
-</span>34 <span style=''></span><span style='background: #AEF1AE'>
-</span>35 <span style=''></span><span style='background: #AEF1AE'>    // MemberEvent extends ClusterDomainEvent
-</span>36 <span style=''></span><span style='background: #AEF1AE'>    // We use the &quot;message adapter&quot; pattern to avoid the need of directly supporting the whole MemberEvent messaging interface
-</span>37 <span style=''></span><span style='background: #AEF1AE'>    val memberEventAdapter: ActorRef[MemberEvent] = ctx.messageAdapter(MemberChange.apply)
-</span>38 <span style=''></span><span style='background: #AEF1AE'>    // To subscribe, you must provide your ActorRef[A&lt;:ClusterDomainEvent] and the ClusterDomainEvent class
-</span>39 <span style=''></span><span style='background: #AEF1AE'>    Cluster(ctx.system).subscriptions ! Subscribe(memberEventAdapter, classOf[MemberEvent])
-</span>40 <span style=''></span><span style='background: #AEF1AE'>
-</span>41 <span style=''></span><span style='background: #AEF1AE'>    // ReachabilityEvent also extends ClusterDomainEvent
-</span>42 <span style=''></span><span style='background: #AEF1AE'>    val reachabilityAdapter: ActorRef[ReachabilityEvent] = ctx.messageAdapter(ReachabilityChange.apply)
-</span>43 <span style=''></span><span style='background: #AEF1AE'>    Cluster(ctx.system).subscriptions ! Subscribe(reachabilityAdapter, classOf[ReachabilityEvent])
-</span>44 <span style=''></span><span style='background: #AEF1AE'>
-</span>45 <span style=''></span><span style='background: #AEF1AE'>    // Our behaviour listens for cluster events (membership and reachability events)
-</span>46 <span style=''></span><span style='background: #AEF1AE'>    Behaviors.receiveMessage { message =&gt;
-</span>47 <span style=''></span><span style='background: #AEF1AE'>      message match {
-</span>48 <span style=''></span><span style='background: #AEF1AE'>
-</span>49 <span style=''></span><span style='background: #AEF1AE'>        case ReachabilityChange(reachabilityEvent) =&gt;
-</span>50 <span style=''></span><span style='background: #AEF1AE'>          reachabilityEvent match {
-</span>51 <span style=''></span><span style='background: #AEF1AE'>            case UnreachableMember(member) =&gt;
-</span>52 <span style=''></span><span style='background: #AEF1AE'>              ctx.log.info(&quot;Member detected as unreachable: {}&quot;, member)
-</span>53 <span style=''></span><span style='background: #AEF1AE'>            </span><span style='background: #F0ADAD'>case ReachableMember(member)</span><span style='background: #AEF1AE'> =&gt;
-</span>54 <span style=''></span><span style='background: #AEF1AE'>              </span><span style='background: #F0ADAD'>ctx.log.info(&quot;Member back to reachable: {}&quot;, member)</span><span style='background: #AEF1AE'>
-</span>55 <span style=''></span><span style='background: #AEF1AE'>          }
-</span>56 <span style=''></span><span style='background: #AEF1AE'>
-</span>57 <span style=''></span><span style='background: #AEF1AE'>        case MemberChange(changeEvent) =&gt;
-</span>58 <span style=''></span><span style='background: #AEF1AE'>          changeEvent match {
-</span>59 <span style=''></span><span style='background: #AEF1AE'>            case MemberUp(member) =&gt;
-</span>60 <span style=''></span><span style='background: #AEF1AE'>              ctx.log.info(&quot;Member is Up: {} - I'm {}&quot;, member.address, ctx.system.address.port)
-</span>61 <span style=''></span><span style='background: #AEF1AE'>            case MemberRemoved(member, previousStatus) =&gt;
-</span>62 <span style=''></span><span style='background: #AEF1AE'>              ctx.log.info(s&quot;ROLE MEMBER: ${member.roles.contains(&quot;player&quot;)}&quot;)
-</span>63 <span style=''></span><span style='background: #AEF1AE'>              if(member.roles.contains(&quot;player&quot;))
-</span>64 <span style=''></span><span style='background: #AEF1AE'>                ctx.log.info(&quot;OUT: {}&quot;, member.roles)
-</span>65 <span style=''></span><span style='background: #AEF1AE'>                ctx.log.info(&quot;Member is Removed: {} after {}&quot;, member.address, previousStatus)
-</span>66 <span style=''></span><span style='background: #AEF1AE'>                manager ! PlayersManagerBehavior.PlayerExited
-</span>67 <span style=''></span><span style='background: #AEF1AE'>            case _: MemberEvent =&gt; // ignore
-</span>68 <span style=''></span><span style='background: #AEF1AE'>          }
-</span>69 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
-</span>70 <span style=''></span><span style='background: #AEF1AE'>      }
-</span>71 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.same
-</span>72 <span style=''></span><span style='background: #AEF1AE'>    }
-</span>73 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>33 <span style=''>  </span><span style='background: #F0ADAD'>def apply</span><span style=''>(manager: ActorRef[PlayersManagerBehavior.Command]): Behavior[Command | Event | Receptionist.Listing] = </span><span style='background: #F0ADAD'>Behaviors.setup { ctx =&gt;
+</span>34 <span style=''></span><span style='background: #F0ADAD'>
+</span>35 <span style=''></span><span style='background: #F0ADAD'>    // MemberEvent extends ClusterDomainEvent
+</span>36 <span style=''></span><span style='background: #F0ADAD'>    // We use the &quot;message adapter&quot; pattern to avoid the need of directly supporting the whole MemberEvent messaging interface
+</span>37 <span style=''></span><span style='background: #F0ADAD'>    val memberEventAdapter: ActorRef[MemberEvent] = ctx.messageAdapter(MemberChange.apply)
+</span>38 <span style=''></span><span style='background: #F0ADAD'>    // To subscribe, you must provide your ActorRef[A&lt;:ClusterDomainEvent] and the ClusterDomainEvent class
+</span>39 <span style=''></span><span style='background: #F0ADAD'>    Cluster(ctx.system).subscriptions ! Subscribe(memberEventAdapter, classOf[MemberEvent])
+</span>40 <span style=''></span><span style='background: #F0ADAD'>
+</span>41 <span style=''></span><span style='background: #F0ADAD'>    // ReachabilityEvent also extends ClusterDomainEvent
+</span>42 <span style=''></span><span style='background: #F0ADAD'>    val reachabilityAdapter: ActorRef[ReachabilityEvent] = ctx.messageAdapter(ReachabilityChange.apply)
+</span>43 <span style=''></span><span style='background: #F0ADAD'>    Cluster(ctx.system).subscriptions ! Subscribe(reachabilityAdapter, classOf[ReachabilityEvent])
+</span>44 <span style=''></span><span style='background: #F0ADAD'>
+</span>45 <span style=''></span><span style='background: #F0ADAD'>    // Our behaviour listens for cluster events (membership and reachability events)
+</span>46 <span style=''></span><span style='background: #F0ADAD'>    Behaviors.receiveMessage { message =&gt;
+</span>47 <span style=''></span><span style='background: #F0ADAD'>      message match {
+</span>48 <span style=''></span><span style='background: #F0ADAD'>
+</span>49 <span style=''></span><span style='background: #F0ADAD'>        case ReachabilityChange(reachabilityEvent) =&gt;
+</span>50 <span style=''></span><span style='background: #F0ADAD'>          reachabilityEvent match {
+</span>51 <span style=''></span><span style='background: #F0ADAD'>            case UnreachableMember(member) =&gt;
+</span>52 <span style=''></span><span style='background: #F0ADAD'>              ctx.log.info(&quot;Member detected as unreachable: {}&quot;, member)
+</span>53 <span style=''></span><span style='background: #F0ADAD'>            case ReachableMember(member) =&gt;
+</span>54 <span style=''></span><span style='background: #F0ADAD'>              ctx.log.info(&quot;Member back to reachable: {}&quot;, member)
+</span>55 <span style=''></span><span style='background: #F0ADAD'>          }
+</span>56 <span style=''></span><span style='background: #F0ADAD'>
+</span>57 <span style=''></span><span style='background: #F0ADAD'>        case MemberChange(changeEvent) =&gt;
+</span>58 <span style=''></span><span style='background: #F0ADAD'>          changeEvent match {
+</span>59 <span style=''></span><span style='background: #F0ADAD'>            case MemberUp(member) =&gt;
+</span>60 <span style=''></span><span style='background: #F0ADAD'>              ctx.log.info(&quot;Member is Up: {} - I'm {}&quot;, member.address, ctx.system.address.port)
+</span>61 <span style=''></span><span style='background: #F0ADAD'>            case MemberRemoved(member, previousStatus) =&gt;
+</span>62 <span style=''></span><span style='background: #F0ADAD'>              ctx.log.info(s&quot;ROLE MEMBER: ${member.roles.contains(&quot;player&quot;)}&quot;)
+</span>63 <span style=''></span><span style='background: #F0ADAD'>              if(member.roles.contains(&quot;player&quot;))
+</span>64 <span style=''></span><span style='background: #F0ADAD'>                ctx.log.info(&quot;OUT: {}&quot;, member.roles)
+</span>65 <span style=''></span><span style='background: #F0ADAD'>                ctx.log.info(&quot;Member is Removed: {} after {}&quot;, member.address, previousStatus)
+</span>66 <span style=''></span><span style='background: #F0ADAD'>                manager ! PlayersManagerBehavior.PlayerExited
+</span>67 <span style=''></span><span style='background: #F0ADAD'>            case _: MemberEvent =&gt; // ignore
+</span>68 <span style=''></span><span style='background: #F0ADAD'>          }
+</span>69 <span style=''></span><span style='background: #F0ADAD'>        case _ =&gt; Behaviors.same
+</span>70 <span style=''></span><span style='background: #F0ADAD'>      }
+</span>71 <span style=''></span><span style='background: #F0ADAD'>      Behaviors.same
+</span>72 <span style=''></span><span style='background: #F0ADAD'>    }
+</span>73 <span style=''></span><span style='background: #F0ADAD'>  }</span><span style=''>
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -112,7 +112,7 @@
           32
         </td>
         <td>
-          98
+          101
         </td>
         <td>
           1217
@@ -128,7 +128,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           def apply
         </td>
       </tr><tr>
@@ -136,7 +136,7 @@
           32
         </td>
         <td>
-          97
+          100
         </td>
         <td>
           1330
@@ -152,7 +152,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Behaviors.setup { ctx =&gt;
 
     // MemberEvent extends ClusterDomainEvent
@@ -200,7 +200,7 @@
           36
         </td>
         <td>
-          50
+          53
         </td>
         <td>
           1581
@@ -216,7 +216,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.messageAdapter(MemberChange.apply)
         </td>
       </tr><tr>
@@ -224,31 +224,7 @@
           38
         </td>
         <td>
-          53
-        </td>
-        <td>
-          1732
-          -
-          1765
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          subscriptions
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          Cluster(ctx.system).subscriptions
-        </td>
-      </tr><tr>
-        <td>
-          38
-        </td>
-        <td>
-          56
+          59
         </td>
         <td>
           1732
@@ -264,7 +240,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Cluster(ctx.system).subscriptions ! Subscribe(memberEventAdapter, classOf[MemberEvent])
         </td>
       </tr><tr>
@@ -272,31 +248,31 @@
           38
         </td>
         <td>
-          55
+          56
         </td>
         <td>
-          1798
+          1732
           -
-          1805
+          1765
         </td>
         <td>
-          Ident
+          Select
         </td>
         <td>
-          classOf
+          subscriptions
         </td>
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
-          classOf
+        <td style="background: #F0ADAD">
+          Cluster(ctx.system).subscriptions
         </td>
       </tr><tr>
         <td>
           38
         </td>
         <td>
-          52
+          55
         </td>
         <td>
           1732
@@ -312,7 +288,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Cluster(ctx.system)
         </td>
       </tr><tr>
@@ -320,31 +296,31 @@
           38
         </td>
         <td>
-          54
+          58
         </td>
         <td>
-          1732
+          1798
           -
-          1765
+          1805
         </td>
         <td>
-          Apply
+          Ident
         </td>
         <td>
-          ActorRefOps
+          classOf
         </td>
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
-          Cluster(ctx.system).subscriptions
+        <td style="background: #F0ADAD">
+          classOf
         </td>
       </tr><tr>
         <td>
           38
         </td>
         <td>
-          51
+          54
         </td>
         <td>
           1740
@@ -360,15 +336,39 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.system
+        </td>
+      </tr><tr>
+        <td>
+          38
+        </td>
+        <td>
+          57
+        </td>
+        <td>
+          1732
+          -
+          1765
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Cluster(ctx.system).subscriptions
         </td>
       </tr><tr>
         <td>
           41
         </td>
         <td>
-          57
+          60
         </td>
         <td>
           1937
@@ -384,7 +384,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.messageAdapter(ReachabilityChange.apply)
         </td>
       </tr><tr>
@@ -392,7 +392,7 @@
           42
         </td>
         <td>
-          59
+          62
         </td>
         <td>
           1986
@@ -408,7 +408,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Cluster(ctx.system)
         </td>
       </tr><tr>
@@ -416,7 +416,7 @@
           42
         </td>
         <td>
-          62
+          65
         </td>
         <td>
           2053
@@ -432,7 +432,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           classOf
         </td>
       </tr><tr>
@@ -440,31 +440,7 @@
           42
         </td>
         <td>
-          58
-        </td>
-        <td>
-          1994
-          -
-          2004
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          system
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ctx.system
-        </td>
-      </tr><tr>
-        <td>
-          42
-        </td>
-        <td>
-          61
+          64
         </td>
         <td>
           1986
@@ -480,7 +456,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Cluster(ctx.system).subscriptions
         </td>
       </tr><tr>
@@ -488,7 +464,31 @@
           42
         </td>
         <td>
-          60
+          61
+        </td>
+        <td>
+          1994
+          -
+          2004
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          system
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ctx.system
+        </td>
+      </tr><tr>
+        <td>
+          42
+        </td>
+        <td>
+          63
         </td>
         <td>
           1986
@@ -504,7 +504,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Cluster(ctx.system).subscriptions
         </td>
       </tr><tr>
@@ -512,7 +512,7 @@
           42
         </td>
         <td>
-          63
+          66
         </td>
         <td>
           1986
@@ -528,7 +528,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Cluster(ctx.system).subscriptions ! Subscribe(reachabilityAdapter, classOf[ReachabilityEvent])
         </td>
       </tr><tr>
@@ -536,7 +536,7 @@
           45
         </td>
         <td>
-          96
+          99
         </td>
         <td>
           2171
@@ -552,7 +552,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Behaviors.receiveMessage { message =&gt;
       message match {
 
@@ -586,7 +586,7 @@
           48
         </td>
         <td>
-          70
+          73
         </td>
         <td>
           2240
@@ -602,7 +602,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case ReachabilityChange(reachabilityEvent)
         </td>
       </tr><tr>
@@ -610,7 +610,7 @@
           50
         </td>
         <td>
-          66
+          69
         </td>
         <td>
           2334
@@ -626,7 +626,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case UnreachableMember(member)
         </td>
       </tr><tr>
@@ -634,7 +634,7 @@
           51
         </td>
         <td>
-          65
+          68
         </td>
         <td>
           2382
@@ -650,7 +650,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.log.info(&quot;Member detected as unreachable: {}&quot;, member)
         </td>
       </tr><tr>
@@ -658,7 +658,7 @@
           51
         </td>
         <td>
-          64
+          67
         </td>
         <td>
           2382
@@ -674,7 +674,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.log
         </td>
       </tr><tr>
@@ -682,7 +682,7 @@
           52
         </td>
         <td>
-          69
+          72
         </td>
         <td>
           2453
@@ -706,7 +706,7 @@
           53
         </td>
         <td>
-          68
+          71
         </td>
         <td>
           2499
@@ -730,7 +730,7 @@
           53
         </td>
         <td>
-          67
+          70
         </td>
         <td>
           2499
@@ -754,7 +754,7 @@
           56
         </td>
         <td>
-          92
+          95
         </td>
         <td>
           2573
@@ -770,7 +770,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case MemberChange(changeEvent)
         </td>
       </tr><tr>
@@ -778,7 +778,7 @@
           58
         </td>
         <td>
-          76
+          79
         </td>
         <td>
           2649
@@ -794,7 +794,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case MemberUp(member)
         </td>
       </tr><tr>
@@ -802,31 +802,7 @@
           59
         </td>
         <td>
-          71
-        </td>
-        <td>
-          2688
-          -
-          2695
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          log
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ctx.log
-        </td>
-      </tr><tr>
-        <td>
-          59
-        </td>
-        <td>
-          74
+          77
         </td>
         <td>
           2746
@@ -842,7 +818,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.system.address
         </td>
       </tr><tr>
@@ -850,7 +826,31 @@
           59
         </td>
         <td>
-          73
+          74
+        </td>
+        <td>
+          2688
+          -
+          2695
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ctx.log
+        </td>
+      </tr><tr>
+        <td>
+          59
+        </td>
+        <td>
+          76
         </td>
         <td>
           2746
@@ -866,7 +866,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.system
         </td>
       </tr><tr>
@@ -874,31 +874,7 @@
           59
         </td>
         <td>
-          72
-        </td>
-        <td>
-          2730
-          -
-          2744
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          address
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          member.address
-        </td>
-      </tr><tr>
-        <td>
-          59
-        </td>
-        <td>
-          75
+          78
         </td>
         <td>
           2688
@@ -914,15 +890,39 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.log.info(&quot;Member is Up: {} - I'm {}&quot;, member.address, ctx.system.address.port)
+        </td>
+      </tr><tr>
+        <td>
+          59
+        </td>
+        <td>
+          75
+        </td>
+        <td>
+          2730
+          -
+          2744
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          address
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          member.address
         </td>
       </tr><tr>
         <td>
           60
         </td>
         <td>
-          90
+          93
         </td>
         <td>
           2783
@@ -938,7 +938,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case MemberRemoved(member, previousStatus)
         </td>
       </tr><tr>
@@ -946,31 +946,7 @@
           61
         </td>
         <td>
-          77
-        </td>
-        <td>
-          2843
-          -
-          2850
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          log
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ctx.log
-        </td>
-      </tr><tr>
-        <td>
-          61
-        </td>
-        <td>
-          80
+          83
         </td>
         <td>
           2843
@@ -986,7 +962,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.log.info(s&quot;ROLE MEMBER: ${member.roles.contains(&quot;player&quot;)}&quot;)
         </td>
       </tr><tr>
@@ -994,7 +970,31 @@
           61
         </td>
         <td>
-          79
+          80
+        </td>
+        <td>
+          2843
+          -
+          2850
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ctx.log
+        </td>
+      </tr><tr>
+        <td>
+          61
+        </td>
+        <td>
+          82
         </td>
         <td>
           2856
@@ -1010,7 +1010,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           s&quot;ROLE MEMBER: ${member.roles.contains(&quot;player&quot;)}&quot;
         </td>
       </tr><tr>
@@ -1018,7 +1018,7 @@
           61
         </td>
         <td>
-          78
+          81
         </td>
         <td>
           2873
@@ -1034,7 +1034,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           member.roles.contains(&quot;player&quot;)
         </td>
       </tr><tr>
@@ -1042,7 +1042,7 @@
           62
         </td>
         <td>
-          81
+          84
         </td>
         <td>
           2925
@@ -1058,7 +1058,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           member.roles.contains(&quot;player&quot;)
         </td>
       </tr><tr>
@@ -1066,7 +1066,33 @@
           63
         </td>
         <td>
-          83
+          92
+        </td>
+        <td>
+          2974
+          -
+          3168
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ctx.log.info(&quot;OUT: {}&quot;, member.roles)
+                ctx.log.info(&quot;Member is Removed: {} after {}&quot;, member.address, previousStatus)
+                manager ! PlayersManagerBehavior.PlayerExited
+        </td>
+      </tr><tr>
+        <td>
+          63
+        </td>
+        <td>
+          86
         </td>
         <td>
           2974
@@ -1082,7 +1108,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.log.info(&quot;OUT: {}&quot;, member.roles)
         </td>
       </tr><tr>
@@ -1090,33 +1116,7 @@
           63
         </td>
         <td>
-          89
-        </td>
-        <td>
-          2974
-          -
-          3168
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ctx.log.info(&quot;OUT: {}&quot;, member.roles)
-                ctx.log.info(&quot;Member is Removed: {} after {}&quot;, member.address, previousStatus)
-                manager ! PlayersManagerBehavior.PlayerExited
-        </td>
-      </tr><tr>
-        <td>
-          63
-        </td>
-        <td>
-          82
+          85
         </td>
         <td>
           2974
@@ -1132,7 +1132,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.log
         </td>
       </tr><tr>
@@ -1140,7 +1140,7 @@
           64
         </td>
         <td>
-          86
+          89
         </td>
         <td>
           3028
@@ -1156,7 +1156,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.log.info(&quot;Member is Removed: {} after {}&quot;, member.address, previousStatus)
         </td>
       </tr><tr>
@@ -1164,7 +1164,7 @@
           64
         </td>
         <td>
-          85
+          88
         </td>
         <td>
           3075
@@ -1180,7 +1180,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           member.address
         </td>
       </tr><tr>
@@ -1188,7 +1188,7 @@
           64
         </td>
         <td>
-          84
+          87
         </td>
         <td>
           3028
@@ -1204,7 +1204,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.log
         </td>
       </tr><tr>
@@ -1212,7 +1212,7 @@
           65
         </td>
         <td>
-          88
+          91
         </td>
         <td>
           3123
@@ -1228,7 +1228,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           manager ! PlayersManagerBehavior.PlayerExited
         </td>
       </tr><tr>
@@ -1236,7 +1236,7 @@
           65
         </td>
         <td>
-          87
+          90
         </td>
         <td>
           3123
@@ -1252,7 +1252,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           manager
         </td>
       </tr><tr>
@@ -1260,7 +1260,7 @@
           66
         </td>
         <td>
-          91
+          94
         </td>
         <td>
           3181
@@ -1276,7 +1276,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case _: MemberEvent
         </td>
       </tr><tr>
@@ -1284,7 +1284,7 @@
           68
         </td>
         <td>
-          94
+          97
         </td>
         <td>
           3234
@@ -1308,7 +1308,7 @@
           68
         </td>
         <td>
-          93
+          96
         </td>
         <td>
           3244
@@ -1332,7 +1332,7 @@
           70
         </td>
         <td>
-          95
+          98
         </td>
         <td>
           3273
@@ -1348,7 +1348,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Behaviors.same
         </td>
       </tr>

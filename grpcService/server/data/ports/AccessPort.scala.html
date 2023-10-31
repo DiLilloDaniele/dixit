@@ -47,25 +47,25 @@
 </span>23 <span style=''>
 </span>24 <span style=''>class AccessPort(accessAdapter: AccessAdapter) extends AccessRepository {
 </span>25 <span style=''>  
-</span>26 <span style=''>  </span><span style='background: #AEF1AE'>override def selectUser</span><span style=''>(userId: String): Option[User] =
-</span>27 <span style=''>    val queryWrapper = </span><span style='background: #AEF1AE'>QueryBuilder()</span><span style=''>
-</span>28 <span style=''>    val query = </span><span style='background: #AEF1AE'>queryWrapper select &quot;*&quot; from &quot;User&quot; where &quot;Name&quot; equal userId</span><span style=''>
-</span>29 <span style=''>    </span><span style='background: #AEF1AE'>println(query.query)</span><span style=''>
-</span>30 <span style=''>    </span><span style='background: #AEF1AE'>accessAdapter.selectSingleRow(query)</span><span style=''>
+</span>26 <span style=''>  </span><span style='background: #F0ADAD'>override def selectUser</span><span style=''>(userId: String): Option[User] =
+</span>27 <span style=''>    val queryWrapper = </span><span style='background: #F0ADAD'>QueryBuilder()</span><span style=''>
+</span>28 <span style=''>    val query = </span><span style='background: #F0ADAD'>queryWrapper select &quot;*&quot; from &quot;User&quot; where &quot;Name&quot; equal userId</span><span style=''>
+</span>29 <span style=''>    </span><span style='background: #F0ADAD'>println(query.query)</span><span style=''>
+</span>30 <span style=''>    </span><span style='background: #F0ADAD'>accessAdapter.selectSingleRow(query)</span><span style=''>
 </span>31 <span style=''>
-</span>32 <span style=''>  </span><span style='background: #AEF1AE'>override def insertNewUser</span><span style=''>(userName: String, password: String): Unit =
-</span>33 <span style=''>    val insertBuilder = </span><span style='background: #AEF1AE'>InsertBuilder()</span><span style=''>
-</span>34 <span style=''>    val query = </span><span style='background: #AEF1AE'>insertBuilder insertInto &quot;User(Name, Password, Points)&quot; values {
-</span>35 <span style=''></span><span style='background: #AEF1AE'>      &quot;'&quot; + userName + &quot;', '&quot; + password + &quot;', &quot; + 0
-</span>36 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
-</span>37 <span style=''>    </span><span style='background: #AEF1AE'>println(query.query)</span><span style=''>
-</span>38 <span style=''>    </span><span style='background: #AEF1AE'>accessAdapter.insertQuery(query)</span><span style=''>
+</span>32 <span style=''>  </span><span style='background: #F0ADAD'>override def insertNewUser</span><span style=''>(userName: String, password: String): Unit =
+</span>33 <span style=''>    val insertBuilder = </span><span style='background: #F0ADAD'>InsertBuilder()</span><span style=''>
+</span>34 <span style=''>    val query = </span><span style='background: #F0ADAD'>insertBuilder insertInto &quot;User(Name, Password, Points)&quot; values {
+</span>35 <span style=''></span><span style='background: #F0ADAD'>      &quot;'&quot; + userName + &quot;', '&quot; + password + &quot;', &quot; + 0
+</span>36 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
+</span>37 <span style=''>    </span><span style='background: #F0ADAD'>println(query.query)</span><span style=''>
+</span>38 <span style=''>    </span><span style='background: #F0ADAD'>accessAdapter.insertQuery(query)</span><span style=''>
 </span>39 <span style=''>
-</span>40 <span style=''>  </span><span style='background: #AEF1AE'>override def addPointsToUser</span><span style=''>(userId: String, points: Int): Boolean =
-</span>41 <span style=''>    val updateQuery = </span><span style='background: #AEF1AE'>UpdateBuilder()</span><span style=''>
-</span>42 <span style=''>    val query = </span><span style='background: #AEF1AE'>updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot; where s&quot;UserId = $userId&quot;</span><span style=''>
-</span>43 <span style=''>    </span><span style='background: #AEF1AE'>println(query.query)</span><span style=''>
-</span>44 <span style=''>    </span><span style='background: #AEF1AE'>accessAdapter.update(query)</span><span style=''>
+</span>40 <span style=''>  </span><span style='background: #F0ADAD'>override def addPointsToUser</span><span style=''>(userId: String, points: Int): Boolean =
+</span>41 <span style=''>    val updateQuery = </span><span style='background: #F0ADAD'>UpdateBuilder()</span><span style=''>
+</span>42 <span style=''>    val query = </span><span style='background: #F0ADAD'>updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot; where s&quot;UserId = $userId&quot;</span><span style=''>
+</span>43 <span style=''>    </span><span style='background: #F0ADAD'>println(query.query)</span><span style=''>
+</span>44 <span style=''>    </span><span style='background: #F0ADAD'>accessAdapter.update(query)</span><span style=''>
 </span>45 <span style=''>    
 </span>46 <span style=''>  
 </span>47 <span style=''>}
@@ -87,7 +87,7 @@
           14
         </td>
         <td>
-          1462
+          1469
         </td>
         <td>
           485
@@ -111,31 +111,7 @@
           15
         </td>
         <td>
-          1455
-        </td>
-        <td>
-          525
-          -
-          568
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          &lt;init&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          AccessPort(ServiceLocator.getDataAdapter())
-        </td>
-      </tr><tr>
-        <td>
-          15
-        </td>
-        <td>
-          1454
+          1461
         </td>
         <td>
           536
@@ -156,10 +132,34 @@
         </td>
       </tr><tr>
         <td>
+          15
+        </td>
+        <td>
+          1462
+        </td>
+        <td>
+          525
+          -
+          568
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          AccessPort(ServiceLocator.getDataAdapter())
+        </td>
+      </tr><tr>
+        <td>
           18
         </td>
         <td>
-          1456
+          1463
         </td>
         <td>
           669
@@ -183,31 +183,7 @@
           19
         </td>
         <td>
-          1459
-        </td>
-        <td>
-          736
-          -
-          780
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          println
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          println(value.name + &quot; - &quot; + value.password)
-        </td>
-      </tr><tr>
-        <td>
-          19
-        </td>
-        <td>
-          1458
+          1465
         </td>
         <td>
           744
@@ -231,7 +207,31 @@
           19
         </td>
         <td>
-          1457
+          1467
+        </td>
+        <td>
+          716
+          -
+          732
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Some(value)
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          1464
         </td>
         <td>
           744
@@ -255,31 +255,31 @@
           19
         </td>
         <td>
-          1460
+          1466
         </td>
         <td>
-          716
+          736
           -
-          732
+          780
         </td>
         <td>
-          Block
+          Apply
         </td>
         <td>
-          &lt;none&gt;
+          println
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          case Some(value)
+          println(value.name + &quot; - &quot; + value.password)
         </td>
       </tr><tr>
         <td>
           20
         </td>
         <td>
-          1461
+          1468
         </td>
         <td>
           787
@@ -303,7 +303,7 @@
           25
         </td>
         <td>
-          1470
+          1477
         </td>
         <td>
           886
@@ -319,7 +319,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           override def selectUser
         </td>
       </tr><tr>
@@ -327,7 +327,7 @@
           26
         </td>
         <td>
-          1463
+          1470
         </td>
         <td>
           965
@@ -343,7 +343,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           QueryBuilder()
         </td>
       </tr><tr>
@@ -351,31 +351,7 @@
           27
         </td>
         <td>
-          1465
-        </td>
-        <td>
-          996
-          -
-          1031
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          from
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          queryWrapper select &quot;*&quot; from &quot;User&quot;
-        </td>
-      </tr><tr>
-        <td>
-          27
-        </td>
-        <td>
-          1467
+          1474
         </td>
         <td>
           996
@@ -391,7 +367,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           queryWrapper select &quot;*&quot; from &quot;User&quot; where &quot;Name&quot; equal userId
         </td>
       </tr><tr>
@@ -399,31 +375,7 @@
           27
         </td>
         <td>
-          1464
-        </td>
-        <td>
-          996
-          -
-          1019
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          select
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          queryWrapper select &quot;*&quot;
-        </td>
-      </tr><tr>
-        <td>
-          27
-        </td>
-        <td>
-          1466
+          1473
         </td>
         <td>
           996
@@ -439,15 +391,63 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           queryWrapper select &quot;*&quot; from &quot;User&quot; where &quot;Name&quot;
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          1472
+        </td>
+        <td>
+          996
+          -
+          1031
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          queryWrapper select &quot;*&quot; from &quot;User&quot;
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          1471
+        </td>
+        <td>
+          996
+          -
+          1019
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          select
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          queryWrapper select &quot;*&quot;
         </td>
       </tr><tr>
         <td>
           28
         </td>
         <td>
-          1468
+          1475
         </td>
         <td>
           1062
@@ -463,7 +463,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           println(query.query)
         </td>
       </tr><tr>
@@ -471,7 +471,7 @@
           29
         </td>
         <td>
-          1469
+          1476
         </td>
         <td>
           1087
@@ -487,7 +487,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           accessAdapter.selectSingleRow(query)
         </td>
       </tr><tr>
@@ -495,7 +495,7 @@
           31
         </td>
         <td>
-          1481
+          1488
         </td>
         <td>
           1127
@@ -511,7 +511,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           override def insertNewUser
         </td>
       </tr><tr>
@@ -519,7 +519,7 @@
           32
         </td>
         <td>
-          1471
+          1478
         </td>
         <td>
           1222
@@ -535,7 +535,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           InsertBuilder()
         </td>
       </tr><tr>
@@ -543,31 +543,7 @@
           33
         </td>
         <td>
-          1472
-        </td>
-        <td>
-          1254
-          -
-          1309
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          insertInto
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          insertBuilder insertInto &quot;User(Name, Password, Points)&quot;
-        </td>
-      </tr><tr>
-        <td>
-          33
-        </td>
-        <td>
-          1478
+          1485
         </td>
         <td>
           1254
@@ -583,41 +559,41 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           insertBuilder insertInto &quot;User(Name, Password, Points)&quot; values {
       &quot;'&quot; + userName + &quot;', '&quot; + password + &quot;', &quot; + 0
     }
         </td>
       </tr><tr>
         <td>
-          34
+          33
         </td>
         <td>
-          1474
+          1479
         </td>
         <td>
-          1325
+          1254
           -
-          1348
+          1309
         </td>
         <td>
           Apply
         </td>
         <td>
-          +
+          insertInto
         </td>
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
-          &quot;'&quot; + userName + &quot;', '&quot;
+        <td style="background: #F0ADAD">
+          insertBuilder insertInto &quot;User(Name, Password, Points)&quot;
         </td>
       </tr><tr>
         <td>
           34
         </td>
         <td>
-          1476
+          1483
         </td>
         <td>
           1325
@@ -633,7 +609,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           &quot;'&quot; + userName + &quot;', '&quot; + password + &quot;', &quot;
         </td>
       </tr><tr>
@@ -641,31 +617,7 @@
           34
         </td>
         <td>
-          1473
-        </td>
-        <td>
-          1325
-          -
-          1339
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          &quot;'&quot; + userName
-        </td>
-      </tr><tr>
-        <td>
-          34
-        </td>
-        <td>
-          1475
+          1482
         </td>
         <td>
           1325
@@ -681,7 +633,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           &quot;'&quot; + userName + &quot;', '&quot; + password
         </td>
       </tr><tr>
@@ -689,7 +641,31 @@
           34
         </td>
         <td>
-          1477
+          1481
+        </td>
+        <td>
+          1325
+          -
+          1348
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot;'&quot; + userName + &quot;', '&quot;
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1484
         </td>
         <td>
           1325
@@ -705,15 +681,39 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           &quot;'&quot; + userName + &quot;', '&quot; + password + &quot;', &quot; + 0
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          1480
+        </td>
+        <td>
+          1325
+          -
+          1339
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot;'&quot; + userName
         </td>
       </tr><tr>
         <td>
           36
         </td>
         <td>
-          1479
+          1486
         </td>
         <td>
           1382
@@ -729,7 +729,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           println(query.query)
         </td>
       </tr><tr>
@@ -737,7 +737,7 @@
           37
         </td>
         <td>
-          1480
+          1487
         </td>
         <td>
           1407
@@ -753,7 +753,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           accessAdapter.insertQuery(query)
         </td>
       </tr><tr>
@@ -761,7 +761,7 @@
           39
         </td>
         <td>
-          1491
+          1498
         </td>
         <td>
           1443
@@ -777,7 +777,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           override def addPointsToUser
         </td>
       </tr><tr>
@@ -785,7 +785,7 @@
           40
         </td>
         <td>
-          1482
+          1489
         </td>
         <td>
           1534
@@ -801,7 +801,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           UpdateBuilder()
         </td>
       </tr><tr>
@@ -809,31 +809,7 @@
           41
         </td>
         <td>
-          1483
-        </td>
-        <td>
-          1566
-          -
-          1591
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          update
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          updateQuery update &quot;User&quot;
-        </td>
-      </tr><tr>
-        <td>
-          41
-        </td>
-        <td>
-          1485
+          1492
         </td>
         <td>
           1613
@@ -849,7 +825,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           s&quot;Points + $points&quot;
         </td>
       </tr><tr>
@@ -857,55 +833,7 @@
           41
         </td>
         <td>
-          1488
-        </td>
-        <td>
-          1566
-          -
-          1658
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          where
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot; where s&quot;UserId = $userId&quot;
-        </td>
-      </tr><tr>
-        <td>
-          41
-        </td>
-        <td>
-          1484
-        </td>
-        <td>
-          1566
-          -
-          1604
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          set
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          updateQuery update &quot;User&quot; set &quot;Points&quot;
-        </td>
-      </tr><tr>
-        <td>
-          41
-        </td>
-        <td>
-          1487
+          1494
         </td>
         <td>
           1639
@@ -921,7 +849,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           s&quot;UserId = $userId&quot;
         </td>
       </tr><tr>
@@ -929,7 +857,55 @@
           41
         </td>
         <td>
-          1486
+          1491
+        </td>
+        <td>
+          1566
+          -
+          1604
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          set
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          updateQuery update &quot;User&quot; set &quot;Points&quot;
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          1490
+        </td>
+        <td>
+          1566
+          -
+          1591
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          update
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          updateQuery update &quot;User&quot;
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          1493
         </td>
         <td>
           1566
@@ -945,15 +921,39 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot;
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          1495
+        </td>
+        <td>
+          1566
+          -
+          1658
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          where
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot; where s&quot;UserId = $userId&quot;
         </td>
       </tr><tr>
         <td>
           42
         </td>
         <td>
-          1489
+          1496
         </td>
         <td>
           1663
@@ -969,7 +969,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           println(query.query)
         </td>
       </tr><tr>
@@ -977,7 +977,7 @@
           43
         </td>
         <td>
-          1490
+          1497
         </td>
         <td>
           1688
@@ -993,7 +993,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           accessAdapter.update(query)
         </td>
       </tr>

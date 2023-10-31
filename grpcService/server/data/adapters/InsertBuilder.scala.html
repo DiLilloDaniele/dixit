@@ -29,18 +29,18 @@
 </span>5 <span style=''>class InsertBuilder:
 </span>6 <span style=''>  var query = &quot;&quot;
 </span>7 <span style=''>
-</span>8 <span style=''>  </span><span style='background: #AEF1AE'>def insertInto</span><span style=''>(table: String) =
+</span>8 <span style=''>  </span><span style='background: #F0ADAD'>def insertInto</span><span style=''>(table: String) =
 </span>9 <span style=''>    table match
 </span>10 <span style=''>      </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>throw SQLException()</span><span style=''>
-</span>11 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
-</span>12 <span style=''>        query = </span><span style='background: #AEF1AE'>&quot;INSERT INTO &quot; + table</span><span style=''>
+</span>11 <span style=''>      </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt;
+</span>12 <span style=''>        query = </span><span style='background: #F0ADAD'>&quot;INSERT INTO &quot; + table</span><span style=''>
 </span>13 <span style=''>        this
 </span>14 <span style=''>
-</span>15 <span style=''>  </span><span style='background: #AEF1AE'>def values</span><span style=''>(values: String) =
+</span>15 <span style=''>  </span><span style='background: #F0ADAD'>def values</span><span style=''>(values: String) =
 </span>16 <span style=''>    values match
 </span>17 <span style=''>      </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>throw SQLException()</span><span style=''>
-</span>18 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
-</span>19 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; VALUES (&quot; + values + &quot;)&quot;</span><span style=''>
+</span>18 <span style=''>      </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt;
+</span>19 <span style=''>        </span><span style='background: #F0ADAD'>query += &quot; VALUES (&quot; + values + &quot;)&quot;</span><span style=''>
 </span>20 <span style=''>        this
 </span></pre>
           </div>
@@ -59,7 +59,7 @@
           7
         </td>
         <td>
-          1369
+          1376
         </td>
         <td>
           113
@@ -75,7 +75,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           def insertInto
         </td>
       </tr><tr>
@@ -83,31 +83,7 @@
           9
         </td>
         <td>
-          1366
-        </td>
-        <td>
-          167
-          -
-          174
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case &quot;&quot;
-        </td>
-      </tr><tr>
-        <td>
-          9
-        </td>
-        <td>
-          1365
+          1372
         </td>
         <td>
           178
@@ -131,7 +107,7 @@
           9
         </td>
         <td>
-          1364
+          1371
         </td>
         <td>
           184
@@ -152,87 +128,15 @@
         </td>
       </tr><tr>
         <td>
-          10
+          9
         </td>
         <td>
-          1368
+          1373
         </td>
         <td>
-          205
+          167
           -
-          211
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          case _
-        </td>
-      </tr><tr>
-        <td>
-          11
-        </td>
-        <td>
-          1367
-        </td>
-        <td>
-          231
-          -
-          253
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          &quot;INSERT INTO &quot; + table
-        </td>
-      </tr><tr>
-        <td>
-          14
-        </td>
-        <td>
-          1377
-        </td>
-        <td>
-          270
-          -
-          280
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          values
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          def values
-        </td>
-      </tr><tr>
-        <td>
-          16
-        </td>
-        <td>
-          1372
-        </td>
-        <td>
-          322
-          -
-          329
+          174
         </td>
         <td>
           Block
@@ -248,10 +152,82 @@
         </td>
       </tr><tr>
         <td>
+          10
+        </td>
+        <td>
+          1375
+        </td>
+        <td>
+          205
+          -
+          211
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          11
+        </td>
+        <td>
+          1374
+        </td>
+        <td>
+          231
+          -
+          253
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot;INSERT INTO &quot; + table
+        </td>
+      </tr><tr>
+        <td>
+          14
+        </td>
+        <td>
+          1384
+        </td>
+        <td>
+          270
+          -
+          280
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          values
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def values
+        </td>
+      </tr><tr>
+        <td>
           16
         </td>
         <td>
-          1371
+          1378
         </td>
         <td>
           333
@@ -275,7 +251,7 @@
           16
         </td>
         <td>
-          1370
+          1377
         </td>
         <td>
           339
@@ -296,10 +272,34 @@
         </td>
       </tr><tr>
         <td>
+          16
+        </td>
+        <td>
+          1379
+        </td>
+        <td>
+          322
+          -
+          329
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case &quot;&quot;
+        </td>
+      </tr><tr>
+        <td>
           17
         </td>
         <td>
-          1376
+          1383
         </td>
         <td>
           360
@@ -315,7 +315,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case _
         </td>
       </tr><tr>
@@ -323,31 +323,7 @@
           18
         </td>
         <td>
-          1375
-        </td>
-        <td>
-          378
-          -
-          413
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          query += &quot; VALUES (&quot; + values + &quot;)&quot;
-        </td>
-      </tr><tr>
-        <td>
-          18
-        </td>
-        <td>
-          1374
+          1381
         </td>
         <td>
           387
@@ -363,7 +339,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           &quot; VALUES (&quot; + values + &quot;)&quot;
         </td>
       </tr><tr>
@@ -371,7 +347,7 @@
           18
         </td>
         <td>
-          1373
+          1380
         </td>
         <td>
           387
@@ -387,8 +363,32 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           &quot; VALUES (&quot; + values
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          1382
+        </td>
+        <td>
+          378
+          -
+          413
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          query += &quot; VALUES (&quot; + values + &quot;)&quot;
         </td>
       </tr>
     </table>

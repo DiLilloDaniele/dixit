@@ -27,14 +27,14 @@
 </span>3 <span style=''>object PumpMyList:
 </span>4 <span style=''>
 </span>5 <span style=''>  extension[A] (l: List[A])
-</span>6 <span style=''>    </span><span style='background: #AEF1AE'>def filterMap</span><span style=''>(cond: A =&gt; Boolean)(map: A =&gt; A): List[A] =
-</span>7 <span style=''>      </span><span style='background: #AEF1AE'>l.map { i =&gt;
-</span>8 <span style=''></span><span style='background: #AEF1AE'>        if(cond(i)) {
-</span>9 <span style=''></span><span style='background: #AEF1AE'>          map(i)
-</span>10 <span style=''></span><span style='background: #AEF1AE'>        } else {
-</span>11 <span style=''></span><span style='background: #AEF1AE'>          i
-</span>12 <span style=''></span><span style='background: #AEF1AE'>        }
-</span>13 <span style=''></span><span style='background: #AEF1AE'>      }</span><span style=''>
+</span>6 <span style=''>    </span><span style='background: #F0ADAD'>def filterMap</span><span style=''>(cond: A =&gt; Boolean)(map: A =&gt; A): List[A] =
+</span>7 <span style=''>      </span><span style='background: #F0ADAD'>l.map { i =&gt;
+</span>8 <span style=''></span><span style='background: #F0ADAD'>        if(cond(i)) {
+</span>9 <span style=''></span><span style='background: #F0ADAD'>          map(i)
+</span>10 <span style=''></span><span style='background: #F0ADAD'>        } else {
+</span>11 <span style=''></span><span style='background: #F0ADAD'>          i
+</span>12 <span style=''></span><span style='background: #F0ADAD'>        }
+</span>13 <span style=''></span><span style='background: #F0ADAD'>      }</span><span style=''>
 </span>14 <span style=''>
 </span>15 <span style=''>    </span><span style='background: #F0ADAD'>def equals</span><span style=''>(l2: List[A]): Boolean =
 </span>16 <span style=''>      </span><span style='background: #F0ADAD'>l.toSet</span><span style=''> == </span><span style='background: #F0ADAD'>l2.toSet</span><span style=''>
@@ -75,7 +75,7 @@
           5
         </td>
         <td>
-          870
+          873
         </td>
         <td>
           86
@@ -91,7 +91,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           def filterMap
         </td>
       </tr><tr>
@@ -99,7 +99,7 @@
           6
         </td>
         <td>
-          869
+          872
         </td>
         <td>
           150
@@ -115,7 +115,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           l.map { i =&gt;
         if(cond(i)) {
           map(i)
@@ -129,7 +129,7 @@
           7
         </td>
         <td>
-          865
+          868
         </td>
         <td>
           174
@@ -145,7 +145,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           cond(i)
         </td>
       </tr><tr>
@@ -153,7 +153,7 @@
           7
         </td>
         <td>
-          867
+          870
         </td>
         <td>
           183
@@ -169,7 +169,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           {
           map(i)
         }
@@ -179,7 +179,7 @@
           8
         </td>
         <td>
-          866
+          869
         </td>
         <td>
           195
@@ -195,7 +195,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           map(i)
         </td>
       </tr><tr>
@@ -203,7 +203,7 @@
           9
         </td>
         <td>
-          868
+          871
         </td>
         <td>
           217
@@ -219,7 +219,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           {
           i
         }
@@ -229,7 +229,7 @@
           14
         </td>
         <td>
-          873
+          876
         </td>
         <td>
           254
@@ -253,7 +253,7 @@
           15
         </td>
         <td>
-          872
+          875
         </td>
         <td>
           306
@@ -277,7 +277,7 @@
           15
         </td>
         <td>
-          871
+          874
         </td>
         <td>
           295
@@ -301,7 +301,7 @@
           17
         </td>
         <td>
-          875
+          878
         </td>
         <td>
           320
@@ -325,7 +325,7 @@
           18
         </td>
         <td>
-          874
+          877
         </td>
         <td>
           350
@@ -349,7 +349,7 @@
           20
         </td>
         <td>
-          878
+          881
         </td>
         <td>
           380
@@ -373,7 +373,7 @@
           21
         </td>
         <td>
-          877
+          880
         </td>
         <td>
           433
@@ -397,7 +397,7 @@
           21
         </td>
         <td>
-          876
+          879
         </td>
         <td>
           450
@@ -421,7 +421,7 @@
           23
         </td>
         <td>
-          888
+          891
         </td>
         <td>
           469
@@ -445,7 +445,7 @@
           24
         </td>
         <td>
-          879
+          882
         </td>
         <td>
           500
@@ -469,7 +469,7 @@
           27
         </td>
         <td>
-          880
+          883
         </td>
         <td>
           533
@@ -497,7 +497,7 @@
           30
         </td>
         <td>
-          881
+          884
         </td>
         <td>
           611
@@ -521,7 +521,7 @@
           31
         </td>
         <td>
-          882
+          885
         </td>
         <td>
           632
@@ -545,7 +545,7 @@
           32
         </td>
         <td>
-          883
+          886
         </td>
         <td>
           654
@@ -569,7 +569,7 @@
           33
         </td>
         <td>
-          884
+          887
         </td>
         <td>
           680
@@ -593,7 +593,7 @@
           34
         </td>
         <td>
-          886
+          889
         </td>
         <td>
           698
@@ -617,7 +617,7 @@
           34
         </td>
         <td>
-          885
+          888
         </td>
         <td>
           706
@@ -641,7 +641,7 @@
           35
         </td>
         <td>
-          887
+          890
         </td>
         <td>
           737

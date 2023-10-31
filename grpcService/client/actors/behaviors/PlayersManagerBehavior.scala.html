@@ -35,7 +35,7 @@
 </span>11 <span style=''>
 </span>12 <span style=''>object PlayersManagerBehavior {
 </span>13 <span style=''>
-</span>14 <span style=''>  val Service = </span><span style='background: #AEF1AE'>ServiceKey[Command](&quot;GameManager&quot;)</span><span style=''>
+</span>14 <span style=''>  val Service = </span><span style='background: #F0ADAD'>ServiceKey[Command](&quot;GameManager&quot;)</span><span style=''>
 </span>15 <span style=''>
 </span>16 <span style=''>  sealed trait Command extends Message
 </span>17 <span style=''>
@@ -45,92 +45,92 @@
 </span>21 <span style=''>  case object CheckMembers extends Command
 </span>22 <span style=''>  case object Stop extends Command
 </span>23 <span style=''>
-</span>24 <span style=''>  </span><span style='background: #AEF1AE'>def apply</span><span style=''>(maxPlayers: Int, foreman: ActorRef[ForemanBehavior.Command]): Behavior[Command] =
-</span>25 <span style=''>    </span><span style='background: #AEF1AE'>Behaviors.setup[Command] { ctx =&gt;
-</span>26 <span style=''></span><span style='background: #AEF1AE'>      ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
-</span>27 <span style=''></span><span style='background: #AEF1AE'>      val manager = ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx =&gt; PlayersManagerBehaviorImpl(ctx, maxPlayers, foreman)), &quot;manager&quot;)
-</span>28 <span style=''></span><span style='background: #AEF1AE'>      manager ! Startup
-</span>29 <span style=''></span><span style='background: #AEF1AE'>      ctx.watch(manager)
-</span>30 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.receiveMessage[Command] {
-</span>31 <span style=''></span><span style='background: #AEF1AE'>        case msg: Command =&gt;
-</span>32 <span style=''></span><span style='background: #AEF1AE'>          manager ! msg
-</span>33 <span style=''></span><span style='background: #AEF1AE'>          Behaviors.same
-</span>34 <span style=''></span><span style='background: #AEF1AE'>      }.receiveSignal { case (ctx, t @ Terminated(_)) =&gt;
-</span>35 <span style=''></span><span style='background: #AEF1AE'>        ctx.log.info(&quot;[MANAGER] System terminated. Shutting down&quot;)
-</span>36 <span style=''></span><span style='background: #AEF1AE'>        manager ! Stop
-</span>37 <span style=''></span><span style='background: #AEF1AE'>        Behaviors.stopped
-</span>38 <span style=''></span><span style='background: #AEF1AE'>      }
-</span>39 <span style=''></span><span style='background: #AEF1AE'>
-</span>40 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>24 <span style=''>  </span><span style='background: #F0ADAD'>def apply</span><span style=''>(maxPlayers: Int, foreman: ActorRef[ForemanBehavior.Command]): Behavior[Command] =
+</span>25 <span style=''>    </span><span style='background: #F0ADAD'>Behaviors.setup[Command] { ctx =&gt;
+</span>26 <span style=''></span><span style='background: #F0ADAD'>      ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
+</span>27 <span style=''></span><span style='background: #F0ADAD'>      val manager = ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx =&gt; PlayersManagerBehaviorImpl(ctx, maxPlayers, foreman)), &quot;manager&quot;)
+</span>28 <span style=''></span><span style='background: #F0ADAD'>      manager ! Startup
+</span>29 <span style=''></span><span style='background: #F0ADAD'>      ctx.watch(manager)
+</span>30 <span style=''></span><span style='background: #F0ADAD'>      Behaviors.receiveMessage[Command] {
+</span>31 <span style=''></span><span style='background: #F0ADAD'>        case msg: Command =&gt;
+</span>32 <span style=''></span><span style='background: #F0ADAD'>          manager ! msg
+</span>33 <span style=''></span><span style='background: #F0ADAD'>          Behaviors.same
+</span>34 <span style=''></span><span style='background: #F0ADAD'>      }.receiveSignal { case (ctx, t @ Terminated(_)) =&gt;
+</span>35 <span style=''></span><span style='background: #F0ADAD'>        ctx.log.info(&quot;[MANAGER] System terminated. Shutting down&quot;)
+</span>36 <span style=''></span><span style='background: #F0ADAD'>        manager ! Stop
+</span>37 <span style=''></span><span style='background: #F0ADAD'>        Behaviors.stopped
+</span>38 <span style=''></span><span style='background: #F0ADAD'>      }
+</span>39 <span style=''></span><span style='background: #F0ADAD'>
+</span>40 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
 </span>41 <span style=''>
 </span>42 <span style=''>}
 </span>43 <span style=''>
 </span>44 <span style=''>class PlayersManagerBehaviorImpl(context: ActorContext[Command],
 </span>45 <span style=''>                                 maxPlayers: Int,
-</span>46 <span style=''>                                 foreman: ActorRef[ForemanBehavior.Command]) extends </span><span style='background: #AEF1AE'>AbstractBehavior[Command](context)</span><span style=''>:
+</span>46 <span style=''>                                 foreman: ActorRef[ForemanBehavior.Command]) extends </span><span style='background: #F0ADAD'>AbstractBehavior[Command](context)</span><span style=''>:
 </span>47 <span style=''>
-</span>48 <span style=''>  var playersList: List[ActorRef[PlayerBehavior.Command]] = </span><span style='background: #AEF1AE'>List()</span><span style=''>
+</span>48 <span style=''>  var playersList: List[ActorRef[PlayerBehavior.Command]] = </span><span style='background: #F0ADAD'>List()</span><span style=''>
 </span>49 <span style=''>
-</span>50 <span style=''>  </span><span style='background: #AEF1AE'>override def onMessage</span><span style=''>(msg: Command): Behavior[Command] = msg match {
-</span>51 <span style=''>    </span><span style='background: #AEF1AE'>case Startup</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>waitPlayers(maxPlayers, 0, foreman)</span><span style=''>
+</span>50 <span style=''>  </span><span style='background: #F0ADAD'>override def onMessage</span><span style=''>(msg: Command): Behavior[Command] = msg match {
+</span>51 <span style=''>    </span><span style='background: #F0ADAD'>case Startup</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>waitPlayers(maxPlayers, 0, foreman)</span><span style=''>
 </span>52 <span style=''>    </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style=''>
 </span>53 <span style=''>  }
 </span>54 <span style=''>
-</span>55 <span style=''>  </span><span style='background: #AEF1AE'>def waitPlayers</span><span style=''>(maxPlayers: Int, currentNumPlayers: Int, foreman: ActorRef[ForemanBehavior.Command]): Behavior[Command] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage[Command] {
-</span>56 <span style=''></span><span style='background: #AEF1AE'>    case AskEnter(replyTo) =&gt;
-</span>57 <span style=''></span><span style='background: #AEF1AE'>      val currentPlayers = currentNumPlayers + 1
-</span>58 <span style=''></span><span style='background: #AEF1AE'>      if (currentPlayers &lt;= maxPlayers) {
-</span>59 <span style=''></span><span style='background: #AEF1AE'>        playersList = playersList :+ replyTo
-</span>60 <span style=''></span><span style='background: #AEF1AE'>        replyTo ! PlayerBehavior.MemberOK
-</span>61 <span style=''></span><span style='background: #AEF1AE'>        if(currentPlayers == maxPlayers)
-</span>62 <span style=''></span><span style='background: #AEF1AE'>          foreman ! ForemanBehavior.Start(playersList.toSet)
-</span>63 <span style=''></span><span style='background: #AEF1AE'>          gameOn(maxPlayers, currentPlayers, foreman)
-</span>64 <span style=''></span><span style='background: #AEF1AE'>        else
-</span>65 <span style=''></span><span style='background: #AEF1AE'>          waitPlayers(maxPlayers, currentPlayers, foreman)
-</span>66 <span style=''></span><span style='background: #AEF1AE'>      } else </span><span style='background: #F0ADAD'>{
+</span>55 <span style=''>  </span><span style='background: #F0ADAD'>def waitPlayers</span><span style=''>(maxPlayers: Int, currentNumPlayers: Int, foreman: ActorRef[ForemanBehavior.Command]): Behavior[Command] = </span><span style='background: #F0ADAD'>Behaviors.receiveMessage[Command] {
+</span>56 <span style=''></span><span style='background: #F0ADAD'>    case AskEnter(replyTo) =&gt;
+</span>57 <span style=''></span><span style='background: #F0ADAD'>      val currentPlayers = currentNumPlayers + 1
+</span>58 <span style=''></span><span style='background: #F0ADAD'>      if (currentPlayers &lt;= maxPlayers) {
+</span>59 <span style=''></span><span style='background: #F0ADAD'>        playersList = playersList :+ replyTo
+</span>60 <span style=''></span><span style='background: #F0ADAD'>        replyTo ! PlayerBehavior.MemberOK
+</span>61 <span style=''></span><span style='background: #F0ADAD'>        if(currentPlayers == maxPlayers)
+</span>62 <span style=''></span><span style='background: #F0ADAD'>          foreman ! ForemanBehavior.Start(playersList.toSet)
+</span>63 <span style=''></span><span style='background: #F0ADAD'>          gameOn(maxPlayers, currentPlayers, foreman)
+</span>64 <span style=''></span><span style='background: #F0ADAD'>        else
+</span>65 <span style=''></span><span style='background: #F0ADAD'>          waitPlayers(maxPlayers, currentPlayers, foreman)
+</span>66 <span style=''></span><span style='background: #F0ADAD'>      } else {
 </span>67 <span style=''></span><span style='background: #F0ADAD'>        replyTo ! PlayerBehavior.MemberKO
 </span>68 <span style=''></span><span style='background: #F0ADAD'>        Behaviors.same
-</span>69 <span style=''></span><span style='background: #F0ADAD'>      }</span><span style='background: #AEF1AE'>
-</span>70 <span style=''></span><span style='background: #AEF1AE'>    case PlayerExited =&gt;
-</span>71 <span style=''></span><span style='background: #AEF1AE'>      waitPlayers(maxPlayers, currentNumPlayers - 1, foreman)
-</span>72 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt;
-</span>73 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
-</span>74 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>69 <span style=''></span><span style='background: #F0ADAD'>      }
+</span>70 <span style=''></span><span style='background: #F0ADAD'>    case PlayerExited =&gt;
+</span>71 <span style=''></span><span style='background: #F0ADAD'>      waitPlayers(maxPlayers, currentNumPlayers - 1, foreman)
+</span>72 <span style=''></span><span style='background: #F0ADAD'>    case _ =&gt;
+</span>73 <span style=''></span><span style='background: #F0ADAD'>      Behaviors.same
+</span>74 <span style=''></span><span style='background: #F0ADAD'>  }</span><span style=''>
 </span>75 <span style=''>
-</span>76 <span style=''>  </span><span style='background: #AEF1AE'>def gameOn</span><span style=''>(maxPlayers: Int, currentNumPlayers: Int, foreman: ActorRef[ForemanBehavior.Command]): Behavior[Command] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage[Command] {
-</span>77 <span style=''></span><span style='background: #AEF1AE'>    case AskEnter(replyTo) =&gt;
-</span>78 <span style=''></span><span style='background: #AEF1AE'>      val playersAddresses = playersList.map { i =&gt; i.path.address.toString}
-</span>79 <span style=''></span><span style='background: #AEF1AE'>      if(playersAddresses.contains(replyTo.path.address.toString))
-</span>80 <span style=''></span><span style='background: #AEF1AE'>        context.log.info(&quot;un giocatore è rientrato&quot;)
-</span>81 <span style=''></span><span style='background: #AEF1AE'>        replyTo ! PlayerBehavior.MemberOK
-</span>82 <span style=''></span><span style='background: #AEF1AE'>        foreman ! ForemanBehavior.PlayerRejoined(replyTo.path.address.toString)
-</span>83 <span style=''></span><span style='background: #AEF1AE'>        Behaviors.same
-</span>84 <span style=''></span><span style='background: #AEF1AE'>      val currentPlayers = currentNumPlayers + 1
-</span>85 <span style=''></span><span style='background: #AEF1AE'>      gameOn(maxPlayers, currentPlayers, foreman)
-</span>86 <span style=''></span><span style='background: #AEF1AE'>    case PlayerExited =&gt;
-</span>87 <span style=''></span><span style='background: #AEF1AE'>      val currentPlayers = currentNumPlayers - 1
-</span>88 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(&quot;un giocatore ha quittato&quot;)
-</span>89 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.withTimers { timer =&gt;
-</span>90 <span style=''></span><span style='background: #AEF1AE'>        timer.startSingleTimer(CheckMembers, 15000 milliseconds)
-</span>91 <span style=''></span><span style='background: #AEF1AE'>        gameOn(maxPlayers, currentPlayers, foreman)
-</span>92 <span style=''></span><span style='background: #AEF1AE'>      }
-</span>93 <span style=''></span><span style='background: #AEF1AE'>
-</span>94 <span style=''></span><span style='background: #AEF1AE'>    case CheckMembers =&gt;
-</span>95 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(&quot;Checcko....&quot;)
-</span>96 <span style=''></span><span style='background: #AEF1AE'>      if(currentNumPlayers &lt; maxPlayers)
-</span>97 <span style=''></span><span style='background: #AEF1AE'>        context.log.info(&quot;Stop game&quot;)
-</span>98 <span style=''></span><span style='background: #AEF1AE'>        context.self ! Stop
-</span>99 <span style=''></span><span style='background: #AEF1AE'>        Behaviors.same
-</span>100 <span style=''></span><span style='background: #AEF1AE'>      else
-</span>101 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>context.log.info(&quot;NO stop game&quot;)
-</span>102 <span style=''></span><span style='background: #F0ADAD'>        Behaviors.same</span><span style='background: #AEF1AE'>
-</span>103 <span style=''></span><span style='background: #AEF1AE'>
-</span>104 <span style=''></span><span style='background: #AEF1AE'>    case Stop =&gt;
-</span>105 <span style=''></span><span style='background: #AEF1AE'>      playersList.foreach { i =&gt;
-</span>106 <span style=''></span><span style='background: #AEF1AE'>        i ! PlayerBehavior.GameInfo(&quot;Uno o più giocatori si sono disconnessi. Partita annullata :(&quot;)
-</span>107 <span style=''></span><span style='background: #AEF1AE'>      }
-</span>108 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.stopped
-</span>109 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>76 <span style=''>  </span><span style='background: #F0ADAD'>def gameOn</span><span style=''>(maxPlayers: Int, currentNumPlayers: Int, foreman: ActorRef[ForemanBehavior.Command]): Behavior[Command] = </span><span style='background: #F0ADAD'>Behaviors.receiveMessage[Command] {
+</span>77 <span style=''></span><span style='background: #F0ADAD'>    case AskEnter(replyTo) =&gt;
+</span>78 <span style=''></span><span style='background: #F0ADAD'>      val playersAddresses = playersList.map { i =&gt; i.path.address.toString}
+</span>79 <span style=''></span><span style='background: #F0ADAD'>      if(playersAddresses.contains(replyTo.path.address.toString))
+</span>80 <span style=''></span><span style='background: #F0ADAD'>        context.log.info(&quot;un giocatore è rientrato&quot;)
+</span>81 <span style=''></span><span style='background: #F0ADAD'>        replyTo ! PlayerBehavior.MemberOK
+</span>82 <span style=''></span><span style='background: #F0ADAD'>        foreman ! ForemanBehavior.PlayerRejoined(replyTo.path.address.toString)
+</span>83 <span style=''></span><span style='background: #F0ADAD'>        Behaviors.same
+</span>84 <span style=''></span><span style='background: #F0ADAD'>      val currentPlayers = currentNumPlayers + 1
+</span>85 <span style=''></span><span style='background: #F0ADAD'>      gameOn(maxPlayers, currentPlayers, foreman)
+</span>86 <span style=''></span><span style='background: #F0ADAD'>    case PlayerExited =&gt;
+</span>87 <span style=''></span><span style='background: #F0ADAD'>      val currentPlayers = currentNumPlayers - 1
+</span>88 <span style=''></span><span style='background: #F0ADAD'>      context.log.info(&quot;un giocatore ha quittato&quot;)
+</span>89 <span style=''></span><span style='background: #F0ADAD'>      Behaviors.withTimers { timer =&gt;
+</span>90 <span style=''></span><span style='background: #F0ADAD'>        timer.startSingleTimer(CheckMembers, 15000 milliseconds)
+</span>91 <span style=''></span><span style='background: #F0ADAD'>        gameOn(maxPlayers, currentPlayers, foreman)
+</span>92 <span style=''></span><span style='background: #F0ADAD'>      }
+</span>93 <span style=''></span><span style='background: #F0ADAD'>
+</span>94 <span style=''></span><span style='background: #F0ADAD'>    case CheckMembers =&gt;
+</span>95 <span style=''></span><span style='background: #F0ADAD'>      context.log.info(&quot;Checcko....&quot;)
+</span>96 <span style=''></span><span style='background: #F0ADAD'>      if(currentNumPlayers &lt; maxPlayers)
+</span>97 <span style=''></span><span style='background: #F0ADAD'>        context.log.info(&quot;Stop game&quot;)
+</span>98 <span style=''></span><span style='background: #F0ADAD'>        context.self ! Stop
+</span>99 <span style=''></span><span style='background: #F0ADAD'>        Behaviors.same
+</span>100 <span style=''></span><span style='background: #F0ADAD'>      else
+</span>101 <span style=''></span><span style='background: #F0ADAD'>        context.log.info(&quot;NO stop game&quot;)
+</span>102 <span style=''></span><span style='background: #F0ADAD'>        Behaviors.same
+</span>103 <span style=''></span><span style='background: #F0ADAD'>
+</span>104 <span style=''></span><span style='background: #F0ADAD'>    case Stop =&gt;
+</span>105 <span style=''></span><span style='background: #F0ADAD'>      playersList.foreach { i =&gt;
+</span>106 <span style=''></span><span style='background: #F0ADAD'>        i ! PlayerBehavior.GameInfo(&quot;Uno o più giocatori si sono disconnessi. Partita annullata :(&quot;)
+</span>107 <span style=''></span><span style='background: #F0ADAD'>      }
+</span>108 <span style=''></span><span style='background: #F0ADAD'>      Behaviors.stopped
+</span>109 <span style=''></span><span style='background: #F0ADAD'>  }</span><span style=''>
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -148,7 +148,7 @@
           13
         </td>
         <td>
-          672
+          675
         </td>
         <td>
           585
@@ -164,7 +164,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ServiceKey[Command](&quot;GameManager&quot;)
         </td>
       </tr><tr>
@@ -172,7 +172,7 @@
           23
         </td>
         <td>
-          699
+          702
         </td>
         <td>
           904
@@ -188,7 +188,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           def apply
         </td>
       </tr><tr>
@@ -196,7 +196,7 @@
           24
         </td>
         <td>
-          698
+          701
         </td>
         <td>
           1000
@@ -212,7 +212,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Behaviors.setup[Command] { ctx =&gt;
       ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
       val manager = ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx =&gt; PlayersManagerBehaviorImpl(ctx, maxPlayers, foreman)), &quot;manager&quot;)
@@ -240,30 +240,6 @@
         <td>
           1040
           -
-          1106
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          !
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
-        </td>
-      </tr><tr>
-        <td>
-          25
-        </td>
-        <td>
-          675
-        </td>
-        <td>
-          1040
-          -
           1063
         </td>
         <td>
@@ -275,7 +251,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.system.receptionist
         </td>
       </tr><tr>
@@ -283,10 +259,10 @@
           25
         </td>
         <td>
-          677
+          681
         </td>
         <td>
-          1066
+          1040
           -
           1106
         </td>
@@ -294,20 +270,20 @@
           Apply
         </td>
         <td>
-          apply
+          !
         </td>
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
-          Receptionist.Register(Service, ctx.self)
+        <td style="background: #F0ADAD">
+          ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
         </td>
       </tr><tr>
         <td>
           25
         </td>
         <td>
-          674
+          677
         </td>
         <td>
           1040
@@ -323,7 +299,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.system.receptionist
         </td>
       </tr><tr>
@@ -331,7 +307,31 @@
           25
         </td>
         <td>
-          673
+          680
+        </td>
+        <td>
+          1066
+          -
+          1106
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Receptionist.Register(Service, ctx.self)
+        </td>
+      </tr><tr>
+        <td>
+          25
+        </td>
+        <td>
+          676
         </td>
         <td>
           1040
@@ -347,7 +347,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.system
         </td>
       </tr><tr>
@@ -355,7 +355,7 @@
           25
         </td>
         <td>
-          676
+          679
         </td>
         <td>
           1097
@@ -371,7 +371,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.self
         </td>
       </tr><tr>
@@ -379,7 +379,7 @@
           26
         </td>
         <td>
-          681
+          684
         </td>
         <td>
           1127
@@ -395,7 +395,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.spawn
         </td>
       </tr><tr>
@@ -403,7 +403,7 @@
           26
         </td>
         <td>
-          680
+          683
         </td>
         <td>
           1137
@@ -419,7 +419,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Behaviors.setup[PlayersManagerBehavior.Command](ctx =&gt; PlayersManagerBehaviorImpl(ctx, maxPlayers, foreman))
         </td>
       </tr><tr>
@@ -428,30 +428,6 @@
         </td>
         <td>
           682
-        </td>
-        <td>
-          1127
-          -
-          1257
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          spawn
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx =&gt; PlayersManagerBehaviorImpl(ctx, maxPlayers, foreman)), &quot;manager&quot;)
-        </td>
-      </tr><tr>
-        <td>
-          26
-        </td>
-        <td>
-          679
         </td>
         <td>
           1192
@@ -467,15 +443,39 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           PlayersManagerBehaviorImpl(ctx, maxPlayers, foreman)
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          685
+        </td>
+        <td>
+          1127
+          -
+          1257
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          spawn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx =&gt; PlayersManagerBehaviorImpl(ctx, maxPlayers, foreman)), &quot;manager&quot;)
         </td>
       </tr><tr>
         <td>
           27
         </td>
         <td>
-          684
+          687
         </td>
         <td>
           1264
@@ -491,7 +491,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           manager ! Startup
         </td>
       </tr><tr>
@@ -499,7 +499,7 @@
           27
         </td>
         <td>
-          683
+          686
         </td>
         <td>
           1264
@@ -515,7 +515,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           manager
         </td>
       </tr><tr>
@@ -523,7 +523,7 @@
           28
         </td>
         <td>
-          685
+          688
         </td>
         <td>
           1288
@@ -539,7 +539,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.watch(manager)
         </td>
       </tr><tr>
@@ -547,7 +547,7 @@
           29
         </td>
         <td>
-          690
+          693
         </td>
         <td>
           1313
@@ -563,7 +563,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Behaviors.receiveMessage[Command] {
         case msg: Command =&gt;
           manager ! msg
@@ -575,7 +575,7 @@
           30
         </td>
         <td>
-          689
+          692
         </td>
         <td>
           1357
@@ -591,7 +591,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case msg: Command
         </td>
       </tr><tr>
@@ -599,7 +599,7 @@
           31
         </td>
         <td>
-          687
+          690
         </td>
         <td>
           1388
@@ -615,7 +615,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           manager ! msg
         </td>
       </tr><tr>
@@ -623,7 +623,7 @@
           31
         </td>
         <td>
-          686
+          689
         </td>
         <td>
           1388
@@ -639,7 +639,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           manager
         </td>
       </tr><tr>
@@ -647,7 +647,7 @@
           32
         </td>
         <td>
-          688
+          691
         </td>
         <td>
           1412
@@ -663,7 +663,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Behaviors.same
         </td>
       </tr><tr>
@@ -671,7 +671,7 @@
           33
         </td>
         <td>
-          696
+          699
         </td>
         <td>
           1451
@@ -687,7 +687,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case (ctx, t @ Terminated(_))
         </td>
       </tr><tr>
@@ -695,7 +695,7 @@
           33
         </td>
         <td>
-          697
+          700
         </td>
         <td>
           1313
@@ -711,7 +711,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Behaviors.receiveMessage[Command] {
         case msg: Command =&gt;
           manager ! msg
@@ -727,7 +727,7 @@
           34
         </td>
         <td>
-          692
+          695
         </td>
         <td>
           1492
@@ -743,7 +743,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.log.info(&quot;[MANAGER] System terminated. Shutting down&quot;)
         </td>
       </tr><tr>
@@ -751,7 +751,7 @@
           34
         </td>
         <td>
-          691
+          694
         </td>
         <td>
           1492
@@ -767,7 +767,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.log
         </td>
       </tr><tr>
@@ -775,7 +775,7 @@
           35
         </td>
         <td>
-          693
+          696
         </td>
         <td>
           1559
@@ -791,7 +791,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           manager
         </td>
       </tr><tr>
@@ -799,7 +799,7 @@
           35
         </td>
         <td>
-          694
+          697
         </td>
         <td>
           1559
@@ -815,7 +815,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           manager ! Stop
         </td>
       </tr><tr>
@@ -823,7 +823,7 @@
           36
         </td>
         <td>
-          695
+          698
         </td>
         <td>
           1582
@@ -839,7 +839,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Behaviors.stopped
         </td>
       </tr><tr>
@@ -847,7 +847,7 @@
           45
         </td>
         <td>
-          700
+          703
         </td>
         <td>
           1819
@@ -863,7 +863,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           AbstractBehavior[Command](context)
         </td>
       </tr><tr>
@@ -871,7 +871,7 @@
           47
         </td>
         <td>
-          701
+          704
         </td>
         <td>
           1916
@@ -887,7 +887,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           List()
         </td>
       </tr><tr>
@@ -895,7 +895,7 @@
           49
         </td>
         <td>
-          706
+          709
         </td>
         <td>
           1926
@@ -911,7 +911,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           override def onMessage
         </td>
       </tr><tr>
@@ -919,7 +919,7 @@
           50
         </td>
         <td>
-          702
+          705
         </td>
         <td>
           2016
@@ -935,7 +935,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           waitPlayers(maxPlayers, 0, foreman)
         </td>
       </tr><tr>
@@ -943,7 +943,7 @@
           50
         </td>
         <td>
-          703
+          706
         </td>
         <td>
           2000
@@ -959,7 +959,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case Startup
         </td>
       </tr><tr>
@@ -967,7 +967,7 @@
           51
         </td>
         <td>
-          705
+          708
         </td>
         <td>
           2056
@@ -991,7 +991,7 @@
           51
         </td>
         <td>
-          704
+          707
         </td>
         <td>
           2066
@@ -1015,7 +1015,7 @@
           54
         </td>
         <td>
-          728
+          731
         </td>
         <td>
           2088
@@ -1031,7 +1031,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           def waitPlayers
         </td>
       </tr><tr>
@@ -1039,7 +1039,7 @@
           54
         </td>
         <td>
-          727
+          730
         </td>
         <td>
           2210
@@ -1055,7 +1055,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Behaviors.receiveMessage[Command] {
     case AskEnter(replyTo) =&gt;
       val currentPlayers = currentNumPlayers + 1
@@ -1082,7 +1082,7 @@
           55
         </td>
         <td>
-          722
+          725
         </td>
         <td>
           2250
@@ -1098,7 +1098,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case AskEnter(replyTo)
         </td>
       </tr><tr>
@@ -1106,7 +1106,7 @@
           57
         </td>
         <td>
-          717
+          720
         </td>
         <td>
           2365
@@ -1122,7 +1122,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           {
         playersList = playersList :+ replyTo
         replyTo ! PlayerBehavior.MemberOK
@@ -1138,7 +1138,7 @@
           58
         </td>
         <td>
-          707
+          710
         </td>
         <td>
           2389
@@ -1154,7 +1154,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           playersList :+ replyTo
         </td>
       </tr><tr>
@@ -1162,7 +1162,7 @@
           59
         </td>
         <td>
-          708
+          711
         </td>
         <td>
           2420
@@ -1178,7 +1178,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           replyTo
         </td>
       </tr><tr>
@@ -1186,7 +1186,7 @@
           59
         </td>
         <td>
-          709
+          712
         </td>
         <td>
           2420
@@ -1202,7 +1202,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           replyTo ! PlayerBehavior.MemberOK
         </td>
       </tr><tr>
@@ -1211,31 +1211,6 @@
         </td>
         <td>
           714
-        </td>
-        <td>
-          2505
-          -
-          2609
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          foreman ! ForemanBehavior.Start(playersList.toSet)
-          gameOn(maxPlayers, currentPlayers, foreman)
-        </td>
-      </tr><tr>
-        <td>
-          61
-        </td>
-        <td>
-          711
         </td>
         <td>
           2537
@@ -1251,7 +1226,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           playersList.toSet
         </td>
       </tr><tr>
@@ -1259,7 +1234,32 @@
           61
         </td>
         <td>
-          710
+          717
+        </td>
+        <td>
+          2505
+          -
+          2609
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          foreman ! ForemanBehavior.Start(playersList.toSet)
+          gameOn(maxPlayers, currentPlayers, foreman)
+        </td>
+      </tr><tr>
+        <td>
+          61
+        </td>
+        <td>
+          713
         </td>
         <td>
           2505
@@ -1275,7 +1275,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           foreman
         </td>
       </tr><tr>
@@ -1283,7 +1283,7 @@
           61
         </td>
         <td>
-          712
+          715
         </td>
         <td>
           2505
@@ -1299,7 +1299,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           foreman ! ForemanBehavior.Start(playersList.toSet)
         </td>
       </tr><tr>
@@ -1307,7 +1307,7 @@
           62
         </td>
         <td>
-          713
+          716
         </td>
         <td>
           2566
@@ -1323,7 +1323,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           gameOn(maxPlayers, currentPlayers, foreman)
         </td>
       </tr><tr>
@@ -1331,7 +1331,7 @@
           64
         </td>
         <td>
-          716
+          719
         </td>
         <td>
           2633
@@ -1347,7 +1347,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           waitPlayers(maxPlayers, currentPlayers, foreman)
         </td>
       </tr><tr>
@@ -1355,7 +1355,7 @@
           64
         </td>
         <td>
-          715
+          718
         </td>
         <td>
           2633
@@ -1371,7 +1371,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           waitPlayers(maxPlayers, currentPlayers, foreman)
         </td>
       </tr><tr>
@@ -1379,7 +1379,7 @@
           65
         </td>
         <td>
-          721
+          724
         </td>
         <td>
           2695
@@ -1406,7 +1406,7 @@
           66
         </td>
         <td>
-          719
+          722
         </td>
         <td>
           2705
@@ -1430,7 +1430,7 @@
           66
         </td>
         <td>
-          718
+          721
         </td>
         <td>
           2705
@@ -1454,7 +1454,7 @@
           67
         </td>
         <td>
-          720
+          723
         </td>
         <td>
           2747
@@ -1478,7 +1478,7 @@
           69
         </td>
         <td>
-          724
+          727
         </td>
         <td>
           2774
@@ -1494,7 +1494,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case PlayerExited
         </td>
       </tr><tr>
@@ -1502,7 +1502,7 @@
           70
         </td>
         <td>
-          723
+          726
         </td>
         <td>
           2801
@@ -1518,7 +1518,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           waitPlayers(maxPlayers, currentNumPlayers - 1, foreman)
         </td>
       </tr><tr>
@@ -1526,7 +1526,7 @@
           71
         </td>
         <td>
-          726
+          729
         </td>
         <td>
           2861
@@ -1550,7 +1550,7 @@
           72
         </td>
         <td>
-          725
+          728
         </td>
         <td>
           2877
@@ -1574,7 +1574,7 @@
           75
         </td>
         <td>
-          774
+          777
         </td>
         <td>
           2899
@@ -1590,7 +1590,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           def gameOn
         </td>
       </tr><tr>
@@ -1598,7 +1598,7 @@
           75
         </td>
         <td>
-          773
+          776
         </td>
         <td>
           3016
@@ -1614,7 +1614,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Behaviors.receiveMessage[Command] {
     case AskEnter(replyTo) =&gt;
       val playersAddresses = playersList.map { i =&gt; i.path.address.toString}
@@ -1655,7 +1655,7 @@
           76
         </td>
         <td>
-          746
+          749
         </td>
         <td>
           3056
@@ -1671,7 +1671,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case AskEnter(replyTo)
         </td>
       </tr><tr>
@@ -1679,7 +1679,7 @@
           77
         </td>
         <td>
-          729
+          732
         </td>
         <td>
           3134
@@ -1695,7 +1695,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           i.path
         </td>
       </tr><tr>
@@ -1703,7 +1703,7 @@
           77
         </td>
         <td>
-          731
+          734
         </td>
         <td>
           3111
@@ -1719,7 +1719,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           playersList.map { i =&gt; i.path.address.toString}
         </td>
       </tr><tr>
@@ -1727,7 +1727,7 @@
           77
         </td>
         <td>
-          730
+          733
         </td>
         <td>
           3134
@@ -1743,7 +1743,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           i.path.address
         </td>
       </tr><tr>
@@ -1751,7 +1751,7 @@
           78
         </td>
         <td>
-          732
+          735
         </td>
         <td>
           3194
@@ -1767,7 +1767,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           replyTo.path
         </td>
       </tr><tr>
@@ -1775,7 +1775,7 @@
           78
         </td>
         <td>
-          734
+          737
         </td>
         <td>
           3168
@@ -1791,7 +1791,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           playersAddresses.contains(replyTo.path.address.toString)
         </td>
       </tr><tr>
@@ -1799,7 +1799,7 @@
           78
         </td>
         <td>
-          733
+          736
         </td>
         <td>
           3194
@@ -1815,7 +1815,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           replyTo.path.address
         </td>
       </tr><tr>
@@ -1823,7 +1823,7 @@
           79
         </td>
         <td>
-          735
+          738
         </td>
         <td>
           3234
@@ -1839,7 +1839,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           context.log
         </td>
       </tr><tr>
@@ -1847,7 +1847,7 @@
           79
         </td>
         <td>
-          744
+          747
         </td>
         <td>
           3234
@@ -1863,7 +1863,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           context.log.info(&quot;un giocatore è rientrato&quot;)
         replyTo ! PlayerBehavior.MemberOK
         foreman ! ForemanBehavior.PlayerRejoined(replyTo.path.address.toString)
@@ -1874,7 +1874,7 @@
           79
         </td>
         <td>
-          736
+          739
         </td>
         <td>
           3234
@@ -1890,7 +1890,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           context.log.info(&quot;un giocatore è rientrato&quot;)
         </td>
       </tr><tr>
@@ -1898,7 +1898,7 @@
           80
         </td>
         <td>
-          738
+          741
         </td>
         <td>
           3287
@@ -1914,7 +1914,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           replyTo ! PlayerBehavior.MemberOK
         </td>
       </tr><tr>
@@ -1922,7 +1922,7 @@
           80
         </td>
         <td>
-          737
+          740
         </td>
         <td>
           3287
@@ -1938,7 +1938,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           replyTo
         </td>
       </tr><tr>
@@ -1946,7 +1946,7 @@
           81
         </td>
         <td>
-          741
+          744
         </td>
         <td>
           3370
@@ -1962,7 +1962,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           replyTo.path.address
         </td>
       </tr><tr>
@@ -1970,7 +1970,7 @@
           81
         </td>
         <td>
-          740
+          743
         </td>
         <td>
           3370
@@ -1986,7 +1986,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           replyTo.path
         </td>
       </tr><tr>
@@ -1995,30 +1995,6 @@
         </td>
         <td>
           742
-        </td>
-        <td>
-          3329
-          -
-          3400
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          !
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          foreman ! ForemanBehavior.PlayerRejoined(replyTo.path.address.toString)
-        </td>
-      </tr><tr>
-        <td>
-          81
-        </td>
-        <td>
-          739
         </td>
         <td>
           3329
@@ -2034,15 +2010,39 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           foreman
+        </td>
+      </tr><tr>
+        <td>
+          81
+        </td>
+        <td>
+          745
+        </td>
+        <td>
+          3329
+          -
+          3400
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          foreman ! ForemanBehavior.PlayerRejoined(replyTo.path.address.toString)
         </td>
       </tr><tr>
         <td>
           82
         </td>
         <td>
-          743
+          746
         </td>
         <td>
           3409
@@ -2058,7 +2058,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Behaviors.same
         </td>
       </tr><tr>
@@ -2066,7 +2066,7 @@
           84
         </td>
         <td>
-          745
+          748
         </td>
         <td>
           3479
@@ -2082,7 +2082,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           gameOn(maxPlayers, currentPlayers, foreman)
         </td>
       </tr><tr>
@@ -2090,7 +2090,7 @@
           85
         </td>
         <td>
-          753
+          756
         </td>
         <td>
           3527
@@ -2106,7 +2106,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case PlayerExited
         </td>
       </tr><tr>
@@ -2114,7 +2114,7 @@
           87
         </td>
         <td>
-          747
+          750
         </td>
         <td>
           3603
@@ -2130,7 +2130,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           context.log
         </td>
       </tr><tr>
@@ -2138,7 +2138,7 @@
           87
         </td>
         <td>
-          748
+          751
         </td>
         <td>
           3603
@@ -2154,7 +2154,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           context.log.info(&quot;un giocatore ha quittato&quot;)
         </td>
       </tr><tr>
@@ -2162,7 +2162,7 @@
           88
         </td>
         <td>
-          752
+          755
         </td>
         <td>
           3654
@@ -2178,7 +2178,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Behaviors.withTimers { timer =&gt;
         timer.startSingleTimer(CheckMembers, 15000 milliseconds)
         gameOn(maxPlayers, currentPlayers, foreman)
@@ -2189,7 +2189,7 @@
           89
         </td>
         <td>
-          750
+          753
         </td>
         <td>
           3694
@@ -2205,7 +2205,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           timer.startSingleTimer(CheckMembers, 15000 milliseconds)
         </td>
       </tr><tr>
@@ -2213,7 +2213,7 @@
           89
         </td>
         <td>
-          749
+          752
         </td>
         <td>
           3731
@@ -2229,7 +2229,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           15000 milliseconds
         </td>
       </tr><tr>
@@ -2237,7 +2237,7 @@
           90
         </td>
         <td>
-          751
+          754
         </td>
         <td>
           3759
@@ -2253,7 +2253,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           gameOn(maxPlayers, currentPlayers, foreman)
         </td>
       </tr><tr>
@@ -2261,7 +2261,7 @@
           93
         </td>
         <td>
-          767
+          770
         </td>
         <td>
           3816
@@ -2277,7 +2277,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case CheckMembers
         </td>
       </tr><tr>
@@ -2285,7 +2285,7 @@
           94
         </td>
         <td>
-          755
+          758
         </td>
         <td>
           3843
@@ -2301,7 +2301,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           context.log.info(&quot;Checcko....&quot;)
         </td>
       </tr><tr>
@@ -2309,7 +2309,7 @@
           94
         </td>
         <td>
-          754
+          757
         </td>
         <td>
           3843
@@ -2325,7 +2325,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           context.log
         </td>
       </tr><tr>
@@ -2333,31 +2333,7 @@
           96
         </td>
         <td>
-          756
-        </td>
-        <td>
-          3924
-          -
-          3935
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          log
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          context.log
-        </td>
-      </tr><tr>
-        <td>
-          96
-        </td>
-        <td>
-          762
+          765
         </td>
         <td>
           3924
@@ -2373,7 +2349,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           context.log.info(&quot;Stop game&quot;)
         context.self ! Stop
         Behaviors.same
@@ -2383,7 +2359,31 @@
           96
         </td>
         <td>
-          757
+          759
+        </td>
+        <td>
+          3924
+          -
+          3935
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          96
+        </td>
+        <td>
+          760
         </td>
         <td>
           3924
@@ -2399,7 +2399,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           context.log.info(&quot;Stop game&quot;)
         </td>
       </tr><tr>
@@ -2407,7 +2407,7 @@
           97
         </td>
         <td>
-          759
+          762
         </td>
         <td>
           3962
@@ -2423,7 +2423,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           context.self
         </td>
       </tr><tr>
@@ -2431,7 +2431,7 @@
           97
         </td>
         <td>
-          758
+          761
         </td>
         <td>
           3962
@@ -2447,7 +2447,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           context.self
         </td>
       </tr><tr>
@@ -2455,7 +2455,7 @@
           97
         </td>
         <td>
-          760
+          763
         </td>
         <td>
           3962
@@ -2471,7 +2471,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           context.self ! Stop
         </td>
       </tr><tr>
@@ -2479,7 +2479,7 @@
           98
         </td>
         <td>
-          761
+          764
         </td>
         <td>
           3990
@@ -2495,7 +2495,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Behaviors.same
         </td>
       </tr><tr>
@@ -2503,7 +2503,7 @@
           100
         </td>
         <td>
-          764
+          767
         </td>
         <td>
           4024
@@ -2532,6 +2532,30 @@
         <td>
           4024
           -
+          4035
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          100
+        </td>
+        <td>
+          769
+        </td>
+        <td>
+          4024
+          -
           4079
         </td>
         <td>
@@ -2549,34 +2573,10 @@
         </td>
       </tr><tr>
         <td>
-          100
-        </td>
-        <td>
-          763
-        </td>
-        <td>
-          4024
-          -
-          4035
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          log
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          context.log
-        </td>
-      </tr><tr>
-        <td>
           101
         </td>
         <td>
-          765
+          768
         </td>
         <td>
           4065
@@ -2600,7 +2600,7 @@
           103
         </td>
         <td>
-          772
+          775
         </td>
         <td>
           4085
@@ -2616,7 +2616,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case Stop
         </td>
       </tr><tr>
@@ -2624,7 +2624,7 @@
           104
         </td>
         <td>
-          770
+          773
         </td>
         <td>
           4104
@@ -2640,7 +2640,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           playersList.foreach { i =&gt;
         i ! PlayerBehavior.GameInfo(&quot;Uno o più giocatori si sono disconnessi. Partita annullata :(&quot;)
       }
@@ -2650,7 +2650,7 @@
           105
         </td>
         <td>
-          768
+          771
         </td>
         <td>
           4139
@@ -2666,7 +2666,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           i
         </td>
       </tr><tr>
@@ -2674,7 +2674,7 @@
           105
         </td>
         <td>
-          769
+          772
         </td>
         <td>
           4139
@@ -2690,7 +2690,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           i ! PlayerBehavior.GameInfo(&quot;Uno o più giocatori si sono disconnessi. Partita annullata :(&quot;)
         </td>
       </tr><tr>
@@ -2698,7 +2698,7 @@
           107
         </td>
         <td>
-          771
+          774
         </td>
         <td>
           4246
@@ -2714,7 +2714,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Behaviors.stopped
         </td>
       </tr>
