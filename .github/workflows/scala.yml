@@ -29,7 +29,7 @@ jobs:
         distribution: 'temurin'
         cache: 'sbt'
     - name: Run tests
-      run: sbt "testOnly akka.ServerTest" #sbt clean coverage test #"testOnly domain.DomainUnitTest"
+      run: SCALACTIC_FILL_FILE_PATHNAMES=yes sbt "testOnly akka.ServerTest" #sbt clean coverage test #"testOnly domain.DomainUnitTest"
     - name: Generate report
       run: sbt coverageReport
     - name: Upload coverage to GitHubPage
