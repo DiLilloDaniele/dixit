@@ -7,8 +7,6 @@ scalaVersion := "3.2.0"
 mainClass := Some("grpcService.client.view.HomepageView")
 Compile / run / mainClass := Some("grpcService.client.view.HomepageView")
 
-ThisBuild / coverageExcludedPackages := "<empty>;.*view.*;"
-
 lazy val akkaVersion = "2.7.0"
 lazy val akkaGroup = "com.typesafe.akka"
 
@@ -38,6 +36,8 @@ libraryDependencies ++= Seq(
   "org.testcontainers" % "testcontainers" % "1.19.1",
   "org.testcontainers" % "mysql" % "1.19.1"
 )
+
+ThisBuild / coverageExcludedPackages := "<empty>;.*view*.;.*grpcService*.;"
 
 val runApp = taskKey[Unit]("sbt equivalent of gradle's JavaExec")
 runApp := {
