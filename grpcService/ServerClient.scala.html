@@ -82,9 +82,9 @@
 </span>58 <span style=''>      </span><span style='background: #AEF1AE'>new ScalaUnaryRequestBuilder(getOpenedGamesDescriptor, channel, options, settings)</span><span style=''>
 </span>59 <span style=''>    
 </span>60 <span style=''>    
-</span>61 <span style=''>    </span><span style='background: #F0ADAD'>private def closeGameRequestBuilder</span><span style=''>(channel: akka.grpc.internal.InternalChannel) =
+</span>61 <span style=''>    </span><span style='background: #AEF1AE'>private def closeGameRequestBuilder</span><span style=''>(channel: akka.grpc.internal.InternalChannel) =
 </span>62 <span style=''>    
-</span>63 <span style=''>      </span><span style='background: #F0ADAD'>new ScalaUnaryRequestBuilder(closeGameDescriptor, channel, options, settings)</span><span style=''>
+</span>63 <span style=''>      </span><span style='background: #AEF1AE'>new ScalaUnaryRequestBuilder(closeGameDescriptor, channel, options, settings)</span><span style=''>
 </span>64 <span style=''>    
 </span>65 <span style=''>    
 </span>66 <span style=''>    </span><span style='background: #AEF1AE'>private def newGameRequestBuilder</span><span style=''>(channel: akka.grpc.internal.InternalChannel) =
@@ -159,15 +159,15 @@
 </span>135 <span style=''>     * prefer closeGame(grpcService.GameMessage) if possible.
 </span>136 <span style=''>     */
 </span>137 <span style=''>    
-</span>138 <span style=''>    </span><span style='background: #F0ADAD'>override def closeGame</span><span style=''>(): SingleResponseRequestBuilder[grpcService.GameMessage, grpcService.ClosingResponse] =
-</span>139 <span style=''>      </span><span style='background: #F0ADAD'>closeGameRequestBuilder(channel.internalChannel)</span><span style=''>
+</span>138 <span style=''>    </span><span style='background: #AEF1AE'>override def closeGame</span><span style=''>(): SingleResponseRequestBuilder[grpcService.GameMessage, grpcService.ClosingResponse] =
+</span>139 <span style=''>      </span><span style='background: #AEF1AE'>closeGameRequestBuilder(channel.internalChannel)</span><span style=''>
 </span>140 <span style=''>    
 </span>141 <span style=''>
 </span>142 <span style=''>    /**
 </span>143 <span style=''>     * For access to method metadata use the parameterless version of closeGame
 </span>144 <span style=''>     */
-</span>145 <span style=''>    </span><span style='background: #F0ADAD'>def closeGame</span><span style=''>(in: grpcService.GameMessage): scala.concurrent.Future[grpcService.ClosingResponse] =
-</span>146 <span style=''>      </span><span style='background: #F0ADAD'>closeGame().invoke(in)</span><span style=''>
+</span>145 <span style=''>    </span><span style='background: #AEF1AE'>def closeGame</span><span style=''>(in: grpcService.GameMessage): scala.concurrent.Future[grpcService.ClosingResponse] =
+</span>146 <span style=''>      </span><span style='background: #AEF1AE'>closeGame().invoke(in)</span><span style=''>
 </span>147 <span style=''>    
 </span>148 <span style=''>    /**
 </span>149 <span style=''>     * Lower level &quot;lifted&quot; version of the method, giving access to request metadata etc.
@@ -263,7 +263,7 @@
           27
         </td>
         <td>
-          2287
+          2296
         </td>
         <td>
           685
@@ -287,7 +287,7 @@
           28
         </td>
         <td>
-          2286
+          2295
         </td>
         <td>
           787
@@ -311,7 +311,7 @@
           28
         </td>
         <td>
-          2285
+          2294
         </td>
         <td>
           811
@@ -335,7 +335,7 @@
           29
         </td>
         <td>
-          2289
+          2298
         </td>
         <td>
           859
@@ -359,7 +359,7 @@
           30
         </td>
         <td>
-          2288
+          2297
         </td>
         <td>
           953
@@ -383,7 +383,7 @@
           35
         </td>
         <td>
-          2290
+          2299
         </td>
         <td>
           1246
@@ -407,7 +407,7 @@
           35
         </td>
         <td>
-          2291
+          2300
         </td>
         <td>
           1246
@@ -431,7 +431,7 @@
           37
         </td>
         <td>
-          2292
+          2301
         </td>
         <td>
           1345
@@ -455,7 +455,7 @@
           40
         </td>
         <td>
-          2294
+          2303
         </td>
         <td>
           1394
@@ -479,7 +479,7 @@
           42
         </td>
         <td>
-          2293
+          2302
         </td>
         <td>
           1484
@@ -503,7 +503,7 @@
           45
         </td>
         <td>
-          2296
+          2305
         </td>
         <td>
           1572
@@ -527,7 +527,7 @@
           47
         </td>
         <td>
-          2295
+          2304
         </td>
         <td>
           1662
@@ -551,7 +551,7 @@
           50
         </td>
         <td>
-          2298
+          2307
         </td>
         <td>
           1750
@@ -575,7 +575,7 @@
           52
         </td>
         <td>
-          2297
+          2306
         </td>
         <td>
           1843
@@ -599,7 +599,7 @@
           55
         </td>
         <td>
-          2300
+          2309
         </td>
         <td>
           1934
@@ -623,7 +623,7 @@
           57
         </td>
         <td>
-          2299
+          2308
         </td>
         <td>
           2033
@@ -647,7 +647,7 @@
           60
         </td>
         <td>
-          2302
+          2311
         </td>
         <td>
           2130
@@ -663,7 +663,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           private def closeGameRequestBuilder
         </td>
       </tr><tr>
@@ -671,7 +671,7 @@
           62
         </td>
         <td>
-          2301
+          2310
         </td>
         <td>
           2224
@@ -687,7 +687,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           new ScalaUnaryRequestBuilder(closeGameDescriptor, channel, options, settings)
         </td>
       </tr><tr>
@@ -695,7 +695,7 @@
           65
         </td>
         <td>
-          2304
+          2313
         </td>
         <td>
           2316
@@ -719,7 +719,7 @@
           67
         </td>
         <td>
-          2303
+          2312
         </td>
         <td>
           2408
@@ -743,7 +743,7 @@
           77
         </td>
         <td>
-          2306
+          2315
         </td>
         <td>
           2674
@@ -767,7 +767,7 @@
           78
         </td>
         <td>
-          2305
+          2314
         </td>
         <td>
           2785
@@ -791,7 +791,7 @@
           84
         </td>
         <td>
-          2309
+          2318
         </td>
         <td>
           2932
@@ -815,7 +815,7 @@
           85
         </td>
         <td>
-          2308
+          2317
         </td>
         <td>
           3031
@@ -839,7 +839,7 @@
           85
         </td>
         <td>
-          2307
+          2316
         </td>
         <td>
           3031
@@ -863,7 +863,7 @@
           92
         </td>
         <td>
-          2311
+          2320
         </td>
         <td>
           3229
@@ -887,7 +887,7 @@
           93
         </td>
         <td>
-          2310
+          2319
         </td>
         <td>
           3339
@@ -911,7 +911,7 @@
           99
         </td>
         <td>
-          2314
+          2323
         </td>
         <td>
           3486
@@ -935,7 +935,7 @@
           100
         </td>
         <td>
-          2313
+          2322
         </td>
         <td>
           3584
@@ -959,7 +959,7 @@
           100
         </td>
         <td>
-          2312
+          2321
         </td>
         <td>
           3584
@@ -983,7 +983,7 @@
           107
         </td>
         <td>
-          2316
+          2325
         </td>
         <td>
           3785
@@ -1007,7 +1007,7 @@
           108
         </td>
         <td>
-          2315
+          2324
         </td>
         <td>
           3898
@@ -1031,7 +1031,7 @@
           114
         </td>
         <td>
-          2319
+          2328
         </td>
         <td>
           4051
@@ -1055,7 +1055,7 @@
           115
         </td>
         <td>
-          2317
+          2326
         </td>
         <td>
           4152
@@ -1079,7 +1079,7 @@
           115
         </td>
         <td>
-          2318
+          2327
         </td>
         <td>
           4152
@@ -1103,7 +1103,7 @@
           122
         </td>
         <td>
-          2321
+          2330
         </td>
         <td>
           4368
@@ -1127,7 +1127,7 @@
           123
         </td>
         <td>
-          2320
+          2329
         </td>
         <td>
           4493
@@ -1151,7 +1151,7 @@
           129
         </td>
         <td>
-          2324
+          2333
         </td>
         <td>
           4658
@@ -1175,7 +1175,7 @@
           130
         </td>
         <td>
-          2323
+          2332
         </td>
         <td>
           4771
@@ -1199,7 +1199,7 @@
           130
         </td>
         <td>
-          2322
+          2331
         </td>
         <td>
           4771
@@ -1223,7 +1223,7 @@
           137
         </td>
         <td>
-          2326
+          2335
         </td>
         <td>
           4981
@@ -1239,7 +1239,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           override def closeGame
         </td>
       </tr><tr>
@@ -1247,7 +1247,7 @@
           138
         </td>
         <td>
-          2325
+          2334
         </td>
         <td>
           5098
@@ -1263,7 +1263,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           closeGameRequestBuilder(channel.internalChannel)
         </td>
       </tr><tr>
@@ -1271,7 +1271,7 @@
           144
         </td>
         <td>
-          2329
+          2338
         </td>
         <td>
           5253
@@ -1287,7 +1287,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def closeGame
         </td>
       </tr><tr>
@@ -1295,7 +1295,7 @@
           145
         </td>
         <td>
-          2328
+          2337
         </td>
         <td>
           5358
@@ -1311,7 +1311,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           closeGame().invoke(in)
         </td>
       </tr><tr>
@@ -1319,7 +1319,7 @@
           145
         </td>
         <td>
-          2327
+          2336
         </td>
         <td>
           5358
@@ -1335,7 +1335,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           closeGame()
         </td>
       </tr><tr>
@@ -1343,7 +1343,7 @@
           152
         </td>
         <td>
-          2331
+          2340
         </td>
         <td>
           5561
@@ -1367,7 +1367,7 @@
           153
         </td>
         <td>
-          2330
+          2339
         </td>
         <td>
           5676
@@ -1391,7 +1391,7 @@
           159
         </td>
         <td>
-          2334
+          2343
         </td>
         <td>
           5827
@@ -1415,7 +1415,7 @@
           160
         </td>
         <td>
-          2332
+          2341
         </td>
         <td>
           5930
@@ -1439,7 +1439,7 @@
           160
         </td>
         <td>
-          2333
+          2342
         </td>
         <td>
           5930
@@ -1463,7 +1463,7 @@
           163
         </td>
         <td>
-          2340
+          2349
         </td>
         <td>
           5961
@@ -1487,7 +1487,7 @@
           164
         </td>
         <td>
-          2335
+          2344
         </td>
         <td>
           6046
@@ -1511,7 +1511,7 @@
           164
         </td>
         <td>
-          2336
+          2345
         </td>
         <td>
           6046
@@ -1535,7 +1535,7 @@
           165
         </td>
         <td>
-          2338
+          2347
         </td>
         <td>
           6073
@@ -1559,7 +1559,7 @@
           165
         </td>
         <td>
-          2337
+          2346
         </td>
         <td>
           6079
@@ -1583,7 +1583,7 @@
           165
         </td>
         <td>
-          2339
+          2348
         </td>
         <td>
           6073
@@ -1607,7 +1607,7 @@
           167
         </td>
         <td>
-          2341
+          2350
         </td>
         <td>
           6173
@@ -1631,7 +1631,7 @@
           167
         </td>
         <td>
-          2342
+          2351
         </td>
         <td>
           6115
@@ -1655,7 +1655,7 @@
           179
         </td>
         <td>
-          2344
+          2353
         </td>
         <td>
           6410
@@ -1679,7 +1679,7 @@
           179
         </td>
         <td>
-          2343
+          2352
         </td>
         <td>
           6506
@@ -1703,7 +1703,7 @@
           187
         </td>
         <td>
-          2346
+          2355
         </td>
         <td>
           6678
@@ -1727,7 +1727,7 @@
           187
         </td>
         <td>
-          2345
+          2354
         </td>
         <td>
           6773
@@ -1751,7 +1751,7 @@
           195
         </td>
         <td>
-          2347
+          2356
         </td>
         <td>
           7046
@@ -1775,7 +1775,7 @@
           195
         </td>
         <td>
-          2348
+          2357
         </td>
         <td>
           6948
@@ -1799,7 +1799,7 @@
           203
         </td>
         <td>
-          2350
+          2359
         </td>
         <td>
           7233
@@ -1823,7 +1823,7 @@
           203
         </td>
         <td>
-          2349
+          2358
         </td>
         <td>
           7343
@@ -1847,7 +1847,7 @@
           211
         </td>
         <td>
-          2352
+          2361
         </td>
         <td>
           7518
@@ -1871,7 +1871,7 @@
           211
         </td>
         <td>
-          2351
+          2360
         </td>
         <td>
           7620
@@ -1895,7 +1895,7 @@
           219
         </td>
         <td>
-          2353
+          2362
         </td>
         <td>
           7893
@@ -1919,7 +1919,7 @@
           219
         </td>
         <td>
-          2354
+          2363
         </td>
         <td>
           7793

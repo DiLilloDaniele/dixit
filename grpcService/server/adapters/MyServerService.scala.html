@@ -54,9 +54,9 @@
 </span>30 <span style=''>    </span><span style='background: #AEF1AE'>inboundPorts.registerPort.registerUser(tuple._1, tuple._2)</span><span style=''>
 </span>31 <span style=''>    </span><span style='background: #AEF1AE'>Future.successful(LoginResult(true))</span><span style=''>
 </span>32 <span style=''>
-</span>33 <span style=''>  </span><span style='background: #F0ADAD'>override def closeGame</span><span style=''>(in: GameMessage): Future[ClosingResponse] =
-</span>34 <span style=''>    </span><span style='background: #F0ADAD'>inboundPorts.gamesManagementPort.closeGame(in.address, in.forename)</span><span style=''>
-</span>35 <span style=''>    </span><span style='background: #F0ADAD'>Future.successful(ClosingResponse())</span><span style=''>
+</span>33 <span style=''>  </span><span style='background: #AEF1AE'>override def closeGame</span><span style=''>(in: GameMessage): Future[ClosingResponse] =
+</span>34 <span style=''>    </span><span style='background: #AEF1AE'>inboundPorts.gamesManagementPort.closeGame(in.address, in.forename)</span><span style=''>
+</span>35 <span style=''>    </span><span style='background: #AEF1AE'>Future.successful(ClosingResponse())</span><span style=''>
 </span>36 <span style=''>
 </span>37 <span style=''>  </span><span style='background: #AEF1AE'>override def newGame</span><span style=''>(in: GameMessage): Future[NewGameResponse] =
 </span>38 <span style=''>    </span><span style='background: #AEF1AE'>inboundPorts.gamesManagementPort.openNewGame(in.address, in.forename)</span><span style=''>
@@ -80,7 +80,7 @@
           14
         </td>
         <td>
-          1161
+          1170
         </td>
         <td>
           460
@@ -104,7 +104,7 @@
           16
         </td>
         <td>
-          1160
+          1169
         </td>
         <td>
           551
@@ -128,7 +128,7 @@
           16
         </td>
         <td>
-          1159
+          1168
         </td>
         <td>
           569
@@ -152,7 +152,7 @@
           16
         </td>
         <td>
-          1158
+          1167
         </td>
         <td>
           582
@@ -176,7 +176,7 @@
           16
         </td>
         <td>
-          1157
+          1166
         </td>
         <td>
           582
@@ -200,7 +200,7 @@
           18
         </td>
         <td>
-          1168
+          1177
         </td>
         <td>
           610
@@ -224,7 +224,7 @@
           19
         </td>
         <td>
-          1162
+          1171
         </td>
         <td>
           686
@@ -248,7 +248,7 @@
           20
         </td>
         <td>
-          1167
+          1176
         </td>
         <td>
           738
@@ -274,7 +274,7 @@
           20
         </td>
         <td>
-          1166
+          1175
         </td>
         <td>
           756
@@ -298,7 +298,7 @@
           21
         </td>
         <td>
-          1165
+          1174
         </td>
         <td>
           775
@@ -322,7 +322,7 @@
           21
         </td>
         <td>
-          1164
+          1173
         </td>
         <td>
           821
@@ -346,7 +346,7 @@
           21
         </td>
         <td>
-          1163
+          1172
         </td>
         <td>
           811
@@ -370,7 +370,7 @@
           24
         </td>
         <td>
-          1172
+          1181
         </td>
         <td>
           841
@@ -394,7 +394,7 @@
           25
         </td>
         <td>
-          1169
+          1178
         </td>
         <td>
           972
@@ -418,7 +418,7 @@
           25
         </td>
         <td>
-          1171
+          1180
         </td>
         <td>
           920
@@ -442,7 +442,7 @@
           25
         </td>
         <td>
-          1170
+          1179
         </td>
         <td>
           938
@@ -466,7 +466,7 @@
           27
         </td>
         <td>
-          1179
+          1188
         </td>
         <td>
           1024
@@ -490,7 +490,7 @@
           28
         </td>
         <td>
-          1173
+          1182
         </td>
         <td>
           1103
@@ -514,7 +514,7 @@
           29
         </td>
         <td>
-          1174
+          1183
         </td>
         <td>
           1194
@@ -538,7 +538,7 @@
           29
         </td>
         <td>
-          1176
+          1185
         </td>
         <td>
           1155
@@ -562,7 +562,7 @@
           29
         </td>
         <td>
-          1175
+          1184
         </td>
         <td>
           1204
@@ -586,7 +586,7 @@
           30
         </td>
         <td>
-          1178
+          1187
         </td>
         <td>
           1218
@@ -610,7 +610,7 @@
           30
         </td>
         <td>
-          1177
+          1186
         </td>
         <td>
           1236
@@ -634,7 +634,7 @@
           32
         </td>
         <td>
-          1183
+          1192
         </td>
         <td>
           1258
@@ -650,7 +650,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           override def closeGame
         </td>
       </tr><tr>
@@ -658,7 +658,7 @@
           33
         </td>
         <td>
-          1180
+          1189
         </td>
         <td>
           1329
@@ -674,7 +674,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           inboundPorts.gamesManagementPort.closeGame(in.address, in.forename)
         </td>
       </tr><tr>
@@ -682,7 +682,7 @@
           34
         </td>
         <td>
-          1182
+          1191
         </td>
         <td>
           1401
@@ -698,7 +698,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Future.successful(ClosingResponse())
         </td>
       </tr><tr>
@@ -706,7 +706,7 @@
           34
         </td>
         <td>
-          1181
+          1190
         </td>
         <td>
           1419
@@ -722,7 +722,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ClosingResponse
         </td>
       </tr><tr>
@@ -730,7 +730,7 @@
           36
         </td>
         <td>
-          1187
+          1196
         </td>
         <td>
           1441
@@ -754,7 +754,7 @@
           37
         </td>
         <td>
-          1184
+          1193
         </td>
         <td>
           1510
@@ -778,7 +778,7 @@
           38
         </td>
         <td>
-          1186
+          1195
         </td>
         <td>
           1584
@@ -802,7 +802,7 @@
           38
         </td>
         <td>
-          1185
+          1194
         </td>
         <td>
           1602

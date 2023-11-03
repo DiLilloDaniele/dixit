@@ -26,7 +26,7 @@
 </span>2 <span style=''>
 </span>3 <span style=''>import akka.actor.ActorSystem
 </span>4 <span style=''>import akka.grpc.GrpcClientSettings
-</span>5 <span style=''>import grpcService.{GameMessage, HelloMessage, LoginRequest, OpenedGamesRequest, Server, ServerClient, NewGameResponse, LoginResult, OpenedGames}
+</span>5 <span style=''>import grpcService.{GameMessage, HelloMessage, LoginRequest, ClosingResponse, OpenedGamesRequest, Server, ServerClient, NewGameResponse, LoginResult, OpenedGames}
 </span>6 <span style=''>
 </span>7 <span style=''>import scala.concurrent.ExecutionContextExecutor
 </span>8 <span style=''>import scala.util.{Failure, Success}
@@ -118,7 +118,17 @@
 </span>94 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
 </span>95 <span style=''>    reply
 </span>96 <span style=''>
-</span>97 <span style=''>}
+</span>97 <span style=''>  </span><span style='background: #AEF1AE'>def closeGame</span><span style=''>(address: String, user: String, success: SuccessFun[Boolean]): Future[ClosingResponse] =
+</span>98 <span style=''>    val reply = </span><span style='background: #AEF1AE'>client.closeGame(GameMessage(address, user))</span><span style=''>
+</span>99 <span style=''>    </span><span style='background: #AEF1AE'>reply.onComplete {
+</span>100 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
+</span>101 <span style=''></span><span style='background: #AEF1AE'>        success(true)
+</span>102 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
+</span>103 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error sayHello: $e&quot;)</span><span style='background: #AEF1AE'>
+</span>104 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>105 <span style=''>    reply
+</span>106 <span style=''>
+</span>107 <span style=''>}
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -139,9 +149,9 @@
           5
         </td>
         <td>
-          543
+          560
           -
-          564
+          581
         </td>
         <td>
           DefDef
@@ -163,9 +173,9 @@
           0
         </td>
         <td>
-          611
+          628
           -
-          642
+          659
         </td>
         <td>
           Apply
@@ -187,9 +197,9 @@
           1
         </td>
         <td>
-          665
+          682
           -
-          679
+          696
         </td>
         <td>
           Select
@@ -211,9 +221,9 @@
           2
         </td>
         <td>
-          743
+          760
           -
-          799
+          816
         </td>
         <td>
           Apply
@@ -235,9 +245,9 @@
           3
         </td>
         <td>
-          743
+          760
           -
-          814
+          831
         </td>
         <td>
           Apply
@@ -259,9 +269,9 @@
           4
         </td>
         <td>
-          1002
+          1019
           -
-          1030
+          1047
         </td>
         <td>
           Apply
@@ -283,9 +293,9 @@
           7
         </td>
         <td>
-          1263
+          1280
           -
-          1271
+          1288
         </td>
         <td>
           DefDef
@@ -307,9 +317,9 @@
           6
         </td>
         <td>
-          1318
+          1335
           -
-          1330
+          1347
         </td>
         <td>
           Apply
@@ -331,9 +341,9 @@
           8
         </td>
         <td>
-          1399
+          1416
           -
-          1430
+          1447
         </td>
         <td>
           Apply
@@ -355,9 +365,9 @@
           9
         </td>
         <td>
-          1477
+          1494
           -
-          1491
+          1508
         </td>
         <td>
           Select
@@ -379,9 +389,9 @@
           11
         </td>
         <td>
-          1516
+          1533
           -
-          1587
+          1604
         </td>
         <td>
           Apply
@@ -403,9 +413,9 @@
           10
         </td>
         <td>
-          1516
+          1533
           -
-          1572
+          1589
         </td>
         <td>
           Apply
@@ -427,9 +437,9 @@
           12
         </td>
         <td>
-          1612
+          1629
           -
-          1640
+          1657
         </td>
         <td>
           Apply
@@ -451,9 +461,9 @@
           14
         </td>
         <td>
-          1701
+          1718
           -
-          1735
+          1752
         </td>
         <td>
           Apply
@@ -475,9 +485,9 @@
           13
         </td>
         <td>
-          1714
+          1731
           -
-          1726
+          1743
         </td>
         <td>
           Select
@@ -499,9 +509,9 @@
           15
         </td>
         <td>
-          1644
+          1661
           -
-          1660
+          1677
         </td>
         <td>
           DefDef
@@ -523,9 +533,9 @@
           25
         </td>
         <td>
-          1739
+          1756
           -
-          1760
+          1777
         </td>
         <td>
           DefDef
@@ -547,9 +557,9 @@
           17
         </td>
         <td>
-          1835
+          1852
           -
-          1878
+          1895
         </td>
         <td>
           Apply
@@ -571,9 +581,9 @@
           16
         </td>
         <td>
-          1857
+          1874
           -
-          1875
+          1892
         </td>
         <td>
           Select
@@ -595,9 +605,9 @@
           24
         </td>
         <td>
-          1883
+          1900
           -
-          2038
+          2055
         </td>
         <td>
           Apply
@@ -624,9 +634,9 @@
           20
         </td>
         <td>
-          1908
-          -
           1925
+          -
+          1942
         </td>
         <td>
           Block
@@ -648,9 +658,9 @@
           19
         </td>
         <td>
-          1937
+          1954
           -
-          1968
+          1985
         </td>
         <td>
           Apply
@@ -672,9 +682,9 @@
           18
         </td>
         <td>
-          1945
+          1962
           -
-          1967
+          1984
         </td>
         <td>
           Select
@@ -696,9 +706,9 @@
           23
         </td>
         <td>
-          1975
+          1992
           -
-          1990
+          2007
         </td>
         <td>
           Block
@@ -720,9 +730,9 @@
           22
         </td>
         <td>
-          2002
+          2019
           -
-          2032
+          2049
         </td>
         <td>
           Apply
@@ -744,9 +754,9 @@
           21
         </td>
         <td>
-          2010
+          2027
           -
-          2031
+          2048
         </td>
         <td>
           Apply
@@ -768,9 +778,9 @@
           34
         </td>
         <td>
-          2056
+          2073
           -
-          2065
+          2082
         </td>
         <td>
           DefDef
@@ -792,9 +802,9 @@
           26
         </td>
         <td>
-          2184
+          2201
           -
-          2196
+          2213
         </td>
         <td>
           Select
@@ -816,9 +826,9 @@
           27
         </td>
         <td>
-          2171
+          2188
           -
-          2217
+          2234
         </td>
         <td>
           Apply
@@ -840,9 +850,9 @@
           33
         </td>
         <td>
-          2222
+          2239
           -
-          2367
+          2384
         </td>
         <td>
           Apply
@@ -869,9 +879,9 @@
           29
         </td>
         <td>
-          2247
-          -
           2264
+          -
+          2281
         </td>
         <td>
           Block
@@ -893,9 +903,9 @@
           28
         </td>
         <td>
-          2276
+          2293
           -
-          2297
+          2314
         </td>
         <td>
           Apply
@@ -917,9 +927,9 @@
           32
         </td>
         <td>
-          2304
+          2321
           -
-          2319
+          2336
         </td>
         <td>
           Block
@@ -941,9 +951,9 @@
           31
         </td>
         <td>
-          2331
+          2348
           -
-          2361
+          2378
         </td>
         <td>
           Apply
@@ -965,9 +975,9 @@
           30
         </td>
         <td>
-          2339
+          2356
           -
-          2360
+          2377
         </td>
         <td>
           Apply
@@ -989,9 +999,9 @@
           43
         </td>
         <td>
-          2385
+          2402
           -
-          2397
+          2414
         </td>
         <td>
           DefDef
@@ -1013,9 +1023,9 @@
           35
         </td>
         <td>
-          2519
+          2536
           -
-          2531
+          2548
         </td>
         <td>
           Select
@@ -1037,9 +1047,9 @@
           36
         </td>
         <td>
-          2503
+          2520
           -
-          2552
+          2569
         </td>
         <td>
           Apply
@@ -1061,9 +1071,9 @@
           42
         </td>
         <td>
-          2557
+          2574
           -
-          2702
+          2719
         </td>
         <td>
           Apply
@@ -1090,9 +1100,9 @@
           38
         </td>
         <td>
-          2582
-          -
           2599
+          -
+          2616
         </td>
         <td>
           Block
@@ -1114,9 +1124,9 @@
           37
         </td>
         <td>
-          2611
+          2628
           -
-          2632
+          2649
         </td>
         <td>
           Apply
@@ -1138,9 +1148,9 @@
           41
         </td>
         <td>
-          2639
+          2656
           -
-          2654
+          2671
         </td>
         <td>
           Block
@@ -1162,9 +1172,9 @@
           40
         </td>
         <td>
-          2666
+          2683
           -
-          2696
+          2713
         </td>
         <td>
           Apply
@@ -1186,9 +1196,9 @@
           39
         </td>
         <td>
-          2674
+          2691
           -
-          2695
+          2712
         </td>
         <td>
           Apply
@@ -1210,9 +1220,9 @@
           52
         </td>
         <td>
-          2716
+          2733
           -
-          2730
+          2747
         </td>
         <td>
           DefDef
@@ -1234,9 +1244,9 @@
           44
         </td>
         <td>
-          2850
+          2867
           -
-          2861
+          2878
         </td>
         <td>
           Select
@@ -1258,9 +1268,9 @@
           45
         </td>
         <td>
-          2835
+          2852
           -
-          2877
+          2894
         </td>
         <td>
           Apply
@@ -1282,9 +1292,9 @@
           51
         </td>
         <td>
-          2882
+          2899
           -
-          3019
+          3036
         </td>
         <td>
           Apply
@@ -1311,9 +1321,9 @@
           47
         </td>
         <td>
-          2907
-          -
           2924
+          -
+          2941
         </td>
         <td>
           Block
@@ -1335,9 +1345,9 @@
           46
         </td>
         <td>
-          2936
+          2953
           -
-          2949
+          2966
         </td>
         <td>
           Apply
@@ -1359,9 +1369,9 @@
           50
         </td>
         <td>
-          2956
+          2973
           -
-          2971
+          2988
         </td>
         <td>
           Block
@@ -1383,9 +1393,9 @@
           49
         </td>
         <td>
-          2983
+          3000
           -
-          3013
+          3030
         </td>
         <td>
           Apply
@@ -1407,9 +1417,230 @@
           48
         </td>
         <td>
-          2991
+          3008
           -
-          3012
+          3029
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;Error sayHello: $e&quot;
+        </td>
+      </tr><tr>
+        <td>
+          96
+        </td>
+        <td>
+          61
+        </td>
+        <td>
+          3050
+          -
+          3063
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          closeGame
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def closeGame
+        </td>
+      </tr><tr>
+        <td>
+          97
+        </td>
+        <td>
+          53
+        </td>
+        <td>
+          3185
+          -
+          3196
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          $lessinit$greater$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          GameMessage
+        </td>
+      </tr><tr>
+        <td>
+          97
+        </td>
+        <td>
+          54
+        </td>
+        <td>
+          3168
+          -
+          3212
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          closeGame
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          client.closeGame(GameMessage(address, user))
+        </td>
+      </tr><tr>
+        <td>
+          98
+        </td>
+        <td>
+          60
+        </td>
+        <td>
+          3217
+          -
+          3354
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          onComplete
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          reply.onComplete {
+      case Success(msg) =&gt;
+        success(true)
+      case Failure(e) =&gt;
+        println(s&quot;Error sayHello: $e&quot;)
+    }
+        </td>
+      </tr><tr>
+        <td>
+          99
+        </td>
+        <td>
+          56
+        </td>
+        <td>
+          3242
+          -
+          3259
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case Success(msg)
+        </td>
+      </tr><tr>
+        <td>
+          100
+        </td>
+        <td>
+          55
+        </td>
+        <td>
+          3271
+          -
+          3284
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          success(true)
+        </td>
+      </tr><tr>
+        <td>
+          101
+        </td>
+        <td>
+          59
+        </td>
+        <td>
+          3291
+          -
+          3306
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Failure(e)
+        </td>
+      </tr><tr>
+        <td>
+          102
+        </td>
+        <td>
+          58
+        </td>
+        <td>
+          3318
+          -
+          3348
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(s&quot;Error sayHello: $e&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          102
+        </td>
+        <td>
+          57
+        </td>
+        <td>
+          3326
+          -
+          3347
         </td>
         <td>
           Apply
