@@ -7,6 +7,8 @@ scalaVersion := "3.2.0"
 mainClass := Some("grpcService.client.view.HomepageView")
 Compile / run / mainClass := Some("grpcService.client.view.HomepageView")
 
+ThisBuild / coverageExcludedPackages := "<empty>;.*view.*;"
+
 lazy val akkaVersion = "2.7.0"
 lazy val akkaGroup = "com.typesafe.akka"
 
