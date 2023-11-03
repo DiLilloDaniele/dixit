@@ -14,6 +14,8 @@ lazy val startupTransition: State => State = "conventionalCommits" :: _
 
 coverageEnabled := true
 
+coverageExcludedPackages := "<empty>;.*view.*;.*grpcService.*;"
+
 lazy val root = project
   .in(file("."))
   .settings(
@@ -36,8 +38,6 @@ libraryDependencies ++= Seq(
   "org.testcontainers" % "testcontainers" % "1.19.1",
   "org.testcontainers" % "mysql" % "1.19.1"
 )
-
-ThisBuild / coverageExcludedPackages := "<empty>;.*view*.;.*grpcService*.;"
 
 val runApp = taskKey[Unit]("sbt equivalent of gradle's JavaExec")
 runApp := {
