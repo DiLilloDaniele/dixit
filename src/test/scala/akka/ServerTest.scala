@@ -34,6 +34,7 @@ class ServerTest extends AnyFunSpec with BeforeAndAfterAll with Matchers {
     val server = Service.createTestService(accessAdapter)
 
     override def beforeAll(): Unit =
+        accessAdapter.connectWithUrl(url, user, pass)
         accessAdapter.createDb()
 
     override def afterAll(): Unit = 
