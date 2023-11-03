@@ -32,7 +32,9 @@ class ServerTest extends AnyFunSpec with BeforeAndAfterAll with Matchers {
     val pass = mysql.getPassword()
     val accessAdapter = AccessAdapter(username = user, password = pass, connectionStringExt = url)
     val server = Service.createTestService(accessAdapter)
-    accessAdapter.createDb()
+
+    override def beforeAll(): Unit =
+        accessAdapter.createDb()
 
     override def afterAll(): Unit = 
         server.close()
@@ -80,19 +82,13 @@ class ServerTest extends AnyFunSpec with BeforeAndAfterAll with Matchers {
                 it("should receive the confirmation registration response") {
                     val client = ClientImpl()
                     
-                    val future: Future[LoginResult] = client.register("user","pass",(bool) => {})
+                    var future: Future[LoginResult] = client.register("user","pass",(bool) => {})
                     assert(future.isReadyWithin(5000 millis))
                     whenReady(future) { s =>
                         s shouldBe LoginResult(true)
                     }
-                }
-                
-            }
-            describe("and sends request to login") {
-                it("should receive the login confirmation") {
-                    val client = ClientImpl()
                     
-                    val future: Future[LoginResult] = client.login("user","pass",(bool) => {})
+                    future: Future[LoginResult] = client.login("user","pass",(bool) => {})
                     assert(future.isReadyWithin(5000 millis))
                     whenReady(future) { s =>
                         s shouldBe LoginResult(true)
