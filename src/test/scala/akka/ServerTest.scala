@@ -94,14 +94,14 @@ class ServerTest extends AnyFunSpec with BeforeAndAfterAll with Matchers {
                     }
 
                     val gameResponse: Future[NewGameResponse] = client.createGame("address", "user", (bool) => {})
-                    assert(future.isReadyWithin(5000 millis))
-                    whenReady(future) { s =>
+                    assert(gameResponse.isReadyWithin(5000 millis))
+                    whenReady(gameResponse) { s =>
                         s shouldBe NewGameResponse()
                     }
 
                     val closingResponse: Future[ClosingResponse] = client.closeGame("address", "user", (bool) => {})
-                    assert(future.isReadyWithin(5000 millis))
-                    whenReady(future) { s =>
+                    assert(closingResponse.isReadyWithin(5000 millis))
+                    whenReady(closingResponse) { s =>
                         s shouldBe ClosingResponse()
                     }
                 }
