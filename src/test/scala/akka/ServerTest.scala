@@ -36,6 +36,7 @@ class ServerTest extends AnyFunSpec with BeforeAndAfterAll with Matchers {
     override def beforeAll(): Unit =
         accessAdapter.connectWithUrl(url, user, pass)
         accessAdapter.createDb()
+        accessAdapter.createTable()
 
     override def afterAll(): Unit = 
         server.close()
