@@ -55,10 +55,10 @@
 </span>31 <span style=''></span><span style='background: #AEF1AE'>    Behaviors.receiveMessage { message =&gt;
 </span>32 <span style=''></span><span style='background: #AEF1AE'>      message match {
 </span>33 <span style=''></span><span style='background: #AEF1AE'>
-</span>34 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case ReachabilityChange(reachabilityEvent)</span><span style='background: #AEF1AE'> =&gt;
+</span>34 <span style=''></span><span style='background: #AEF1AE'>        case ReachabilityChange(reachabilityEvent) =&gt;
 </span>35 <span style=''></span><span style='background: #AEF1AE'>          reachabilityEvent match {
-</span>36 <span style=''></span><span style='background: #AEF1AE'>            </span><span style='background: #F0ADAD'>case UnreachableMember(member)</span><span style='background: #AEF1AE'> =&gt;
-</span>37 <span style=''></span><span style='background: #AEF1AE'>              </span><span style='background: #F0ADAD'>ctx.log.info(&quot;Member detected as unreachable: {}&quot;, member)</span><span style='background: #AEF1AE'>
+</span>36 <span style=''></span><span style='background: #AEF1AE'>            case UnreachableMember(member) =&gt;
+</span>37 <span style=''></span><span style='background: #AEF1AE'>              ctx.log.info(&quot;Member detected as unreachable: {}&quot;, member)
 </span>38 <span style=''></span><span style='background: #AEF1AE'>            </span><span style='background: #F0ADAD'>case ReachableMember(member)</span><span style='background: #AEF1AE'> =&gt;
 </span>39 <span style=''></span><span style='background: #AEF1AE'>              </span><span style='background: #F0ADAD'>ctx.log.info(&quot;Member back to reachable: {}&quot;, member)</span><span style='background: #AEF1AE'>
 </span>40 <span style=''></span><span style='background: #AEF1AE'>          }
@@ -587,7 +587,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case ReachabilityChange(reachabilityEvent)
         </td>
       </tr><tr>
@@ -611,7 +611,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case UnreachableMember(member)
         </td>
       </tr><tr>
@@ -635,7 +635,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log.info(&quot;Member detected as unreachable: {}&quot;, member)
         </td>
       </tr><tr>
@@ -659,7 +659,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log
         </td>
       </tr><tr>
