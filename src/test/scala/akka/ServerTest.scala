@@ -11,7 +11,7 @@ import java.sql.{Connection, DriverManager, ResultSet, SQLException, Statement}
 
 import grpcService.client.ClientImpl
 import grpcService.server.applicationService.Service
-import grpcService.{HelloMessage, NewGameResponse, OpenedGames, LoginResult, NewGameResponse, ClosingResponse}
+import grpcService.{HelloMessage, NewGameResponse, OpenedGames, LoginResult, ClosingResponse}
 
 import grpcService.server.data.wrapper.MySqlContainerWrapper
 import grpcService.server.data.adapters.AccessAdapter
