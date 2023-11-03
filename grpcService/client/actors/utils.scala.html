@@ -64,18 +64,18 @@
 </span>40 <span style=''>
 </span>41 <span style=''>
 </span>42 <span style=''>
-</span>43 <span style=''>  </span><span style='background: #F0ADAD'>def startupWithRole</span><span style=''>[X](role: String, port: String, ip: String)(root: =&gt; Behavior[X]): ActorSystem[X] =
-</span>44 <span style=''>    val config = </span><span style='background: #F0ADAD'>ConfigFactory
-</span>45 <span style=''></span><span style='background: #F0ADAD'>      .parseString(
-</span>46 <span style=''></span><span style='background: #F0ADAD'>        s&quot;&quot;&quot;
-</span>47 <span style=''></span><span style='background: #F0ADAD'>        akka.remote.artery.canonical.hostname=$ip
-</span>48 <span style=''></span><span style='background: #F0ADAD'>        akka.remote.artery.canonical.port=$port
-</span>49 <span style=''></span><span style='background: #F0ADAD'>        akka.cluster.roles = [$role]
-</span>50 <span style=''></span><span style='background: #F0ADAD'>        &quot;&quot;&quot;)
-</span>51 <span style=''></span><span style='background: #F0ADAD'>      .withFallback(ConfigFactory.load(&quot;base-cluster&quot;))</span><span style=''>
+</span>43 <span style=''>  </span><span style='background: #AEF1AE'>def startupWithRole</span><span style=''>[X](role: String, port: String, ip: String)(root: =&gt; Behavior[X]): ActorSystem[X] =
+</span>44 <span style=''>    val config = </span><span style='background: #AEF1AE'>ConfigFactory
+</span>45 <span style=''></span><span style='background: #AEF1AE'>      .parseString(
+</span>46 <span style=''></span><span style='background: #AEF1AE'>        s&quot;&quot;&quot;
+</span>47 <span style=''></span><span style='background: #AEF1AE'>        akka.remote.artery.canonical.hostname=$ip
+</span>48 <span style=''></span><span style='background: #AEF1AE'>        akka.remote.artery.canonical.port=$port
+</span>49 <span style=''></span><span style='background: #AEF1AE'>        akka.cluster.roles = [$role]
+</span>50 <span style=''></span><span style='background: #AEF1AE'>        &quot;&quot;&quot;)
+</span>51 <span style=''></span><span style='background: #AEF1AE'>      .withFallback(ConfigFactory.load(&quot;base-cluster&quot;))</span><span style=''>
 </span>52 <span style=''>
 </span>53 <span style=''>    // Create an Akka system
-</span>54 <span style=''>    </span><span style='background: #F0ADAD'>ActorSystem(root, &quot;ClusterSystem&quot;, config)</span><span style=''>
+</span>54 <span style=''>    </span><span style='background: #AEF1AE'>ActorSystem(root, &quot;ClusterSystem&quot;, config)</span><span style=''>
 </span>55 <span style=''>
 </span>56 <span style=''>  </span><span style='background: #F0ADAD'>@main def startSeedNode</span><span style=''>() =
 </span>57 <span style=''>    </span><span style='background: #F0ADAD'>startupWithRole(&quot;seed&quot;, &quot;2551&quot;, &quot;192.168.1.118&quot;)(ForemanBehavior())</span><span style=''>;
@@ -860,7 +860,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def startupWithRole
         </td>
       </tr><tr>
@@ -884,7 +884,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ConfigFactory
       .parseString(
         s&quot;&quot;&quot;
@@ -914,7 +914,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           s&quot;&quot;&quot;
         akka.remote.artery.canonical.hostname=$ip
         akka.remote.artery.canonical.port=$port
@@ -942,7 +942,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ConfigFactory
       .parseString(
         s&quot;&quot;&quot;
@@ -973,7 +973,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ConfigFactory.load(&quot;base-cluster&quot;)
         </td>
       </tr><tr>
@@ -997,7 +997,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ActorSystem(root, &quot;ClusterSystem&quot;, config)
         </td>
       </tr><tr>

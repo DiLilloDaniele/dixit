@@ -61,11 +61,11 @@
 </span>37 <span style=''>    </span><span style='background: #AEF1AE'>println(query.query)</span><span style=''>
 </span>38 <span style=''>    </span><span style='background: #AEF1AE'>accessAdapter.insertQuery(query)</span><span style=''>
 </span>39 <span style=''>
-</span>40 <span style=''>  </span><span style='background: #F0ADAD'>override def addPointsToUser</span><span style=''>(userId: String, points: Int): Boolean =
-</span>41 <span style=''>    val updateQuery = </span><span style='background: #F0ADAD'>UpdateBuilder()</span><span style=''>
-</span>42 <span style=''>    val query = </span><span style='background: #F0ADAD'>updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot; where s&quot;UserId = $userId&quot;</span><span style=''>
-</span>43 <span style=''>    </span><span style='background: #F0ADAD'>println(query.query)</span><span style=''>
-</span>44 <span style=''>    </span><span style='background: #F0ADAD'>accessAdapter.update(query)</span><span style=''>
+</span>40 <span style=''>  </span><span style='background: #AEF1AE'>override def addPointsToUser</span><span style=''>(userId: String, points: Int): Boolean =
+</span>41 <span style=''>    val updateQuery = </span><span style='background: #AEF1AE'>UpdateBuilder()</span><span style=''>
+</span>42 <span style=''>    val query = </span><span style='background: #AEF1AE'>updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot; where s&quot;UserId = $userId&quot;</span><span style=''>
+</span>43 <span style=''>    </span><span style='background: #AEF1AE'>println(query.query)</span><span style=''>
+</span>44 <span style=''>    </span><span style='background: #AEF1AE'>accessAdapter.update(query)</span><span style=''>
 </span>45 <span style=''>    
 </span>46 <span style=''>  
 </span>47 <span style=''>}
@@ -777,7 +777,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           override def addPointsToUser
         </td>
       </tr><tr>
@@ -801,7 +801,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           UpdateBuilder()
         </td>
       </tr><tr>
@@ -825,7 +825,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           s&quot;UserId = $userId&quot;
         </td>
       </tr><tr>
@@ -849,7 +849,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot;
         </td>
       </tr><tr>
@@ -873,7 +873,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           updateQuery update &quot;User&quot;
         </td>
       </tr><tr>
@@ -897,7 +897,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           s&quot;Points + $points&quot;
         </td>
       </tr><tr>
@@ -921,7 +921,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot; where s&quot;UserId = $userId&quot;
         </td>
       </tr><tr>
@@ -945,7 +945,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           updateQuery update &quot;User&quot; set &quot;Points&quot;
         </td>
       </tr><tr>
@@ -969,7 +969,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           println(query.query)
         </td>
       </tr><tr>
@@ -993,7 +993,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           accessAdapter.update(query)
         </td>
       </tr>

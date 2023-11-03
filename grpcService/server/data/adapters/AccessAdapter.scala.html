@@ -127,29 +127,29 @@
 </span>103 <span style=''>      </span><span style='background: #F0ADAD'>case m</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>m.close</span><span style=''>
 </span>104 <span style=''>      </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt; ()
 </span>105 <span style=''>
-</span>106 <span style=''>  </span><span style='background: #F0ADAD'>def checkDatabaseExist</span><span style=''>(): Boolean =
+</span>106 <span style=''>  </span><span style='background: #AEF1AE'>def checkDatabaseExist</span><span style=''>(): Boolean =
 </span>107 <span style=''>    //SHOW DATABASES LIKE 'dbname';
-</span>108 <span style=''>    try </span><span style='background: #F0ADAD'>{
-</span>109 <span style=''></span><span style='background: #F0ADAD'>      connectionStringExt match
-</span>110 <span style=''></span><span style='background: #F0ADAD'>        case &quot;&quot; =&gt; connect()
-</span>111 <span style=''></span><span style='background: #F0ADAD'>        case _ =&gt; connection = DriverManager.getConnection(connectionStringExt, username, password)
-</span>112 <span style=''></span><span style='background: #F0ADAD'>      
-</span>113 <span style=''></span><span style='background: #F0ADAD'>      val statement: Statement = connection.createStatement()
-</span>114 <span style=''></span><span style='background: #F0ADAD'>      val query = &quot;SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'DIXIT'&quot;
-</span>115 <span style=''></span><span style='background: #F0ADAD'>      val resultSet = statement.executeQuery(query)
-</span>116 <span style=''></span><span style='background: #F0ADAD'>      resultSet.first() match
-</span>117 <span style=''></span><span style='background: #F0ADAD'>        case true =&gt; return true
-</span>118 <span style=''></span><span style='background: #F0ADAD'>        case _ =&gt; return false
-</span>119 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''> catch {
+</span>108 <span style=''>    try </span><span style='background: #AEF1AE'>{
+</span>109 <span style=''></span><span style='background: #AEF1AE'>      connectionStringExt match
+</span>110 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>connect()</span><span style='background: #AEF1AE'>
+</span>111 <span style=''></span><span style='background: #AEF1AE'>        case _ =&gt; connection = DriverManager.getConnection(connectionStringExt, username, password)
+</span>112 <span style=''></span><span style='background: #AEF1AE'>      
+</span>113 <span style=''></span><span style='background: #AEF1AE'>      val statement: Statement = connection.createStatement()
+</span>114 <span style=''></span><span style='background: #AEF1AE'>      val query = &quot;SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'DIXIT'&quot;
+</span>115 <span style=''></span><span style='background: #AEF1AE'>      val resultSet = statement.executeQuery(query)
+</span>116 <span style=''></span><span style='background: #AEF1AE'>      resultSet.first() match
+</span>117 <span style=''></span><span style='background: #AEF1AE'>        case true =&gt; return true
+</span>118 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt; return false
+</span>119 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''> catch {
 </span>120 <span style=''>      </span><span style='background: #F0ADAD'>case e: 
 </span>121 <span style=''></span><span style='background: #F0ADAD'>        Exception</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>e.printStackTrace</span><span style=''>
 </span>122 <span style=''>        return false
-</span>123 <span style=''>    } finally </span><span style='background: #F0ADAD'>{
-</span>124 <span style=''></span><span style='background: #F0ADAD'>      if (connection != null) try connection.close
-</span>125 <span style=''></span><span style='background: #F0ADAD'>      catch {
-</span>126 <span style=''></span><span style='background: #F0ADAD'>        case e: SQLException =&gt; return false /* Ignored */
-</span>127 <span style=''></span><span style='background: #F0ADAD'>      }
-</span>128 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
+</span>123 <span style=''>    } finally </span><span style='background: #AEF1AE'>{
+</span>124 <span style=''></span><span style='background: #AEF1AE'>      if (connection != null) try connection.close
+</span>125 <span style=''></span><span style='background: #AEF1AE'>      catch {
+</span>126 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case e: SQLException</span><span style='background: #AEF1AE'> =&gt; return false /* Ignored */
+</span>127 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>128 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
 </span>129 <span style=''>
 </span>130 <span style=''>  </span><span style='background: #AEF1AE'>def selectSingleRow</span><span style=''>(queryWrapper: QueryBuilder): Option[User] =
 </span>131 <span style=''>    var user : Option[User] = </span><span style='background: #AEF1AE'>Option.empty</span><span style=''>
@@ -192,23 +192,23 @@
 </span>168 <span style=''></span><span style='background: #AEF1AE'>      }
 </span>169 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
 </span>170 <span style=''>
-</span>171 <span style=''>  </span><span style='background: #F0ADAD'>def update</span><span style=''>(query: UpdateBuilder): Boolean = try </span><span style='background: #F0ADAD'>{
-</span>172 <span style=''></span><span style='background: #F0ADAD'>    if(connectionStringExt == &quot;&quot;)
-</span>173 <span style=''></span><span style='background: #F0ADAD'>        connect()
-</span>174 <span style=''></span><span style='background: #F0ADAD'>      else
-</span>175 <span style=''></span><span style='background: #F0ADAD'>        connection = DriverManager.getConnection(connectionStringExt, username, password)
-</span>176 <span style=''></span><span style='background: #F0ADAD'>    val statement: Statement = connection.createStatement()
-</span>177 <span style=''></span><span style='background: #F0ADAD'>    statement.executeUpdate(query.query)
-</span>178 <span style=''></span><span style='background: #F0ADAD'>    return true
-</span>179 <span style=''></span><span style='background: #F0ADAD'>  }</span><span style=''> catch {
+</span>171 <span style=''>  </span><span style='background: #AEF1AE'>def update</span><span style=''>(query: UpdateBuilder): Boolean = try </span><span style='background: #AEF1AE'>{
+</span>172 <span style=''></span><span style='background: #AEF1AE'>    if(connectionStringExt == &quot;&quot;)
+</span>173 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>connect()</span><span style='background: #AEF1AE'>
+</span>174 <span style=''></span><span style='background: #AEF1AE'>      else
+</span>175 <span style=''></span><span style='background: #AEF1AE'>        connection = DriverManager.getConnection(connectionStringExt, username, password)
+</span>176 <span style=''></span><span style='background: #AEF1AE'>    val statement: Statement = connection.createStatement()
+</span>177 <span style=''></span><span style='background: #AEF1AE'>    statement.executeUpdate(query.query)
+</span>178 <span style=''></span><span style='background: #AEF1AE'>    return true
+</span>179 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''> catch {
 </span>180 <span style=''>    </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>e.printStackTrace</span><span style=''>
 </span>181 <span style=''>      return false
-</span>182 <span style=''>  } finally </span><span style='background: #F0ADAD'>{
-</span>183 <span style=''></span><span style='background: #F0ADAD'>    if (connection != null) try connection.close
-</span>184 <span style=''></span><span style='background: #F0ADAD'>    catch {
-</span>185 <span style=''></span><span style='background: #F0ADAD'>      case e: SQLException =&gt; /* Ignored */
-</span>186 <span style=''></span><span style='background: #F0ADAD'>    }
-</span>187 <span style=''></span><span style='background: #F0ADAD'>  }</span><span style=''>
+</span>182 <span style=''>  } finally </span><span style='background: #AEF1AE'>{
+</span>183 <span style=''></span><span style='background: #AEF1AE'>    if (connection != null) try connection.close
+</span>184 <span style=''></span><span style='background: #AEF1AE'>    catch {
+</span>185 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case e: SQLException</span><span style='background: #AEF1AE'> =&gt; /* Ignored */
+</span>186 <span style=''></span><span style='background: #AEF1AE'>    }
+</span>187 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -2181,7 +2181,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def checkDatabaseExist
         </td>
       </tr><tr>
@@ -2205,7 +2205,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           {
       connectionStringExt match
         case &quot;&quot; =&gt; connect()
@@ -2288,7 +2288,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case _
         </td>
       </tr><tr>
@@ -2312,7 +2312,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           DriverManager.getConnection(connectionStringExt, username, password)
         </td>
       </tr><tr>
@@ -2336,7 +2336,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           connection.createStatement()
         </td>
       </tr><tr>
@@ -2360,7 +2360,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           statement.executeQuery(query)
         </td>
       </tr><tr>
@@ -2384,7 +2384,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           resultSet.first()
         </td>
       </tr><tr>
@@ -2408,7 +2408,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case true
         </td>
       </tr><tr>
@@ -2505,7 +2505,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           {
       if (connection != null) try connection.close
       catch {
@@ -2534,7 +2534,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           connection.close
         </td>
       </tr><tr>
@@ -2558,7 +2558,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           try connection.close
       catch {
         case e: SQLException =&gt; return false /* Ignored */
@@ -2585,7 +2585,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           connection.close
         </td>
       </tr><tr>
@@ -3629,7 +3629,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           {
     if(connectionStringExt == &quot;&quot;)
         connect()
@@ -3661,7 +3661,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def update
         </td>
       </tr><tr>
@@ -3733,7 +3733,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           connection = DriverManager.getConnection(connectionStringExt, username, password)
         </td>
       </tr><tr>
@@ -3757,7 +3757,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           DriverManager.getConnection(connectionStringExt, username, password)
         </td>
       </tr><tr>
@@ -3781,7 +3781,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           connection.createStatement()
         </td>
       </tr><tr>
@@ -3805,7 +3805,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           statement.executeUpdate(query.query)
         </td>
       </tr><tr>
@@ -3877,7 +3877,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           {
     if (connection != null) try connection.close
     catch {
@@ -3906,7 +3906,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           try connection.close
     catch {
       case e: SQLException =&gt; /* Ignored */
@@ -3933,7 +3933,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           connection.close
         </td>
       </tr><tr>
@@ -3957,7 +3957,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           connection.close
         </td>
       </tr><tr>

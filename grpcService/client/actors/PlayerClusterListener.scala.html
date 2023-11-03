@@ -39,47 +39,47 @@
 </span>15 <span style=''>
 </span>16 <span style=''>  import Event.*
 </span>17 <span style=''>
-</span>18 <span style=''>  </span><span style='background: #F0ADAD'>def apply</span><span style=''>(player: ActorRef[PlayerBehavior.Command]): Behavior[Event | Receptionist.Listing] = </span><span style='background: #F0ADAD'>Behaviors.setup { ctx =&gt;
-</span>19 <span style=''></span><span style='background: #F0ADAD'>
-</span>20 <span style=''></span><span style='background: #F0ADAD'>    // MemberEvent extends ClusterDomainEvent
-</span>21 <span style=''></span><span style='background: #F0ADAD'>    // We use the &quot;message adapter&quot; pattern to avoid the need of directly supporting the whole MemberEvent messaging interface
-</span>22 <span style=''></span><span style='background: #F0ADAD'>    val memberEventAdapter: ActorRef[MemberEvent] = ctx.messageAdapter(MemberChange.apply)
-</span>23 <span style=''></span><span style='background: #F0ADAD'>    // To subscribe, you must provide your ActorRef[A&lt;:ClusterDomainEvent] and the ClusterDomainEvent class
-</span>24 <span style=''></span><span style='background: #F0ADAD'>    Cluster(ctx.system).subscriptions ! Subscribe(memberEventAdapter, classOf[MemberEvent])
-</span>25 <span style=''></span><span style='background: #F0ADAD'>
-</span>26 <span style=''></span><span style='background: #F0ADAD'>    // ReachabilityEvent also extends ClusterDomainEvent
-</span>27 <span style=''></span><span style='background: #F0ADAD'>    val reachabilityAdapter: ActorRef[ReachabilityEvent] = ctx.messageAdapter(ReachabilityChange.apply)
-</span>28 <span style=''></span><span style='background: #F0ADAD'>    Cluster(ctx.system).subscriptions ! Subscribe(reachabilityAdapter, classOf[ReachabilityEvent])
-</span>29 <span style=''></span><span style='background: #F0ADAD'>
-</span>30 <span style=''></span><span style='background: #F0ADAD'>    // Our behaviour listens for cluster events (membership and reachability events)
-</span>31 <span style=''></span><span style='background: #F0ADAD'>    Behaviors.receiveMessage { message =&gt;
-</span>32 <span style=''></span><span style='background: #F0ADAD'>      message match {
-</span>33 <span style=''></span><span style='background: #F0ADAD'>
-</span>34 <span style=''></span><span style='background: #F0ADAD'>        case ReachabilityChange(reachabilityEvent) =&gt;
-</span>35 <span style=''></span><span style='background: #F0ADAD'>          reachabilityEvent match {
-</span>36 <span style=''></span><span style='background: #F0ADAD'>            case UnreachableMember(member) =&gt;
-</span>37 <span style=''></span><span style='background: #F0ADAD'>              ctx.log.info(&quot;Member detected as unreachable: {}&quot;, member)
-</span>38 <span style=''></span><span style='background: #F0ADAD'>            case ReachableMember(member) =&gt;
-</span>39 <span style=''></span><span style='background: #F0ADAD'>              ctx.log.info(&quot;Member back to reachable: {}&quot;, member)
-</span>40 <span style=''></span><span style='background: #F0ADAD'>          }
-</span>41 <span style=''></span><span style='background: #F0ADAD'>
-</span>42 <span style=''></span><span style='background: #F0ADAD'>        case MemberChange(changeEvent) =&gt;
-</span>43 <span style=''></span><span style='background: #F0ADAD'>          changeEvent match {
-</span>44 <span style=''></span><span style='background: #F0ADAD'>            case MemberUp(member) =&gt;
-</span>45 <span style=''></span><span style='background: #F0ADAD'>              ctx.log.info(&quot;Member is Up: {} - I'm {}&quot;, member.address, ctx.system.address.port)
-</span>46 <span style=''></span><span style='background: #F0ADAD'>            case MemberRemoved(member, previousStatus) =&gt;
-</span>47 <span style=''></span><span style='background: #F0ADAD'>              ctx.log.info(s&quot;ROLE MEMBER: ${member.roles.contains(&quot;foreman&quot;)}&quot;)
-</span>48 <span style=''></span><span style='background: #F0ADAD'>              if(member.roles.contains(&quot;foreman&quot;) || member.roles.contains(&quot;root&quot;))
-</span>49 <span style=''></span><span style='background: #F0ADAD'>                ctx.log.info(&quot;OUT: {}&quot;, member.roles)
-</span>50 <span style=''></span><span style='background: #F0ADAD'>                ctx.log.info(&quot;Member is Removed: {} after {}&quot;, member.address, previousStatus)
-</span>51 <span style=''></span><span style='background: #F0ADAD'>                player ! PlayerBehavior.GameInfo(&quot;Il capopartita è uscito, partita annullata :(&quot;)
-</span>52 <span style=''></span><span style='background: #F0ADAD'>            case _: MemberEvent =&gt; // ignore
-</span>53 <span style=''></span><span style='background: #F0ADAD'>          }
-</span>54 <span style=''></span><span style='background: #F0ADAD'>        case _ =&gt; Behaviors.same
-</span>55 <span style=''></span><span style='background: #F0ADAD'>      }
-</span>56 <span style=''></span><span style='background: #F0ADAD'>      Behaviors.same
-</span>57 <span style=''></span><span style='background: #F0ADAD'>    }
-</span>58 <span style=''></span><span style='background: #F0ADAD'>  }</span><span style=''>
+</span>18 <span style=''>  </span><span style='background: #AEF1AE'>def apply</span><span style=''>(player: ActorRef[PlayerBehavior.Command]): Behavior[Event | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.setup { ctx =&gt;
+</span>19 <span style=''></span><span style='background: #AEF1AE'>
+</span>20 <span style=''></span><span style='background: #AEF1AE'>    // MemberEvent extends ClusterDomainEvent
+</span>21 <span style=''></span><span style='background: #AEF1AE'>    // We use the &quot;message adapter&quot; pattern to avoid the need of directly supporting the whole MemberEvent messaging interface
+</span>22 <span style=''></span><span style='background: #AEF1AE'>    val memberEventAdapter: ActorRef[MemberEvent] = ctx.messageAdapter(MemberChange.apply)
+</span>23 <span style=''></span><span style='background: #AEF1AE'>    // To subscribe, you must provide your ActorRef[A&lt;:ClusterDomainEvent] and the ClusterDomainEvent class
+</span>24 <span style=''></span><span style='background: #AEF1AE'>    Cluster(ctx.system).subscriptions ! Subscribe(memberEventAdapter, classOf[MemberEvent])
+</span>25 <span style=''></span><span style='background: #AEF1AE'>
+</span>26 <span style=''></span><span style='background: #AEF1AE'>    // ReachabilityEvent also extends ClusterDomainEvent
+</span>27 <span style=''></span><span style='background: #AEF1AE'>    val reachabilityAdapter: ActorRef[ReachabilityEvent] = ctx.messageAdapter(ReachabilityChange.apply)
+</span>28 <span style=''></span><span style='background: #AEF1AE'>    Cluster(ctx.system).subscriptions ! Subscribe(reachabilityAdapter, classOf[ReachabilityEvent])
+</span>29 <span style=''></span><span style='background: #AEF1AE'>
+</span>30 <span style=''></span><span style='background: #AEF1AE'>    // Our behaviour listens for cluster events (membership and reachability events)
+</span>31 <span style=''></span><span style='background: #AEF1AE'>    Behaviors.receiveMessage { message =&gt;
+</span>32 <span style=''></span><span style='background: #AEF1AE'>      message match {
+</span>33 <span style=''></span><span style='background: #AEF1AE'>
+</span>34 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case ReachabilityChange(reachabilityEvent)</span><span style='background: #AEF1AE'> =&gt;
+</span>35 <span style=''></span><span style='background: #AEF1AE'>          reachabilityEvent match {
+</span>36 <span style=''></span><span style='background: #AEF1AE'>            </span><span style='background: #F0ADAD'>case UnreachableMember(member)</span><span style='background: #AEF1AE'> =&gt;
+</span>37 <span style=''></span><span style='background: #AEF1AE'>              </span><span style='background: #F0ADAD'>ctx.log.info(&quot;Member detected as unreachable: {}&quot;, member)</span><span style='background: #AEF1AE'>
+</span>38 <span style=''></span><span style='background: #AEF1AE'>            </span><span style='background: #F0ADAD'>case ReachableMember(member)</span><span style='background: #AEF1AE'> =&gt;
+</span>39 <span style=''></span><span style='background: #AEF1AE'>              </span><span style='background: #F0ADAD'>ctx.log.info(&quot;Member back to reachable: {}&quot;, member)</span><span style='background: #AEF1AE'>
+</span>40 <span style=''></span><span style='background: #AEF1AE'>          }
+</span>41 <span style=''></span><span style='background: #AEF1AE'>
+</span>42 <span style=''></span><span style='background: #AEF1AE'>        case MemberChange(changeEvent) =&gt;
+</span>43 <span style=''></span><span style='background: #AEF1AE'>          changeEvent match {
+</span>44 <span style=''></span><span style='background: #AEF1AE'>            case MemberUp(member) =&gt;
+</span>45 <span style=''></span><span style='background: #AEF1AE'>              ctx.log.info(&quot;Member is Up: {} - I'm {}&quot;, member.address, ctx.system.address.port)
+</span>46 <span style=''></span><span style='background: #AEF1AE'>            case MemberRemoved(member, previousStatus) =&gt;
+</span>47 <span style=''></span><span style='background: #AEF1AE'>              ctx.log.info(s&quot;ROLE MEMBER: ${member.roles.contains(&quot;foreman&quot;)}&quot;)
+</span>48 <span style=''></span><span style='background: #AEF1AE'>              if(member.roles.contains(&quot;foreman&quot;) || member.roles.contains(&quot;root&quot;))
+</span>49 <span style=''></span><span style='background: #AEF1AE'>                ctx.log.info(&quot;OUT: {}&quot;, member.roles)
+</span>50 <span style=''></span><span style='background: #AEF1AE'>                ctx.log.info(&quot;Member is Removed: {} after {}&quot;, member.address, previousStatus)
+</span>51 <span style=''></span><span style='background: #AEF1AE'>                player ! PlayerBehavior.GameInfo(&quot;Il capopartita è uscito, partita annullata :(&quot;)
+</span>52 <span style=''></span><span style='background: #AEF1AE'>            case _: MemberEvent =&gt; // ignore
+</span>53 <span style=''></span><span style='background: #AEF1AE'>          }
+</span>54 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>55 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>56 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.same
+</span>57 <span style=''></span><span style='background: #AEF1AE'>    }
+</span>58 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -113,7 +113,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.setup { ctx =&gt;
 
     // MemberEvent extends ClusterDomainEvent
@@ -177,7 +177,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def apply
         </td>
       </tr><tr>
@@ -201,7 +201,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.messageAdapter(MemberChange.apply)
         </td>
       </tr><tr>
@@ -225,7 +225,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.system
         </td>
       </tr><tr>
@@ -249,7 +249,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Cluster(ctx.system).subscriptions
         </td>
       </tr><tr>
@@ -273,7 +273,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Cluster(ctx.system).subscriptions
         </td>
       </tr><tr>
@@ -297,7 +297,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Cluster(ctx.system).subscriptions ! Subscribe(memberEventAdapter, classOf[MemberEvent])
         </td>
       </tr><tr>
@@ -321,7 +321,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Cluster(ctx.system)
         </td>
       </tr><tr>
@@ -345,7 +345,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           classOf
         </td>
       </tr><tr>
@@ -369,7 +369,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.messageAdapter(ReachabilityChange.apply)
         </td>
       </tr><tr>
@@ -393,7 +393,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Cluster(ctx.system).subscriptions
         </td>
       </tr><tr>
@@ -417,7 +417,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Cluster(ctx.system).subscriptions ! Subscribe(reachabilityAdapter, classOf[ReachabilityEvent])
         </td>
       </tr><tr>
@@ -441,7 +441,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           classOf
         </td>
       </tr><tr>
@@ -465,7 +465,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Cluster(ctx.system)
         </td>
       </tr><tr>
@@ -489,7 +489,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.system
         </td>
       </tr><tr>
@@ -513,7 +513,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Cluster(ctx.system).subscriptions
         </td>
       </tr><tr>
@@ -537,7 +537,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.receiveMessage { message =&gt;
       message match {
 
@@ -755,7 +755,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case MemberChange(changeEvent)
         </td>
       </tr><tr>
@@ -779,7 +779,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case MemberUp(member)
         </td>
       </tr><tr>
@@ -803,7 +803,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log.info(&quot;Member is Up: {} - I'm {}&quot;, member.address, ctx.system.address.port)
         </td>
       </tr><tr>
@@ -827,7 +827,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log
         </td>
       </tr><tr>
@@ -851,7 +851,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.system.address
         </td>
       </tr><tr>
@@ -875,7 +875,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.system
         </td>
       </tr><tr>
@@ -899,7 +899,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           member.address
         </td>
       </tr><tr>
@@ -923,7 +923,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case MemberRemoved(member, previousStatus)
         </td>
       </tr><tr>
@@ -947,7 +947,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           member.roles.contains(&quot;foreman&quot;)
         </td>
       </tr><tr>
@@ -971,7 +971,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log.info(s&quot;ROLE MEMBER: ${member.roles.contains(&quot;foreman&quot;)}&quot;)
         </td>
       </tr><tr>
@@ -995,7 +995,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log
         </td>
       </tr><tr>
@@ -1019,7 +1019,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           s&quot;ROLE MEMBER: ${member.roles.contains(&quot;foreman&quot;)}&quot;
         </td>
       </tr><tr>
@@ -1043,7 +1043,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           member.roles.contains(&quot;root&quot;)
         </td>
       </tr><tr>
@@ -1067,7 +1067,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           member.roles.contains(&quot;foreman&quot;)
         </td>
       </tr><tr>
@@ -1091,7 +1091,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log.info(&quot;OUT: {}&quot;, member.roles)
         </td>
       </tr><tr>
@@ -1115,7 +1115,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log
         </td>
       </tr><tr>
@@ -1139,7 +1139,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log.info(&quot;OUT: {}&quot;, member.roles)
                 ctx.log.info(&quot;Member is Removed: {} after {}&quot;, member.address, previousStatus)
                 player ! PlayerBehavior.GameInfo(&quot;Il capopartita è uscito, partita annullata :(&quot;)
@@ -1165,7 +1165,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log.info(&quot;Member is Removed: {} after {}&quot;, member.address, previousStatus)
         </td>
       </tr><tr>
@@ -1189,7 +1189,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           member.address
         </td>
       </tr><tr>
@@ -1213,7 +1213,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log
         </td>
       </tr><tr>
@@ -1237,7 +1237,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           player ! PlayerBehavior.GameInfo(&quot;Il capopartita è uscito, partita annullata :(&quot;)
         </td>
       </tr><tr>
@@ -1261,7 +1261,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           player
         </td>
       </tr><tr>
@@ -1285,7 +1285,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case _: MemberEvent
         </td>
       </tr><tr>
@@ -1357,7 +1357,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.same
         </td>
       </tr>

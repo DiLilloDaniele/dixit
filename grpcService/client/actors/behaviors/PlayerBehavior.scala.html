@@ -39,7 +39,7 @@
 </span>15 <span style=''>
 </span>16 <span style=''>object PlayerBehavior:
 </span>17 <span style=''>
-</span>18 <span style=''>  val Service = </span><span style='background: #F0ADAD'>ServiceKey[Command](&quot;PlayersService&quot;)</span><span style=''>
+</span>18 <span style=''>  val Service = </span><span style='background: #AEF1AE'>ServiceKey[Command](&quot;PlayersService&quot;)</span><span style=''>
 </span>19 <span style=''>
 </span>20 <span style=''>  sealed trait Command extends Message
 </span>21 <span style=''>  //entry messages
@@ -66,63 +66,63 @@
 </span>42 <span style=''>  case class EndGame(points: Int) extends Command
 </span>43 <span style=''>  case class NewCard(card: String) extends Command
 </span>44 <span style=''>
-</span>45 <span style=''>  </span><span style='background: #F0ADAD'>def apply</span><span style=''>(logger: Option[ActorRef[Command]] = </span><span style='background: #F0ADAD'>Option.empty</span><span style=''>, interactionExt: Option[ActorRef[InteractionBehavior.Command]] = </span><span style='background: #F0ADAD'>Option.empty</span><span style=''>): Behavior[Command] =
-</span>46 <span style=''>    </span><span style='background: #F0ADAD'>Behaviors.setup[Command] { ctx =&gt;
-</span>47 <span style=''></span><span style='background: #F0ADAD'>      ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
-</span>48 <span style=''></span><span style='background: #F0ADAD'>
-</span>49 <span style=''></span><span style='background: #F0ADAD'>      val interaction = interactionExt match {
-</span>50 <span style=''></span><span style='background: #F0ADAD'>        case Some(ref) =&gt;
-</span>51 <span style=''></span><span style='background: #F0ADAD'>          ctx.log.info(&quot;INTERACTION ESTERNO&quot;)
-</span>52 <span style=''></span><span style='background: #F0ADAD'>          ref
-</span>53 <span style=''></span><span style='background: #F0ADAD'>        case _ =&gt;
-</span>54 <span style=''></span><span style='background: #F0ADAD'>          ctx.log.info(&quot;INTERACTION INTERNO&quot;)
-</span>55 <span style=''></span><span style='background: #F0ADAD'>          ctx.spawn(Behaviors.setup[InteractionBehavior.Command](ctx1 =&gt; InteractionGuiImpl(ctx1, ctx.self)), &quot;gui&quot;)
-</span>56 <span style=''></span><span style='background: #F0ADAD'>      }
-</span>57 <span style=''></span><span style='background: #F0ADAD'>      val player = ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](context =&gt; new PlayerBehaviorImpl(context, interaction, ctx.self)), &quot;player&quot;)
-</span>58 <span style=''></span><span style='background: #F0ADAD'>      val listener = ctx.spawn(Behaviors.setup[Event | Receptionist.Listing](context =&gt; PlayerClusterListener(ctx.self)), &quot;player-cluster-listener&quot;)
-</span>59 <span style=''></span><span style='background: #F0ADAD'>      player ! Start
-</span>60 <span style=''></span><span style='background: #F0ADAD'>      ctx.watch(interaction)
-</span>61 <span style=''></span><span style='background: #F0ADAD'>
-</span>62 <span style=''></span><span style='background: #F0ADAD'>      Behaviors.receiveMessage[Command] {
-</span>63 <span style=''></span><span style='background: #F0ADAD'>        case GameInfo(msg) =&gt;
-</span>64 <span style=''></span><span style='background: #F0ADAD'>          interaction ! InteractionBehavior.MessageError(msg)
-</span>65 <span style=''></span><span style='background: #F0ADAD'>          logger match {
-</span>66 <span style=''></span><span style='background: #F0ADAD'>            case Some(ref) =&gt; ref ! GameInfo(msg)
-</span>67 <span style=''></span><span style='background: #F0ADAD'>            case _ =&gt;
-</span>68 <span style=''></span><span style='background: #F0ADAD'>          }
-</span>69 <span style=''></span><span style='background: #F0ADAD'>          Behaviors.same
-</span>70 <span style=''></span><span style='background: #F0ADAD'>        case msg: Command =&gt;
-</span>71 <span style=''></span><span style='background: #F0ADAD'>          ctx.log.info(&quot;MESSAGGIO RICEVUTO: &quot; + msg)
-</span>72 <span style=''></span><span style='background: #F0ADAD'>          logger match {
-</span>73 <span style=''></span><span style='background: #F0ADAD'>            case Some(ref) =&gt; ref ! msg
-</span>74 <span style=''></span><span style='background: #F0ADAD'>            case _ =&gt;
-</span>75 <span style=''></span><span style='background: #F0ADAD'>          }
-</span>76 <span style=''></span><span style='background: #F0ADAD'>          player ! msg
-</span>77 <span style=''></span><span style='background: #F0ADAD'>          Behaviors.same
-</span>78 <span style=''></span><span style='background: #F0ADAD'>      }.receiveSignal { case (ctx, t @ Terminated(_)) =&gt;
-</span>79 <span style=''></span><span style='background: #F0ADAD'>        ctx.log.info(&quot;System terminated [PLAYER]. Shutting down&quot;)
-</span>80 <span style=''></span><span style='background: #F0ADAD'>        Behaviors.stopped
-</span>81 <span style=''></span><span style='background: #F0ADAD'>      }
-</span>82 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
+</span>45 <span style=''>  </span><span style='background: #AEF1AE'>def apply</span><span style=''>(logger: Option[ActorRef[Command]] = </span><span style='background: #AEF1AE'>Option.empty</span><span style=''>, interactionExt: Option[ActorRef[InteractionBehavior.Command]] = </span><span style='background: #F0ADAD'>Option.empty</span><span style=''>): Behavior[Command] =
+</span>46 <span style=''>    </span><span style='background: #AEF1AE'>Behaviors.setup[Command] { ctx =&gt;
+</span>47 <span style=''></span><span style='background: #AEF1AE'>      ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
+</span>48 <span style=''></span><span style='background: #AEF1AE'>
+</span>49 <span style=''></span><span style='background: #AEF1AE'>      val interaction = interactionExt match {
+</span>50 <span style=''></span><span style='background: #AEF1AE'>        case Some(ref) =&gt;
+</span>51 <span style=''></span><span style='background: #AEF1AE'>          ctx.log.info(&quot;INTERACTION ESTERNO&quot;)
+</span>52 <span style=''></span><span style='background: #AEF1AE'>          ref
+</span>53 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt;
+</span>54 <span style=''></span><span style='background: #AEF1AE'>          </span><span style='background: #F0ADAD'>ctx.log.info(&quot;INTERACTION INTERNO&quot;)</span><span style='background: #AEF1AE'>
+</span>55 <span style=''></span><span style='background: #AEF1AE'>          </span><span style='background: #F0ADAD'>ctx.spawn(Behaviors.setup[InteractionBehavior.Command](ctx1 =&gt; InteractionGuiImpl(ctx1, ctx.self)), &quot;gui&quot;)</span><span style='background: #AEF1AE'>
+</span>56 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>57 <span style=''></span><span style='background: #AEF1AE'>      val player = ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](context =&gt; new PlayerBehaviorImpl(context, interaction, ctx.self)), &quot;player&quot;)
+</span>58 <span style=''></span><span style='background: #AEF1AE'>      val listener = ctx.spawn(Behaviors.setup[Event | Receptionist.Listing](context =&gt; PlayerClusterListener(ctx.self)), &quot;player-cluster-listener&quot;)
+</span>59 <span style=''></span><span style='background: #AEF1AE'>      player ! Start
+</span>60 <span style=''></span><span style='background: #AEF1AE'>      ctx.watch(interaction)
+</span>61 <span style=''></span><span style='background: #AEF1AE'>
+</span>62 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.receiveMessage[Command] {
+</span>63 <span style=''></span><span style='background: #AEF1AE'>        case GameInfo(msg) =&gt;
+</span>64 <span style=''></span><span style='background: #AEF1AE'>          interaction ! InteractionBehavior.MessageError(msg)
+</span>65 <span style=''></span><span style='background: #AEF1AE'>          logger match {
+</span>66 <span style=''></span><span style='background: #AEF1AE'>            case Some(ref) =&gt; ref ! GameInfo(msg)
+</span>67 <span style=''></span><span style='background: #AEF1AE'>            case _ =&gt;
+</span>68 <span style=''></span><span style='background: #AEF1AE'>          }
+</span>69 <span style=''></span><span style='background: #AEF1AE'>          Behaviors.same
+</span>70 <span style=''></span><span style='background: #AEF1AE'>        case msg: Command =&gt;
+</span>71 <span style=''></span><span style='background: #AEF1AE'>          ctx.log.info(&quot;MESSAGGIO RICEVUTO: &quot; + msg)
+</span>72 <span style=''></span><span style='background: #AEF1AE'>          logger match {
+</span>73 <span style=''></span><span style='background: #AEF1AE'>            case Some(ref) =&gt; ref ! msg
+</span>74 <span style=''></span><span style='background: #AEF1AE'>            case _ =&gt;
+</span>75 <span style=''></span><span style='background: #AEF1AE'>          }
+</span>76 <span style=''></span><span style='background: #AEF1AE'>          player ! msg
+</span>77 <span style=''></span><span style='background: #AEF1AE'>          Behaviors.same
+</span>78 <span style=''></span><span style='background: #AEF1AE'>      }.receiveSignal { case (ctx, t @ Terminated(_)) =&gt;
+</span>79 <span style=''></span><span style='background: #AEF1AE'>        ctx.log.info(&quot;System terminated [PLAYER]. Shutting down&quot;)
+</span>80 <span style=''></span><span style='background: #AEF1AE'>        Behaviors.stopped
+</span>81 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>82 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
 </span>83 <span style=''>
-</span>84 <span style=''>class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], interactionActor: ActorRef[InteractionBehavior.Command], rootActor: ActorRef[PlayerBehavior.Command]) extends </span><span style='background: #F0ADAD'>AbstractBehavior[Command | Receptionist.Listing](context)</span><span style=''>:
+</span>84 <span style=''>class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], interactionActor: ActorRef[InteractionBehavior.Command], rootActor: ActorRef[PlayerBehavior.Command]) extends </span><span style='background: #AEF1AE'>AbstractBehavior[Command | Receptionist.Listing](context)</span><span style=''>:
 </span>85 <span style=''>
-</span>86 <span style=''>  </span><span style='background: #F0ADAD'>override def onMessage</span><span style=''>(msg: Command | Receptionist.Listing): Behavior[Command | Receptionist.Listing] = msg match {
-</span>87 <span style=''>    </span><span style='background: #F0ADAD'>case msg: Receptionist.Listing</span><span style=''> =&gt;
-</span>88 <span style=''>      </span><span style='background: #F0ADAD'>context.log.info(&quot;RECEIVED SOMETHING&quot;)</span><span style=''>
-</span>89 <span style=''>      val services: List[ActorRef[PlayersManagerBehavior.Command]] = </span><span style='background: #F0ADAD'>msg.serviceInstances(PlayersManagerBehavior.Service).toList</span><span style=''>
-</span>90 <span style=''>      if(!</span><span style='background: #F0ADAD'>services.isEmpty</span><span style=''>)
-</span>91 <span style=''>        </span><span style='background: #F0ADAD'>context.self ! AskToEnter(services.head)</span><span style=''>
-</span>92 <span style=''>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style=''>
-</span>93 <span style=''>    </span><span style='background: #F0ADAD'>case Start</span><span style=''> =&gt;
-</span>94 <span style=''>      </span><span style='background: #F0ADAD'>context.system.receptionist ! Receptionist.Subscribe(PlayersManagerBehavior.Service, context.self)</span><span style=''>
-</span>95 <span style=''>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style=''>
-</span>96 <span style=''>    </span><span style='background: #F0ADAD'>case AskToEnter(replyTo)</span><span style=''> =&gt;
-</span>97 <span style=''>      </span><span style='background: #F0ADAD'>replyTo ! PlayersManagerBehavior.AskEnter(rootActor)</span><span style=''>
-</span>98 <span style=''>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style=''>
-</span>99 <span style=''>    </span><span style='background: #F0ADAD'>case MemberOK</span><span style=''> =&gt;
-</span>100 <span style=''>      </span><span style='background: #F0ADAD'>context.log.info(&quot;MEMBER OK&quot;)</span><span style=''>
-</span>101 <span style=''>      </span><span style='background: #F0ADAD'>waitForCards()</span><span style=''>
+</span>86 <span style=''>  </span><span style='background: #AEF1AE'>override def onMessage</span><span style=''>(msg: Command | Receptionist.Listing): Behavior[Command | Receptionist.Listing] = msg match {
+</span>87 <span style=''>    </span><span style='background: #AEF1AE'>case msg: Receptionist.Listing</span><span style=''> =&gt;
+</span>88 <span style=''>      </span><span style='background: #AEF1AE'>context.log.info(&quot;RECEIVED SOMETHING&quot;)</span><span style=''>
+</span>89 <span style=''>      val services: List[ActorRef[PlayersManagerBehavior.Command]] = </span><span style='background: #AEF1AE'>msg.serviceInstances(PlayersManagerBehavior.Service).toList</span><span style=''>
+</span>90 <span style=''>      if(!</span><span style='background: #AEF1AE'>services.isEmpty</span><span style=''>)
+</span>91 <span style=''>        </span><span style='background: #AEF1AE'>context.self ! AskToEnter(services.head)</span><span style=''>
+</span>92 <span style=''>      </span><span style='background: #AEF1AE'>Behaviors.same</span><span style=''>
+</span>93 <span style=''>    </span><span style='background: #AEF1AE'>case Start</span><span style=''> =&gt;
+</span>94 <span style=''>      </span><span style='background: #AEF1AE'>context.system.receptionist ! Receptionist.Subscribe(PlayersManagerBehavior.Service, context.self)</span><span style=''>
+</span>95 <span style=''>      </span><span style='background: #AEF1AE'>Behaviors.same</span><span style=''>
+</span>96 <span style=''>    </span><span style='background: #AEF1AE'>case AskToEnter(replyTo)</span><span style=''> =&gt;
+</span>97 <span style=''>      </span><span style='background: #AEF1AE'>replyTo ! PlayersManagerBehavior.AskEnter(rootActor)</span><span style=''>
+</span>98 <span style=''>      </span><span style='background: #AEF1AE'>Behaviors.same</span><span style=''>
+</span>99 <span style=''>    </span><span style='background: #AEF1AE'>case MemberOK</span><span style=''> =&gt;
+</span>100 <span style=''>      </span><span style='background: #AEF1AE'>context.log.info(&quot;MEMBER OK&quot;)</span><span style=''>
+</span>101 <span style=''>      </span><span style='background: #AEF1AE'>waitForCards()</span><span style=''>
 </span>102 <span style=''>    </span><span style='background: #F0ADAD'>case MemberKO</span><span style=''> =&gt;
 </span>103 <span style=''>      </span><span style='background: #F0ADAD'>interactionActor ! InteractionBehavior.MessageError(&quot;Impossibile entrare&quot;)</span><span style=''>
 </span>104 <span style=''>      </span><span style='background: #F0ADAD'>Behaviors.stopped</span><span style=''>
@@ -131,74 +131,74 @@
 </span>107 <span style=''>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style=''>
 </span>108 <span style=''>  }
 </span>109 <span style=''>
-</span>110 <span style=''>  </span><span style='background: #F0ADAD'>def waitForCards</span><span style=''>(): Behavior[Command | Receptionist.Listing] = </span><span style='background: #F0ADAD'>Behaviors.receiveMessage {
-</span>111 <span style=''></span><span style='background: #F0ADAD'>    case CardsAssigned(list) =&gt;
-</span>112 <span style=''></span><span style='background: #F0ADAD'>      //interaction actor deve ricevere le carte
-</span>113 <span style=''></span><span style='background: #F0ADAD'>      context.log.info(&quot;Carte ottenute&quot;)
-</span>114 <span style=''></span><span style='background: #F0ADAD'>      interactionActor ! InteractionBehavior.CardsAssigned(list)
-</span>115 <span style=''></span><span style='background: #F0ADAD'>      gameOn()
-</span>116 <span style=''></span><span style='background: #F0ADAD'>    case _ =&gt; Behaviors.same
-</span>117 <span style=''></span><span style='background: #F0ADAD'>  }</span><span style=''>
+</span>110 <span style=''>  </span><span style='background: #AEF1AE'>def waitForCards</span><span style=''>(): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
+</span>111 <span style=''></span><span style='background: #AEF1AE'>    case CardsAssigned(list) =&gt;
+</span>112 <span style=''></span><span style='background: #AEF1AE'>      //interaction actor deve ricevere le carte
+</span>113 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(&quot;Carte ottenute&quot;)
+</span>114 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.CardsAssigned(list)
+</span>115 <span style=''></span><span style='background: #AEF1AE'>      gameOn()
+</span>116 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>117 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
 </span>118 <span style=''>
-</span>119 <span style=''>  </span><span style='background: #F0ADAD'>def gameOn</span><span style=''>(): Behavior[Command | Receptionist.Listing] = </span><span style='background: #F0ADAD'>Behaviors.receiveMessage {
-</span>120 <span style=''></span><span style='background: #F0ADAD'>    case YourTurn(replyTo) =&gt; 
-</span>121 <span style=''></span><span style='background: #F0ADAD'>      // deve inviare un CardToGuess ad un attore InteractionActor, che può essere 
-</span>122 <span style=''></span><span style='background: #F0ADAD'>      // un attore che sceglie random una carta e la invia qui, o la gui vera e propria
-</span>123 <span style=''></span><span style='background: #F0ADAD'>      context.log.info(&quot;SONO IL PLAYER, E' IL MIO TURNO&quot;)
-</span>124 <span style=''></span><span style='background: #F0ADAD'>      interactionActor ! InteractionBehavior.ChooseTheCard(context.self)
-</span>125 <span style=''></span><span style='background: #F0ADAD'>      choose(replyTo)
-</span>126 <span style=''></span><span style='background: #F0ADAD'>    case CardChoosenByOther(title, replyTo) =&gt;
-</span>127 <span style=''></span><span style='background: #F0ADAD'>      interactionActor ! InteractionBehavior.GuessCard(rootActor, title)
-</span>128 <span style=''></span><span style='background: #F0ADAD'>      guess(title, replyTo)
-</span>129 <span style=''></span><span style='background: #F0ADAD'>    case NewCard(card) =&gt;
-</span>130 <span style=''></span><span style='background: #F0ADAD'>      interactionActor ! InteractionBehavior.NewCard(card)
-</span>131 <span style=''></span><span style='background: #F0ADAD'>      Behaviors.same
-</span>132 <span style=''></span><span style='background: #F0ADAD'>    case TurnCancelled =&gt; Behaviors.same
-</span>133 <span style=''></span><span style='background: #F0ADAD'>
-</span>134 <span style=''></span><span style='background: #F0ADAD'>    case EndGame(points) =&gt;
-</span>135 <span style=''></span><span style='background: #F0ADAD'>      interactionActor ! InteractionBehavior.MessageError(s&quot;Gioco terminato, punti guadagnati: $points&quot;)
-</span>136 <span style=''></span><span style='background: #F0ADAD'>      Behaviors.stopped
-</span>137 <span style=''></span><span style='background: #F0ADAD'>
-</span>138 <span style=''></span><span style='background: #F0ADAD'>    case _ =&gt; Behaviors.same
-</span>139 <span style=''></span><span style='background: #F0ADAD'>  }</span><span style=''>
+</span>119 <span style=''>  </span><span style='background: #AEF1AE'>def gameOn</span><span style=''>(): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
+</span>120 <span style=''></span><span style='background: #AEF1AE'>    case YourTurn(replyTo) =&gt; 
+</span>121 <span style=''></span><span style='background: #AEF1AE'>      // deve inviare un CardToGuess ad un attore InteractionActor, che può essere 
+</span>122 <span style=''></span><span style='background: #AEF1AE'>      // un attore che sceglie random una carta e la invia qui, o la gui vera e propria
+</span>123 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(&quot;SONO IL PLAYER, E' IL MIO TURNO&quot;)
+</span>124 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.ChooseTheCard(context.self)
+</span>125 <span style=''></span><span style='background: #AEF1AE'>      choose(replyTo)
+</span>126 <span style=''></span><span style='background: #AEF1AE'>    case CardChoosenByOther(title, replyTo) =&gt;
+</span>127 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.GuessCard(rootActor, title)
+</span>128 <span style=''></span><span style='background: #AEF1AE'>      guess(title, replyTo)
+</span>129 <span style=''></span><span style='background: #AEF1AE'>    case NewCard(card) =&gt;
+</span>130 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.NewCard(card)
+</span>131 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.same
+</span>132 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case TurnCancelled</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>133 <span style=''></span><span style='background: #AEF1AE'>
+</span>134 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case EndGame(points)</span><span style='background: #AEF1AE'> =&gt;
+</span>135 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>interactionActor ! InteractionBehavior.MessageError(s&quot;Gioco terminato, punti guadagnati: $points&quot;)</span><span style='background: #AEF1AE'>
+</span>136 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.stopped</span><span style='background: #AEF1AE'>
+</span>137 <span style=''></span><span style='background: #AEF1AE'>
+</span>138 <span style=''></span><span style='background: #AEF1AE'>    case _ =&gt; Behaviors.same
+</span>139 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
 </span>140 <span style=''>
-</span>141 <span style=''>  </span><span style='background: #F0ADAD'>def guess</span><span style=''>(title: String, replyTo: ActorRef[ForemanBehavior.Command]): Behavior[Command | Receptionist.Listing] = </span><span style='background: #F0ADAD'>Behaviors.receiveMessage {
-</span>142 <span style=''></span><span style='background: #F0ADAD'>    case SingleCardSubmitted(card) =&gt;
-</span>143 <span style=''></span><span style='background: #F0ADAD'>      replyTo ! ForemanBehavior.SelectionToApply(card, rootActor)
-</span>144 <span style=''></span><span style='background: #F0ADAD'>      Behaviors.same
-</span>145 <span style=''></span><span style='background: #F0ADAD'>    case CardsSubmittedByOthers(cards) =&gt;
-</span>146 <span style=''></span><span style='background: #F0ADAD'>      interactionActor ! InteractionBehavior.ShowCardsProposed(rootActor, cards, title)
-</span>147 <span style=''></span><span style='background: #F0ADAD'>      choose(replyTo)
-</span>148 <span style=''></span><span style='background: #F0ADAD'>    case TurnCancelled =&gt; gameOn()
-</span>149 <span style=''></span><span style='background: #F0ADAD'>
-</span>150 <span style=''></span><span style='background: #F0ADAD'>    case _ =&gt; Behaviors.same
-</span>151 <span style=''></span><span style='background: #F0ADAD'>  }</span><span style=''>
+</span>141 <span style=''>  </span><span style='background: #AEF1AE'>def guess</span><span style=''>(title: String, replyTo: ActorRef[ForemanBehavior.Command]): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
+</span>142 <span style=''></span><span style='background: #AEF1AE'>    case SingleCardSubmitted(card) =&gt;
+</span>143 <span style=''></span><span style='background: #AEF1AE'>      replyTo ! ForemanBehavior.SelectionToApply(card, rootActor)
+</span>144 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.same
+</span>145 <span style=''></span><span style='background: #AEF1AE'>    case CardsSubmittedByOthers(cards) =&gt;
+</span>146 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.ShowCardsProposed(rootActor, cards, title)
+</span>147 <span style=''></span><span style='background: #AEF1AE'>      choose(replyTo)
+</span>148 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case TurnCancelled</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>gameOn()</span><span style='background: #AEF1AE'>
+</span>149 <span style=''></span><span style='background: #AEF1AE'>
+</span>150 <span style=''></span><span style='background: #AEF1AE'>    case _ =&gt; Behaviors.same
+</span>151 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
 </span>152 <span style=''>
-</span>153 <span style=''>  </span><span style='background: #F0ADAD'>def choose</span><span style=''>(replyTo: ActorRef[ForemanBehavior.Command]): Behavior[Command | Receptionist.Listing] = </span><span style='background: #F0ADAD'>Behaviors.receiveMessage {
-</span>154 <span style=''></span><span style='background: #F0ADAD'>    case CardChoosenForTurn(cardId, title) =&gt;
-</span>155 <span style=''></span><span style='background: #F0ADAD'>      replyTo ! ForemanBehavior.CardToGuess(cardId, title, rootActor)
-</span>156 <span style=''></span><span style='background: #F0ADAD'>      interactionActor ! InteractionBehavior.ResetInteraction
-</span>157 <span style=''></span><span style='background: #F0ADAD'>      gameOn()
-</span>158 <span style=''></span><span style='background: #F0ADAD'>    case GuessedCardbyUser(cardId) =&gt;
-</span>159 <span style=''></span><span style='background: #F0ADAD'>      replyTo ! ForemanBehavior.GuessSelection(cardId, rootActor)
-</span>160 <span style=''></span><span style='background: #F0ADAD'>      waitForCardRevealed(replyTo)
-</span>161 <span style=''></span><span style='background: #F0ADAD'>
-</span>162 <span style=''></span><span style='background: #F0ADAD'>    case TurnCancelled =&gt; gameOn()
-</span>163 <span style=''></span><span style='background: #F0ADAD'>
-</span>164 <span style=''></span><span style='background: #F0ADAD'>    case msg =&gt; context.log.info(&quot;Unknown message: &quot; + msg)
-</span>165 <span style=''></span><span style='background: #F0ADAD'>      Behaviors.same
-</span>166 <span style=''></span><span style='background: #F0ADAD'>  }</span><span style=''>
+</span>153 <span style=''>  </span><span style='background: #AEF1AE'>def choose</span><span style=''>(replyTo: ActorRef[ForemanBehavior.Command]): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
+</span>154 <span style=''></span><span style='background: #AEF1AE'>    case CardChoosenForTurn(cardId, title) =&gt;
+</span>155 <span style=''></span><span style='background: #AEF1AE'>      replyTo ! ForemanBehavior.CardToGuess(cardId, title, rootActor)
+</span>156 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.ResetInteraction
+</span>157 <span style=''></span><span style='background: #AEF1AE'>      gameOn()
+</span>158 <span style=''></span><span style='background: #AEF1AE'>    case GuessedCardbyUser(cardId) =&gt;
+</span>159 <span style=''></span><span style='background: #AEF1AE'>      replyTo ! ForemanBehavior.GuessSelection(cardId, rootActor)
+</span>160 <span style=''></span><span style='background: #AEF1AE'>      waitForCardRevealed(replyTo)
+</span>161 <span style=''></span><span style='background: #AEF1AE'>
+</span>162 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case TurnCancelled</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>gameOn()</span><span style='background: #AEF1AE'>
+</span>163 <span style=''></span><span style='background: #AEF1AE'>
+</span>164 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case msg</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>context.log.info(&quot;Unknown message: &quot; + msg)</span><span style='background: #AEF1AE'>
+</span>165 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>166 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
 </span>167 <span style=''>
-</span>168 <span style=''>  </span><span style='background: #F0ADAD'>def waitForCardRevealed</span><span style=''>(replyTo: ActorRef[ForemanBehavior.Command]): Behavior[Command | Receptionist.Listing] = </span><span style='background: #F0ADAD'>Behaviors.receiveMessage {
-</span>169 <span style=''></span><span style='background: #F0ADAD'>    case CardRevealed(cardId) =&gt;
-</span>170 <span style=''></span><span style='background: #F0ADAD'>      // TODO reset interaction with image revealed (optional)
-</span>171 <span style=''></span><span style='background: #F0ADAD'>      gameOn()
-</span>172 <span style=''></span><span style='background: #F0ADAD'>
-</span>173 <span style=''></span><span style='background: #F0ADAD'>    case TurnCancelled =&gt; gameOn()
-</span>174 <span style=''></span><span style='background: #F0ADAD'>
-</span>175 <span style=''></span><span style='background: #F0ADAD'>    case msg =&gt; context.log.info(&quot;Unknown message: &quot; + msg)
-</span>176 <span style=''></span><span style='background: #F0ADAD'>      Behaviors.same
-</span>177 <span style=''></span><span style='background: #F0ADAD'>  }</span><span style=''>
+</span>168 <span style=''>  </span><span style='background: #AEF1AE'>def waitForCardRevealed</span><span style=''>(replyTo: ActorRef[ForemanBehavior.Command]): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
+</span>169 <span style=''></span><span style='background: #AEF1AE'>    case CardRevealed(cardId) =&gt;
+</span>170 <span style=''></span><span style='background: #AEF1AE'>      // TODO reset interaction with image revealed (optional)
+</span>171 <span style=''></span><span style='background: #AEF1AE'>      gameOn()
+</span>172 <span style=''></span><span style='background: #AEF1AE'>
+</span>173 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case TurnCancelled</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>gameOn()</span><span style='background: #AEF1AE'>
+</span>174 <span style=''></span><span style='background: #AEF1AE'>
+</span>175 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case msg</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>context.log.info(&quot;Unknown message: &quot; + msg)</span><span style='background: #AEF1AE'>
+</span>176 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>177 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -232,7 +232,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ServiceKey[Command](&quot;PlayersService&quot;)
         </td>
       </tr><tr>
@@ -256,7 +256,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Option.empty
         </td>
       </tr><tr>
@@ -304,7 +304,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def apply
         </td>
       </tr><tr>
@@ -352,7 +352,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           
         </td>
       </tr><tr>
@@ -376,7 +376,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.setup[Command] { ctx =&gt;
       ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
 
@@ -436,7 +436,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.system.receptionist
         </td>
       </tr><tr>
@@ -460,7 +460,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Receptionist.Register(Service, ctx.self)
         </td>
       </tr><tr>
@@ -484,7 +484,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.self
         </td>
       </tr><tr>
@@ -508,7 +508,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.system
         </td>
       </tr><tr>
@@ -532,7 +532,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.system.receptionist
         </td>
       </tr><tr>
@@ -556,7 +556,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
         </td>
       </tr><tr>
@@ -580,7 +580,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case Some(ref)
         </td>
       </tr><tr>
@@ -604,7 +604,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log
         </td>
       </tr><tr>
@@ -628,7 +628,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log.info(&quot;INTERACTION ESTERNO&quot;)
         </td>
       </tr><tr>
@@ -844,7 +844,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.setup[Command | Receptionist.Listing](context =&gt; new PlayerBehaviorImpl(context, interaction, ctx.self))
         </td>
       </tr><tr>
@@ -868,7 +868,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](context =&gt; new PlayerBehaviorImpl(context, interaction, ctx.self)), &quot;player&quot;)
         </td>
       </tr><tr>
@@ -892,7 +892,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           new PlayerBehaviorImpl(context, interaction, ctx.self)
         </td>
       </tr><tr>
@@ -916,7 +916,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.self
         </td>
       </tr><tr>
@@ -940,7 +940,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.spawn
         </td>
       </tr><tr>
@@ -964,7 +964,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.self
         </td>
       </tr><tr>
@@ -988,7 +988,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.setup[Event | Receptionist.Listing](context =&gt; PlayerClusterListener(ctx.self))
         </td>
       </tr><tr>
@@ -1012,7 +1012,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.spawn(Behaviors.setup[Event | Receptionist.Listing](context =&gt; PlayerClusterListener(ctx.self)), &quot;player-cluster-listener&quot;)
         </td>
       </tr><tr>
@@ -1036,7 +1036,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           PlayerClusterListener(ctx.self)
         </td>
       </tr><tr>
@@ -1060,7 +1060,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.spawn
         </td>
       </tr><tr>
@@ -1084,7 +1084,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           player ! Start
         </td>
       </tr><tr>
@@ -1108,7 +1108,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           player
         </td>
       </tr><tr>
@@ -1132,7 +1132,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.watch(interaction)
         </td>
       </tr><tr>
@@ -1156,7 +1156,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.receiveMessage[Command] {
         case GameInfo(msg) =&gt;
           interaction ! InteractionBehavior.MessageError(msg)
@@ -1196,7 +1196,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case GameInfo(msg)
         </td>
       </tr><tr>
@@ -1220,7 +1220,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           interaction
         </td>
       </tr><tr>
@@ -1244,7 +1244,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           interaction ! InteractionBehavior.MessageError(msg)
         </td>
       </tr><tr>
@@ -1268,7 +1268,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ref ! GameInfo(msg)
         </td>
       </tr><tr>
@@ -1292,7 +1292,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ref
         </td>
       </tr><tr>
@@ -1316,7 +1316,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case Some(ref)
         </td>
       </tr><tr>
@@ -1340,7 +1340,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case _
         </td>
       </tr><tr>
@@ -1364,7 +1364,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.same
         </td>
       </tr><tr>
@@ -1388,7 +1388,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case msg: Command
         </td>
       </tr><tr>
@@ -1412,7 +1412,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           &quot;MESSAGGIO RICEVUTO: &quot; + msg
         </td>
       </tr><tr>
@@ -1436,7 +1436,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log
         </td>
       </tr><tr>
@@ -1460,7 +1460,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log.info(&quot;MESSAGGIO RICEVUTO: &quot; + msg)
         </td>
       </tr><tr>
@@ -1484,7 +1484,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ref ! msg
         </td>
       </tr><tr>
@@ -1508,7 +1508,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ref
         </td>
       </tr><tr>
@@ -1532,7 +1532,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case Some(ref)
         </td>
       </tr><tr>
@@ -1556,7 +1556,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case _
         </td>
       </tr><tr>
@@ -1580,7 +1580,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           player ! msg
         </td>
       </tr><tr>
@@ -1604,7 +1604,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           player
         </td>
       </tr><tr>
@@ -1628,7 +1628,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.same
         </td>
       </tr><tr>
@@ -1652,7 +1652,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.receiveMessage[Command] {
         case GameInfo(msg) =&gt;
           interaction ! InteractionBehavior.MessageError(msg)
@@ -1695,7 +1695,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case (ctx, t @ Terminated(_))
         </td>
       </tr><tr>
@@ -1719,7 +1719,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log.info(&quot;System terminated [PLAYER]. Shutting down&quot;)
         </td>
       </tr><tr>
@@ -1743,7 +1743,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log
         </td>
       </tr><tr>
@@ -1767,7 +1767,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.stopped
         </td>
       </tr><tr>
@@ -1791,7 +1791,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           AbstractBehavior[Command | Receptionist.Listing](context)
         </td>
       </tr><tr>
@@ -1815,7 +1815,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           override def onMessage
         </td>
       </tr><tr>
@@ -1839,7 +1839,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case msg: Receptionist.Listing
         </td>
       </tr><tr>
@@ -1863,7 +1863,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.log.info(&quot;RECEIVED SOMETHING&quot;)
         </td>
       </tr><tr>
@@ -1887,7 +1887,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.log
         </td>
       </tr><tr>
@@ -1911,7 +1911,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           msg.serviceInstances(PlayersManagerBehavior.Service)
         </td>
       </tr><tr>
@@ -1935,7 +1935,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           msg.serviceInstances(PlayersManagerBehavior.Service).toList
         </td>
       </tr><tr>
@@ -1959,7 +1959,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           services.isEmpty
         </td>
       </tr><tr>
@@ -1983,7 +1983,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           services.head
         </td>
       </tr><tr>
@@ -2007,7 +2007,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.self
         </td>
       </tr><tr>
@@ -2031,7 +2031,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.self ! AskToEnter(services.head)
         </td>
       </tr><tr>
@@ -2055,7 +2055,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.self
         </td>
       </tr><tr>
@@ -2079,7 +2079,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.self ! AskToEnter(services.head)
         </td>
       </tr><tr>
@@ -2103,7 +2103,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.same
         </td>
       </tr><tr>
@@ -2127,7 +2127,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case Start
         </td>
       </tr><tr>
@@ -2151,7 +2151,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.system.receptionist
         </td>
       </tr><tr>
@@ -2175,7 +2175,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Receptionist.Subscribe(PlayersManagerBehavior.Service, context.self)
         </td>
       </tr><tr>
@@ -2199,7 +2199,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.self
         </td>
       </tr><tr>
@@ -2223,7 +2223,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.system
         </td>
       </tr><tr>
@@ -2247,7 +2247,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.system.receptionist
         </td>
       </tr><tr>
@@ -2271,7 +2271,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.system.receptionist ! Receptionist.Subscribe(PlayersManagerBehavior.Service, context.self)
         </td>
       </tr><tr>
@@ -2295,7 +2295,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.same
         </td>
       </tr><tr>
@@ -2319,7 +2319,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case AskToEnter(replyTo)
         </td>
       </tr><tr>
@@ -2343,7 +2343,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           replyTo
         </td>
       </tr><tr>
@@ -2367,7 +2367,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           replyTo ! PlayersManagerBehavior.AskEnter(rootActor)
         </td>
       </tr><tr>
@@ -2391,7 +2391,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.same
         </td>
       </tr><tr>
@@ -2415,7 +2415,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case MemberOK
         </td>
       </tr><tr>
@@ -2439,7 +2439,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.log.info(&quot;MEMBER OK&quot;)
         </td>
       </tr><tr>
@@ -2463,7 +2463,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.log
         </td>
       </tr><tr>
@@ -2487,7 +2487,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           waitForCards()
         </td>
       </tr><tr>
@@ -2727,7 +2727,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.receiveMessage {
     case CardsAssigned(list) =&gt;
       //interaction actor deve ricevere le carte
@@ -2758,7 +2758,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def waitForCards
         </td>
       </tr><tr>
@@ -2782,7 +2782,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case CardsAssigned(list)
         </td>
       </tr><tr>
@@ -2806,7 +2806,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.log.info(&quot;Carte ottenute&quot;)
         </td>
       </tr><tr>
@@ -2830,7 +2830,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.log
         </td>
       </tr><tr>
@@ -2854,7 +2854,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           interactionActor
         </td>
       </tr><tr>
@@ -2878,7 +2878,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           interactionActor ! InteractionBehavior.CardsAssigned(list)
         </td>
       </tr><tr>
@@ -2902,7 +2902,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           gameOn()
         </td>
       </tr><tr>
@@ -2974,7 +2974,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def gameOn
         </td>
       </tr><tr>
@@ -2998,7 +2998,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.receiveMessage {
     case YourTurn(replyTo) =&gt; 
       // deve inviare un CardToGuess ad un attore InteractionActor, che può essere 
@@ -3042,7 +3042,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case YourTurn(replyTo)
         </td>
       </tr><tr>
@@ -3066,7 +3066,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.log.info(&quot;SONO IL PLAYER, E' IL MIO TURNO&quot;)
         </td>
       </tr><tr>
@@ -3090,7 +3090,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.log
         </td>
       </tr><tr>
@@ -3114,7 +3114,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           interactionActor ! InteractionBehavior.ChooseTheCard(context.self)
         </td>
       </tr><tr>
@@ -3138,7 +3138,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.self
         </td>
       </tr><tr>
@@ -3162,7 +3162,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           interactionActor
         </td>
       </tr><tr>
@@ -3186,7 +3186,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           choose(replyTo)
         </td>
       </tr><tr>
@@ -3210,7 +3210,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case CardChoosenByOther(title, replyTo)
         </td>
       </tr><tr>
@@ -3234,7 +3234,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           interactionActor
         </td>
       </tr><tr>
@@ -3258,7 +3258,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           interactionActor ! InteractionBehavior.GuessCard(rootActor, title)
         </td>
       </tr><tr>
@@ -3282,7 +3282,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           guess(title, replyTo)
         </td>
       </tr><tr>
@@ -3306,7 +3306,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case NewCard(card)
         </td>
       </tr><tr>
@@ -3330,7 +3330,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           interactionActor ! InteractionBehavior.NewCard(card)
         </td>
       </tr><tr>
@@ -3354,7 +3354,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           interactionActor
         </td>
       </tr><tr>
@@ -3378,7 +3378,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.same
         </td>
       </tr><tr>
@@ -3570,7 +3570,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.same
         </td>
       </tr><tr>
@@ -3594,7 +3594,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case _
         </td>
       </tr><tr>
@@ -3618,7 +3618,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def guess
         </td>
       </tr><tr>
@@ -3642,7 +3642,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.receiveMessage {
     case SingleCardSubmitted(card) =&gt;
       replyTo ! ForemanBehavior.SelectionToApply(card, rootActor)
@@ -3676,7 +3676,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case SingleCardSubmitted(card)
         </td>
       </tr><tr>
@@ -3700,7 +3700,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           replyTo ! ForemanBehavior.SelectionToApply(card, rootActor)
         </td>
       </tr><tr>
@@ -3724,7 +3724,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           replyTo
         </td>
       </tr><tr>
@@ -3748,7 +3748,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.same
         </td>
       </tr><tr>
@@ -3772,7 +3772,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case CardsSubmittedByOthers(cards)
         </td>
       </tr><tr>
@@ -3796,7 +3796,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           interactionActor ! InteractionBehavior.ShowCardsProposed(rootActor, cards, title)
         </td>
       </tr><tr>
@@ -3820,7 +3820,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           interactionActor
         </td>
       </tr><tr>
@@ -3844,7 +3844,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           choose(replyTo)
         </td>
       </tr><tr>
@@ -3916,7 +3916,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case _
         </td>
       </tr><tr>
@@ -3940,7 +3940,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.same
         </td>
       </tr><tr>
@@ -3964,7 +3964,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def choose
         </td>
       </tr><tr>
@@ -3988,7 +3988,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.receiveMessage {
     case CardChoosenForTurn(cardId, title) =&gt;
       replyTo ! ForemanBehavior.CardToGuess(cardId, title, rootActor)
@@ -4025,7 +4025,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case CardChoosenForTurn(cardId, title)
         </td>
       </tr><tr>
@@ -4049,7 +4049,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           replyTo
         </td>
       </tr><tr>
@@ -4073,7 +4073,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           replyTo ! ForemanBehavior.CardToGuess(cardId, title, rootActor)
         </td>
       </tr><tr>
@@ -4097,7 +4097,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           interactionActor ! InteractionBehavior.ResetInteraction
         </td>
       </tr><tr>
@@ -4121,7 +4121,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           interactionActor
         </td>
       </tr><tr>
@@ -4145,7 +4145,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           gameOn()
         </td>
       </tr><tr>
@@ -4169,7 +4169,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case GuessedCardbyUser(cardId)
         </td>
       </tr><tr>
@@ -4193,7 +4193,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           replyTo
         </td>
       </tr><tr>
@@ -4217,7 +4217,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           replyTo ! ForemanBehavior.GuessSelection(cardId, rootActor)
         </td>
       </tr><tr>
@@ -4241,7 +4241,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           waitForCardRevealed(replyTo)
         </td>
       </tr><tr>
@@ -4433,7 +4433,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def waitForCardRevealed
         </td>
       </tr><tr>
@@ -4457,7 +4457,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.receiveMessage {
     case CardRevealed(cardId) =&gt;
       // TODO reset interaction with image revealed (optional)
@@ -4490,7 +4490,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case CardRevealed(cardId)
         </td>
       </tr><tr>
@@ -4514,7 +4514,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           gameOn()
         </td>
       </tr><tr>
