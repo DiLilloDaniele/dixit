@@ -10,6 +10,7 @@ import grpcService.server.applicationService.Service
 import grpcService.server.data.ports.AccessPort
 import grpcService.server.domain.ports.{InboundPorts, RegisterPort, GamesManagementPort}
 import grpcService.server.domain.service.ServerLogic
+import grpcService.server.data.adapters.AccessAdapter
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -26,10 +27,19 @@ object Service {
       .parseString("akka.http.server.preview.enable-http2 = on")
       .withFallback(ConfigFactory.defaultApplication())
     val system = ActorSystem("HelloWorld", conf)
-    val service = new Service(system)
+    val service = new Service(system, ServiceLocator.getDataAdapter())
     service.run()
     return service
     // ActorSystem threads will keep the app alive until `system.terminate()` is called
+
+  def createTestService(accessAdapter: AccessAdapter): Service = 
+    val conf = ConfigFactory
+      .parseString("akka.http.server.preview.enable-http2 = on")
+      .withFallback(ConfigFactory.defaultApplication())
+    val system = ActorSystem("HelloWorld", conf)
+    val service = new Service(system, accessAdapter)
+    service.run()
+    return service
 
 }
 
@@ -40,10 +50,10 @@ object Service {
  * nelle porte voglio come contesto la logica di dominio
  * @param system
  */
-class Service(system: ActorSystem) {
+class Service(system: ActorSystem, repository: AccessAdapter) {
   given serverLogic: ServerLogic = ServerLogic {
     AccessPort {
-      ServiceLocator.getDataAdapter()
+      repository
     }
   }
   val registerPort = RegisterPort()
