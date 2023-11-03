@@ -88,7 +88,7 @@ class ServerTest extends AnyFunSpec with BeforeAndAfterAll with Matchers {
                         s shouldBe LoginResult(true)
                     }
                     
-                    future: Future[LoginResult] = client.login("user","pass",(bool) => {})
+                    future = client.login("user","pass",(bool) => {})
                     assert(future.isReadyWithin(5000 millis))
                     whenReady(future) { s =>
                         s shouldBe LoginResult(true)
