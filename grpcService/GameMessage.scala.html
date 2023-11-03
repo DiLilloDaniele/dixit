@@ -37,48 +37,48 @@
 </span>13 <span style=''>    ) extends scalapb.GeneratedMessage with scalapb.lenses.Updatable[GameMessage] {
 </span>14 <span style=''>    @transient
 </span>15 <span style=''>    private[this] var __serializedSizeMemoized: _root_.scala.Int = 0
-</span>16 <span style=''>    </span><span style='background: #F0ADAD'>private[this] def __computeSerializedSize</span><span style=''>(): _root_.scala.Int = {
+</span>16 <span style=''>    </span><span style='background: #AEF1AE'>private[this] def __computeSerializedSize</span><span style=''>(): _root_.scala.Int = {
 </span>17 <span style=''>      var __size = 0
 </span>18 <span style=''>      
 </span>19 <span style=''>      {
 </span>20 <span style=''>        val __value = address
-</span>21 <span style=''>        if (!</span><span style='background: #F0ADAD'>__value.isEmpty</span><span style=''>) </span><span style='background: #F0ADAD'>{
-</span>22 <span style=''></span><span style='background: #F0ADAD'>          __size += _root_.com.google.protobuf.CodedOutputStream.computeStringSize(1, __value)
-</span>23 <span style=''></span><span style='background: #F0ADAD'>        }</span><span style=''>
+</span>21 <span style=''>        if (!</span><span style='background: #AEF1AE'>__value.isEmpty</span><span style=''>) </span><span style='background: #AEF1AE'>{
+</span>22 <span style=''></span><span style='background: #AEF1AE'>          __size += _root_.com.google.protobuf.CodedOutputStream.computeStringSize(1, __value)
+</span>23 <span style=''></span><span style='background: #AEF1AE'>        }</span><span style=''>
 </span>24 <span style=''>      };
 </span>25 <span style=''>      
 </span>26 <span style=''>      {
 </span>27 <span style=''>        val __value = forename
-</span>28 <span style=''>        if (!</span><span style='background: #F0ADAD'>__value.isEmpty</span><span style=''>) </span><span style='background: #F0ADAD'>{
-</span>29 <span style=''></span><span style='background: #F0ADAD'>          __size += _root_.com.google.protobuf.CodedOutputStream.computeStringSize(2, __value)
-</span>30 <span style=''></span><span style='background: #F0ADAD'>        }</span><span style=''>
+</span>28 <span style=''>        if (!</span><span style='background: #AEF1AE'>__value.isEmpty</span><span style=''>) </span><span style='background: #AEF1AE'>{
+</span>29 <span style=''></span><span style='background: #AEF1AE'>          __size += _root_.com.google.protobuf.CodedOutputStream.computeStringSize(2, __value)
+</span>30 <span style=''></span><span style='background: #AEF1AE'>        }</span><span style=''>
 </span>31 <span style=''>      };
-</span>32 <span style=''>      __size += </span><span style='background: #F0ADAD'>unknownFields.serializedSize</span><span style=''>
+</span>32 <span style=''>      __size += </span><span style='background: #AEF1AE'>unknownFields.serializedSize</span><span style=''>
 </span>33 <span style=''>      __size
 </span>34 <span style=''>    }
-</span>35 <span style=''>    </span><span style='background: #F0ADAD'>override def serializedSize</span><span style=''>: _root_.scala.Int = {
+</span>35 <span style=''>    </span><span style='background: #AEF1AE'>override def serializedSize</span><span style=''>: _root_.scala.Int = {
 </span>36 <span style=''>      var __size = __serializedSizeMemoized
-</span>37 <span style=''>      if (__size == 0) </span><span style='background: #F0ADAD'>{
-</span>38 <span style=''></span><span style='background: #F0ADAD'>        __size = __computeSerializedSize() + 1
-</span>39 <span style=''></span><span style='background: #F0ADAD'>        __serializedSizeMemoized = __size
-</span>40 <span style=''></span><span style='background: #F0ADAD'>      }</span><span style=''>
+</span>37 <span style=''>      if (__size == 0) </span><span style='background: #AEF1AE'>{
+</span>38 <span style=''></span><span style='background: #AEF1AE'>        __size = __computeSerializedSize() + 1
+</span>39 <span style=''></span><span style='background: #AEF1AE'>        __serializedSizeMemoized = __size
+</span>40 <span style=''></span><span style='background: #AEF1AE'>      }</span><span style=''>
 </span>41 <span style=''>      __size - 1
 </span>42 <span style=''>      
 </span>43 <span style=''>    }
-</span>44 <span style=''>    </span><span style='background: #F0ADAD'>def writeTo</span><span style=''>(`_output__`: _root_.com.google.protobuf.CodedOutputStream): _root_.scala.Unit = {
+</span>44 <span style=''>    </span><span style='background: #AEF1AE'>def writeTo</span><span style=''>(`_output__`: _root_.com.google.protobuf.CodedOutputStream): _root_.scala.Unit = {
 </span>45 <span style=''>      {
 </span>46 <span style=''>        val __v = address
-</span>47 <span style=''>        if (!</span><span style='background: #F0ADAD'>__v.isEmpty</span><span style=''>) </span><span style='background: #F0ADAD'>{
-</span>48 <span style=''></span><span style='background: #F0ADAD'>          _output__.writeString(1, __v)
-</span>49 <span style=''></span><span style='background: #F0ADAD'>        }</span><span style=''>
+</span>47 <span style=''>        if (!</span><span style='background: #AEF1AE'>__v.isEmpty</span><span style=''>) </span><span style='background: #AEF1AE'>{
+</span>48 <span style=''></span><span style='background: #AEF1AE'>          _output__.writeString(1, __v)
+</span>49 <span style=''></span><span style='background: #AEF1AE'>        }</span><span style=''>
 </span>50 <span style=''>      };
 </span>51 <span style=''>      {
 </span>52 <span style=''>        val __v = forename
-</span>53 <span style=''>        if (!</span><span style='background: #F0ADAD'>__v.isEmpty</span><span style=''>) </span><span style='background: #F0ADAD'>{
-</span>54 <span style=''></span><span style='background: #F0ADAD'>          _output__.writeString(2, __v)
-</span>55 <span style=''></span><span style='background: #F0ADAD'>        }</span><span style=''>
+</span>53 <span style=''>        if (!</span><span style='background: #AEF1AE'>__v.isEmpty</span><span style=''>) </span><span style='background: #AEF1AE'>{
+</span>54 <span style=''></span><span style='background: #AEF1AE'>          _output__.writeString(2, __v)
+</span>55 <span style=''></span><span style='background: #AEF1AE'>        }</span><span style=''>
 </span>56 <span style=''>      };
-</span>57 <span style=''>      </span><span style='background: #F0ADAD'>unknownFields.writeTo(_output__)</span><span style=''>
+</span>57 <span style=''>      </span><span style='background: #AEF1AE'>unknownFields.writeTo(_output__)</span><span style=''>
 </span>58 <span style=''>    }
 </span>59 <span style=''>    </span><span style='background: #F0ADAD'>def withAddress</span><span style=''>(__v: _root_.scala.Predef.String): GameMessage = copy(address = __v)
 </span>60 <span style=''>    </span><span style='background: #F0ADAD'>def withForename</span><span style=''>(__v: _root_.scala.Predef.String): GameMessage = copy(forename = __v)
@@ -110,19 +110,19 @@
 </span>86 <span style=''>
 </span>87 <span style=''>object GameMessage extends scalapb.GeneratedMessageCompanion[grpcService.GameMessage] {
 </span>88 <span style=''>  </span><span style='background: #AEF1AE'>implicit def messageCompanion</span><span style=''>: scalapb.GeneratedMessageCompanion[grpcService.GameMessage] = this
-</span>89 <span style=''>  </span><span style='background: #F0ADAD'>def parseFrom</span><span style=''>(`_input__`: _root_.com.google.protobuf.CodedInputStream): grpcService.GameMessage = {
+</span>89 <span style=''>  </span><span style='background: #AEF1AE'>def parseFrom</span><span style=''>(`_input__`: _root_.com.google.protobuf.CodedInputStream): grpcService.GameMessage = {
 </span>90 <span style=''>    var __address: _root_.scala.Predef.String = &quot;&quot;
 </span>91 <span style=''>    var __forename: _root_.scala.Predef.String = &quot;&quot;
 </span>92 <span style=''>    var `_unknownFields__`: _root_.scalapb.UnknownFieldSet.Builder = null
 </span>93 <span style=''>    var _done__ = false
 </span>94 <span style=''>    while (!_done__) {
-</span>95 <span style=''>      val _tag__ = </span><span style='background: #F0ADAD'>_input__.readTag()</span><span style=''>
+</span>95 <span style=''>      val _tag__ = </span><span style='background: #AEF1AE'>_input__.readTag()</span><span style=''>
 </span>96 <span style=''>      _tag__ match {
-</span>97 <span style=''>        </span><span style='background: #F0ADAD'>case 0</span><span style=''> =&gt; _done__ = true
-</span>98 <span style=''>        </span><span style='background: #F0ADAD'>case 10</span><span style=''> =&gt;
-</span>99 <span style=''>          __address = </span><span style='background: #F0ADAD'>_input__.readStringRequireUtf8()</span><span style=''>
-</span>100 <span style=''>        </span><span style='background: #F0ADAD'>case 18</span><span style=''> =&gt;
-</span>101 <span style=''>          __forename = </span><span style='background: #F0ADAD'>_input__.readStringRequireUtf8()</span><span style=''>
+</span>97 <span style=''>        </span><span style='background: #AEF1AE'>case 0</span><span style=''> =&gt; _done__ = true
+</span>98 <span style=''>        </span><span style='background: #AEF1AE'>case 10</span><span style=''> =&gt;
+</span>99 <span style=''>          __address = </span><span style='background: #AEF1AE'>_input__.readStringRequireUtf8()</span><span style=''>
+</span>100 <span style=''>        </span><span style='background: #AEF1AE'>case 18</span><span style=''> =&gt;
+</span>101 <span style=''>          __forename = </span><span style='background: #AEF1AE'>_input__.readStringRequireUtf8()</span><span style=''>
 </span>102 <span style=''>        </span><span style='background: #F0ADAD'>case tag</span><span style=''> =&gt;
 </span>103 <span style=''>          if (_unknownFields__ == null) </span><span style='background: #F0ADAD'>{
 </span>104 <span style=''></span><span style='background: #F0ADAD'>            _unknownFields__ = new _root_.scalapb.UnknownFieldSet.Builder()
@@ -133,7 +133,7 @@
 </span>109 <span style=''>    grpcService.GameMessage(
 </span>110 <span style=''>        address = __address,
 </span>111 <span style=''>        forename = __forename,
-</span>112 <span style=''>        unknownFields = if (_unknownFields__ == null) </span><span style='background: #F0ADAD'>_root_.scalapb.UnknownFieldSet.empty</span><span style=''> else </span><span style='background: #F0ADAD'>_unknownFields__.result()</span><span style=''>
+</span>112 <span style=''>        unknownFields = if (_unknownFields__ == null) </span><span style='background: #AEF1AE'>_root_.scalapb.UnknownFieldSet.empty</span><span style=''> else </span><span style='background: #F0ADAD'>_unknownFields__.result()</span><span style=''>
 </span>113 <span style=''>    )
 </span>114 <span style=''>  }
 </span>115 <span style=''>  </span><span style='background: #F0ADAD'>implicit def messageReads</span><span style=''>: _root_.scalapb.descriptors.Reads[grpcService.GameMessage] = _root_.scalapb.descriptors.Reads{
@@ -186,7 +186,7 @@
           9
         </td>
         <td>
-          1638
+          1645
         </td>
         <td>
           230
@@ -210,7 +210,7 @@
           10
         </td>
         <td>
-          1639
+          1646
         </td>
         <td>
           277
@@ -234,7 +234,7 @@
           11
         </td>
         <td>
-          1640
+          1647
         </td>
         <td>
           333
@@ -250,7 +250,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           
         </td>
       </tr><tr>
@@ -258,7 +258,7 @@
           15
         </td>
         <td>
-          1604
+          1611
         </td>
         <td>
           542
@@ -274,7 +274,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           private[this] def __computeSerializedSize
         </td>
       </tr><tr>
@@ -282,33 +282,7 @@
           20
         </td>
         <td>
-          1599
-        </td>
-        <td>
-          704
-          -
-          810
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          {
-          __size += _root_.com.google.protobuf.CodedOutputStream.computeStringSize(1, __value)
-        }
-        </td>
-      </tr><tr>
-        <td>
-          20
-        </td>
-        <td>
-          1597
+          1604
         </td>
         <td>
           687
@@ -324,15 +298,41 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           __value.isEmpty
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          1606
+        </td>
+        <td>
+          704
+          -
+          810
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          {
+          __size += _root_.com.google.protobuf.CodedOutputStream.computeStringSize(1, __value)
+        }
         </td>
       </tr><tr>
         <td>
           21
         </td>
         <td>
-          1598
+          1605
         </td>
         <td>
           726
@@ -348,7 +348,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           _root_.com.google.protobuf.CodedOutputStream.computeStringSize(1, __value)
         </td>
       </tr><tr>
@@ -356,33 +356,7 @@
           27
         </td>
         <td>
-          1602
-        </td>
-        <td>
-          896
-          -
-          1002
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          {
-          __size += _root_.com.google.protobuf.CodedOutputStream.computeStringSize(2, __value)
-        }
-        </td>
-      </tr><tr>
-        <td>
-          27
-        </td>
-        <td>
-          1600
+          1607
         </td>
         <td>
           879
@@ -398,15 +372,41 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           __value.isEmpty
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          1609
+        </td>
+        <td>
+          896
+          -
+          1002
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          {
+          __size += _root_.com.google.protobuf.CodedOutputStream.computeStringSize(2, __value)
+        }
         </td>
       </tr><tr>
         <td>
           28
         </td>
         <td>
-          1601
+          1608
         </td>
         <td>
           918
@@ -422,7 +422,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           _root_.com.google.protobuf.CodedOutputStream.computeStringSize(2, __value)
         </td>
       </tr><tr>
@@ -430,7 +430,7 @@
           31
         </td>
         <td>
-          1603
+          1610
         </td>
         <td>
           1028
@@ -446,7 +446,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           unknownFields.serializedSize
         </td>
       </tr><tr>
@@ -454,7 +454,7 @@
           34
         </td>
         <td>
-          1607
+          1614
         </td>
         <td>
           1080
@@ -470,7 +470,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           override def serializedSize
         </td>
       </tr><tr>
@@ -478,7 +478,7 @@
           36
         </td>
         <td>
-          1606
+          1613
         </td>
         <td>
           1197
@@ -494,7 +494,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           {
         __size = __computeSerializedSize() + 1
         __serializedSizeMemoized = __size
@@ -505,7 +505,7 @@
           37
         </td>
         <td>
-          1605
+          1612
         </td>
         <td>
           1216
@@ -521,7 +521,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           __computeSerializedSize()
         </td>
       </tr><tr>
@@ -529,7 +529,7 @@
           43
         </td>
         <td>
-          1615
+          1622
         </td>
         <td>
           1330
@@ -545,7 +545,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def writeTo
         </td>
       </tr><tr>
@@ -553,31 +553,7 @@
           46
         </td>
         <td>
-          1608
-        </td>
-        <td>
-          1471
-          -
-          1482
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          isEmpty
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          __v.isEmpty
-        </td>
-      </tr><tr>
-        <td>
-          46
-        </td>
-        <td>
-          1610
+          1617
         </td>
         <td>
           1484
@@ -593,17 +569,41 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           {
           _output__.writeString(1, __v)
         }
         </td>
       </tr><tr>
         <td>
+          46
+        </td>
+        <td>
+          1615
+        </td>
+        <td>
+          1471
+          -
+          1482
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          isEmpty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          __v.isEmpty
+        </td>
+      </tr><tr>
+        <td>
           47
         </td>
         <td>
-          1609
+          1616
         </td>
         <td>
           1496
@@ -619,7 +619,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           _output__.writeString(1, __v)
         </td>
       </tr><tr>
@@ -627,31 +627,7 @@
           52
         </td>
         <td>
-          1611
-        </td>
-        <td>
-          1593
-          -
-          1604
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          isEmpty
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          __v.isEmpty
-        </td>
-      </tr><tr>
-        <td>
-          52
-        </td>
-        <td>
-          1613
+          1620
         </td>
         <td>
           1606
@@ -667,17 +643,41 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           {
           _output__.writeString(2, __v)
         }
         </td>
       </tr><tr>
         <td>
+          52
+        </td>
+        <td>
+          1618
+        </td>
+        <td>
+          1593
+          -
+          1604
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          isEmpty
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          __v.isEmpty
+        </td>
+      </tr><tr>
+        <td>
           53
         </td>
         <td>
-          1612
+          1619
         </td>
         <td>
           1618
@@ -693,7 +693,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           _output__.writeString(2, __v)
         </td>
       </tr><tr>
@@ -701,7 +701,7 @@
           56
         </td>
         <td>
-          1614
+          1621
         </td>
         <td>
           1673
@@ -717,7 +717,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           unknownFields.writeTo(_output__)
         </td>
       </tr><tr>
@@ -725,7 +725,7 @@
           58
         </td>
         <td>
-          1616
+          1623
         </td>
         <td>
           1716
@@ -749,7 +749,7 @@
           59
         </td>
         <td>
-          1617
+          1624
         </td>
         <td>
           1804
@@ -773,7 +773,7 @@
           60
         </td>
         <td>
-          1618
+          1625
         </td>
         <td>
           1894
@@ -797,7 +797,7 @@
           61
         </td>
         <td>
-          1619
+          1626
         </td>
         <td>
           1985
@@ -821,7 +821,7 @@
           62
         </td>
         <td>
-          1626
+          1633
         </td>
         <td>
           2075
@@ -845,7 +845,7 @@
           64
         </td>
         <td>
-          1622
+          1629
         </td>
         <td>
           2214
@@ -869,31 +869,7 @@
           66
         </td>
         <td>
-          1620
-        </td>
-        <td>
-          2279
-          -
-          2282
-        </td>
-        <td>
-          Ident
-        </td>
-        <td>
-          __t
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          __t
-        </td>
-      </tr><tr>
-        <td>
-          66
-        </td>
-        <td>
-          1621
+          1628
         </td>
         <td>
           2288
@@ -914,10 +890,34 @@
         </td>
       </tr><tr>
         <td>
+          66
+        </td>
+        <td>
+          1627
+        </td>
+        <td>
+          2279
+          -
+          2282
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          __t
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          __t
+        </td>
+      </tr><tr>
+        <td>
           68
         </td>
         <td>
-          1625
+          1632
         </td>
         <td>
           2311
@@ -941,31 +941,7 @@
           70
         </td>
         <td>
-          1623
-        </td>
-        <td>
-          2377
-          -
-          2380
-        </td>
-        <td>
-          Ident
-        </td>
-        <td>
-          __t
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          __t
-        </td>
-      </tr><tr>
-        <td>
-          70
-        </td>
-        <td>
-          1624
+          1631
         </td>
         <td>
           2386
@@ -986,10 +962,34 @@
         </td>
       </tr><tr>
         <td>
+          70
+        </td>
+        <td>
+          1630
+        </td>
+        <td>
+          2377
+          -
+          2380
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          __t
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          __t
+        </td>
+      </tr><tr>
+        <td>
           74
         </td>
         <td>
-          1634
+          1641
         </td>
         <td>
           2419
@@ -1013,31 +1013,7 @@
           75
         </td>
         <td>
-          1629
-        </td>
-        <td>
-          2558
-          -
-          2612
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          eq
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          __field.containingMessage eq companion.scalaDescriptor
-        </td>
-      </tr><tr>
-        <td>
-          75
-        </td>
-        <td>
-          1628
+          1635
         </td>
         <td>
           2587
@@ -1061,7 +1037,7 @@
           75
         </td>
         <td>
-          1627
+          1634
         </td>
         <td>
           2587
@@ -1085,7 +1061,7 @@
           75
         </td>
         <td>
-          1630
+          1637
         </td>
         <td>
           2530
@@ -1106,10 +1082,34 @@
         </td>
       </tr><tr>
         <td>
+          75
+        </td>
+        <td>
+          1636
+        </td>
+        <td>
+          2558
+          -
+          2612
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          eq
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          __field.containingMessage eq companion.scalaDescriptor
+        </td>
+      </tr><tr>
+        <td>
           76
         </td>
         <td>
-          1631
+          1638
         </td>
         <td>
           2621
@@ -1133,7 +1133,7 @@
           77
         </td>
         <td>
-          1632
+          1639
         </td>
         <td>
           2678
@@ -1157,7 +1157,7 @@
           78
         </td>
         <td>
-          1633
+          1640
         </td>
         <td>
           2740
@@ -1181,31 +1181,7 @@
           81
         </td>
         <td>
-          1635
-        </td>
-        <td>
-          2861
-          -
-          2913
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          printToUnicodeString
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          _root_.scalapb.TextFormat.printToUnicodeString(this)
-        </td>
-      </tr><tr>
-        <td>
-          81
-        </td>
-        <td>
-          1636
+          1643
         </td>
         <td>
           2813
@@ -1226,10 +1202,34 @@
         </td>
       </tr><tr>
         <td>
+          81
+        </td>
+        <td>
+          1642
+        </td>
+        <td>
+          2861
+          -
+          2913
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          printToUnicodeString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          _root_.scalapb.TextFormat.printToUnicodeString(this)
+        </td>
+      </tr><tr>
+        <td>
           82
         </td>
         <td>
-          1637
+          1644
         </td>
         <td>
           2918
@@ -1253,7 +1253,7 @@
           87
         </td>
         <td>
-          1641
+          1648
         </td>
         <td>
           3156
@@ -1277,7 +1277,7 @@
           88
         </td>
         <td>
-          1655
+          1662
         </td>
         <td>
           3255
@@ -1293,7 +1293,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def parseFrom
         </td>
       </tr><tr>
@@ -1301,7 +1301,7 @@
           94
         </td>
         <td>
-          1642
+          1649
         </td>
         <td>
           3598
@@ -1317,7 +1317,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           _input__.readTag()
         </td>
       </tr><tr>
@@ -1325,7 +1325,7 @@
           96
         </td>
         <td>
-          1643
+          1650
         </td>
         <td>
           3646
@@ -1341,7 +1341,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case 0
         </td>
       </tr><tr>
@@ -1349,7 +1349,7 @@
           97
         </td>
         <td>
-          1645
+          1652
         </td>
         <td>
           3679
@@ -1365,7 +1365,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case 10
         </td>
       </tr><tr>
@@ -1373,7 +1373,7 @@
           98
         </td>
         <td>
-          1644
+          1651
         </td>
         <td>
           3712
@@ -1389,7 +1389,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           _input__.readStringRequireUtf8()
         </td>
       </tr><tr>
@@ -1397,7 +1397,7 @@
           99
         </td>
         <td>
-          1647
+          1654
         </td>
         <td>
           3753
@@ -1413,7 +1413,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case 18
         </td>
       </tr><tr>
@@ -1421,7 +1421,7 @@
           100
         </td>
         <td>
-          1646
+          1653
         </td>
         <td>
           3787
@@ -1437,7 +1437,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           _input__.readStringRequireUtf8()
         </td>
       </tr><tr>
@@ -1445,7 +1445,7 @@
           101
         </td>
         <td>
-          1651
+          1658
         </td>
         <td>
           3828
@@ -1469,7 +1469,7 @@
           102
         </td>
         <td>
-          1649
+          1656
         </td>
         <td>
           3880
@@ -1495,7 +1495,7 @@
           103
         </td>
         <td>
-          1648
+          1655
         </td>
         <td>
           3913
@@ -1519,7 +1519,7 @@
           105
         </td>
         <td>
-          1650
+          1657
         </td>
         <td>
           3980
@@ -1543,31 +1543,7 @@
           111
         </td>
         <td>
-          1653
-        </td>
-        <td>
-          4222
-          -
-          4247
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          result
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          _unknownFields__.result()
-        </td>
-      </tr><tr>
-        <td>
-          111
-        </td>
-        <td>
-          1652
+          1659
         </td>
         <td>
           4180
@@ -1583,7 +1559,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           _root_.scalapb.UnknownFieldSet.empty
         </td>
       </tr><tr>
@@ -1591,7 +1567,7 @@
           111
         </td>
         <td>
-          1654
+          1661
         </td>
         <td>
           4222
@@ -1612,10 +1588,34 @@
         </td>
       </tr><tr>
         <td>
+          111
+        </td>
+        <td>
+          1660
+        </td>
+        <td>
+          4222
+          -
+          4247
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          result
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          _unknownFields__.result()
+        </td>
+      </tr><tr>
+        <td>
           114
         </td>
         <td>
-          1680
+          1687
         </td>
         <td>
           4260
@@ -1639,7 +1639,7 @@
           115
         </td>
         <td>
-          1676
+          1683
         </td>
         <td>
           4385
@@ -1663,55 +1663,7 @@
           116
         </td>
         <td>
-          1656
-        </td>
-        <td>
-          4476
-          -
-          4492
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          keys
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          __fieldsMap.keys
-        </td>
-      </tr><tr>
-        <td>
-          116
-        </td>
-        <td>
-          1659
-        </td>
-        <td>
-          4476
-          -
-          4539
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          forall
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          __fieldsMap.keys.forall(_.containingMessage eq scalaDescriptor)
-        </td>
-      </tr><tr>
-        <td>
-          116
-        </td>
-        <td>
-          1658
+          1665
         </td>
         <td>
           4500
@@ -1735,7 +1687,7 @@
           116
         </td>
         <td>
-          1657
+          1664
         </td>
         <td>
           4523
@@ -1759,7 +1711,7 @@
           116
         </td>
         <td>
-          1660
+          1667
         </td>
         <td>
           4448
@@ -1780,10 +1732,58 @@
         </td>
       </tr><tr>
         <td>
+          116
+        </td>
+        <td>
+          1666
+        </td>
+        <td>
+          4476
+          -
+          4539
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          forall
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          __fieldsMap.keys.forall(_.containingMessage eq scalaDescriptor)
+        </td>
+      </tr><tr>
+        <td>
+          116
+        </td>
+        <td>
+          1663
+        </td>
+        <td>
+          4476
+          -
+          4492
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          keys
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          __fieldsMap.keys
+        </td>
+      </tr><tr>
+        <td>
           117
         </td>
         <td>
-          1675
+          1682
         </td>
         <td>
           4595
@@ -1807,103 +1807,7 @@
           118
         </td>
         <td>
-          1665
-        </td>
-        <td>
-          4700
-          -
-          4732
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          as
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          _.as[_root_.scala.Predef.String]
-        </td>
-      </tr><tr>
-        <td>
-          118
-        </td>
-        <td>
-          1662
-        </td>
-        <td>
-          4654
-          -
-          4690
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          findFieldByNumber
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          scalaDescriptor.findFieldByNumber(1)
-        </td>
-      </tr><tr>
-        <td>
-          118
-        </td>
-        <td>
-          1661
-        </td>
-        <td>
-          4654
-          -
-          4669
-        </td>
-        <td>
-          Ident
-        </td>
-        <td>
-          scalaDescriptor
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          scalaDescriptor
-        </td>
-      </tr><tr>
-        <td>
-          118
-        </td>
-        <td>
-          1664
-        </td>
-        <td>
-          4638
-          -
-          4695
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          get
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          __fieldsMap.get(scalaDescriptor.findFieldByNumber(1).get)
-        </td>
-      </tr><tr>
-        <td>
-          118
-        </td>
-        <td>
-          1667
+          1674
         </td>
         <td>
           4638
@@ -1927,7 +1831,79 @@
           118
         </td>
         <td>
-          1666
+          1668
+        </td>
+        <td>
+          4654
+          -
+          4669
+        </td>
+        <td>
+          Ident
+        </td>
+        <td>
+          scalaDescriptor
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          scalaDescriptor
+        </td>
+      </tr><tr>
+        <td>
+          118
+        </td>
+        <td>
+          1671
+        </td>
+        <td>
+          4638
+          -
+          4695
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          get
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          __fieldsMap.get(scalaDescriptor.findFieldByNumber(1).get)
+        </td>
+      </tr><tr>
+        <td>
+          118
+        </td>
+        <td>
+          1670
+        </td>
+        <td>
+          4654
+          -
+          4694
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          get
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          scalaDescriptor.findFieldByNumber(1).get
+        </td>
+      </tr><tr>
+        <td>
+          118
+        </td>
+        <td>
+          1673
         </td>
         <td>
           4638
@@ -1951,127 +1927,55 @@
           118
         </td>
         <td>
-          1663
+          1669
         </td>
         <td>
           4654
           -
-          4694
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          get
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          scalaDescriptor.findFieldByNumber(1).get
-        </td>
-      </tr><tr>
-        <td>
-          119
-        </td>
-        <td>
-          1674
-        </td>
-        <td>
-          4768
-          -
-          4877
+          4690
         </td>
         <td>
           Apply
         </td>
         <td>
-          getOrElse
+          findFieldByNumber
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          __fieldsMap.get(scalaDescriptor.findFieldByNumber(2).get).map(_.as[_root_.scala.Predef.String]).getOrElse(&quot;&quot;)
+          scalaDescriptor.findFieldByNumber(1)
         </td>
       </tr><tr>
         <td>
-          119
+          118
         </td>
         <td>
-          1668
+          1672
         </td>
         <td>
-          4784
+          4700
           -
-          4799
-        </td>
-        <td>
-          Ident
-        </td>
-        <td>
-          scalaDescriptor
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          scalaDescriptor
-        </td>
-      </tr><tr>
-        <td>
-          119
-        </td>
-        <td>
-          1671
-        </td>
-        <td>
-          4768
-          -
-          4825
+          4732
         </td>
         <td>
           Apply
         </td>
         <td>
-          get
+          as
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          __fieldsMap.get(scalaDescriptor.findFieldByNumber(2).get)
+          _.as[_root_.scala.Predef.String]
         </td>
       </tr><tr>
         <td>
           119
         </td>
         <td>
-          1670
-        </td>
-        <td>
-          4784
-          -
-          4824
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          get
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          scalaDescriptor.findFieldByNumber(2).get
-        </td>
-      </tr><tr>
-        <td>
-          119
-        </td>
-        <td>
-          1673
+          1680
         </td>
         <td>
           4768
@@ -2095,7 +1999,55 @@
           119
         </td>
         <td>
-          1669
+          1677
+        </td>
+        <td>
+          4784
+          -
+          4824
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          get
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          scalaDescriptor.findFieldByNumber(2).get
+        </td>
+      </tr><tr>
+        <td>
+          119
+        </td>
+        <td>
+          1679
+        </td>
+        <td>
+          4830
+          -
+          4862
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          as
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          _.as[_root_.scala.Predef.String]
+        </td>
+      </tr><tr>
+        <td>
+          119
+        </td>
+        <td>
+          1676
         </td>
         <td>
           4784
@@ -2119,55 +2071,79 @@
           119
         </td>
         <td>
-          1672
+          1675
         </td>
         <td>
-          4830
+          4784
           -
-          4862
+          4799
         </td>
         <td>
-          Apply
+          Ident
         </td>
         <td>
-          as
+          scalaDescriptor
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          _.as[_root_.scala.Predef.String]
+          scalaDescriptor
+        </td>
+      </tr><tr>
+        <td>
+          119
+        </td>
+        <td>
+          1678
+        </td>
+        <td>
+          4768
+          -
+          4825
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          get
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          __fieldsMap.get(scalaDescriptor.findFieldByNumber(2).get)
+        </td>
+      </tr><tr>
+        <td>
+          119
+        </td>
+        <td>
+          1681
+        </td>
+        <td>
+          4768
+          -
+          4877
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getOrElse
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          __fieldsMap.get(scalaDescriptor.findFieldByNumber(2).get).map(_.as[_root_.scala.Predef.String]).getOrElse(&quot;&quot;)
         </td>
       </tr><tr>
         <td>
           121
         </td>
         <td>
-          1677
-        </td>
-        <td>
-          4906
-          -
-          4947
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          &lt;init&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          new RuntimeException(&quot;Expected PMessage&quot;)
-        </td>
-      </tr><tr>
-        <td>
-          121
-        </td>
-        <td>
-          1679
+          1686
         </td>
         <td>
           4890
@@ -2191,7 +2167,7 @@
           121
         </td>
         <td>
-          1678
+          1685
         </td>
         <td>
           4900
@@ -2212,34 +2188,34 @@
         </td>
       </tr><tr>
         <td>
-          123
+          121
         </td>
         <td>
-          1683
+          1684
         </td>
         <td>
-          4954
+          4906
           -
-          4972
+          4947
         </td>
         <td>
-          DefDef
+          Apply
         </td>
         <td>
-          javaDescriptor
+          &lt;init&gt;
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          def javaDescriptor
+          new RuntimeException(&quot;Expected PMessage&quot;)
         </td>
       </tr><tr>
         <td>
           123
         </td>
         <td>
-          1682
+          1689
         </td>
         <td>
           5026
@@ -2263,7 +2239,7 @@
           123
         </td>
         <td>
-          1681
+          1688
         </td>
         <td>
           5026
@@ -2284,10 +2260,34 @@
         </td>
       </tr><tr>
         <td>
+          123
+        </td>
+        <td>
+          1690
+        </td>
+        <td>
+          4954
+          -
+          4972
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          javaDescriptor
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def javaDescriptor
+        </td>
+      </tr><tr>
+        <td>
           124
         </td>
         <td>
-          1685
+          1692
         </td>
         <td>
           5082
@@ -2311,7 +2311,7 @@
           124
         </td>
         <td>
-          1684
+          1691
         </td>
         <td>
           5143
@@ -2335,31 +2335,7 @@
           125
         </td>
         <td>
-          1686
-        </td>
-        <td>
-          5303
-          -
-          5327
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          &lt;init&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          new MatchError(__number)
-        </td>
-      </tr><tr>
-        <td>
-          125
-        </td>
-        <td>
-          1688
+          1695
         </td>
         <td>
           5187
@@ -2383,7 +2359,7 @@
           125
         </td>
         <td>
-          1687
+          1694
         </td>
         <td>
           5297
@@ -2404,34 +2380,34 @@
         </td>
       </tr><tr>
         <td>
-          126
+          125
         </td>
         <td>
-          1689
+          1693
         </td>
         <td>
-          5451
+          5303
           -
-          5454
+          5327
         </td>
         <td>
-          Ident
+          Apply
         </td>
         <td>
-          Seq
+          &lt;init&gt;
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          Seq
+          new MatchError(__number)
         </td>
       </tr><tr>
         <td>
           126
         </td>
         <td>
-          1690
+          1697
         </td>
         <td>
           5451
@@ -2452,34 +2428,34 @@
         </td>
       </tr><tr>
         <td>
-          127
+          126
         </td>
         <td>
-          1692
+          1696
         </td>
         <td>
-          5572
+          5451
           -
-          5607
+          5454
         </td>
         <td>
-          Apply
+          Ident
         </td>
         <td>
-          throw
+          Seq
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          throw new MatchError(__fieldNumber)
+          Seq
         </td>
       </tr><tr>
         <td>
           127
         </td>
         <td>
-          1691
+          1698
         </td>
         <td>
           5578
@@ -2503,7 +2479,7 @@
           127
         </td>
         <td>
-          1693
+          1700
         </td>
         <td>
           5463
@@ -2524,10 +2500,34 @@
         </td>
       </tr><tr>
         <td>
+          127
+        </td>
+        <td>
+          1699
+        </td>
+        <td>
+          5572
+          -
+          5607
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          throw
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          throw new MatchError(__fieldNumber)
+        </td>
+      </tr><tr>
+        <td>
           128
         </td>
         <td>
-          1694
+          1701
         </td>
         <td>
           5637
@@ -2551,31 +2551,7 @@
           132
         </td>
         <td>
-          1695
-        </td>
-        <td>
-          5818
-          -
-          5888
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          &lt;init&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          _root_.scalapb.lenses.ObjectLens[UpperPB, grpcService.GameMessage](_l)
-        </td>
-      </tr><tr>
-        <td>
-          132
-        </td>
-        <td>
-          1700
+          1707
         </td>
         <td>
           5704
@@ -2596,10 +2572,34 @@
         </td>
       </tr><tr>
         <td>
+          132
+        </td>
+        <td>
+          1702
+        </td>
+        <td>
+          5818
+          -
+          5888
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          _root_.scalapb.lenses.ObjectLens[UpperPB, grpcService.GameMessage](_l)
+        </td>
+      </tr><tr>
+        <td>
           133
         </td>
         <td>
-          1697
+          1704
         </td>
         <td>
           5895
@@ -2623,7 +2623,7 @@
           133
         </td>
         <td>
-          1696
+          1703
         </td>
         <td>
           5974
@@ -2647,31 +2647,7 @@
           134
         </td>
         <td>
-          1698
-        </td>
-        <td>
-          6110
-          -
-          6163
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          field
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          field(_.forename)((c_, f_) =&gt; c_.copy(forename = f_))
-        </td>
-      </tr><tr>
-        <td>
-          134
-        </td>
-        <td>
-          1699
+          1706
         </td>
         <td>
           6030
@@ -2692,10 +2668,34 @@
         </td>
       </tr><tr>
         <td>
+          134
+        </td>
+        <td>
+          1705
+        </td>
+        <td>
+          6110
+          -
+          6163
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          field
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          field(_.forename)((c_, f_) =&gt; c_.copy(forename = f_))
+        </td>
+      </tr><tr>
+        <td>
           138
         </td>
         <td>
-          1702
+          1709
         </td>
         <td>
           6245
@@ -2719,7 +2719,7 @@
           141
         </td>
         <td>
-          1701
+          1708
         </td>
         <td>
           6373

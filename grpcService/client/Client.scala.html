@@ -26,7 +26,7 @@
 </span>2 <span style=''>
 </span>3 <span style=''>import akka.actor.ActorSystem
 </span>4 <span style=''>import akka.grpc.GrpcClientSettings
-</span>5 <span style=''>import grpcService.{GameMessage, HelloMessage, LoginRequest, OpenedGamesRequest, Server, ServerClient}
+</span>5 <span style=''>import grpcService.{GameMessage, HelloMessage, LoginRequest, OpenedGamesRequest, Server, ServerClient, NewGameResponse, LoginResult, OpenedGames}
 </span>6 <span style=''>
 </span>7 <span style=''>import scala.concurrent.ExecutionContextExecutor
 </span>8 <span style=''>import scala.util.{Failure, Success}
@@ -78,43 +78,47 @@
 </span>54 <span style=''>
 </span>55 <span style=''>  </span><span style='background: #AEF1AE'>def helloMessage</span><span style=''>(string: String): Future[HelloMessage] = </span><span style='background: #AEF1AE'>client.hello(HelloMessage(string))</span><span style=''>
 </span>56 <span style=''>
-</span>57 <span style=''>  </span><span style='background: #F0ADAD'>def getAvailableGames</span><span style=''>(success: SuccessFun[List[String]]) =
-</span>58 <span style=''>    val reply = </span><span style='background: #F0ADAD'>client.getOpenedGames(OpenedGamesRequest())</span><span style=''>
-</span>59 <span style=''>    </span><span style='background: #F0ADAD'>reply.onComplete {
-</span>60 <span style=''></span><span style='background: #F0ADAD'>      case Success(msg) =&gt;
-</span>61 <span style=''></span><span style='background: #F0ADAD'>        success(msg.clusterName.toList)
-</span>62 <span style=''></span><span style='background: #F0ADAD'>      case Failure(e) =&gt;
-</span>63 <span style=''></span><span style='background: #F0ADAD'>        println(s&quot;Error sayHello: $e&quot;)
-</span>64 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
-</span>65 <span style=''>    
-</span>66 <span style=''>  </span><span style='background: #F0ADAD'>def login</span><span style=''>(username: String, password: String, success: SuccessFun[Boolean]) =
-</span>67 <span style=''>    val reply = </span><span style='background: #F0ADAD'>client.login(LoginRequest(username, password))</span><span style=''>
-</span>68 <span style=''>    </span><span style='background: #F0ADAD'>reply.onComplete {
-</span>69 <span style=''></span><span style='background: #F0ADAD'>      case Success(msg) =&gt;
-</span>70 <span style=''></span><span style='background: #F0ADAD'>        success(msg.response)
-</span>71 <span style=''></span><span style='background: #F0ADAD'>      case Failure(e) =&gt;
-</span>72 <span style=''></span><span style='background: #F0ADAD'>        println(s&quot;Error sayHello: $e&quot;)
-</span>73 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
-</span>74 <span style=''>    
-</span>75 <span style=''>  </span><span style='background: #F0ADAD'>def register</span><span style=''>(username: String, password: String, success: SuccessFun[Boolean]) =
-</span>76 <span style=''>    val reply = </span><span style='background: #F0ADAD'>client.register(LoginRequest(username, password))</span><span style=''>
-</span>77 <span style=''>    </span><span style='background: #F0ADAD'>reply.onComplete {
-</span>78 <span style=''></span><span style='background: #F0ADAD'>      case Success(msg) =&gt;
-</span>79 <span style=''></span><span style='background: #F0ADAD'>        success(msg.response)
-</span>80 <span style=''></span><span style='background: #F0ADAD'>      case Failure(e) =&gt;
-</span>81 <span style=''></span><span style='background: #F0ADAD'>        println(s&quot;Error sayHello: $e&quot;)
-</span>82 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
-</span>83 <span style=''>
-</span>84 <span style=''>  </span><span style='background: #F0ADAD'>def createGame</span><span style=''>(address: String, user: String, success: SuccessFun[Boolean]) =
-</span>85 <span style=''>    val reply = </span><span style='background: #F0ADAD'>client.newGame(GameMessage(address, user))</span><span style=''>
-</span>86 <span style=''>    </span><span style='background: #F0ADAD'>reply.onComplete {
-</span>87 <span style=''></span><span style='background: #F0ADAD'>      case Success(msg) =&gt;
-</span>88 <span style=''></span><span style='background: #F0ADAD'>        success(true)
-</span>89 <span style=''></span><span style='background: #F0ADAD'>      case Failure(e) =&gt;
-</span>90 <span style=''></span><span style='background: #F0ADAD'>        println(s&quot;Error sayHello: $e&quot;)
-</span>91 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
-</span>92 <span style=''>
-</span>93 <span style=''>}
+</span>57 <span style=''>  </span><span style='background: #AEF1AE'>def getAvailableGames</span><span style=''>(success: SuccessFun[List[String]]): Future[OpenedGames] =
+</span>58 <span style=''>    val reply = </span><span style='background: #AEF1AE'>client.getOpenedGames(OpenedGamesRequest())</span><span style=''>
+</span>59 <span style=''>    </span><span style='background: #AEF1AE'>reply.onComplete {
+</span>60 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
+</span>61 <span style=''></span><span style='background: #AEF1AE'>        success(msg.clusterName.toList)
+</span>62 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
+</span>63 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error sayHello: $e&quot;)</span><span style='background: #AEF1AE'>
+</span>64 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>65 <span style=''>    reply
+</span>66 <span style=''>    
+</span>67 <span style=''>  </span><span style='background: #AEF1AE'>def login</span><span style=''>(username: String, password: String, success: SuccessFun[Boolean]): Future[LoginResult] =
+</span>68 <span style=''>    val reply = </span><span style='background: #AEF1AE'>client.login(LoginRequest(username, password))</span><span style=''>
+</span>69 <span style=''>    </span><span style='background: #AEF1AE'>reply.onComplete {
+</span>70 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
+</span>71 <span style=''></span><span style='background: #AEF1AE'>        success(msg.response)
+</span>72 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
+</span>73 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error sayHello: $e&quot;)</span><span style='background: #AEF1AE'>
+</span>74 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>75 <span style=''>    reply
+</span>76 <span style=''>    
+</span>77 <span style=''>  </span><span style='background: #AEF1AE'>def register</span><span style=''>(username: String, password: String, success: SuccessFun[Boolean]): Future[LoginResult] =
+</span>78 <span style=''>    val reply = </span><span style='background: #AEF1AE'>client.register(LoginRequest(username, password))</span><span style=''>
+</span>79 <span style=''>    </span><span style='background: #AEF1AE'>reply.onComplete {
+</span>80 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
+</span>81 <span style=''></span><span style='background: #AEF1AE'>        success(msg.response)
+</span>82 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
+</span>83 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error sayHello: $e&quot;)</span><span style='background: #AEF1AE'>
+</span>84 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>85 <span style=''>    reply
+</span>86 <span style=''>
+</span>87 <span style=''>  </span><span style='background: #AEF1AE'>def createGame</span><span style=''>(address: String, user: String, success: SuccessFun[Boolean]): Future[NewGameResponse] =
+</span>88 <span style=''>    val reply = </span><span style='background: #AEF1AE'>client.newGame(GameMessage(address, user))</span><span style=''>
+</span>89 <span style=''>    </span><span style='background: #AEF1AE'>reply.onComplete {
+</span>90 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
+</span>91 <span style=''></span><span style='background: #AEF1AE'>        success(true)
+</span>92 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
+</span>93 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error sayHello: $e&quot;)</span><span style='background: #AEF1AE'>
+</span>94 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>95 <span style=''>    reply
+</span>96 <span style=''>
+</span>97 <span style=''>}
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -135,9 +139,9 @@
           5
         </td>
         <td>
-          500
+          543
           -
-          521
+          564
         </td>
         <td>
           DefDef
@@ -159,9 +163,9 @@
           0
         </td>
         <td>
-          568
+          611
           -
-          599
+          642
         </td>
         <td>
           Apply
@@ -183,9 +187,9 @@
           1
         </td>
         <td>
-          622
+          665
           -
-          636
+          679
         </td>
         <td>
           Select
@@ -207,9 +211,9 @@
           2
         </td>
         <td>
-          700
+          743
           -
-          756
+          799
         </td>
         <td>
           Apply
@@ -231,9 +235,9 @@
           3
         </td>
         <td>
-          700
+          743
           -
-          771
+          814
         </td>
         <td>
           Apply
@@ -255,9 +259,9 @@
           4
         </td>
         <td>
-          959
+          1002
           -
-          987
+          1030
         </td>
         <td>
           Apply
@@ -279,9 +283,9 @@
           7
         </td>
         <td>
-          1220
+          1263
           -
-          1228
+          1271
         </td>
         <td>
           DefDef
@@ -303,9 +307,9 @@
           6
         </td>
         <td>
-          1275
+          1318
           -
-          1287
+          1330
         </td>
         <td>
           Apply
@@ -327,9 +331,9 @@
           8
         </td>
         <td>
-          1356
+          1399
           -
-          1387
+          1430
         </td>
         <td>
           Apply
@@ -351,9 +355,9 @@
           9
         </td>
         <td>
-          1434
+          1477
           -
-          1448
+          1491
         </td>
         <td>
           Select
@@ -375,9 +379,9 @@
           11
         </td>
         <td>
-          1473
+          1516
           -
-          1544
+          1587
         </td>
         <td>
           Apply
@@ -399,9 +403,9 @@
           10
         </td>
         <td>
-          1473
+          1516
           -
-          1529
+          1572
         </td>
         <td>
           Apply
@@ -423,9 +427,9 @@
           12
         </td>
         <td>
-          1569
+          1612
           -
-          1597
+          1640
         </td>
         <td>
           Apply
@@ -447,9 +451,9 @@
           14
         </td>
         <td>
-          1658
+          1701
           -
-          1692
+          1735
         </td>
         <td>
           Apply
@@ -471,9 +475,9 @@
           13
         </td>
         <td>
-          1671
+          1714
           -
-          1683
+          1726
         </td>
         <td>
           Select
@@ -495,9 +499,9 @@
           15
         </td>
         <td>
-          1601
+          1644
           -
-          1617
+          1660
         </td>
         <td>
           DefDef
@@ -519,9 +523,9 @@
           25
         </td>
         <td>
-          1696
+          1739
           -
-          1717
+          1760
         </td>
         <td>
           DefDef
@@ -532,7 +536,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def getAvailableGames
         </td>
       </tr><tr>
@@ -543,9 +547,9 @@
           17
         </td>
         <td>
-          1771
+          1835
           -
-          1814
+          1878
         </td>
         <td>
           Apply
@@ -556,7 +560,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           client.getOpenedGames(OpenedGamesRequest())
         </td>
       </tr><tr>
@@ -567,9 +571,9 @@
           16
         </td>
         <td>
-          1793
+          1857
           -
-          1811
+          1875
         </td>
         <td>
           Select
@@ -580,7 +584,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           OpenedGamesRequest
         </td>
       </tr><tr>
@@ -591,9 +595,9 @@
           24
         </td>
         <td>
-          1819
+          1883
           -
-          1974
+          2038
         </td>
         <td>
           Apply
@@ -604,7 +608,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           reply.onComplete {
       case Success(msg) =&gt;
         success(msg.clusterName.toList)
@@ -620,9 +624,9 @@
           20
         </td>
         <td>
-          1844
+          1908
           -
-          1861
+          1925
         </td>
         <td>
           Block
@@ -633,7 +637,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case Success(msg)
         </td>
       </tr><tr>
@@ -644,9 +648,9 @@
           19
         </td>
         <td>
-          1873
+          1937
           -
-          1904
+          1968
         </td>
         <td>
           Apply
@@ -657,7 +661,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           success(msg.clusterName.toList)
         </td>
       </tr><tr>
@@ -668,9 +672,9 @@
           18
         </td>
         <td>
-          1881
+          1945
           -
-          1903
+          1967
         </td>
         <td>
           Select
@@ -681,7 +685,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           msg.clusterName.toList
         </td>
       </tr><tr>
@@ -692,9 +696,9 @@
           23
         </td>
         <td>
-          1911
+          1975
           -
-          1926
+          1990
         </td>
         <td>
           Block
@@ -716,9 +720,9 @@
           22
         </td>
         <td>
-          1938
+          2002
           -
-          1968
+          2032
         </td>
         <td>
           Apply
@@ -740,9 +744,9 @@
           21
         </td>
         <td>
-          1946
+          2010
           -
-          1967
+          2031
         </td>
         <td>
           Apply
@@ -758,15 +762,15 @@
         </td>
       </tr><tr>
         <td>
-          65
+          66
         </td>
         <td>
           34
         </td>
         <td>
-          1982
+          2056
           -
-          1991
+          2065
         </td>
         <td>
           DefDef
@@ -777,241 +781,20 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def login
-        </td>
-      </tr><tr>
-        <td>
-          66
-        </td>
-        <td>
-          26
-        </td>
-        <td>
-          2089
-          -
-          2101
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          $lessinit$greater$default$3
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          LoginRequest
-        </td>
-      </tr><tr>
-        <td>
-          66
-        </td>
-        <td>
-          27
-        </td>
-        <td>
-          2076
-          -
-          2122
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          login
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          client.login(LoginRequest(username, password))
         </td>
       </tr><tr>
         <td>
           67
         </td>
         <td>
-          33
+          26
         </td>
         <td>
-          2127
+          2184
           -
-          2272
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          onComplete
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          reply.onComplete {
-      case Success(msg) =&gt;
-        success(msg.response)
-      case Failure(e) =&gt;
-        println(s&quot;Error sayHello: $e&quot;)
-    }
-        </td>
-      </tr><tr>
-        <td>
-          68
-        </td>
-        <td>
-          29
-        </td>
-        <td>
-          2152
-          -
-          2169
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case Success(msg)
-        </td>
-      </tr><tr>
-        <td>
-          69
-        </td>
-        <td>
-          28
-        </td>
-        <td>
-          2181
-          -
-          2202
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          apply
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          success(msg.response)
-        </td>
-      </tr><tr>
-        <td>
-          70
-        </td>
-        <td>
-          32
-        </td>
-        <td>
-          2209
-          -
-          2224
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case Failure(e)
-        </td>
-      </tr><tr>
-        <td>
-          71
-        </td>
-        <td>
-          31
-        </td>
-        <td>
-          2236
-          -
-          2266
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          println
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          println(s&quot;Error sayHello: $e&quot;)
-        </td>
-      </tr><tr>
-        <td>
-          71
-        </td>
-        <td>
-          30
-        </td>
-        <td>
-          2244
-          -
-          2265
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          s
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          s&quot;Error sayHello: $e&quot;
-        </td>
-      </tr><tr>
-        <td>
-          74
-        </td>
-        <td>
-          43
-        </td>
-        <td>
-          2280
-          -
-          2292
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          register
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          def register
-        </td>
-      </tr><tr>
-        <td>
-          75
-        </td>
-        <td>
-          35
-        </td>
-        <td>
-          2393
-          -
-          2405
+          2196
         </td>
         <td>
           Select
@@ -1022,44 +805,44 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           LoginRequest
         </td>
       </tr><tr>
         <td>
-          75
+          67
         </td>
         <td>
-          36
+          27
         </td>
         <td>
-          2377
+          2171
           -
-          2426
+          2217
         </td>
         <td>
           Apply
         </td>
         <td>
-          register
+          login
         </td>
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
-          client.register(LoginRequest(username, password))
+        <td style="background: #AEF1AE">
+          client.login(LoginRequest(username, password))
         </td>
       </tr><tr>
         <td>
-          76
+          68
         </td>
         <td>
-          42
+          33
         </td>
         <td>
-          2431
+          2222
           -
-          2576
+          2367
         </td>
         <td>
           Apply
@@ -1070,7 +853,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           reply.onComplete {
       case Success(msg) =&gt;
         success(msg.response)
@@ -1080,15 +863,15 @@
         </td>
       </tr><tr>
         <td>
-          77
+          69
         </td>
         <td>
-          38
+          29
         </td>
         <td>
-          2456
+          2247
           -
-          2473
+          2264
         </td>
         <td>
           Block
@@ -1099,20 +882,20 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case Success(msg)
         </td>
       </tr><tr>
         <td>
-          78
+          70
         </td>
         <td>
-          37
+          28
         </td>
         <td>
-          2485
+          2276
           -
-          2506
+          2297
         </td>
         <td>
           Apply
@@ -1123,20 +906,20 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           success(msg.response)
         </td>
       </tr><tr>
         <td>
-          79
+          71
         </td>
         <td>
-          41
+          32
         </td>
         <td>
-          2513
+          2304
           -
-          2528
+          2319
         </td>
         <td>
           Block
@@ -1152,15 +935,15 @@
         </td>
       </tr><tr>
         <td>
-          80
+          72
         </td>
         <td>
-          40
+          31
         </td>
         <td>
-          2540
+          2331
           -
-          2570
+          2361
         </td>
         <td>
           Apply
@@ -1176,15 +959,15 @@
         </td>
       </tr><tr>
         <td>
-          80
+          72
         </td>
         <td>
-          39
+          30
         </td>
         <td>
-          2548
+          2339
           -
-          2569
+          2360
         </td>
         <td>
           Apply
@@ -1200,15 +983,236 @@
         </td>
       </tr><tr>
         <td>
-          83
+          76
+        </td>
+        <td>
+          43
+        </td>
+        <td>
+          2385
+          -
+          2397
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          register
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def register
+        </td>
+      </tr><tr>
+        <td>
+          77
+        </td>
+        <td>
+          35
+        </td>
+        <td>
+          2519
+          -
+          2531
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          $lessinit$greater$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          LoginRequest
+        </td>
+      </tr><tr>
+        <td>
+          77
+        </td>
+        <td>
+          36
+        </td>
+        <td>
+          2503
+          -
+          2552
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          register
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          client.register(LoginRequest(username, password))
+        </td>
+      </tr><tr>
+        <td>
+          78
+        </td>
+        <td>
+          42
+        </td>
+        <td>
+          2557
+          -
+          2702
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          onComplete
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          reply.onComplete {
+      case Success(msg) =&gt;
+        success(msg.response)
+      case Failure(e) =&gt;
+        println(s&quot;Error sayHello: $e&quot;)
+    }
+        </td>
+      </tr><tr>
+        <td>
+          79
+        </td>
+        <td>
+          38
+        </td>
+        <td>
+          2582
+          -
+          2599
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case Success(msg)
+        </td>
+      </tr><tr>
+        <td>
+          80
+        </td>
+        <td>
+          37
+        </td>
+        <td>
+          2611
+          -
+          2632
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          success(msg.response)
+        </td>
+      </tr><tr>
+        <td>
+          81
+        </td>
+        <td>
+          41
+        </td>
+        <td>
+          2639
+          -
+          2654
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Failure(e)
+        </td>
+      </tr><tr>
+        <td>
+          82
+        </td>
+        <td>
+          40
+        </td>
+        <td>
+          2666
+          -
+          2696
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(s&quot;Error sayHello: $e&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          82
+        </td>
+        <td>
+          39
+        </td>
+        <td>
+          2674
+          -
+          2695
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;Error sayHello: $e&quot;
+        </td>
+      </tr><tr>
+        <td>
+          86
         </td>
         <td>
           52
         </td>
         <td>
-          2580
+          2716
           -
-          2594
+          2730
         </td>
         <td>
           DefDef
@@ -1219,20 +1223,20 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def createGame
         </td>
       </tr><tr>
         <td>
-          84
+          87
         </td>
         <td>
           44
         </td>
         <td>
-          2689
+          2850
           -
-          2700
+          2861
         </td>
         <td>
           Select
@@ -1243,20 +1247,20 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           GameMessage
         </td>
       </tr><tr>
         <td>
-          84
+          87
         </td>
         <td>
           45
         </td>
         <td>
-          2674
+          2835
           -
-          2716
+          2877
         </td>
         <td>
           Apply
@@ -1267,20 +1271,20 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           client.newGame(GameMessage(address, user))
         </td>
       </tr><tr>
         <td>
-          85
+          88
         </td>
         <td>
           51
         </td>
         <td>
-          2721
+          2882
           -
-          2858
+          3019
         </td>
         <td>
           Apply
@@ -1291,7 +1295,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           reply.onComplete {
       case Success(msg) =&gt;
         success(true)
@@ -1301,15 +1305,15 @@
         </td>
       </tr><tr>
         <td>
-          86
+          89
         </td>
         <td>
           47
         </td>
         <td>
-          2746
+          2907
           -
-          2763
+          2924
         </td>
         <td>
           Block
@@ -1320,20 +1324,20 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case Success(msg)
         </td>
       </tr><tr>
         <td>
-          87
+          90
         </td>
         <td>
           46
         </td>
         <td>
-          2775
+          2936
           -
-          2788
+          2949
         </td>
         <td>
           Apply
@@ -1344,20 +1348,20 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           success(true)
         </td>
       </tr><tr>
         <td>
-          88
+          91
         </td>
         <td>
           50
         </td>
         <td>
-          2795
+          2956
           -
-          2810
+          2971
         </td>
         <td>
           Block
@@ -1373,15 +1377,15 @@
         </td>
       </tr><tr>
         <td>
-          89
+          92
         </td>
         <td>
           49
         </td>
         <td>
-          2822
+          2983
           -
-          2852
+          3013
         </td>
         <td>
           Apply
@@ -1397,15 +1401,15 @@
         </td>
       </tr><tr>
         <td>
-          89
+          92
         </td>
         <td>
           48
         </td>
         <td>
-          2830
+          2991
           -
-          2851
+          3012
         </td>
         <td>
           Apply

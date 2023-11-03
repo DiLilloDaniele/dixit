@@ -29,9 +29,9 @@
 </span>5 <span style=''>
 </span>6 <span style=''>object ProtoToDomainAdapter:
 </span>7 <span style=''>  
-</span>8 <span style=''>  </span><span style='background: #F0ADAD'>def protoToUserCredentials</span><span style=''>(req: LoginRequest): Tuple2[String, String] = (req.name, req.password)
+</span>8 <span style=''>  </span><span style='background: #AEF1AE'>def protoToUserCredentials</span><span style=''>(req: LoginRequest): Tuple2[String, String] = (req.name, req.password)
 </span>9 <span style=''>
-</span>10 <span style=''>  </span><span style='background: #F0ADAD'>def protoToGames</span><span style=''>(game: Set[Game]): OpenedGames = </span><span style='background: #F0ADAD'>OpenedGames</span><span style=''>(</span><span style='background: #F0ADAD'>game.map(game =&gt; game.address).toSeq</span><span style=''>)
+</span>10 <span style=''>  </span><span style='background: #AEF1AE'>def protoToGames</span><span style=''>(game: Set[Game]): OpenedGames = </span><span style='background: #AEF1AE'>OpenedGames</span><span style=''>(</span><span style='background: #AEF1AE'>game.map(game =&gt; game.address).toSeq</span><span style=''>)
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -65,7 +65,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def protoToUserCredentials
         </td>
       </tr><tr>
@@ -89,7 +89,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           game.map(game =&gt; game.address)
         </td>
       </tr><tr>
@@ -113,7 +113,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def protoToGames
         </td>
       </tr><tr>
@@ -137,7 +137,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           OpenedGames
         </td>
       </tr><tr>
@@ -161,7 +161,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           game.map(game =&gt; game.address).toSeq
         </td>
       </tr>

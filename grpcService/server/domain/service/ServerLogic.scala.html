@@ -39,7 +39,7 @@
 </span>15 <span style=''>
 </span>16 <span style=''>  var openGames: Set[Game] = </span><span style='background: #AEF1AE'>Set()</span><span style=''>
 </span>17 <span style=''>
-</span>18 <span style=''>  </span><span style='background: #F0ADAD'>def registerNewUser</span><span style=''>(user: User, password: String) = </span><span style='background: #F0ADAD'>accessRepository.insertNewUser(user.name, password)</span><span style=''>
+</span>18 <span style=''>  </span><span style='background: #AEF1AE'>def registerNewUser</span><span style=''>(user: User, password: String) = </span><span style='background: #AEF1AE'>accessRepository.insertNewUser(user.name, password)</span><span style=''>
 </span>19 <span style=''>
 </span>20 <span style=''>  </span><span style='background: #F0ADAD'>def retrieveUser</span><span style=''>(userId: String) = </span><span style='background: #F0ADAD'>accessRepository.selectUser(userId)</span><span style=''>
 </span>21 <span style=''>
@@ -47,13 +47,13 @@
 </span>23 <span style=''>
 </span>24 <span style=''>  </span><span style='background: #F0ADAD'>def removeGame</span><span style=''>(game: Game) = openGames = </span><span style='background: #F0ADAD'>openGames - game</span><span style=''>
 </span>25 <span style=''>
-</span>26 <span style=''>  </span><span style='background: #F0ADAD'>def getGames</span><span style=''>() = openGames
+</span>26 <span style=''>  </span><span style='background: #AEF1AE'>def getGames</span><span style=''>() = openGames
 </span>27 <span style=''>
-</span>28 <span style=''>  </span><span style='background: #F0ADAD'>def newGame</span><span style=''>(game: Game) = openGames = </span><span style='background: #F0ADAD'>openGames + game</span><span style=''>
+</span>28 <span style=''>  </span><span style='background: #AEF1AE'>def newGame</span><span style=''>(game: Game) = openGames = </span><span style='background: #AEF1AE'>openGames + game</span><span style=''>
 </span>29 <span style=''>
-</span>30 <span style=''>  </span><span style='background: #F0ADAD'>def login</span><span style=''>(user: User): Boolean = </span><span style='background: #F0ADAD'>accessRepository.selectUser(user.name)</span><span style=''> match
-</span>31 <span style=''>    </span><span style='background: #F0ADAD'>case Some(_user)</span><span style=''> =&gt; _user.password == user.password
-</span>32 <span style=''>    </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt; false
+</span>30 <span style=''>  </span><span style='background: #AEF1AE'>def login</span><span style=''>(user: User): Boolean = </span><span style='background: #AEF1AE'>accessRepository.selectUser(user.name)</span><span style=''> match
+</span>31 <span style=''>    </span><span style='background: #AEF1AE'>case Some(_user)</span><span style=''> =&gt; _user.password == user.password
+</span>32 <span style=''>    </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt; false
 </span>33 <span style=''>    
 </span>34 <span style=''>}
 </span></pre>
@@ -73,7 +73,7 @@
           7
         </td>
         <td>
-          1521
+          1528
         </td>
         <td>
           180
@@ -97,7 +97,7 @@
           8
         </td>
         <td>
-          1516
+          1523
         </td>
         <td>
           216
@@ -121,31 +121,7 @@
           10
         </td>
         <td>
-          1518
-        </td>
-        <td>
-          249
-          -
-          265
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case Some(_user)
-        </td>
-      </tr><tr>
-        <td>
-          10
-        </td>
-        <td>
-          1517
+          1524
         </td>
         <td>
           269
@@ -166,34 +142,34 @@
         </td>
       </tr><tr>
         <td>
-          11
+          10
         </td>
         <td>
-          1519
+          1525
         </td>
         <td>
-          298
+          249
           -
-          327
+          265
         </td>
         <td>
-          Apply
+          Block
         </td>
         <td>
-          print
+          &lt;none&gt;
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          print(&quot;utente non esistente&quot;)
+          case Some(_user)
         </td>
       </tr><tr>
         <td>
           11
         </td>
         <td>
-          1520
+          1527
         </td>
         <td>
           288
@@ -214,10 +190,34 @@
         </td>
       </tr><tr>
         <td>
+          11
+        </td>
+        <td>
+          1526
+        </td>
+        <td>
+          298
+          -
+          327
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          print
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          print(&quot;utente non esistente&quot;)
+        </td>
+      </tr><tr>
+        <td>
           15
         </td>
         <td>
-          1522
+          1529
         </td>
         <td>
           420
@@ -241,31 +241,7 @@
           17
         </td>
         <td>
-          1524
-        </td>
-        <td>
-          429
-          -
-          448
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          registerNewUser
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          def registerNewUser
-        </td>
-      </tr><tr>
-        <td>
-          17
-        </td>
-        <td>
-          1523
+          1530
         </td>
         <td>
           481
@@ -281,15 +257,39 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           accessRepository.insertNewUser(user.name, password)
+        </td>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          1531
+        </td>
+        <td>
+          429
+          -
+          448
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          registerNewUser
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def registerNewUser
         </td>
       </tr><tr>
         <td>
           19
         </td>
         <td>
-          1526
+          1533
         </td>
         <td>
           536
@@ -313,7 +313,7 @@
           19
         </td>
         <td>
-          1525
+          1532
         </td>
         <td>
           571
@@ -337,7 +337,7 @@
           21
         </td>
         <td>
-          1528
+          1535
         </td>
         <td>
           610
@@ -361,7 +361,7 @@
           21
         </td>
         <td>
-          1527
+          1534
         </td>
         <td>
           657
@@ -385,31 +385,7 @@
           23
         </td>
         <td>
-          1530
-        </td>
-        <td>
-          717
-          -
-          731
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          removeGame
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          def removeGame
-        </td>
-      </tr><tr>
-        <td>
-          23
-        </td>
-        <td>
-          1529
+          1536
         </td>
         <td>
           758
@@ -430,10 +406,34 @@
         </td>
       </tr><tr>
         <td>
+          23
+        </td>
+        <td>
+          1537
+        </td>
+        <td>
+          717
+          -
+          731
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          removeGame
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def removeGame
+        </td>
+      </tr><tr>
+        <td>
           25
         </td>
         <td>
-          1531
+          1538
         </td>
         <td>
           778
@@ -449,7 +449,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def getGames
         </td>
       </tr><tr>
@@ -457,31 +457,7 @@
           27
         </td>
         <td>
-          1533
-        </td>
-        <td>
-          808
-          -
-          819
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          newGame
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          def newGame
-        </td>
-      </tr><tr>
-        <td>
-          27
-        </td>
-        <td>
-          1532
+          1539
         </td>
         <td>
           846
@@ -497,39 +473,39 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           openGames + game
         </td>
       </tr><tr>
         <td>
-          29
+          27
         </td>
         <td>
-          1537
+          1540
         </td>
         <td>
-          866
+          808
           -
-          875
+          819
         </td>
         <td>
           DefDef
         </td>
         <td>
-          login
+          newGame
         </td>
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
-          def login
+        <td style="background: #AEF1AE">
+          def newGame
         </td>
       </tr><tr>
         <td>
           29
         </td>
         <td>
-          1534
+          1541
         </td>
         <td>
           899
@@ -545,15 +521,39 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           accessRepository.selectUser(user.name)
+        </td>
+      </tr><tr>
+        <td>
+          29
+        </td>
+        <td>
+          1544
+        </td>
+        <td>
+          866
+          -
+          875
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          login
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def login
         </td>
       </tr><tr>
         <td>
           30
         </td>
         <td>
-          1535
+          1542
         </td>
         <td>
           948
@@ -569,7 +569,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case Some(_user)
         </td>
       </tr><tr>
@@ -577,7 +577,7 @@
           31
         </td>
         <td>
-          1536
+          1543
         </td>
         <td>
           1004
@@ -593,7 +593,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case _
         </td>
       </tr>

@@ -35,22 +35,22 @@
 </span>11 <span style=''>    ) extends scalapb.GeneratedMessage with scalapb.lenses.Updatable[OpenedGamesRequest] {
 </span>12 <span style=''>    @transient
 </span>13 <span style=''>    private[this] var __serializedSizeMemoized: _root_.scala.Int = 0
-</span>14 <span style=''>    </span><span style='background: #F0ADAD'>private[this] def __computeSerializedSize</span><span style=''>(): _root_.scala.Int = {
+</span>14 <span style=''>    </span><span style='background: #AEF1AE'>private[this] def __computeSerializedSize</span><span style=''>(): _root_.scala.Int = {
 </span>15 <span style=''>      var __size = 0
-</span>16 <span style=''>      __size += </span><span style='background: #F0ADAD'>unknownFields.serializedSize</span><span style=''>
+</span>16 <span style=''>      __size += </span><span style='background: #AEF1AE'>unknownFields.serializedSize</span><span style=''>
 </span>17 <span style=''>      __size
 </span>18 <span style=''>    }
-</span>19 <span style=''>    </span><span style='background: #F0ADAD'>override def serializedSize</span><span style=''>: _root_.scala.Int = {
+</span>19 <span style=''>    </span><span style='background: #AEF1AE'>override def serializedSize</span><span style=''>: _root_.scala.Int = {
 </span>20 <span style=''>      var __size = __serializedSizeMemoized
-</span>21 <span style=''>      if (__size == 0) </span><span style='background: #F0ADAD'>{
-</span>22 <span style=''></span><span style='background: #F0ADAD'>        __size = __computeSerializedSize() + 1
-</span>23 <span style=''></span><span style='background: #F0ADAD'>        __serializedSizeMemoized = __size
-</span>24 <span style=''></span><span style='background: #F0ADAD'>      }</span><span style=''>
+</span>21 <span style=''>      if (__size == 0) </span><span style='background: #AEF1AE'>{
+</span>22 <span style=''></span><span style='background: #AEF1AE'>        __size = __computeSerializedSize() + 1
+</span>23 <span style=''></span><span style='background: #AEF1AE'>        __serializedSizeMemoized = __size
+</span>24 <span style=''></span><span style='background: #AEF1AE'>      }</span><span style=''>
 </span>25 <span style=''>      __size - 1
 </span>26 <span style=''>      
 </span>27 <span style=''>    }
-</span>28 <span style=''>    </span><span style='background: #F0ADAD'>def writeTo</span><span style=''>(`_output__`: _root_.com.google.protobuf.CodedOutputStream): _root_.scala.Unit = {
-</span>29 <span style=''>      </span><span style='background: #F0ADAD'>unknownFields.writeTo(_output__)</span><span style=''>
+</span>28 <span style=''>    </span><span style='background: #AEF1AE'>def writeTo</span><span style=''>(`_output__`: _root_.com.google.protobuf.CodedOutputStream): _root_.scala.Unit = {
+</span>29 <span style=''>      </span><span style='background: #AEF1AE'>unknownFields.writeTo(_output__)</span><span style=''>
 </span>30 <span style=''>    }
 </span>31 <span style=''>    </span><span style='background: #F0ADAD'>def withUnknownFields</span><span style=''>(__v: _root_.scalapb.UnknownFieldSet) = copy(unknownFields = __v)
 </span>32 <span style=''>    </span><span style='background: #F0ADAD'>def discardUnknownFields</span><span style=''> = copy(unknownFields = _root_.scalapb.UnknownFieldSet.empty)
@@ -63,13 +63,13 @@
 </span>39 <span style=''>
 </span>40 <span style=''>object OpenedGamesRequest extends scalapb.GeneratedMessageCompanion[grpcService.OpenedGamesRequest] {
 </span>41 <span style=''>  </span><span style='background: #AEF1AE'>implicit def messageCompanion</span><span style=''>: scalapb.GeneratedMessageCompanion[grpcService.OpenedGamesRequest] = this
-</span>42 <span style=''>  </span><span style='background: #F0ADAD'>def parseFrom</span><span style=''>(`_input__`: _root_.com.google.protobuf.CodedInputStream): grpcService.OpenedGamesRequest = {
+</span>42 <span style=''>  </span><span style='background: #AEF1AE'>def parseFrom</span><span style=''>(`_input__`: _root_.com.google.protobuf.CodedInputStream): grpcService.OpenedGamesRequest = {
 </span>43 <span style=''>    var `_unknownFields__`: _root_.scalapb.UnknownFieldSet.Builder = null
 </span>44 <span style=''>    var _done__ = false
 </span>45 <span style=''>    while (!_done__) {
-</span>46 <span style=''>      val _tag__ = </span><span style='background: #F0ADAD'>_input__.readTag()</span><span style=''>
+</span>46 <span style=''>      val _tag__ = </span><span style='background: #AEF1AE'>_input__.readTag()</span><span style=''>
 </span>47 <span style=''>      _tag__ match {
-</span>48 <span style=''>        </span><span style='background: #F0ADAD'>case 0</span><span style=''> =&gt; _done__ = true
+</span>48 <span style=''>        </span><span style='background: #AEF1AE'>case 0</span><span style=''> =&gt; _done__ = true
 </span>49 <span style=''>        </span><span style='background: #F0ADAD'>case tag</span><span style=''> =&gt;
 </span>50 <span style=''>          if (_unknownFields__ == null) </span><span style='background: #F0ADAD'>{
 </span>51 <span style=''></span><span style='background: #F0ADAD'>            _unknownFields__ = new _root_.scalapb.UnknownFieldSet.Builder()
@@ -78,7 +78,7 @@
 </span>54 <span style=''>      }
 </span>55 <span style=''>    }
 </span>56 <span style=''>    grpcService.OpenedGamesRequest(
-</span>57 <span style=''>        unknownFields = if (_unknownFields__ == null) </span><span style='background: #F0ADAD'>_root_.scalapb.UnknownFieldSet.empty</span><span style=''> else </span><span style='background: #F0ADAD'>_unknownFields__.result()</span><span style=''>
+</span>57 <span style=''>        unknownFields = if (_unknownFields__ == null) </span><span style='background: #AEF1AE'>_root_.scalapb.UnknownFieldSet.empty</span><span style=''> else </span><span style='background: #F0ADAD'>_unknownFields__.result()</span><span style=''>
 </span>58 <span style=''>    )
 </span>59 <span style=''>  }
 </span>60 <span style=''>  </span><span style='background: #F0ADAD'>implicit def messageReads</span><span style=''>: _root_.scalapb.descriptors.Reads[grpcService.OpenedGamesRequest] = _root_.scalapb.descriptors.Reads{
@@ -119,7 +119,7 @@
           9
         </td>
         <td>
-          2161
+          2168
         </td>
         <td>
           247
@@ -135,7 +135,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           
         </td>
       </tr><tr>
@@ -143,7 +143,7 @@
           13
         </td>
         <td>
-          2144
+          2151
         </td>
         <td>
           463
@@ -159,7 +159,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           private[this] def __computeSerializedSize
         </td>
       </tr><tr>
@@ -167,7 +167,7 @@
           15
         </td>
         <td>
-          2143
+          2150
         </td>
         <td>
           566
@@ -183,7 +183,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           unknownFields.serializedSize
         </td>
       </tr><tr>
@@ -191,7 +191,7 @@
           18
         </td>
         <td>
-          2147
+          2154
         </td>
         <td>
           618
@@ -207,7 +207,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           override def serializedSize
         </td>
       </tr><tr>
@@ -215,7 +215,7 @@
           20
         </td>
         <td>
-          2146
+          2153
         </td>
         <td>
           735
@@ -231,7 +231,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           {
         __size = __computeSerializedSize() + 1
         __serializedSizeMemoized = __size
@@ -242,7 +242,7 @@
           21
         </td>
         <td>
-          2145
+          2152
         </td>
         <td>
           754
@@ -258,7 +258,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           __computeSerializedSize()
         </td>
       </tr><tr>
@@ -266,7 +266,7 @@
           27
         </td>
         <td>
-          2149
+          2156
         </td>
         <td>
           868
@@ -282,7 +282,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def writeTo
         </td>
       </tr><tr>
@@ -290,7 +290,7 @@
           28
         </td>
         <td>
-          2148
+          2155
         </td>
         <td>
           968
@@ -306,7 +306,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           unknownFields.writeTo(_output__)
         </td>
       </tr><tr>
@@ -314,7 +314,7 @@
           30
         </td>
         <td>
-          2150
+          2157
         </td>
         <td>
           1011
@@ -338,7 +338,7 @@
           31
         </td>
         <td>
-          2151
+          2158
         </td>
         <td>
           1102
@@ -362,31 +362,7 @@
           32
         </td>
         <td>
-          2152
-        </td>
-        <td>
-          1272
-          -
-          1301
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          &lt;init&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          new MatchError(__fieldNumber)
-        </td>
-      </tr><tr>
-        <td>
-          32
-        </td>
-        <td>
-          2154
+          2161
         </td>
         <td>
           1192
@@ -410,7 +386,7 @@
           32
         </td>
         <td>
-          2153
+          2160
         </td>
         <td>
           1266
@@ -431,10 +407,58 @@
         </td>
       </tr><tr>
         <td>
+          32
+        </td>
+        <td>
+          2159
+        </td>
+        <td>
+          1272
+          -
+          1301
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new MatchError(__fieldNumber)
+        </td>
+      </tr><tr>
+        <td>
           33
         </td>
         <td>
-          2156
+          2164
+        </td>
+        <td>
+          1306
+          -
+          1318
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getField
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def getField
+        </td>
+      </tr><tr>
+        <td>
+          33
+        </td>
+        <td>
+          2163
         </td>
         <td>
           1409
@@ -458,7 +482,7 @@
           33
         </td>
         <td>
-          2155
+          2162
         </td>
         <td>
           1415
@@ -479,34 +503,10 @@
         </td>
       </tr><tr>
         <td>
-          33
-        </td>
-        <td>
-          2157
-        </td>
-        <td>
-          1306
-          -
-          1318
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          getField
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          def getField
-        </td>
-      </tr><tr>
-        <td>
           34
         </td>
         <td>
-          2158
+          2165
         </td>
         <td>
           1491
@@ -530,7 +530,7 @@
           34
         </td>
         <td>
-          2159
+          2166
         </td>
         <td>
           1443
@@ -554,7 +554,7 @@
           35
         </td>
         <td>
-          2160
+          2167
         </td>
         <td>
           1548
@@ -578,7 +578,7 @@
           40
         </td>
         <td>
-          2162
+          2169
         </td>
         <td>
           1821
@@ -602,7 +602,7 @@
           41
         </td>
         <td>
-          2172
+          2179
         </td>
         <td>
           1927
@@ -618,7 +618,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def parseFrom
         </td>
       </tr><tr>
@@ -626,7 +626,7 @@
           45
         </td>
         <td>
-          2163
+          2170
         </td>
         <td>
           2174
@@ -642,7 +642,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           _input__.readTag()
         </td>
       </tr><tr>
@@ -650,7 +650,7 @@
           47
         </td>
         <td>
-          2164
+          2171
         </td>
         <td>
           2222
@@ -666,7 +666,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case 0
         </td>
       </tr><tr>
@@ -674,7 +674,7 @@
           48
         </td>
         <td>
-          2168
+          2175
         </td>
         <td>
           2255
@@ -698,7 +698,7 @@
           49
         </td>
         <td>
-          2166
+          2173
         </td>
         <td>
           2307
@@ -724,7 +724,7 @@
           50
         </td>
         <td>
-          2165
+          2172
         </td>
         <td>
           2340
@@ -748,7 +748,7 @@
           52
         </td>
         <td>
-          2167
+          2174
         </td>
         <td>
           2407
@@ -772,31 +772,7 @@
           56
         </td>
         <td>
-          2170
-        </td>
-        <td>
-          2596
-          -
-          2621
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          result
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          _unknownFields__.result()
-        </td>
-      </tr><tr>
-        <td>
-          56
-        </td>
-        <td>
-          2169
+          2176
         </td>
         <td>
           2554
@@ -812,7 +788,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           _root_.scalapb.UnknownFieldSet.empty
         </td>
       </tr><tr>
@@ -820,7 +796,7 @@
           56
         </td>
         <td>
-          2171
+          2178
         </td>
         <td>
           2596
@@ -841,10 +817,34 @@
         </td>
       </tr><tr>
         <td>
+          56
+        </td>
+        <td>
+          2177
+        </td>
+        <td>
+          2596
+          -
+          2621
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          result
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          _unknownFields__.result()
+        </td>
+      </tr><tr>
+        <td>
           59
         </td>
         <td>
-          2183
+          2190
         </td>
         <td>
           2634
@@ -868,7 +868,7 @@
           60
         </td>
         <td>
-          2179
+          2186
         </td>
         <td>
           2766
@@ -892,55 +892,7 @@
           61
         </td>
         <td>
-          2173
-        </td>
-        <td>
-          2857
-          -
-          2873
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          keys
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          __fieldsMap.keys
-        </td>
-      </tr><tr>
-        <td>
-          61
-        </td>
-        <td>
-          2176
-        </td>
-        <td>
-          2857
-          -
-          2920
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          forall
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          __fieldsMap.keys.forall(_.containingMessage eq scalaDescriptor)
-        </td>
-      </tr><tr>
-        <td>
-          61
-        </td>
-        <td>
-          2175
+          2182
         </td>
         <td>
           2881
@@ -964,7 +916,7 @@
           61
         </td>
         <td>
-          2174
+          2181
         </td>
         <td>
           2904
@@ -988,7 +940,7 @@
           61
         </td>
         <td>
-          2177
+          2184
         </td>
         <td>
           2829
@@ -1009,10 +961,58 @@
         </td>
       </tr><tr>
         <td>
+          61
+        </td>
+        <td>
+          2183
+        </td>
+        <td>
+          2857
+          -
+          2920
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          forall
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          __fieldsMap.keys.forall(_.containingMessage eq scalaDescriptor)
+        </td>
+      </tr><tr>
+        <td>
+          61
+        </td>
+        <td>
+          2180
+        </td>
+        <td>
+          2857
+          -
+          2873
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          keys
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          __fieldsMap.keys
+        </td>
+      </tr><tr>
+        <td>
           62
         </td>
         <td>
-          2178
+          2185
         </td>
         <td>
           2976
@@ -1036,31 +1036,7 @@
           64
         </td>
         <td>
-          2182
-        </td>
-        <td>
-          3020
-          -
-          3026
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case _
-        </td>
-      </tr><tr>
-        <td>
-          64
-        </td>
-        <td>
-          2181
+          2188
         </td>
         <td>
           3030
@@ -1084,7 +1060,7 @@
           64
         </td>
         <td>
-          2180
+          2187
         </td>
         <td>
           3036
@@ -1105,34 +1081,34 @@
         </td>
       </tr><tr>
         <td>
-          66
+          64
         </td>
         <td>
-          2185
+          2189
         </td>
         <td>
-          3156
+          3020
           -
-          3209
+          3026
         </td>
         <td>
-          Apply
+          Block
         </td>
         <td>
-          get
+          &lt;none&gt;
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          MessagesProto.javaDescriptor.getMessageTypes().get(3)
+          case _
         </td>
       </tr><tr>
         <td>
           66
         </td>
         <td>
-          2184
+          2191
         </td>
         <td>
           3156
@@ -1156,7 +1132,7 @@
           66
         </td>
         <td>
-          2186
+          2193
         </td>
         <td>
           3084
@@ -1177,34 +1153,34 @@
         </td>
       </tr><tr>
         <td>
-          67
+          66
         </td>
         <td>
-          2188
+          2192
         </td>
         <td>
-          3212
+          3156
           -
-          3231
+          3209
         </td>
         <td>
-          DefDef
+          Apply
         </td>
         <td>
-          scalaDescriptor
+          get
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          def scalaDescriptor
+          MessagesProto.javaDescriptor.getMessageTypes().get(3)
         </td>
       </tr><tr>
         <td>
           67
         </td>
         <td>
-          2187
+          2194
         </td>
         <td>
           3273
@@ -1225,34 +1201,34 @@
         </td>
       </tr><tr>
         <td>
-          68
+          67
         </td>
         <td>
-          2191
+          2195
         </td>
         <td>
-          3317
+          3212
           -
-          3351
+          3231
         </td>
         <td>
           DefDef
         </td>
         <td>
-          messageCompanionForFieldNumber
+          scalaDescriptor
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          def messageCompanionForFieldNumber
+          def scalaDescriptor
         </td>
       </tr><tr>
         <td>
           68
         </td>
         <td>
-          2190
+          2197
         </td>
         <td>
           3427
@@ -1276,7 +1252,7 @@
           68
         </td>
         <td>
-          2189
+          2196
         </td>
         <td>
           3433
@@ -1297,10 +1273,34 @@
         </td>
       </tr><tr>
         <td>
+          68
+        </td>
+        <td>
+          2198
+        </td>
+        <td>
+          3317
+          -
+          3351
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          messageCompanionForFieldNumber
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def messageCompanionForFieldNumber
+        </td>
+      </tr><tr>
+        <td>
           69
         </td>
         <td>
-          2193
+          2200
         </td>
         <td>
           3581
@@ -1324,7 +1324,7 @@
           69
         </td>
         <td>
-          2192
+          2199
         </td>
         <td>
           3581
@@ -1348,31 +1348,7 @@
           70
         </td>
         <td>
-          2194
-        </td>
-        <td>
-          3708
-          -
-          3737
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          &lt;init&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          new MatchError(__fieldNumber)
-        </td>
-      </tr><tr>
-        <td>
-          70
-        </td>
-        <td>
-          2196
+          2203
         </td>
         <td>
           3593
@@ -1396,7 +1372,7 @@
           70
         </td>
         <td>
-          2195
+          2202
         </td>
         <td>
           3702
@@ -1417,10 +1393,34 @@
         </td>
       </tr><tr>
         <td>
+          70
+        </td>
+        <td>
+          2201
+        </td>
+        <td>
+          3708
+          -
+          3737
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new MatchError(__fieldNumber)
+        </td>
+      </tr><tr>
+        <td>
           71
         </td>
         <td>
-          2197
+          2204
         </td>
         <td>
           3767
@@ -1444,7 +1444,7 @@
           73
         </td>
         <td>
-          2199
+          2206
         </td>
         <td>
           3805
@@ -1468,7 +1468,7 @@
           73
         </td>
         <td>
-          2198
+          2205
         </td>
         <td>
           3933
@@ -1492,7 +1492,7 @@
           75
         </td>
         <td>
-          2201
+          2208
         </td>
         <td>
           4019
@@ -1516,7 +1516,7 @@
           76
         </td>
         <td>
-          2200
+          2207
         </td>
         <td>
           4072

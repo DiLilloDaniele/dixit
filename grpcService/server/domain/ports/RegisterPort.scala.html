@@ -29,11 +29,11 @@
 </span>5 <span style=''>
 </span>6 <span style=''>class RegisterPort(implicit val serverLogic: ServerLogic):
 </span>7 <span style=''>
-</span>8 <span style=''>  </span><span style='background: #F0ADAD'>def registerUser</span><span style=''>(name: String, password: String) =
-</span>9 <span style=''>    </span><span style='background: #F0ADAD'>serverLogic.registerNewUser(User(name, 0), password)</span><span style=''>
+</span>8 <span style=''>  </span><span style='background: #AEF1AE'>def registerUser</span><span style=''>(name: String, password: String) =
+</span>9 <span style=''>    </span><span style='background: #AEF1AE'>serverLogic.registerNewUser(User(name, 0), password)</span><span style=''>
 </span>10 <span style=''>
-</span>11 <span style=''>  </span><span style='background: #F0ADAD'>def loginUser</span><span style=''>(name: String, password: String): Boolean =
-</span>12 <span style=''>    </span><span style='background: #F0ADAD'>serverLogic.login(User(name = name, password = password))</span><span style=''>
+</span>11 <span style=''>  </span><span style='background: #AEF1AE'>def loginUser</span><span style=''>(name: String, password: String): Boolean =
+</span>12 <span style=''>    </span><span style='background: #AEF1AE'>serverLogic.login(User(name = name, password = password))</span><span style=''>
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -51,7 +51,7 @@
           7
         </td>
         <td>
-          1511
+          1518
         </td>
         <td>
           201
@@ -67,7 +67,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def registerUser
         </td>
       </tr><tr>
@@ -75,55 +75,7 @@
           8
         </td>
         <td>
-          1510
-        </td>
-        <td>
-          256
-          -
-          308
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          registerNewUser
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          serverLogic.registerNewUser(User(name, 0), password)
-        </td>
-      </tr><tr>
-        <td>
-          8
-        </td>
-        <td>
-          1509
-        </td>
-        <td>
-          284
-          -
-          288
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          $lessinit$greater$default$4
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          User
-        </td>
-      </tr><tr>
-        <td>
-          8
-        </td>
-        <td>
-          1508
+          1515
         </td>
         <td>
           284
@@ -139,7 +91,55 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
+          User
+        </td>
+      </tr><tr>
+        <td>
+          8
+        </td>
+        <td>
+          1517
+        </td>
+        <td>
+          256
+          -
+          308
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          registerNewUser
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          serverLogic.registerNewUser(User(name, 0), password)
+        </td>
+      </tr><tr>
+        <td>
+          8
+        </td>
+        <td>
+          1516
+        </td>
+        <td>
+          284
+          -
+          288
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          $lessinit$greater$default$4
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
           User
         </td>
       </tr><tr>
@@ -147,7 +147,7 @@
           10
         </td>
         <td>
-          1515
+          1522
         </td>
         <td>
           312
@@ -163,7 +163,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def loginUser
         </td>
       </tr><tr>
@@ -171,7 +171,7 @@
           11
         </td>
         <td>
-          1512
+          1519
         </td>
         <td>
           391
@@ -187,7 +187,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           User
         </td>
       </tr><tr>
@@ -195,7 +195,7 @@
           11
         </td>
         <td>
-          1514
+          1521
         </td>
         <td>
           373
@@ -211,7 +211,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           serverLogic.login(User(name = name, password = password))
         </td>
       </tr><tr>
@@ -219,7 +219,7 @@
           11
         </td>
         <td>
-          1513
+          1520
         </td>
         <td>
           391
@@ -235,7 +235,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           User
         </td>
       </tr>

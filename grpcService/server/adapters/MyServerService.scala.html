@@ -40,27 +40,27 @@
 </span>16 <span style=''>    val name = in.message
 </span>17 <span style=''>    </span><span style='background: #AEF1AE'>Future.successful(HelloMessage(&quot;Ciao &quot; + name + &quot;!!!&quot;))</span><span style=''>
 </span>18 <span style=''>
-</span>19 <span style=''>  </span><span style='background: #F0ADAD'>override def login</span><span style=''>(in: LoginRequest): Future[LoginResult] =
-</span>20 <span style=''>    val tuple = </span><span style='background: #F0ADAD'>ProtoToDomainAdapter.protoToUserCredentials(in)</span><span style=''>
-</span>21 <span style=''>    </span><span style='background: #F0ADAD'>Future.successful(LoginResult(
-</span>22 <span style=''></span><span style='background: #F0ADAD'>      inboundPorts.registerPort.loginUser(tuple._1, tuple._2)
-</span>23 <span style=''></span><span style='background: #F0ADAD'>    ))</span><span style=''>
+</span>19 <span style=''>  </span><span style='background: #AEF1AE'>override def login</span><span style=''>(in: LoginRequest): Future[LoginResult] =
+</span>20 <span style=''>    val tuple = </span><span style='background: #AEF1AE'>ProtoToDomainAdapter.protoToUserCredentials(in)</span><span style=''>
+</span>21 <span style=''>    </span><span style='background: #AEF1AE'>Future.successful(LoginResult(
+</span>22 <span style=''></span><span style='background: #AEF1AE'>      inboundPorts.registerPort.loginUser(tuple._1, tuple._2)
+</span>23 <span style=''></span><span style='background: #AEF1AE'>    ))</span><span style=''>
 </span>24 <span style=''>
-</span>25 <span style=''>  </span><span style='background: #F0ADAD'>override def getOpenedGames</span><span style=''>(in: OpenedGamesRequest): Future[OpenedGames] =
-</span>26 <span style=''>    </span><span style='background: #F0ADAD'>Future.successful(ProtoToDomainAdapter.protoToGames(inboundPorts.gamesManagementPort.getAllGames()))</span><span style=''>
+</span>25 <span style=''>  </span><span style='background: #AEF1AE'>override def getOpenedGames</span><span style=''>(in: OpenedGamesRequest): Future[OpenedGames] =
+</span>26 <span style=''>    </span><span style='background: #AEF1AE'>Future.successful(ProtoToDomainAdapter.protoToGames(inboundPorts.gamesManagementPort.getAllGames()))</span><span style=''>
 </span>27 <span style=''>
-</span>28 <span style=''>  </span><span style='background: #F0ADAD'>override def register</span><span style=''>(in: LoginRequest): Future[LoginResult] =
-</span>29 <span style=''>    val tuple = </span><span style='background: #F0ADAD'>ProtoToDomainAdapter.protoToUserCredentials(in)</span><span style=''>
-</span>30 <span style=''>    </span><span style='background: #F0ADAD'>inboundPorts.registerPort.registerUser(tuple._1, tuple._2)</span><span style=''>
-</span>31 <span style=''>    </span><span style='background: #F0ADAD'>Future.successful(LoginResult(true))</span><span style=''>
+</span>28 <span style=''>  </span><span style='background: #AEF1AE'>override def register</span><span style=''>(in: LoginRequest): Future[LoginResult] =
+</span>29 <span style=''>    val tuple = </span><span style='background: #AEF1AE'>ProtoToDomainAdapter.protoToUserCredentials(in)</span><span style=''>
+</span>30 <span style=''>    </span><span style='background: #AEF1AE'>inboundPorts.registerPort.registerUser(tuple._1, tuple._2)</span><span style=''>
+</span>31 <span style=''>    </span><span style='background: #AEF1AE'>Future.successful(LoginResult(true))</span><span style=''>
 </span>32 <span style=''>
 </span>33 <span style=''>  </span><span style='background: #F0ADAD'>override def closeGame</span><span style=''>(in: GameMessage): Future[ClosingResponse] =
 </span>34 <span style=''>    </span><span style='background: #F0ADAD'>inboundPorts.gamesManagementPort.closeGame(in.address, in.forename)</span><span style=''>
 </span>35 <span style=''>    </span><span style='background: #F0ADAD'>Future.successful(ClosingResponse())</span><span style=''>
 </span>36 <span style=''>
-</span>37 <span style=''>  </span><span style='background: #F0ADAD'>override def newGame</span><span style=''>(in: GameMessage): Future[NewGameResponse] =
-</span>38 <span style=''>    </span><span style='background: #F0ADAD'>inboundPorts.gamesManagementPort.openNewGame(in.address, in.forename)</span><span style=''>
-</span>39 <span style=''>    </span><span style='background: #F0ADAD'>Future.successful(NewGameResponse())</span><span style=''>
+</span>37 <span style=''>  </span><span style='background: #AEF1AE'>override def newGame</span><span style=''>(in: GameMessage): Future[NewGameResponse] =
+</span>38 <span style=''>    </span><span style='background: #AEF1AE'>inboundPorts.gamesManagementPort.openNewGame(in.address, in.forename)</span><span style=''>
+</span>39 <span style=''>    </span><span style='background: #AEF1AE'>Future.successful(NewGameResponse())</span><span style=''>
 </span>40 <span style=''>
 </span>41 <span style=''>}
 </span></pre>
@@ -216,7 +216,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           override def login
         </td>
       </tr><tr>
@@ -240,7 +240,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ProtoToDomainAdapter.protoToUserCredentials(in)
         </td>
       </tr><tr>
@@ -264,7 +264,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Future.successful(LoginResult(
       inboundPorts.registerPort.loginUser(tuple._1, tuple._2)
     ))
@@ -290,7 +290,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           LoginResult
         </td>
       </tr><tr>
@@ -314,7 +314,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           inboundPorts.registerPort.loginUser(tuple._1, tuple._2)
         </td>
       </tr><tr>
@@ -338,7 +338,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           tuple._2
         </td>
       </tr><tr>
@@ -362,7 +362,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           tuple._1
         </td>
       </tr><tr>
@@ -386,7 +386,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           override def getOpenedGames
         </td>
       </tr><tr>
@@ -410,7 +410,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           inboundPorts.gamesManagementPort.getAllGames()
         </td>
       </tr><tr>
@@ -434,7 +434,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Future.successful(ProtoToDomainAdapter.protoToGames(inboundPorts.gamesManagementPort.getAllGames()))
         </td>
       </tr><tr>
@@ -458,7 +458,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ProtoToDomainAdapter.protoToGames(inboundPorts.gamesManagementPort.getAllGames())
         </td>
       </tr><tr>
@@ -482,7 +482,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           override def register
         </td>
       </tr><tr>
@@ -506,7 +506,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ProtoToDomainAdapter.protoToUserCredentials(in)
         </td>
       </tr><tr>
@@ -530,7 +530,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           tuple._1
         </td>
       </tr><tr>
@@ -554,7 +554,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           inboundPorts.registerPort.registerUser(tuple._1, tuple._2)
         </td>
       </tr><tr>
@@ -578,7 +578,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           tuple._2
         </td>
       </tr><tr>
@@ -602,7 +602,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Future.successful(LoginResult(true))
         </td>
       </tr><tr>
@@ -626,7 +626,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           LoginResult
         </td>
       </tr><tr>
@@ -746,7 +746,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           override def newGame
         </td>
       </tr><tr>
@@ -770,7 +770,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           inboundPorts.gamesManagementPort.openNewGame(in.address, in.forename)
         </td>
       </tr><tr>
@@ -794,7 +794,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Future.successful(NewGameResponse())
         </td>
       </tr><tr>
@@ -818,7 +818,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           NewGameResponse
         </td>
       </tr>
