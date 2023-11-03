@@ -32,6 +32,7 @@ class ServerTest extends AnyFunSpec with BeforeAndAfterAll with Matchers {
     val pass = mysql.getPassword()
     val accessAdapter = AccessAdapter(username = user, password = pass, connectionStringExt = url)
     val server = Service.createTestService(accessAdapter)
+    accessAdapter.createDb()
 
     override def afterAll(): Unit = 
         server.close()
