@@ -14,7 +14,16 @@ service Server {
   rpc GetOpenedGames(OpenedGamesRequest) returns (OpenedGames) { }
   rpc CloseGame(GameMessage) returns (ClosingResponse) { }
   rpc NewGame(GameMessage) returns (NewGameResponse) { }
+  rpc UpdateUserPoints(UserPoints) returns (UpdateResponse) { }
+}
 
+message UserPoints {
+  repeated string userName = 1;
+  repeated int32 points = 2;
+}
+
+message UpdateResponse {
+  bool response = 1;
 }
 
 message HelloMessage {
