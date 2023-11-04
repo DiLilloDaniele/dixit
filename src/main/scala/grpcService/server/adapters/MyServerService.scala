@@ -38,4 +38,8 @@ class MyServerService(using mat: Materializer, inboundPorts: InboundPorts) exten
     inboundPorts.gamesManagementPort.openNewGame(in.address, in.forename)
     Future.successful(NewGameResponse())
 
+  override def updateUserPoints(in: UserPoints): Future[UpdateResponse] =
+    val result: Boolean = inboundPorts.gamesManagementPort.updateUsers(in.userName.toList, in.points.toList)
+    Future.successful(UpdateResponse(result))
+
 }

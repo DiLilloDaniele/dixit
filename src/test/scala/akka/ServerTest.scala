@@ -11,7 +11,7 @@ import java.sql.{Connection, DriverManager, ResultSet, SQLException, Statement}
 
 import grpcService.client.ClientImpl
 import grpcService.server.applicationService.Service
-import grpcService.{HelloMessage, NewGameResponse, OpenedGames, LoginResult, ClosingResponse}
+import grpcService.{HelloMessage, NewGameResponse, OpenedGames, LoginResult, ClosingResponse, UserPoints, UpdateResponse}
 
 import grpcService.server.data.wrapper.MySqlContainerWrapper
 import grpcService.server.data.adapters.AccessAdapter
@@ -103,6 +103,12 @@ class ServerTest extends AnyFunSpec with BeforeAndAfterAll with Matchers {
                     assert(closingResponse.isReadyWithin(5000 millis))
                     whenReady(closingResponse) { s =>
                         s shouldBe ClosingResponse()
+                    }
+
+                    val updateResponse: Future[UpdateResponse] = client.updateUsersPoints(List("user"), List(20), (bool) => {})
+                    assert(updateResponse.isReadyWithin(5000 millis))
+                    whenReady(updateResponse) { s =>
+                        s shouldBe UpdateResponse(true)
                     }
                 }
                 

@@ -2,7 +2,7 @@ package grpcService.client
 
 import akka.actor.ActorSystem
 import akka.grpc.GrpcClientSettings
-import grpcService.{GameMessage, HelloMessage, LoginRequest, ClosingResponse, OpenedGamesRequest, Server, ServerClient, NewGameResponse, LoginResult, OpenedGames}
+import grpcService.{GameMessage, HelloMessage, UserPoints, UpdateResponse, LoginRequest, ClosingResponse, OpenedGamesRequest, Server, ServerClient, NewGameResponse, LoginResult, OpenedGames}
 
 import scala.concurrent.ExecutionContextExecutor
 import scala.util.{Failure, Success}
@@ -96,6 +96,16 @@ class ClientImpl() {
 
   def closeGame(address: String, user: String, success: SuccessFun[Boolean]): Future[ClosingResponse] =
     val reply = client.closeGame(GameMessage(address, user))
+    reply.onComplete {
+      case Success(msg) =>
+        success(true)
+      case Failure(e) =>
+        println(s"Error sayHello: $e")
+    }
+    reply
+
+  def updateUsersPoints(usernames: List[String], points: List[Int], success: SuccessFun[Boolean]): Future[UpdateResponse] =
+    val reply = client.updateUserPoints(UserPoints(usernames.toSeq, points.toSeq))
     reply.onComplete {
       case Success(msg) =>
         success(true)

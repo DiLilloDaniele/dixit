@@ -19,7 +19,8 @@ case class ServerLogic(accessRepository: AccessRepository) {
 
   def retrieveUser(userId: String) = accessRepository.selectUser(userId)
 
-  def updateUser(user: User, pointsToAdd: Int) = accessRepository.addPointsToUser(user.name, pointsToAdd)
+  // TODO da gestire lato server e proto
+  def updateUser(user: String, pointsToAdd: Int) = accessRepository.addPointsToUser(user, pointsToAdd)
 
   def removeGame(game: Game) = openGames = openGames - game
 
@@ -27,7 +28,7 @@ case class ServerLogic(accessRepository: AccessRepository) {
 
   def newGame(game: Game) = openGames = openGames + game
 
-  def login(user: User): Boolean = accessRepository.selectUser(user.name) match
+  def login(user: User): Boolean = retrieveUser(user.name) match
     case Some(_user) => _user.password == user.password
     case _ => false
     
