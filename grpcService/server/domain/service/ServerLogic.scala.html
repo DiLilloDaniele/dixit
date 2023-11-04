@@ -41,21 +41,22 @@
 </span>17 <span style=''>
 </span>18 <span style=''>  </span><span style='background: #AEF1AE'>def registerNewUser</span><span style=''>(user: User, password: String) = </span><span style='background: #AEF1AE'>accessRepository.insertNewUser(user.name, password)</span><span style=''>
 </span>19 <span style=''>
-</span>20 <span style=''>  </span><span style='background: #F0ADAD'>def retrieveUser</span><span style=''>(userId: String) = </span><span style='background: #F0ADAD'>accessRepository.selectUser(userId)</span><span style=''>
+</span>20 <span style=''>  </span><span style='background: #AEF1AE'>def retrieveUser</span><span style=''>(userId: String) = </span><span style='background: #AEF1AE'>accessRepository.selectUser(userId)</span><span style=''>
 </span>21 <span style=''>
-</span>22 <span style=''>  </span><span style='background: #F0ADAD'>def updateUser</span><span style=''>(user: User, pointsToAdd: Int) = </span><span style='background: #F0ADAD'>accessRepository.addPointsToUser(user.name, pointsToAdd)</span><span style=''>
-</span>23 <span style=''>
-</span>24 <span style=''>  </span><span style='background: #AEF1AE'>def removeGame</span><span style=''>(game: Game) = openGames = </span><span style='background: #AEF1AE'>openGames - game</span><span style=''>
-</span>25 <span style=''>
-</span>26 <span style=''>  </span><span style='background: #AEF1AE'>def getGames</span><span style=''>() = openGames
-</span>27 <span style=''>
-</span>28 <span style=''>  </span><span style='background: #AEF1AE'>def newGame</span><span style=''>(game: Game) = openGames = </span><span style='background: #AEF1AE'>openGames + game</span><span style=''>
-</span>29 <span style=''>
-</span>30 <span style=''>  </span><span style='background: #AEF1AE'>def login</span><span style=''>(user: User): Boolean = </span><span style='background: #AEF1AE'>accessRepository.selectUser(user.name)</span><span style=''> match
-</span>31 <span style=''>    </span><span style='background: #AEF1AE'>case Some(_user)</span><span style=''> =&gt; _user.password == user.password
-</span>32 <span style=''>    </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt; false
-</span>33 <span style=''>    
-</span>34 <span style=''>}
+</span>22 <span style=''>  // TODO da gestire lato server e proto
+</span>23 <span style=''>  </span><span style='background: #AEF1AE'>def updateUser</span><span style=''>(user: String, pointsToAdd: Int) = </span><span style='background: #AEF1AE'>accessRepository.addPointsToUser(user, pointsToAdd)</span><span style=''>
+</span>24 <span style=''>
+</span>25 <span style=''>  </span><span style='background: #AEF1AE'>def removeGame</span><span style=''>(game: Game) = openGames = </span><span style='background: #AEF1AE'>openGames - game</span><span style=''>
+</span>26 <span style=''>
+</span>27 <span style=''>  </span><span style='background: #AEF1AE'>def getGames</span><span style=''>() = openGames
+</span>28 <span style=''>
+</span>29 <span style=''>  </span><span style='background: #AEF1AE'>def newGame</span><span style=''>(game: Game) = openGames = </span><span style='background: #AEF1AE'>openGames + game</span><span style=''>
+</span>30 <span style=''>
+</span>31 <span style=''>  </span><span style='background: #AEF1AE'>def login</span><span style=''>(user: User): Boolean = </span><span style='background: #AEF1AE'>retrieveUser(user.name)</span><span style=''> match
+</span>32 <span style=''>    </span><span style='background: #AEF1AE'>case Some(_user)</span><span style=''> =&gt; _user.password == user.password
+</span>33 <span style=''>    </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt; false
+</span>34 <span style=''>    
+</span>35 <span style=''>}
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -73,7 +74,7 @@
           7
         </td>
         <td>
-          1537
+          1568
         </td>
         <td>
           180
@@ -97,7 +98,7 @@
           8
         </td>
         <td>
-          1532
+          1563
         </td>
         <td>
           216
@@ -121,31 +122,7 @@
           10
         </td>
         <td>
-          1533
-        </td>
-        <td>
-          269
-          -
-          281
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          print
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          print(_user)
-        </td>
-      </tr><tr>
-        <td>
-          10
-        </td>
-        <td>
-          1534
+          1565
         </td>
         <td>
           249
@@ -166,34 +143,34 @@
         </td>
       </tr><tr>
         <td>
-          11
+          10
         </td>
         <td>
-          1536
+          1564
         </td>
         <td>
-          288
+          269
           -
-          294
+          281
         </td>
         <td>
-          Block
+          Apply
         </td>
         <td>
-          &lt;none&gt;
+          print
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          case _
+          print(_user)
         </td>
       </tr><tr>
         <td>
           11
         </td>
         <td>
-          1535
+          1566
         </td>
         <td>
           298
@@ -214,10 +191,34 @@
         </td>
       </tr><tr>
         <td>
+          11
+        </td>
+        <td>
+          1567
+        </td>
+        <td>
+          288
+          -
+          294
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr><tr>
+        <td>
           15
         </td>
         <td>
-          1538
+          1569
         </td>
         <td>
           420
@@ -241,31 +242,7 @@
           17
         </td>
         <td>
-          1539
-        </td>
-        <td>
-          481
-          -
-          532
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          insertNewUser
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          accessRepository.insertNewUser(user.name, password)
-        </td>
-      </tr><tr>
-        <td>
-          17
-        </td>
-        <td>
-          1540
+          1571
         </td>
         <td>
           429
@@ -286,34 +263,34 @@
         </td>
       </tr><tr>
         <td>
-          19
+          17
         </td>
         <td>
-          1542
+          1570
         </td>
         <td>
-          536
+          481
           -
-          552
+          532
         </td>
         <td>
-          DefDef
+          Apply
         </td>
         <td>
-          retrieveUser
+          insertNewUser
         </td>
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
-          def retrieveUser
+        <td style="background: #AEF1AE">
+          accessRepository.insertNewUser(user.name, password)
         </td>
       </tr><tr>
         <td>
           19
         </td>
         <td>
-          1541
+          1572
         </td>
         <td>
           571
@@ -329,20 +306,44 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           accessRepository.selectUser(userId)
         </td>
       </tr><tr>
         <td>
-          21
+          19
         </td>
         <td>
-          1544
+          1573
         </td>
         <td>
-          610
+          536
           -
-          624
+          552
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          retrieveUser
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def retrieveUser
+        </td>
+      </tr><tr>
+        <td>
+          22
+        </td>
+        <td>
+          1575
+        </td>
+        <td>
+          651
+          -
+          665
         </td>
         <td>
           DefDef
@@ -353,20 +354,20 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def updateUser
         </td>
       </tr><tr>
         <td>
-          21
+          22
         </td>
         <td>
-          1543
+          1574
         </td>
         <td>
-          657
+          700
           -
-          713
+          751
         </td>
         <td>
           Apply
@@ -377,44 +378,20 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
-          accessRepository.addPointsToUser(user.name, pointsToAdd)
-        </td>
-      </tr><tr>
-        <td>
-          23
-        </td>
-        <td>
-          1545
-        </td>
-        <td>
-          758
-          -
-          774
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          -
-        </td>
-        <td>
-          
-        </td>
         <td style="background: #AEF1AE">
-          openGames - game
+          accessRepository.addPointsToUser(user, pointsToAdd)
         </td>
       </tr><tr>
         <td>
-          23
+          24
         </td>
         <td>
-          1546
+          1577
         </td>
         <td>
-          717
+          755
           -
-          731
+          769
         </td>
         <td>
           DefDef
@@ -430,15 +407,39 @@
         </td>
       </tr><tr>
         <td>
-          25
+          24
         </td>
         <td>
-          1547
+          1576
         </td>
         <td>
-          778
+          796
           -
-          790
+          812
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          -
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          openGames - game
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          1578
+        </td>
+        <td>
+          816
+          -
+          828
         </td>
         <td>
           DefDef
@@ -454,39 +455,15 @@
         </td>
       </tr><tr>
         <td>
-          27
+          28
         </td>
         <td>
-          1548
+          1580
         </td>
         <td>
           846
           -
-          862
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          openGames + game
-        </td>
-      </tr><tr>
-        <td>
-          27
-        </td>
-        <td>
-          1549
-        </td>
-        <td>
-          808
-          -
-          819
+          857
         </td>
         <td>
           DefDef
@@ -502,39 +479,63 @@
         </td>
       </tr><tr>
         <td>
-          29
+          28
         </td>
         <td>
-          1550
+          1579
         </td>
         <td>
-          899
+          884
           -
-          937
+          900
         </td>
         <td>
           Apply
         </td>
         <td>
-          selectUser
+          +
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          accessRepository.selectUser(user.name)
+          openGames + game
         </td>
       </tr><tr>
         <td>
-          29
+          30
         </td>
         <td>
-          1553
+          1581
         </td>
         <td>
-          866
+          937
           -
-          875
+          960
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          retrieveUser
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          retrieveUser(user.name)
+        </td>
+      </tr><tr>
+        <td>
+          30
+        </td>
+        <td>
+          1584
+        </td>
+        <td>
+          904
+          -
+          913
         </td>
         <td>
           DefDef
@@ -550,15 +551,15 @@
         </td>
       </tr><tr>
         <td>
-          30
+          31
         </td>
         <td>
-          1551
+          1582
         </td>
         <td>
-          948
+          971
           -
-          964
+          987
         </td>
         <td>
           Block
@@ -574,15 +575,15 @@
         </td>
       </tr><tr>
         <td>
-          31
+          32
         </td>
         <td>
-          1552
+          1583
         </td>
         <td>
-          1004
+          1027
           -
-          1010
+          1033
         </td>
         <td>
           Block

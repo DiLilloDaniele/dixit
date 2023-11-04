@@ -91,8 +91,8 @@
 </span>67 <span style=''></span><span style='background: #F0ADAD'>        replyTo ! PlayerBehavior.MemberKO
 </span>68 <span style=''></span><span style='background: #F0ADAD'>        Behaviors.same
 </span>69 <span style=''></span><span style='background: #F0ADAD'>      }</span><span style='background: #AEF1AE'>
-</span>70 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case PlayerExited</span><span style='background: #AEF1AE'> =&gt;
-</span>71 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>waitPlayers(maxPlayers, currentNumPlayers - 1, foreman)</span><span style='background: #AEF1AE'>
+</span>70 <span style=''></span><span style='background: #AEF1AE'>    case PlayerExited =&gt;
+</span>71 <span style=''></span><span style='background: #AEF1AE'>      waitPlayers(maxPlayers, currentNumPlayers - 1, foreman)
 </span>72 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt;
 </span>73 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
 </span>74 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
@@ -148,7 +148,7 @@
           13
         </td>
         <td>
-          684
+          695
         </td>
         <td>
           585
@@ -172,7 +172,7 @@
           23
         </td>
         <td>
-          711
+          722
         </td>
         <td>
           904
@@ -196,7 +196,7 @@
           24
         </td>
         <td>
-          710
+          721
         </td>
         <td>
           1000
@@ -235,103 +235,7 @@
           25
         </td>
         <td>
-          687
-        </td>
-        <td>
-          1040
-          -
-          1063
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          ActorRefOps
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ctx.system.receptionist
-        </td>
-      </tr><tr>
-        <td>
-          25
-        </td>
-        <td>
-          690
-        </td>
-        <td>
-          1040
-          -
-          1106
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          !
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
-        </td>
-      </tr><tr>
-        <td>
-          25
-        </td>
-        <td>
-          686
-        </td>
-        <td>
-          1040
-          -
-          1063
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          receptionist
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ctx.system.receptionist
-        </td>
-      </tr><tr>
-        <td>
-          25
-        </td>
-        <td>
-          689
-        </td>
-        <td>
-          1066
-          -
-          1106
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          apply
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          Receptionist.Register(Service, ctx.self)
-        </td>
-      </tr><tr>
-        <td>
-          25
-        </td>
-        <td>
-          685
+          696
         </td>
         <td>
           1040
@@ -355,7 +259,7 @@
           25
         </td>
         <td>
-          688
+          699
         </td>
         <td>
           1097
@@ -376,58 +280,130 @@
         </td>
       </tr><tr>
         <td>
-          26
+          25
         </td>
         <td>
-          693
+          701
         </td>
         <td>
-          1127
+          1040
           -
-          1136
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          spawn$default$3
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ctx.spawn
-        </td>
-      </tr><tr>
-        <td>
-          26
-        </td>
-        <td>
-          692
-        </td>
-        <td>
-          1137
-          -
-          1245
+          1106
         </td>
         <td>
           Apply
         </td>
         <td>
-          setup
+          !
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          Behaviors.setup[PlayersManagerBehavior.Command](ctx =&gt; PlayersManagerBehaviorImpl(ctx, maxPlayers, foreman))
+          ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
+        </td>
+      </tr><tr>
+        <td>
+          25
+        </td>
+        <td>
+          698
+        </td>
+        <td>
+          1040
+          -
+          1063
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.system.receptionist
+        </td>
+      </tr><tr>
+        <td>
+          25
+        </td>
+        <td>
+          697
+        </td>
+        <td>
+          1040
+          -
+          1063
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          receptionist
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.system.receptionist
+        </td>
+      </tr><tr>
+        <td>
+          25
+        </td>
+        <td>
+          700
+        </td>
+        <td>
+          1066
+          -
+          1106
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Receptionist.Register(Service, ctx.self)
         </td>
       </tr><tr>
         <td>
           26
         </td>
         <td>
-          691
+          705
+        </td>
+        <td>
+          1127
+          -
+          1257
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          spawn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx =&gt; PlayersManagerBehaviorImpl(ctx, maxPlayers, foreman)), &quot;manager&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          702
         </td>
         <td>
           1192
@@ -451,31 +427,55 @@
           26
         </td>
         <td>
-          694
+          704
         </td>
         <td>
           1127
           -
-          1257
+          1136
         </td>
         <td>
-          Apply
+          Select
         </td>
         <td>
-          spawn
+          spawn$default$3
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx =&gt; PlayersManagerBehaviorImpl(ctx, maxPlayers, foreman)), &quot;manager&quot;)
+          ctx.spawn
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          703
+        </td>
+        <td>
+          1137
+          -
+          1245
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setup
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.setup[PlayersManagerBehavior.Command](ctx =&gt; PlayersManagerBehaviorImpl(ctx, maxPlayers, foreman))
         </td>
       </tr><tr>
         <td>
           27
         </td>
         <td>
-          696
+          707
         </td>
         <td>
           1264
@@ -499,7 +499,7 @@
           27
         </td>
         <td>
-          695
+          706
         </td>
         <td>
           1264
@@ -523,7 +523,7 @@
           28
         </td>
         <td>
-          697
+          708
         </td>
         <td>
           1288
@@ -547,7 +547,7 @@
           29
         </td>
         <td>
-          702
+          713
         </td>
         <td>
           1313
@@ -575,7 +575,7 @@
           30
         </td>
         <td>
-          701
+          712
         </td>
         <td>
           1357
@@ -599,7 +599,7 @@
           31
         </td>
         <td>
-          699
+          710
         </td>
         <td>
           1388
@@ -623,7 +623,7 @@
           31
         </td>
         <td>
-          698
+          709
         </td>
         <td>
           1388
@@ -647,7 +647,7 @@
           32
         </td>
         <td>
-          700
+          711
         </td>
         <td>
           1412
@@ -671,31 +671,7 @@
           33
         </td>
         <td>
-          708
-        </td>
-        <td>
-          1451
-          -
-          1480
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          case (ctx, t @ Terminated(_))
-        </td>
-      </tr><tr>
-        <td>
-          33
-        </td>
-        <td>
-          709
+          720
         </td>
         <td>
           1313
@@ -724,34 +700,34 @@
         </td>
       </tr><tr>
         <td>
-          34
+          33
         </td>
         <td>
-          704
+          719
         </td>
         <td>
-          1492
+          1451
           -
-          1550
+          1480
         </td>
         <td>
-          Apply
+          Block
         </td>
         <td>
-          info
+          &lt;none&gt;
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          ctx.log.info(&quot;[MANAGER] System terminated. Shutting down&quot;)
+          case (ctx, t @ Terminated(_))
         </td>
       </tr><tr>
         <td>
           34
         </td>
         <td>
-          703
+          714
         </td>
         <td>
           1492
@@ -772,34 +748,34 @@
         </td>
       </tr><tr>
         <td>
-          35
+          34
         </td>
         <td>
-          705
+          715
         </td>
         <td>
-          1559
+          1492
           -
-          1566
+          1550
         </td>
         <td>
           Apply
         </td>
         <td>
-          ActorRefOps
+          info
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          manager
+          ctx.log.info(&quot;[MANAGER] System terminated. Shutting down&quot;)
         </td>
       </tr><tr>
         <td>
           35
         </td>
         <td>
-          706
+          717
         </td>
         <td>
           1559
@@ -820,10 +796,34 @@
         </td>
       </tr><tr>
         <td>
+          35
+        </td>
+        <td>
+          716
+        </td>
+        <td>
+          1559
+          -
+          1566
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          manager
+        </td>
+      </tr><tr>
+        <td>
           36
         </td>
         <td>
-          707
+          718
         </td>
         <td>
           1582
@@ -847,7 +847,7 @@
           45
         </td>
         <td>
-          712
+          723
         </td>
         <td>
           1819
@@ -871,7 +871,7 @@
           47
         </td>
         <td>
-          713
+          724
         </td>
         <td>
           1916
@@ -895,7 +895,7 @@
           49
         </td>
         <td>
-          718
+          729
         </td>
         <td>
           1926
@@ -919,31 +919,7 @@
           50
         </td>
         <td>
-          714
-        </td>
-        <td>
-          2016
-          -
-          2051
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          waitPlayers
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          waitPlayers(maxPlayers, 0, foreman)
-        </td>
-      </tr><tr>
-        <td>
-          50
-        </td>
-        <td>
-          715
+          726
         </td>
         <td>
           2000
@@ -964,10 +940,34 @@
         </td>
       </tr><tr>
         <td>
+          50
+        </td>
+        <td>
+          725
+        </td>
+        <td>
+          2016
+          -
+          2051
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          waitPlayers
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          waitPlayers(maxPlayers, 0, foreman)
+        </td>
+      </tr><tr>
+        <td>
           51
         </td>
         <td>
-          717
+          728
         </td>
         <td>
           2056
@@ -991,7 +991,7 @@
           51
         </td>
         <td>
-          716
+          727
         </td>
         <td>
           2066
@@ -1015,31 +1015,7 @@
           54
         </td>
         <td>
-          740
-        </td>
-        <td>
-          2088
-          -
-          2103
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          waitPlayers
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          def waitPlayers
-        </td>
-      </tr><tr>
-        <td>
-          54
-        </td>
-        <td>
-          739
+          750
         </td>
         <td>
           2210
@@ -1079,10 +1055,34 @@
         </td>
       </tr><tr>
         <td>
+          54
+        </td>
+        <td>
+          751
+        </td>
+        <td>
+          2088
+          -
+          2103
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          waitPlayers
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def waitPlayers
+        </td>
+      </tr><tr>
+        <td>
           55
         </td>
         <td>
-          734
+          745
         </td>
         <td>
           2250
@@ -1106,7 +1106,7 @@
           57
         </td>
         <td>
-          729
+          740
         </td>
         <td>
           2365
@@ -1138,7 +1138,7 @@
           58
         </td>
         <td>
-          719
+          730
         </td>
         <td>
           2389
@@ -1162,31 +1162,7 @@
           59
         </td>
         <td>
-          720
-        </td>
-        <td>
-          2420
-          -
-          2427
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          ActorRefOps
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          replyTo
-        </td>
-      </tr><tr>
-        <td>
-          59
-        </td>
-        <td>
-          721
+          732
         </td>
         <td>
           2420
@@ -1207,10 +1183,83 @@
         </td>
       </tr><tr>
         <td>
+          59
+        </td>
+        <td>
+          731
+        </td>
+        <td>
+          2420
+          -
+          2427
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          replyTo
+        </td>
+      </tr><tr>
+        <td>
           61
         </td>
         <td>
-          723
+          735
+        </td>
+        <td>
+          2505
+          -
+          2555
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          foreman ! ForemanBehavior.Start(playersList.toSet)
+        </td>
+      </tr><tr>
+        <td>
+          61
+        </td>
+        <td>
+          737
+        </td>
+        <td>
+          2505
+          -
+          2609
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          foreman ! ForemanBehavior.Start(playersList.toSet)
+          gameOn(maxPlayers, currentPlayers, foreman)
+        </td>
+      </tr><tr>
+        <td>
+          61
+        </td>
+        <td>
+          734
         </td>
         <td>
           2537
@@ -1234,32 +1283,7 @@
           61
         </td>
         <td>
-          726
-        </td>
-        <td>
-          2505
-          -
-          2609
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          foreman ! ForemanBehavior.Start(playersList.toSet)
-          gameOn(maxPlayers, currentPlayers, foreman)
-        </td>
-      </tr><tr>
-        <td>
-          61
-        </td>
-        <td>
-          722
+          733
         </td>
         <td>
           2505
@@ -1280,34 +1304,10 @@
         </td>
       </tr><tr>
         <td>
-          61
-        </td>
-        <td>
-          724
-        </td>
-        <td>
-          2505
-          -
-          2555
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          !
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          foreman ! ForemanBehavior.Start(playersList.toSet)
-        </td>
-      </tr><tr>
-        <td>
           62
         </td>
         <td>
-          725
+          736
         </td>
         <td>
           2566
@@ -1331,31 +1331,7 @@
           64
         </td>
         <td>
-          728
-        </td>
-        <td>
-          2633
-          -
-          2681
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          waitPlayers(maxPlayers, currentPlayers, foreman)
-        </td>
-      </tr><tr>
-        <td>
-          64
-        </td>
-        <td>
-          727
+          738
         </td>
         <td>
           2633
@@ -1376,10 +1352,34 @@
         </td>
       </tr><tr>
         <td>
+          64
+        </td>
+        <td>
+          739
+        </td>
+        <td>
+          2633
+          -
+          2681
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          waitPlayers(maxPlayers, currentPlayers, foreman)
+        </td>
+      </tr><tr>
+        <td>
           65
         </td>
         <td>
-          733
+          744
         </td>
         <td>
           2695
@@ -1406,31 +1406,7 @@
           66
         </td>
         <td>
-          731
-        </td>
-        <td>
-          2705
-          -
-          2738
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          !
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          replyTo ! PlayerBehavior.MemberKO
-        </td>
-      </tr><tr>
-        <td>
-          66
-        </td>
-        <td>
-          730
+          741
         </td>
         <td>
           2705
@@ -1451,10 +1427,34 @@
         </td>
       </tr><tr>
         <td>
+          66
+        </td>
+        <td>
+          742
+        </td>
+        <td>
+          2705
+          -
+          2738
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          replyTo ! PlayerBehavior.MemberKO
+        </td>
+      </tr><tr>
+        <td>
           67
         </td>
         <td>
-          732
+          743
         </td>
         <td>
           2747
@@ -1478,7 +1478,7 @@
           69
         </td>
         <td>
-          736
+          747
         </td>
         <td>
           2774
@@ -1494,7 +1494,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case PlayerExited
         </td>
       </tr><tr>
@@ -1502,7 +1502,7 @@
           70
         </td>
         <td>
-          735
+          746
         </td>
         <td>
           2801
@@ -1518,7 +1518,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           waitPlayers(maxPlayers, currentNumPlayers - 1, foreman)
         </td>
       </tr><tr>
@@ -1526,7 +1526,7 @@
           71
         </td>
         <td>
-          738
+          749
         </td>
         <td>
           2861
@@ -1550,7 +1550,7 @@
           72
         </td>
         <td>
-          737
+          748
         </td>
         <td>
           2877
@@ -1574,7 +1574,7 @@
           75
         </td>
         <td>
-          786
+          797
         </td>
         <td>
           2899
@@ -1598,7 +1598,7 @@
           75
         </td>
         <td>
-          785
+          796
         </td>
         <td>
           3016
@@ -1655,7 +1655,7 @@
           76
         </td>
         <td>
-          758
+          769
         </td>
         <td>
           3056
@@ -1679,7 +1679,31 @@
           77
         </td>
         <td>
-          741
+          753
+        </td>
+        <td>
+          3134
+          -
+          3148
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          address
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          i.path.address
+        </td>
+      </tr><tr>
+        <td>
+          77
+        </td>
+        <td>
+          752
         </td>
         <td>
           3134
@@ -1703,7 +1727,7 @@
           77
         </td>
         <td>
-          743
+          754
         </td>
         <td>
           3111
@@ -1724,15 +1748,15 @@
         </td>
       </tr><tr>
         <td>
-          77
+          78
         </td>
         <td>
-          742
+          756
         </td>
         <td>
-          3134
+          3194
           -
-          3148
+          3214
         </td>
         <td>
           Select
@@ -1744,14 +1768,14 @@
           
         </td>
         <td style="background: #AEF1AE">
-          i.path.address
+          replyTo.path.address
         </td>
       </tr><tr>
         <td>
           78
         </td>
         <td>
-          744
+          755
         </td>
         <td>
           3194
@@ -1775,7 +1799,7 @@
           78
         </td>
         <td>
-          746
+          757
         </td>
         <td>
           3168
@@ -1796,58 +1820,34 @@
         </td>
       </tr><tr>
         <td>
-          78
-        </td>
-        <td>
-          745
-        </td>
-        <td>
-          3194
-          -
-          3214
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          address
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          replyTo.path.address
-        </td>
-      </tr><tr>
-        <td>
           79
         </td>
         <td>
-          747
+          759
         </td>
         <td>
           3234
           -
-          3245
+          3278
         </td>
         <td>
-          Select
+          Apply
         </td>
         <td>
-          log
+          info
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          context.log
+          context.log.info(&quot;un giocatore è rientrato&quot;)
         </td>
       </tr><tr>
         <td>
           79
         </td>
         <td>
-          756
+          767
         </td>
         <td>
           3234
@@ -1874,31 +1874,31 @@
           79
         </td>
         <td>
-          748
+          758
         </td>
         <td>
           3234
           -
-          3278
+          3245
         </td>
         <td>
-          Apply
+          Select
         </td>
         <td>
-          info
+          log
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          context.log.info(&quot;un giocatore è rientrato&quot;)
+          context.log
         </td>
       </tr><tr>
         <td>
           80
         </td>
         <td>
-          750
+          761
         </td>
         <td>
           3287
@@ -1922,7 +1922,7 @@
           80
         </td>
         <td>
-          749
+          760
         </td>
         <td>
           3287
@@ -1946,55 +1946,31 @@
           81
         </td>
         <td>
-          753
+          765
         </td>
         <td>
-          3370
+          3329
           -
-          3390
+          3400
         </td>
         <td>
-          Select
+          Apply
         </td>
         <td>
-          address
+          !
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          replyTo.path.address
+          foreman ! ForemanBehavior.PlayerRejoined(replyTo.path.address.toString)
         </td>
       </tr><tr>
         <td>
           81
         </td>
         <td>
-          752
-        </td>
-        <td>
-          3370
-          -
-          3382
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          path
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          replyTo.path
-        </td>
-      </tr><tr>
-        <td>
-          81
-        </td>
-        <td>
-          751
+          762
         </td>
         <td>
           3329
@@ -2018,31 +1994,55 @@
           81
         </td>
         <td>
-          754
+          764
         </td>
         <td>
-          3329
+          3370
           -
-          3400
+          3390
         </td>
         <td>
-          Apply
+          Select
         </td>
         <td>
-          !
+          address
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          foreman ! ForemanBehavior.PlayerRejoined(replyTo.path.address.toString)
+          replyTo.path.address
+        </td>
+      </tr><tr>
+        <td>
+          81
+        </td>
+        <td>
+          763
+        </td>
+        <td>
+          3370
+          -
+          3382
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          path
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          replyTo.path
         </td>
       </tr><tr>
         <td>
           82
         </td>
         <td>
-          755
+          766
         </td>
         <td>
           3409
@@ -2066,7 +2066,7 @@
           84
         </td>
         <td>
-          757
+          768
         </td>
         <td>
           3479
@@ -2090,7 +2090,7 @@
           85
         </td>
         <td>
-          765
+          776
         </td>
         <td>
           3527
@@ -2114,31 +2114,7 @@
           87
         </td>
         <td>
-          759
-        </td>
-        <td>
-          3603
-          -
-          3614
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          log
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          context.log
-        </td>
-      </tr><tr>
-        <td>
-          87
-        </td>
-        <td>
-          760
+          771
         </td>
         <td>
           3603
@@ -2159,10 +2135,34 @@
         </td>
       </tr><tr>
         <td>
+          87
+        </td>
+        <td>
+          770
+        </td>
+        <td>
+          3603
+          -
+          3614
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
           88
         </td>
         <td>
-          764
+          775
         </td>
         <td>
           3654
@@ -2189,7 +2189,7 @@
           89
         </td>
         <td>
-          762
+          773
         </td>
         <td>
           3694
@@ -2213,7 +2213,7 @@
           89
         </td>
         <td>
-          761
+          772
         </td>
         <td>
           3731
@@ -2237,7 +2237,7 @@
           90
         </td>
         <td>
-          763
+          774
         </td>
         <td>
           3759
@@ -2261,7 +2261,7 @@
           93
         </td>
         <td>
-          779
+          790
         </td>
         <td>
           3816
@@ -2285,31 +2285,7 @@
           94
         </td>
         <td>
-          767
-        </td>
-        <td>
-          3843
-          -
-          3874
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          info
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          context.log.info(&quot;Checcko....&quot;)
-        </td>
-      </tr><tr>
-        <td>
-          94
-        </td>
-        <td>
-          766
+          777
         </td>
         <td>
           3843
@@ -2330,10 +2306,58 @@
         </td>
       </tr><tr>
         <td>
+          94
+        </td>
+        <td>
+          778
+        </td>
+        <td>
+          3843
+          -
+          3874
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log.info(&quot;Checcko....&quot;)
+        </td>
+      </tr><tr>
+        <td>
           96
         </td>
         <td>
-          774
+          779
+        </td>
+        <td>
+          3924
+          -
+          3935
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          96
+        </td>
+        <td>
+          785
         </td>
         <td>
           3924
@@ -2359,31 +2383,7 @@
           96
         </td>
         <td>
-          768
-        </td>
-        <td>
-          3924
-          -
-          3935
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          log
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          context.log
-        </td>
-      </tr><tr>
-        <td>
-          96
-        </td>
-        <td>
-          769
+          780
         </td>
         <td>
           3924
@@ -2407,7 +2407,31 @@
           97
         </td>
         <td>
-          771
+          783
+        </td>
+        <td>
+          3962
+          -
+          3981
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.self ! Stop
+        </td>
+      </tr><tr>
+        <td>
+          97
+        </td>
+        <td>
+          782
         </td>
         <td>
           3962
@@ -2431,7 +2455,7 @@
           97
         </td>
         <td>
-          770
+          781
         </td>
         <td>
           3962
@@ -2452,34 +2476,10 @@
         </td>
       </tr><tr>
         <td>
-          97
-        </td>
-        <td>
-          772
-        </td>
-        <td>
-          3962
-          -
-          3981
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          !
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          context.self ! Stop
-        </td>
-      </tr><tr>
-        <td>
           98
         </td>
         <td>
-          773
+          784
         </td>
         <td>
           3990
@@ -2503,31 +2503,7 @@
           100
         </td>
         <td>
-          776
-        </td>
-        <td>
-          4024
-          -
-          4056
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          info
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          context.log.info(&quot;NO stop game&quot;)
-        </td>
-      </tr><tr>
-        <td>
-          100
-        </td>
-        <td>
-          775
+          786
         </td>
         <td>
           4024
@@ -2551,7 +2527,31 @@
           100
         </td>
         <td>
-          778
+          787
+        </td>
+        <td>
+          4024
+          -
+          4056
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log.info(&quot;NO stop game&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          100
+        </td>
+        <td>
+          789
         </td>
         <td>
           4024
@@ -2576,7 +2576,7 @@
           101
         </td>
         <td>
-          777
+          788
         </td>
         <td>
           4065
@@ -2600,7 +2600,7 @@
           103
         </td>
         <td>
-          784
+          795
         </td>
         <td>
           4085
@@ -2624,7 +2624,7 @@
           104
         </td>
         <td>
-          782
+          793
         </td>
         <td>
           4104
@@ -2650,7 +2650,7 @@
           105
         </td>
         <td>
-          781
+          792
         </td>
         <td>
           4139
@@ -2674,7 +2674,7 @@
           105
         </td>
         <td>
-          780
+          791
         </td>
         <td>
           4139
@@ -2698,7 +2698,7 @@
           107
         </td>
         <td>
-          783
+          794
         </td>
         <td>
           4246

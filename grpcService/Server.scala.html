@@ -52,132 +52,153 @@
 </span>28 <span style=''>  
 </span>29 <span style=''>  def newGame(in: grpcService.GameMessage): scala.concurrent.Future[grpcService.NewGameResponse]
 </span>30 <span style=''>  
-</span>31 <span style=''>}
-</span>32 <span style=''>
-</span>33 <span style=''>
-</span>34 <span style=''>
-</span>35 <span style=''>@AkkaGrpcGenerated
-</span>36 <span style=''>object Server extends akka.grpc.ServiceDescription {
-</span>37 <span style=''>  val name = &quot;grpcService.Server&quot;
-</span>38 <span style=''>
-</span>39 <span style=''>  val descriptor: com.google.protobuf.Descriptors.FileDescriptor =
-</span>40 <span style=''>    grpcService.MessagesProto.javaDescriptor;
+</span>31 <span style=''>  
+</span>32 <span style=''>  def updateUserPoints(in: grpcService.UserPoints): scala.concurrent.Future[grpcService.UpdateResponse]
+</span>33 <span style=''>  
+</span>34 <span style=''>}
+</span>35 <span style=''>
+</span>36 <span style=''>
+</span>37 <span style=''>
+</span>38 <span style=''>@AkkaGrpcGenerated
+</span>39 <span style=''>object Server extends akka.grpc.ServiceDescription {
+</span>40 <span style=''>  val name = &quot;grpcService.Server&quot;
 </span>41 <span style=''>
-</span>42 <span style=''>  object Serializers {
-</span>43 <span style=''>    import akka.grpc.scaladsl.ScalapbProtobufSerializer
-</span>44 <span style=''>    
-</span>45 <span style=''>    val HelloMessageSerializer = </span><span style='background: #AEF1AE'>new ScalapbProtobufSerializer(grpcService.HelloMessage.messageCompanion)</span><span style=''>
-</span>46 <span style=''>    
-</span>47 <span style=''>    val LoginRequestSerializer = </span><span style='background: #AEF1AE'>new ScalapbProtobufSerializer(grpcService.LoginRequest.messageCompanion)</span><span style=''>
-</span>48 <span style=''>    
-</span>49 <span style=''>    val OpenedGamesRequestSerializer = </span><span style='background: #AEF1AE'>new ScalapbProtobufSerializer(grpcService.OpenedGamesRequest.messageCompanion)</span><span style=''>
-</span>50 <span style=''>    
-</span>51 <span style=''>    val GameMessageSerializer = </span><span style='background: #AEF1AE'>new ScalapbProtobufSerializer(grpcService.GameMessage.messageCompanion)</span><span style=''>
-</span>52 <span style=''>    
-</span>53 <span style=''>    val LoginResultSerializer = </span><span style='background: #AEF1AE'>new ScalapbProtobufSerializer(grpcService.LoginResult.messageCompanion)</span><span style=''>
-</span>54 <span style=''>    
-</span>55 <span style=''>    val OpenedGamesSerializer = </span><span style='background: #AEF1AE'>new ScalapbProtobufSerializer(grpcService.OpenedGames.messageCompanion)</span><span style=''>
-</span>56 <span style=''>    
-</span>57 <span style=''>    val ClosingResponseSerializer = </span><span style='background: #AEF1AE'>new ScalapbProtobufSerializer(grpcService.ClosingResponse.messageCompanion)</span><span style=''>
-</span>58 <span style=''>    
-</span>59 <span style=''>    val NewGameResponseSerializer = </span><span style='background: #AEF1AE'>new ScalapbProtobufSerializer(grpcService.NewGameResponse.messageCompanion)</span><span style=''>
-</span>60 <span style=''>    
-</span>61 <span style=''>  }
-</span>62 <span style=''>
-</span>63 <span style=''>  @ApiMayChange
-</span>64 <span style=''>  @AkkaGrpcGenerated
-</span>65 <span style=''>  object MethodDescriptors {
-</span>66 <span style=''>    import akka.grpc.internal.Marshaller
-</span>67 <span style=''>    import io.grpc.MethodDescriptor
-</span>68 <span style=''>    import Serializers._
+</span>42 <span style=''>  val descriptor: com.google.protobuf.Descriptors.FileDescriptor =
+</span>43 <span style=''>    grpcService.MessagesProto.javaDescriptor;
+</span>44 <span style=''>
+</span>45 <span style=''>  object Serializers {
+</span>46 <span style=''>    import akka.grpc.scaladsl.ScalapbProtobufSerializer
+</span>47 <span style=''>    
+</span>48 <span style=''>    val HelloMessageSerializer = </span><span style='background: #AEF1AE'>new ScalapbProtobufSerializer(grpcService.HelloMessage.messageCompanion)</span><span style=''>
+</span>49 <span style=''>    
+</span>50 <span style=''>    val LoginRequestSerializer = </span><span style='background: #AEF1AE'>new ScalapbProtobufSerializer(grpcService.LoginRequest.messageCompanion)</span><span style=''>
+</span>51 <span style=''>    
+</span>52 <span style=''>    val OpenedGamesRequestSerializer = </span><span style='background: #AEF1AE'>new ScalapbProtobufSerializer(grpcService.OpenedGamesRequest.messageCompanion)</span><span style=''>
+</span>53 <span style=''>    
+</span>54 <span style=''>    val GameMessageSerializer = </span><span style='background: #AEF1AE'>new ScalapbProtobufSerializer(grpcService.GameMessage.messageCompanion)</span><span style=''>
+</span>55 <span style=''>    
+</span>56 <span style=''>    val UserPointsSerializer = </span><span style='background: #AEF1AE'>new ScalapbProtobufSerializer(grpcService.UserPoints.messageCompanion)</span><span style=''>
+</span>57 <span style=''>    
+</span>58 <span style=''>    val LoginResultSerializer = </span><span style='background: #AEF1AE'>new ScalapbProtobufSerializer(grpcService.LoginResult.messageCompanion)</span><span style=''>
+</span>59 <span style=''>    
+</span>60 <span style=''>    val OpenedGamesSerializer = </span><span style='background: #AEF1AE'>new ScalapbProtobufSerializer(grpcService.OpenedGames.messageCompanion)</span><span style=''>
+</span>61 <span style=''>    
+</span>62 <span style=''>    val ClosingResponseSerializer = </span><span style='background: #AEF1AE'>new ScalapbProtobufSerializer(grpcService.ClosingResponse.messageCompanion)</span><span style=''>
+</span>63 <span style=''>    
+</span>64 <span style=''>    val NewGameResponseSerializer = </span><span style='background: #AEF1AE'>new ScalapbProtobufSerializer(grpcService.NewGameResponse.messageCompanion)</span><span style=''>
+</span>65 <span style=''>    
+</span>66 <span style=''>    val UpdateResponseSerializer = </span><span style='background: #AEF1AE'>new ScalapbProtobufSerializer(grpcService.UpdateResponse.messageCompanion)</span><span style=''>
+</span>67 <span style=''>    
+</span>68 <span style=''>  }
 </span>69 <span style=''>
-</span>70 <span style=''>    
-</span>71 <span style=''>    val helloDescriptor: MethodDescriptor[grpcService.HelloMessage, grpcService.HelloMessage] =
-</span>72 <span style=''>      </span><span style='background: #AEF1AE'>MethodDescriptor.newBuilder()
-</span>73 <span style=''></span><span style='background: #AEF1AE'>        .setType(
-</span>74 <span style=''></span><span style='background: #AEF1AE'>   MethodDescriptor.MethodType.UNARY 
-</span>75 <span style=''></span><span style='background: #AEF1AE'>  
-</span>76 <span style=''></span><span style='background: #AEF1AE'>  
-</span>77 <span style=''></span><span style='background: #AEF1AE'>  
-</span>78 <span style=''></span><span style='background: #AEF1AE'>)
-</span>79 <span style=''></span><span style='background: #AEF1AE'>        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;Hello&quot;))
-</span>80 <span style=''></span><span style='background: #AEF1AE'>        .setRequestMarshaller(new Marshaller(HelloMessageSerializer))
-</span>81 <span style=''></span><span style='background: #AEF1AE'>        .setResponseMarshaller(new Marshaller(HelloMessageSerializer))
-</span>82 <span style=''></span><span style='background: #AEF1AE'>        .setSampledToLocalTracing(true)
-</span>83 <span style=''></span><span style='background: #AEF1AE'>        .build()</span><span style=''>
-</span>84 <span style=''>    
-</span>85 <span style=''>    val loginDescriptor: MethodDescriptor[grpcService.LoginRequest, grpcService.LoginResult] =
-</span>86 <span style=''>      </span><span style='background: #AEF1AE'>MethodDescriptor.newBuilder()
-</span>87 <span style=''></span><span style='background: #AEF1AE'>        .setType(
-</span>88 <span style=''></span><span style='background: #AEF1AE'>   MethodDescriptor.MethodType.UNARY 
-</span>89 <span style=''></span><span style='background: #AEF1AE'>  
-</span>90 <span style=''></span><span style='background: #AEF1AE'>  
-</span>91 <span style=''></span><span style='background: #AEF1AE'>  
-</span>92 <span style=''></span><span style='background: #AEF1AE'>)
-</span>93 <span style=''></span><span style='background: #AEF1AE'>        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;Login&quot;))
-</span>94 <span style=''></span><span style='background: #AEF1AE'>        .setRequestMarshaller(new Marshaller(LoginRequestSerializer))
-</span>95 <span style=''></span><span style='background: #AEF1AE'>        .setResponseMarshaller(new Marshaller(LoginResultSerializer))
-</span>96 <span style=''></span><span style='background: #AEF1AE'>        .setSampledToLocalTracing(true)
-</span>97 <span style=''></span><span style='background: #AEF1AE'>        .build()</span><span style=''>
-</span>98 <span style=''>    
-</span>99 <span style=''>    val registerDescriptor: MethodDescriptor[grpcService.LoginRequest, grpcService.LoginResult] =
-</span>100 <span style=''>      </span><span style='background: #AEF1AE'>MethodDescriptor.newBuilder()
-</span>101 <span style=''></span><span style='background: #AEF1AE'>        .setType(
-</span>102 <span style=''></span><span style='background: #AEF1AE'>   MethodDescriptor.MethodType.UNARY 
-</span>103 <span style=''></span><span style='background: #AEF1AE'>  
-</span>104 <span style=''></span><span style='background: #AEF1AE'>  
-</span>105 <span style=''></span><span style='background: #AEF1AE'>  
-</span>106 <span style=''></span><span style='background: #AEF1AE'>)
-</span>107 <span style=''></span><span style='background: #AEF1AE'>        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;Register&quot;))
-</span>108 <span style=''></span><span style='background: #AEF1AE'>        .setRequestMarshaller(new Marshaller(LoginRequestSerializer))
-</span>109 <span style=''></span><span style='background: #AEF1AE'>        .setResponseMarshaller(new Marshaller(LoginResultSerializer))
-</span>110 <span style=''></span><span style='background: #AEF1AE'>        .setSampledToLocalTracing(true)
-</span>111 <span style=''></span><span style='background: #AEF1AE'>        .build()</span><span style=''>
-</span>112 <span style=''>    
-</span>113 <span style=''>    val getOpenedGamesDescriptor: MethodDescriptor[grpcService.OpenedGamesRequest, grpcService.OpenedGames] =
-</span>114 <span style=''>      </span><span style='background: #AEF1AE'>MethodDescriptor.newBuilder()
-</span>115 <span style=''></span><span style='background: #AEF1AE'>        .setType(
-</span>116 <span style=''></span><span style='background: #AEF1AE'>   MethodDescriptor.MethodType.UNARY 
-</span>117 <span style=''></span><span style='background: #AEF1AE'>  
-</span>118 <span style=''></span><span style='background: #AEF1AE'>  
-</span>119 <span style=''></span><span style='background: #AEF1AE'>  
-</span>120 <span style=''></span><span style='background: #AEF1AE'>)
-</span>121 <span style=''></span><span style='background: #AEF1AE'>        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;GetOpenedGames&quot;))
-</span>122 <span style=''></span><span style='background: #AEF1AE'>        .setRequestMarshaller(new Marshaller(OpenedGamesRequestSerializer))
-</span>123 <span style=''></span><span style='background: #AEF1AE'>        .setResponseMarshaller(new Marshaller(OpenedGamesSerializer))
-</span>124 <span style=''></span><span style='background: #AEF1AE'>        .setSampledToLocalTracing(true)
-</span>125 <span style=''></span><span style='background: #AEF1AE'>        .build()</span><span style=''>
-</span>126 <span style=''>    
-</span>127 <span style=''>    val closeGameDescriptor: MethodDescriptor[grpcService.GameMessage, grpcService.ClosingResponse] =
-</span>128 <span style=''>      </span><span style='background: #AEF1AE'>MethodDescriptor.newBuilder()
-</span>129 <span style=''></span><span style='background: #AEF1AE'>        .setType(
-</span>130 <span style=''></span><span style='background: #AEF1AE'>   MethodDescriptor.MethodType.UNARY 
-</span>131 <span style=''></span><span style='background: #AEF1AE'>  
-</span>132 <span style=''></span><span style='background: #AEF1AE'>  
-</span>133 <span style=''></span><span style='background: #AEF1AE'>  
-</span>134 <span style=''></span><span style='background: #AEF1AE'>)
-</span>135 <span style=''></span><span style='background: #AEF1AE'>        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;CloseGame&quot;))
-</span>136 <span style=''></span><span style='background: #AEF1AE'>        .setRequestMarshaller(new Marshaller(GameMessageSerializer))
-</span>137 <span style=''></span><span style='background: #AEF1AE'>        .setResponseMarshaller(new Marshaller(ClosingResponseSerializer))
-</span>138 <span style=''></span><span style='background: #AEF1AE'>        .setSampledToLocalTracing(true)
-</span>139 <span style=''></span><span style='background: #AEF1AE'>        .build()</span><span style=''>
-</span>140 <span style=''>    
-</span>141 <span style=''>    val newGameDescriptor: MethodDescriptor[grpcService.GameMessage, grpcService.NewGameResponse] =
-</span>142 <span style=''>      </span><span style='background: #AEF1AE'>MethodDescriptor.newBuilder()
-</span>143 <span style=''></span><span style='background: #AEF1AE'>        .setType(
-</span>144 <span style=''></span><span style='background: #AEF1AE'>   MethodDescriptor.MethodType.UNARY 
-</span>145 <span style=''></span><span style='background: #AEF1AE'>  
-</span>146 <span style=''></span><span style='background: #AEF1AE'>  
-</span>147 <span style=''></span><span style='background: #AEF1AE'>  
-</span>148 <span style=''></span><span style='background: #AEF1AE'>)
-</span>149 <span style=''></span><span style='background: #AEF1AE'>        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;NewGame&quot;))
-</span>150 <span style=''></span><span style='background: #AEF1AE'>        .setRequestMarshaller(new Marshaller(GameMessageSerializer))
-</span>151 <span style=''></span><span style='background: #AEF1AE'>        .setResponseMarshaller(new Marshaller(NewGameResponseSerializer))
-</span>152 <span style=''></span><span style='background: #AEF1AE'>        .setSampledToLocalTracing(true)
-</span>153 <span style=''></span><span style='background: #AEF1AE'>        .build()</span><span style=''>
-</span>154 <span style=''>    
-</span>155 <span style=''>  }
-</span>156 <span style=''>}
+</span>70 <span style=''>  @ApiMayChange
+</span>71 <span style=''>  @AkkaGrpcGenerated
+</span>72 <span style=''>  object MethodDescriptors {
+</span>73 <span style=''>    import akka.grpc.internal.Marshaller
+</span>74 <span style=''>    import io.grpc.MethodDescriptor
+</span>75 <span style=''>    import Serializers._
+</span>76 <span style=''>
+</span>77 <span style=''>    
+</span>78 <span style=''>    val helloDescriptor: MethodDescriptor[grpcService.HelloMessage, grpcService.HelloMessage] =
+</span>79 <span style=''>      </span><span style='background: #AEF1AE'>MethodDescriptor.newBuilder()
+</span>80 <span style=''></span><span style='background: #AEF1AE'>        .setType(
+</span>81 <span style=''></span><span style='background: #AEF1AE'>   MethodDescriptor.MethodType.UNARY 
+</span>82 <span style=''></span><span style='background: #AEF1AE'>  
+</span>83 <span style=''></span><span style='background: #AEF1AE'>  
+</span>84 <span style=''></span><span style='background: #AEF1AE'>  
+</span>85 <span style=''></span><span style='background: #AEF1AE'>)
+</span>86 <span style=''></span><span style='background: #AEF1AE'>        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;Hello&quot;))
+</span>87 <span style=''></span><span style='background: #AEF1AE'>        .setRequestMarshaller(new Marshaller(HelloMessageSerializer))
+</span>88 <span style=''></span><span style='background: #AEF1AE'>        .setResponseMarshaller(new Marshaller(HelloMessageSerializer))
+</span>89 <span style=''></span><span style='background: #AEF1AE'>        .setSampledToLocalTracing(true)
+</span>90 <span style=''></span><span style='background: #AEF1AE'>        .build()</span><span style=''>
+</span>91 <span style=''>    
+</span>92 <span style=''>    val loginDescriptor: MethodDescriptor[grpcService.LoginRequest, grpcService.LoginResult] =
+</span>93 <span style=''>      </span><span style='background: #AEF1AE'>MethodDescriptor.newBuilder()
+</span>94 <span style=''></span><span style='background: #AEF1AE'>        .setType(
+</span>95 <span style=''></span><span style='background: #AEF1AE'>   MethodDescriptor.MethodType.UNARY 
+</span>96 <span style=''></span><span style='background: #AEF1AE'>  
+</span>97 <span style=''></span><span style='background: #AEF1AE'>  
+</span>98 <span style=''></span><span style='background: #AEF1AE'>  
+</span>99 <span style=''></span><span style='background: #AEF1AE'>)
+</span>100 <span style=''></span><span style='background: #AEF1AE'>        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;Login&quot;))
+</span>101 <span style=''></span><span style='background: #AEF1AE'>        .setRequestMarshaller(new Marshaller(LoginRequestSerializer))
+</span>102 <span style=''></span><span style='background: #AEF1AE'>        .setResponseMarshaller(new Marshaller(LoginResultSerializer))
+</span>103 <span style=''></span><span style='background: #AEF1AE'>        .setSampledToLocalTracing(true)
+</span>104 <span style=''></span><span style='background: #AEF1AE'>        .build()</span><span style=''>
+</span>105 <span style=''>    
+</span>106 <span style=''>    val registerDescriptor: MethodDescriptor[grpcService.LoginRequest, grpcService.LoginResult] =
+</span>107 <span style=''>      </span><span style='background: #AEF1AE'>MethodDescriptor.newBuilder()
+</span>108 <span style=''></span><span style='background: #AEF1AE'>        .setType(
+</span>109 <span style=''></span><span style='background: #AEF1AE'>   MethodDescriptor.MethodType.UNARY 
+</span>110 <span style=''></span><span style='background: #AEF1AE'>  
+</span>111 <span style=''></span><span style='background: #AEF1AE'>  
+</span>112 <span style=''></span><span style='background: #AEF1AE'>  
+</span>113 <span style=''></span><span style='background: #AEF1AE'>)
+</span>114 <span style=''></span><span style='background: #AEF1AE'>        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;Register&quot;))
+</span>115 <span style=''></span><span style='background: #AEF1AE'>        .setRequestMarshaller(new Marshaller(LoginRequestSerializer))
+</span>116 <span style=''></span><span style='background: #AEF1AE'>        .setResponseMarshaller(new Marshaller(LoginResultSerializer))
+</span>117 <span style=''></span><span style='background: #AEF1AE'>        .setSampledToLocalTracing(true)
+</span>118 <span style=''></span><span style='background: #AEF1AE'>        .build()</span><span style=''>
+</span>119 <span style=''>    
+</span>120 <span style=''>    val getOpenedGamesDescriptor: MethodDescriptor[grpcService.OpenedGamesRequest, grpcService.OpenedGames] =
+</span>121 <span style=''>      </span><span style='background: #AEF1AE'>MethodDescriptor.newBuilder()
+</span>122 <span style=''></span><span style='background: #AEF1AE'>        .setType(
+</span>123 <span style=''></span><span style='background: #AEF1AE'>   MethodDescriptor.MethodType.UNARY 
+</span>124 <span style=''></span><span style='background: #AEF1AE'>  
+</span>125 <span style=''></span><span style='background: #AEF1AE'>  
+</span>126 <span style=''></span><span style='background: #AEF1AE'>  
+</span>127 <span style=''></span><span style='background: #AEF1AE'>)
+</span>128 <span style=''></span><span style='background: #AEF1AE'>        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;GetOpenedGames&quot;))
+</span>129 <span style=''></span><span style='background: #AEF1AE'>        .setRequestMarshaller(new Marshaller(OpenedGamesRequestSerializer))
+</span>130 <span style=''></span><span style='background: #AEF1AE'>        .setResponseMarshaller(new Marshaller(OpenedGamesSerializer))
+</span>131 <span style=''></span><span style='background: #AEF1AE'>        .setSampledToLocalTracing(true)
+</span>132 <span style=''></span><span style='background: #AEF1AE'>        .build()</span><span style=''>
+</span>133 <span style=''>    
+</span>134 <span style=''>    val closeGameDescriptor: MethodDescriptor[grpcService.GameMessage, grpcService.ClosingResponse] =
+</span>135 <span style=''>      </span><span style='background: #AEF1AE'>MethodDescriptor.newBuilder()
+</span>136 <span style=''></span><span style='background: #AEF1AE'>        .setType(
+</span>137 <span style=''></span><span style='background: #AEF1AE'>   MethodDescriptor.MethodType.UNARY 
+</span>138 <span style=''></span><span style='background: #AEF1AE'>  
+</span>139 <span style=''></span><span style='background: #AEF1AE'>  
+</span>140 <span style=''></span><span style='background: #AEF1AE'>  
+</span>141 <span style=''></span><span style='background: #AEF1AE'>)
+</span>142 <span style=''></span><span style='background: #AEF1AE'>        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;CloseGame&quot;))
+</span>143 <span style=''></span><span style='background: #AEF1AE'>        .setRequestMarshaller(new Marshaller(GameMessageSerializer))
+</span>144 <span style=''></span><span style='background: #AEF1AE'>        .setResponseMarshaller(new Marshaller(ClosingResponseSerializer))
+</span>145 <span style=''></span><span style='background: #AEF1AE'>        .setSampledToLocalTracing(true)
+</span>146 <span style=''></span><span style='background: #AEF1AE'>        .build()</span><span style=''>
+</span>147 <span style=''>    
+</span>148 <span style=''>    val newGameDescriptor: MethodDescriptor[grpcService.GameMessage, grpcService.NewGameResponse] =
+</span>149 <span style=''>      </span><span style='background: #AEF1AE'>MethodDescriptor.newBuilder()
+</span>150 <span style=''></span><span style='background: #AEF1AE'>        .setType(
+</span>151 <span style=''></span><span style='background: #AEF1AE'>   MethodDescriptor.MethodType.UNARY 
+</span>152 <span style=''></span><span style='background: #AEF1AE'>  
+</span>153 <span style=''></span><span style='background: #AEF1AE'>  
+</span>154 <span style=''></span><span style='background: #AEF1AE'>  
+</span>155 <span style=''></span><span style='background: #AEF1AE'>)
+</span>156 <span style=''></span><span style='background: #AEF1AE'>        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;NewGame&quot;))
+</span>157 <span style=''></span><span style='background: #AEF1AE'>        .setRequestMarshaller(new Marshaller(GameMessageSerializer))
+</span>158 <span style=''></span><span style='background: #AEF1AE'>        .setResponseMarshaller(new Marshaller(NewGameResponseSerializer))
+</span>159 <span style=''></span><span style='background: #AEF1AE'>        .setSampledToLocalTracing(true)
+</span>160 <span style=''></span><span style='background: #AEF1AE'>        .build()</span><span style=''>
+</span>161 <span style=''>    
+</span>162 <span style=''>    val updateUserPointsDescriptor: MethodDescriptor[grpcService.UserPoints, grpcService.UpdateResponse] =
+</span>163 <span style=''>      </span><span style='background: #AEF1AE'>MethodDescriptor.newBuilder()
+</span>164 <span style=''></span><span style='background: #AEF1AE'>        .setType(
+</span>165 <span style=''></span><span style='background: #AEF1AE'>   MethodDescriptor.MethodType.UNARY 
+</span>166 <span style=''></span><span style='background: #AEF1AE'>  
+</span>167 <span style=''></span><span style='background: #AEF1AE'>  
+</span>168 <span style=''></span><span style='background: #AEF1AE'>  
+</span>169 <span style=''></span><span style='background: #AEF1AE'>)
+</span>170 <span style=''></span><span style='background: #AEF1AE'>        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;UpdateUserPoints&quot;))
+</span>171 <span style=''></span><span style='background: #AEF1AE'>        .setRequestMarshaller(new Marshaller(UserPointsSerializer))
+</span>172 <span style=''></span><span style='background: #AEF1AE'>        .setResponseMarshaller(new Marshaller(UpdateResponseSerializer))
+</span>173 <span style=''></span><span style='background: #AEF1AE'>        .setSampledToLocalTracing(true)
+</span>174 <span style=''></span><span style='background: #AEF1AE'>        .build()</span><span style=''>
+</span>175 <span style=''>    
+</span>176 <span style=''>  }
+</span>177 <span style=''>}
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -192,39 +213,15 @@
         <th>Code</th>
       </tr><tr>
         <td>
-          44
+          47
         </td>
         <td>
-          2218
+          2250
         </td>
         <td>
-          1165
+          1245
           -
-          1206
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          messageCompanion
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          grpcService.HelloMessage.messageCompanion
-        </td>
-      </tr><tr>
-        <td>
-          44
-        </td>
-        <td>
-          2219
-        </td>
-        <td>
-          1135
-          -
-          1207
+          1317
         </td>
         <td>
           Apply
@@ -240,39 +237,39 @@
         </td>
       </tr><tr>
         <td>
-          46
+          47
         </td>
         <td>
-          2221
+          2249
         </td>
         <td>
-          1246
+          1275
           -
-          1318
+          1316
         </td>
         <td>
-          Apply
+          Select
         </td>
         <td>
-          &lt;init&gt;
+          messageCompanion
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          new ScalapbProtobufSerializer(grpcService.LoginRequest.messageCompanion)
+          grpcService.HelloMessage.messageCompanion
         </td>
       </tr><tr>
         <td>
-          46
+          49
         </td>
         <td>
-          2220
+          2251
         </td>
         <td>
-          1276
+          1386
           -
-          1317
+          1427
         </td>
         <td>
           Select
@@ -288,15 +285,39 @@
         </td>
       </tr><tr>
         <td>
-          48
+          49
         </td>
         <td>
-          2223
+          2252
         </td>
         <td>
-          1363
+          1356
           -
-          1441
+          1428
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          new ScalapbProtobufSerializer(grpcService.LoginRequest.messageCompanion)
+        </td>
+      </tr><tr>
+        <td>
+          51
+        </td>
+        <td>
+          2254
+        </td>
+        <td>
+          1473
+          -
+          1551
         </td>
         <td>
           Apply
@@ -312,15 +333,15 @@
         </td>
       </tr><tr>
         <td>
-          48
+          51
         </td>
         <td>
-          2222
+          2253
         </td>
         <td>
-          1393
+          1503
           -
-          1440
+          1550
         </td>
         <td>
           Select
@@ -336,39 +357,15 @@
         </td>
       </tr><tr>
         <td>
-          50
+          53
         </td>
         <td>
-          2224
+          2256
         </td>
         <td>
-          1509
+          1589
           -
-          1549
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          messageCompanion
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          grpcService.GameMessage.messageCompanion
-        </td>
-      </tr><tr>
-        <td>
-          50
-        </td>
-        <td>
-          2225
-        </td>
-        <td>
-          1479
-          -
-          1550
+          1660
         </td>
         <td>
           Apply
@@ -384,15 +381,87 @@
         </td>
       </tr><tr>
         <td>
-          52
+          53
         </td>
         <td>
-          2227
+          2255
         </td>
         <td>
-          1588
+          1619
           -
           1659
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          messageCompanion
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          grpcService.GameMessage.messageCompanion
+        </td>
+      </tr><tr>
+        <td>
+          55
+        </td>
+        <td>
+          2257
+        </td>
+        <td>
+          1727
+          -
+          1766
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          messageCompanion
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          grpcService.UserPoints.messageCompanion
+        </td>
+      </tr><tr>
+        <td>
+          55
+        </td>
+        <td>
+          2258
+        </td>
+        <td>
+          1697
+          -
+          1767
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          new ScalapbProtobufSerializer(grpcService.UserPoints.messageCompanion)
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          2260
+        </td>
+        <td>
+          1805
+          -
+          1876
         </td>
         <td>
           Apply
@@ -408,15 +477,15 @@
         </td>
       </tr><tr>
         <td>
-          52
+          57
         </td>
         <td>
-          2226
+          2259
         </td>
         <td>
-          1618
+          1835
           -
-          1658
+          1875
         </td>
         <td>
           Select
@@ -432,15 +501,15 @@
         </td>
       </tr><tr>
         <td>
-          54
+          59
         </td>
         <td>
-          2229
+          2262
         </td>
         <td>
-          1697
+          1914
           -
-          1768
+          1985
         </td>
         <td>
           Apply
@@ -456,15 +525,15 @@
         </td>
       </tr><tr>
         <td>
-          54
+          59
         </td>
         <td>
-          2228
+          2261
         </td>
         <td>
-          1727
+          1944
           -
-          1767
+          1984
         </td>
         <td>
           Select
@@ -480,15 +549,15 @@
         </td>
       </tr><tr>
         <td>
-          56
+          61
         </td>
         <td>
-          2230
+          2263
         </td>
         <td>
-          1840
+          2057
           -
-          1884
+          2101
         </td>
         <td>
           Select
@@ -504,15 +573,15 @@
         </td>
       </tr><tr>
         <td>
-          56
+          61
         </td>
         <td>
-          2231
+          2264
         </td>
         <td>
-          1810
+          2027
           -
-          1885
+          2102
         </td>
         <td>
           Apply
@@ -528,15 +597,15 @@
         </td>
       </tr><tr>
         <td>
-          58
+          63
         </td>
         <td>
-          2233
+          2266
         </td>
         <td>
-          1927
+          2144
           -
-          2002
+          2219
         </td>
         <td>
           Apply
@@ -552,15 +621,15 @@
         </td>
       </tr><tr>
         <td>
-          58
+          63
         </td>
         <td>
-          2232
+          2265
         </td>
         <td>
-          1957
+          2174
           -
-          2001
+          2218
         </td>
         <td>
           Select
@@ -576,15 +645,63 @@
         </td>
       </tr><tr>
         <td>
-          71
+          65
         </td>
         <td>
-          2234
+          2268
         </td>
         <td>
-          2289
+          2260
           -
-          2318
+          2334
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          new ScalapbProtobufSerializer(grpcService.UpdateResponse.messageCompanion)
+        </td>
+      </tr><tr>
+        <td>
+          65
+        </td>
+        <td>
+          2267
+        </td>
+        <td>
+          2290
+          -
+          2333
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          messageCompanion
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          grpcService.UpdateResponse.messageCompanion
+        </td>
+      </tr><tr>
+        <td>
+          78
+        </td>
+        <td>
+          2269
+        </td>
+        <td>
+          2621
+          -
+          2650
         </td>
         <td>
           Apply
@@ -600,15 +717,15 @@
         </td>
       </tr><tr>
         <td>
-          72
+          79
         </td>
         <td>
-          2235
+          2270
         </td>
         <td>
-          2289
+          2621
           -
-          2385
+          2717
         </td>
         <td>
           Apply
@@ -630,15 +747,46 @@
         </td>
       </tr><tr>
         <td>
-          78
+          85
         </td>
         <td>
-          2236
+          2272
         </td>
         <td>
-          2413
+          2621
           -
-          2483
+          2816
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setFullMethodName
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          MethodDescriptor.newBuilder()
+        .setType(
+   MethodDescriptor.MethodType.UNARY 
+  
+  
+  
+)
+        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;Hello&quot;))
+        </td>
+      </tr><tr>
+        <td>
+          85
+        </td>
+        <td>
+          2271
+        </td>
+        <td>
+          2745
+          -
+          2815
         </td>
         <td>
           Apply
@@ -654,46 +802,15 @@
         </td>
       </tr><tr>
         <td>
-          78
+          86
         </td>
         <td>
-          2237
+          2274
         </td>
         <td>
-          2289
+          2621
           -
-          2484
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          setFullMethodName
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          MethodDescriptor.newBuilder()
-        .setType(
-   MethodDescriptor.MethodType.UNARY 
-  
-  
-  
-)
-        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;Hello&quot;))
-        </td>
-      </tr><tr>
-        <td>
-          79
-        </td>
-        <td>
-          2239
-        </td>
-        <td>
-          2289
-          -
-          2554
+          2886
         </td>
         <td>
           Apply
@@ -717,15 +834,15 @@
         </td>
       </tr><tr>
         <td>
-          79
+          86
         </td>
         <td>
-          2238
+          2273
         </td>
         <td>
-          2515
+          2847
           -
-          2553
+          2885
         </td>
         <td>
           Apply
@@ -741,15 +858,39 @@
         </td>
       </tr><tr>
         <td>
-          80
+          87
         </td>
         <td>
-          2241
+          2275
         </td>
         <td>
-          2289
+          2918
           -
-          2625
+          2956
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          new Marshaller(HelloMessageSerializer)
+        </td>
+      </tr><tr>
+        <td>
+          87
+        </td>
+        <td>
+          2276
+        </td>
+        <td>
+          2621
+          -
+          2957
         </td>
         <td>
           Apply
@@ -774,39 +915,15 @@
         </td>
       </tr><tr>
         <td>
-          80
+          88
         </td>
         <td>
-          2240
+          2277
         </td>
         <td>
-          2586
+          2621
           -
-          2624
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          &lt;init&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          new Marshaller(HelloMessageSerializer)
-        </td>
-      </tr><tr>
-        <td>
-          81
-        </td>
-        <td>
-          2242
-        </td>
-        <td>
-          2289
-          -
-          2665
+          2997
         </td>
         <td>
           Apply
@@ -832,15 +949,15 @@
         </td>
       </tr><tr>
         <td>
-          82
+          89
         </td>
         <td>
-          2243
+          2278
         </td>
         <td>
-          2289
+          2621
           -
-          2682
+          3014
         </td>
         <td>
           Apply
@@ -867,15 +984,15 @@
         </td>
       </tr><tr>
         <td>
-          85
+          92
         </td>
         <td>
-          2244
+          2279
         </td>
         <td>
-          2789
+          3121
           -
-          2818
+          3150
         </td>
         <td>
           Apply
@@ -891,15 +1008,15 @@
         </td>
       </tr><tr>
         <td>
-          86
+          93
         </td>
         <td>
-          2245
+          2280
         </td>
         <td>
-          2789
+          3121
           -
-          2885
+          3217
         </td>
         <td>
           Apply
@@ -921,46 +1038,15 @@
         </td>
       </tr><tr>
         <td>
-          92
+          99
         </td>
         <td>
-          2247
+          2281
         </td>
         <td>
-          2789
+          3245
           -
-          2984
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          setFullMethodName
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          MethodDescriptor.newBuilder()
-        .setType(
-   MethodDescriptor.MethodType.UNARY 
-  
-  
-  
-)
-        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;Login&quot;))
-        </td>
-      </tr><tr>
-        <td>
-          92
-        </td>
-        <td>
-          2246
-        </td>
-        <td>
-          2913
-          -
-          2983
+          3315
         </td>
         <td>
           Apply
@@ -976,39 +1062,46 @@
         </td>
       </tr><tr>
         <td>
-          93
+          99
         </td>
         <td>
-          2248
+          2282
         </td>
         <td>
-          3015
+          3121
           -
-          3053
+          3316
         </td>
         <td>
           Apply
         </td>
         <td>
-          &lt;init&gt;
+          setFullMethodName
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          new Marshaller(LoginRequestSerializer)
+          MethodDescriptor.newBuilder()
+        .setType(
+   MethodDescriptor.MethodType.UNARY 
+  
+  
+  
+)
+        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;Login&quot;))
         </td>
       </tr><tr>
         <td>
-          93
+          100
         </td>
         <td>
-          2249
+          2284
         </td>
         <td>
-          2789
+          3121
           -
-          3054
+          3386
         </td>
         <td>
           Apply
@@ -1032,15 +1125,39 @@
         </td>
       </tr><tr>
         <td>
-          94
+          100
         </td>
         <td>
-          2251
+          2283
         </td>
         <td>
-          2789
+          3347
           -
-          3124
+          3385
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          new Marshaller(LoginRequestSerializer)
+        </td>
+      </tr><tr>
+        <td>
+          101
+        </td>
+        <td>
+          2286
+        </td>
+        <td>
+          3121
+          -
+          3456
         </td>
         <td>
           Apply
@@ -1065,15 +1182,15 @@
         </td>
       </tr><tr>
         <td>
-          94
+          101
         </td>
         <td>
-          2250
+          2285
         </td>
         <td>
-          3086
+          3418
           -
-          3123
+          3455
         </td>
         <td>
           Apply
@@ -1089,15 +1206,15 @@
         </td>
       </tr><tr>
         <td>
-          95
+          102
         </td>
         <td>
-          2252
+          2287
         </td>
         <td>
-          2789
+          3121
           -
-          3164
+          3496
         </td>
         <td>
           Apply
@@ -1123,15 +1240,15 @@
         </td>
       </tr><tr>
         <td>
-          96
+          103
         </td>
         <td>
-          2253
+          2288
         </td>
         <td>
-          2789
+          3121
           -
-          3181
+          3513
         </td>
         <td>
           Apply
@@ -1158,15 +1275,15 @@
         </td>
       </tr><tr>
         <td>
-          99
+          106
         </td>
         <td>
-          2254
+          2289
         </td>
         <td>
-          3291
+          3623
           -
-          3320
+          3652
         </td>
         <td>
           Apply
@@ -1182,15 +1299,15 @@
         </td>
       </tr><tr>
         <td>
-          100
+          107
         </td>
         <td>
-          2255
+          2290
         </td>
         <td>
-          3291
+          3623
           -
-          3387
+          3719
         </td>
         <td>
           Apply
@@ -1212,15 +1329,15 @@
         </td>
       </tr><tr>
         <td>
-          106
+          113
         </td>
         <td>
-          2257
+          2292
         </td>
         <td>
-          3291
+          3623
           -
-          3489
+          3821
         </td>
         <td>
           Apply
@@ -1243,15 +1360,15 @@
         </td>
       </tr><tr>
         <td>
-          106
+          113
         </td>
         <td>
-          2256
+          2291
         </td>
         <td>
-          3415
+          3747
           -
-          3488
+          3820
         </td>
         <td>
           Apply
@@ -1267,47 +1384,15 @@
         </td>
       </tr><tr>
         <td>
-          107
+          114
         </td>
         <td>
-          2259
+          2293
         </td>
         <td>
-          3291
+          3852
           -
-          3559
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          setRequestMarshaller
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          MethodDescriptor.newBuilder()
-        .setType(
-   MethodDescriptor.MethodType.UNARY 
-  
-  
-  
-)
-        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;Register&quot;))
-        .setRequestMarshaller(new Marshaller(LoginRequestSerializer))
-        </td>
-      </tr><tr>
-        <td>
-          107
-        </td>
-        <td>
-          2258
-        </td>
-        <td>
-          3520
-          -
-          3558
+          3890
         </td>
         <td>
           Apply
@@ -1323,15 +1408,80 @@
         </td>
       </tr><tr>
         <td>
-          108
+          114
         </td>
         <td>
-          2260
+          2294
         </td>
         <td>
-          3591
+          3623
           -
-          3628
+          3891
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setRequestMarshaller
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          MethodDescriptor.newBuilder()
+        .setType(
+   MethodDescriptor.MethodType.UNARY 
+  
+  
+  
+)
+        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;Register&quot;))
+        .setRequestMarshaller(new Marshaller(LoginRequestSerializer))
+        </td>
+      </tr><tr>
+        <td>
+          115
+        </td>
+        <td>
+          2296
+        </td>
+        <td>
+          3623
+          -
+          3961
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setResponseMarshaller
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          MethodDescriptor.newBuilder()
+        .setType(
+   MethodDescriptor.MethodType.UNARY 
+  
+  
+  
+)
+        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;Register&quot;))
+        .setRequestMarshaller(new Marshaller(LoginRequestSerializer))
+        .setResponseMarshaller(new Marshaller(LoginResultSerializer))
+        </td>
+      </tr><tr>
+        <td>
+          115
+        </td>
+        <td>
+          2295
+        </td>
+        <td>
+          3923
+          -
+          3960
         </td>
         <td>
           Apply
@@ -1347,48 +1497,15 @@
         </td>
       </tr><tr>
         <td>
-          108
+          116
         </td>
         <td>
-          2261
+          2297
         </td>
         <td>
-          3291
+          3623
           -
-          3629
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          setResponseMarshaller
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          MethodDescriptor.newBuilder()
-        .setType(
-   MethodDescriptor.MethodType.UNARY 
-  
-  
-  
-)
-        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;Register&quot;))
-        .setRequestMarshaller(new Marshaller(LoginRequestSerializer))
-        .setResponseMarshaller(new Marshaller(LoginResultSerializer))
-        </td>
-      </tr><tr>
-        <td>
-          109
-        </td>
-        <td>
-          2262
-        </td>
-        <td>
-          3291
-          -
-          3669
+          4001
         </td>
         <td>
           Apply
@@ -1414,15 +1531,15 @@
         </td>
       </tr><tr>
         <td>
-          110
+          117
         </td>
         <td>
-          2263
+          2298
         </td>
         <td>
-          3291
+          3623
           -
-          3686
+          4018
         </td>
         <td>
           Apply
@@ -1449,15 +1566,15 @@
         </td>
       </tr><tr>
         <td>
-          113
+          120
         </td>
         <td>
-          2264
+          2299
         </td>
         <td>
-          3808
+          4140
           -
-          3837
+          4169
         </td>
         <td>
           Apply
@@ -1473,15 +1590,15 @@
         </td>
       </tr><tr>
         <td>
-          114
+          121
         </td>
         <td>
-          2265
+          2300
         </td>
         <td>
-          3808
+          4140
           -
-          3904
+          4236
         </td>
         <td>
           Apply
@@ -1503,15 +1620,46 @@
         </td>
       </tr><tr>
         <td>
-          120
+          127
         </td>
         <td>
-          2266
+          2302
         </td>
         <td>
-          3932
+          4140
           -
-          4011
+          4344
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setFullMethodName
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          MethodDescriptor.newBuilder()
+        .setType(
+   MethodDescriptor.MethodType.UNARY 
+  
+  
+  
+)
+        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;GetOpenedGames&quot;))
+        </td>
+      </tr><tr>
+        <td>
+          127
+        </td>
+        <td>
+          2301
+        </td>
+        <td>
+          4264
+          -
+          4343
         </td>
         <td>
           Apply
@@ -1527,46 +1675,15 @@
         </td>
       </tr><tr>
         <td>
-          120
+          128
         </td>
         <td>
-          2267
+          2304
         </td>
         <td>
-          3808
+          4140
           -
-          4012
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          setFullMethodName
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          MethodDescriptor.newBuilder()
-        .setType(
-   MethodDescriptor.MethodType.UNARY 
-  
-  
-  
-)
-        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;GetOpenedGames&quot;))
-        </td>
-      </tr><tr>
-        <td>
-          121
-        </td>
-        <td>
-          2269
-        </td>
-        <td>
-          3808
-          -
-          4088
+          4420
         </td>
         <td>
           Apply
@@ -1590,15 +1707,15 @@
         </td>
       </tr><tr>
         <td>
-          121
+          128
         </td>
         <td>
-          2268
+          2303
         </td>
         <td>
-          4043
+          4375
           -
-          4087
+          4419
         </td>
         <td>
           Apply
@@ -1614,48 +1731,15 @@
         </td>
       </tr><tr>
         <td>
-          122
+          129
         </td>
         <td>
-          2271
+          2305
         </td>
         <td>
-          3808
+          4452
           -
-          4158
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          setResponseMarshaller
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          MethodDescriptor.newBuilder()
-        .setType(
-   MethodDescriptor.MethodType.UNARY 
-  
-  
-  
-)
-        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;GetOpenedGames&quot;))
-        .setRequestMarshaller(new Marshaller(OpenedGamesRequestSerializer))
-        .setResponseMarshaller(new Marshaller(OpenedGamesSerializer))
-        </td>
-      </tr><tr>
-        <td>
-          122
-        </td>
-        <td>
-          2270
-        </td>
-        <td>
-          4120
-          -
-          4157
+          4489
         </td>
         <td>
           Apply
@@ -1671,15 +1755,48 @@
         </td>
       </tr><tr>
         <td>
-          123
+          129
         </td>
         <td>
-          2272
+          2306
         </td>
         <td>
-          3808
+          4140
           -
-          4198
+          4490
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setResponseMarshaller
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          MethodDescriptor.newBuilder()
+        .setType(
+   MethodDescriptor.MethodType.UNARY 
+  
+  
+  
+)
+        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;GetOpenedGames&quot;))
+        .setRequestMarshaller(new Marshaller(OpenedGamesRequestSerializer))
+        .setResponseMarshaller(new Marshaller(OpenedGamesSerializer))
+        </td>
+      </tr><tr>
+        <td>
+          130
+        </td>
+        <td>
+          2307
+        </td>
+        <td>
+          4140
+          -
+          4530
         </td>
         <td>
           Apply
@@ -1705,15 +1822,15 @@
         </td>
       </tr><tr>
         <td>
-          124
+          131
         </td>
         <td>
-          2273
+          2308
         </td>
         <td>
-          3808
+          4140
           -
-          4215
+          4547
         </td>
         <td>
           Apply
@@ -1740,15 +1857,15 @@
         </td>
       </tr><tr>
         <td>
-          127
+          134
         </td>
         <td>
-          2274
+          2309
         </td>
         <td>
-          4329
+          4661
           -
-          4358
+          4690
         </td>
         <td>
           Apply
@@ -1764,15 +1881,15 @@
         </td>
       </tr><tr>
         <td>
-          128
+          135
         </td>
         <td>
-          2275
+          2310
         </td>
         <td>
-          4329
+          4661
           -
-          4425
+          4757
         </td>
         <td>
           Apply
@@ -1794,46 +1911,15 @@
         </td>
       </tr><tr>
         <td>
-          134
+          141
         </td>
         <td>
-          2277
+          2311
         </td>
         <td>
-          4329
+          4785
           -
-          4528
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          setFullMethodName
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          MethodDescriptor.newBuilder()
-        .setType(
-   MethodDescriptor.MethodType.UNARY 
-  
-  
-  
-)
-        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;CloseGame&quot;))
-        </td>
-      </tr><tr>
-        <td>
-          134
-        </td>
-        <td>
-          2276
-        </td>
-        <td>
-          4453
-          -
-          4527
+          4859
         </td>
         <td>
           Apply
@@ -1849,39 +1935,46 @@
         </td>
       </tr><tr>
         <td>
-          135
+          141
         </td>
         <td>
-          2278
+          2312
         </td>
         <td>
-          4559
+          4661
           -
-          4596
+          4860
         </td>
         <td>
           Apply
         </td>
         <td>
-          &lt;init&gt;
+          setFullMethodName
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          new Marshaller(GameMessageSerializer)
+          MethodDescriptor.newBuilder()
+        .setType(
+   MethodDescriptor.MethodType.UNARY 
+  
+  
+  
+)
+        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;CloseGame&quot;))
         </td>
       </tr><tr>
         <td>
-          135
+          142
         </td>
         <td>
-          2279
+          2314
         </td>
         <td>
-          4329
+          4661
           -
-          4597
+          4929
         </td>
         <td>
           Apply
@@ -1905,15 +1998,39 @@
         </td>
       </tr><tr>
         <td>
-          136
+          142
         </td>
         <td>
-          2281
+          2313
         </td>
         <td>
-          4329
+          4891
           -
-          4671
+          4928
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          new Marshaller(GameMessageSerializer)
+        </td>
+      </tr><tr>
+        <td>
+          143
+        </td>
+        <td>
+          2316
+        </td>
+        <td>
+          4661
+          -
+          5003
         </td>
         <td>
           Apply
@@ -1938,15 +2055,15 @@
         </td>
       </tr><tr>
         <td>
-          136
+          143
         </td>
         <td>
-          2280
+          2315
         </td>
         <td>
-          4629
+          4961
           -
-          4670
+          5002
         </td>
         <td>
           Apply
@@ -1962,15 +2079,15 @@
         </td>
       </tr><tr>
         <td>
-          137
+          144
         </td>
         <td>
-          2282
+          2317
         </td>
         <td>
-          4329
+          4661
           -
-          4711
+          5043
         </td>
         <td>
           Apply
@@ -1996,15 +2113,15 @@
         </td>
       </tr><tr>
         <td>
-          138
+          145
         </td>
         <td>
-          2283
+          2318
         </td>
         <td>
-          4329
+          4661
           -
-          4728
+          5060
         </td>
         <td>
           Apply
@@ -2031,15 +2148,15 @@
         </td>
       </tr><tr>
         <td>
-          141
+          148
         </td>
         <td>
-          2284
+          2319
         </td>
         <td>
-          4840
+          5172
           -
-          4869
+          5201
         </td>
         <td>
           Apply
@@ -2055,15 +2172,15 @@
         </td>
       </tr><tr>
         <td>
-          142
+          149
         </td>
         <td>
-          2285
+          2320
         </td>
         <td>
-          4840
+          5172
           -
-          4936
+          5268
         </td>
         <td>
           Apply
@@ -2085,15 +2202,15 @@
         </td>
       </tr><tr>
         <td>
-          148
+          155
         </td>
         <td>
-          2287
+          2322
         </td>
         <td>
-          4840
+          5172
           -
-          5037
+          5369
         </td>
         <td>
           Apply
@@ -2116,15 +2233,15 @@
         </td>
       </tr><tr>
         <td>
-          148
+          155
         </td>
         <td>
-          2286
+          2321
         </td>
         <td>
-          4964
+          5296
           -
-          5036
+          5368
         </td>
         <td>
           Apply
@@ -2140,15 +2257,39 @@
         </td>
       </tr><tr>
         <td>
-          149
+          156
         </td>
         <td>
-          2289
+          2323
         </td>
         <td>
-          4840
+          5400
           -
-          5106
+          5437
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          new Marshaller(GameMessageSerializer)
+        </td>
+      </tr><tr>
+        <td>
+          156
+        </td>
+        <td>
+          2324
+        </td>
+        <td>
+          5172
+          -
+          5438
         </td>
         <td>
           Apply
@@ -2172,63 +2313,15 @@
         </td>
       </tr><tr>
         <td>
-          149
+          157
         </td>
         <td>
-          2288
+          2326
         </td>
         <td>
-          5068
+          5172
           -
-          5105
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          &lt;init&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          new Marshaller(GameMessageSerializer)
-        </td>
-      </tr><tr>
-        <td>
-          150
-        </td>
-        <td>
-          2290
-        </td>
-        <td>
-          5138
-          -
-          5179
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          &lt;init&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          new Marshaller(NewGameResponseSerializer)
-        </td>
-      </tr><tr>
-        <td>
-          150
-        </td>
-        <td>
-          2291
-        </td>
-        <td>
-          4840
-          -
-          5180
+          5512
         </td>
         <td>
           Apply
@@ -2253,15 +2346,39 @@
         </td>
       </tr><tr>
         <td>
-          151
+          157
         </td>
         <td>
-          2292
+          2325
         </td>
         <td>
-          4840
+          5470
           -
-          5220
+          5511
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          new Marshaller(NewGameResponseSerializer)
+        </td>
+      </tr><tr>
+        <td>
+          158
+        </td>
+        <td>
+          2327
+        </td>
+        <td>
+          5172
+          -
+          5552
         </td>
         <td>
           Apply
@@ -2287,15 +2404,15 @@
         </td>
       </tr><tr>
         <td>
-          152
+          159
         </td>
         <td>
-          2293
+          2328
         </td>
         <td>
-          4840
+          5172
           -
-          5237
+          5569
         </td>
         <td>
           Apply
@@ -2317,6 +2434,297 @@
         .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;NewGame&quot;))
         .setRequestMarshaller(new Marshaller(GameMessageSerializer))
         .setResponseMarshaller(new Marshaller(NewGameResponseSerializer))
+        .setSampledToLocalTracing(true)
+        .build()
+        </td>
+      </tr><tr>
+        <td>
+          162
+        </td>
+        <td>
+          2329
+        </td>
+        <td>
+          5688
+          -
+          5717
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          newBuilder
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          MethodDescriptor.newBuilder()
+        </td>
+      </tr><tr>
+        <td>
+          163
+        </td>
+        <td>
+          2330
+        </td>
+        <td>
+          5688
+          -
+          5784
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setType
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          MethodDescriptor.newBuilder()
+        .setType(
+   MethodDescriptor.MethodType.UNARY 
+  
+  
+  
+)
+        </td>
+      </tr><tr>
+        <td>
+          169
+        </td>
+        <td>
+          2332
+        </td>
+        <td>
+          5688
+          -
+          5894
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setFullMethodName
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          MethodDescriptor.newBuilder()
+        .setType(
+   MethodDescriptor.MethodType.UNARY 
+  
+  
+  
+)
+        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;UpdateUserPoints&quot;))
+        </td>
+      </tr><tr>
+        <td>
+          169
+        </td>
+        <td>
+          2331
+        </td>
+        <td>
+          5812
+          -
+          5893
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          generateFullMethodName
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;UpdateUserPoints&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          170
+        </td>
+        <td>
+          2334
+        </td>
+        <td>
+          5688
+          -
+          5962
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setRequestMarshaller
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          MethodDescriptor.newBuilder()
+        .setType(
+   MethodDescriptor.MethodType.UNARY 
+  
+  
+  
+)
+        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;UpdateUserPoints&quot;))
+        .setRequestMarshaller(new Marshaller(UserPointsSerializer))
+        </td>
+      </tr><tr>
+        <td>
+          170
+        </td>
+        <td>
+          2333
+        </td>
+        <td>
+          5925
+          -
+          5961
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          new Marshaller(UserPointsSerializer)
+        </td>
+      </tr><tr>
+        <td>
+          171
+        </td>
+        <td>
+          2335
+        </td>
+        <td>
+          5994
+          -
+          6034
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          new Marshaller(UpdateResponseSerializer)
+        </td>
+      </tr><tr>
+        <td>
+          171
+        </td>
+        <td>
+          2336
+        </td>
+        <td>
+          5688
+          -
+          6035
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setResponseMarshaller
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          MethodDescriptor.newBuilder()
+        .setType(
+   MethodDescriptor.MethodType.UNARY 
+  
+  
+  
+)
+        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;UpdateUserPoints&quot;))
+        .setRequestMarshaller(new Marshaller(UserPointsSerializer))
+        .setResponseMarshaller(new Marshaller(UpdateResponseSerializer))
+        </td>
+      </tr><tr>
+        <td>
+          172
+        </td>
+        <td>
+          2337
+        </td>
+        <td>
+          5688
+          -
+          6075
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setSampledToLocalTracing
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          MethodDescriptor.newBuilder()
+        .setType(
+   MethodDescriptor.MethodType.UNARY 
+  
+  
+  
+)
+        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;UpdateUserPoints&quot;))
+        .setRequestMarshaller(new Marshaller(UserPointsSerializer))
+        .setResponseMarshaller(new Marshaller(UpdateResponseSerializer))
+        .setSampledToLocalTracing(true)
+        </td>
+      </tr><tr>
+        <td>
+          173
+        </td>
+        <td>
+          2338
+        </td>
+        <td>
+          5688
+          -
+          6092
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          build
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          MethodDescriptor.newBuilder()
+        .setType(
+   MethodDescriptor.MethodType.UNARY 
+  
+  
+  
+)
+        .setFullMethodName(MethodDescriptor.generateFullMethodName(&quot;grpcService.Server&quot;, &quot;UpdateUserPoints&quot;))
+        .setRequestMarshaller(new Marshaller(UserPointsSerializer))
+        .setResponseMarshaller(new Marshaller(UpdateResponseSerializer))
         .setSampledToLocalTracing(true)
         .build()
         </td>

@@ -137,7 +137,7 @@
 </span>113 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(&quot;Carte ottenute&quot;)
 </span>114 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.CardsAssigned(list)
 </span>115 <span style=''></span><span style='background: #AEF1AE'>      gameOn()
-</span>116 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>116 <span style=''></span><span style='background: #AEF1AE'>    case _ =&gt; Behaviors.same
 </span>117 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
 </span>118 <span style=''>
 </span>119 <span style=''>  </span><span style='background: #AEF1AE'>def gameOn</span><span style=''>(): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
@@ -216,7 +216,7 @@
           17
         </td>
         <td>
-          503
+          514
         </td>
         <td>
           669
@@ -240,7 +240,31 @@
           44
         </td>
         <td>
-          561
+          573
+        </td>
+        <td>
+          1970
+          -
+          1970
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          apply$default$1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          
+        </td>
+      </tr><tr>
+        <td>
+          44
+        </td>
+        <td>
+          572
         </td>
         <td>
           1970
@@ -264,7 +288,7 @@
           44
         </td>
         <td>
-          564
+          575
         </td>
         <td>
           2048
@@ -288,31 +312,7 @@
           44
         </td>
         <td>
-          563
-        </td>
-        <td>
-          2048
-          -
-          2060
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          empty
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          Option.empty
-        </td>
-      </tr><tr>
-        <td>
-          44
-        </td>
-        <td>
-          560
+          571
         </td>
         <td>
           1924
@@ -336,31 +336,31 @@
           44
         </td>
         <td>
-          562
+          574
         </td>
         <td>
-          1970
+          2048
           -
-          1970
+          2060
         </td>
         <td>
-          DefDef
+          Select
         </td>
         <td>
-          apply$default$1
+          empty
         </td>
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
-          
+        <td style="background: #F0ADAD">
+          Option.empty
         </td>
       </tr><tr>
         <td>
           45
         </td>
         <td>
-          559
+          570
         </td>
         <td>
           2087
@@ -420,7 +420,31 @@
           46
         </td>
         <td>
-          505
+          517
+        </td>
+        <td>
+          2127
+          -
+          2150
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.system.receptionist
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          516
         </td>
         <td>
           2127
@@ -444,7 +468,7 @@
           46
         </td>
         <td>
-          508
+          519
         </td>
         <td>
           2153
@@ -468,31 +492,7 @@
           46
         </td>
         <td>
-          507
-        </td>
-        <td>
-          2184
-          -
-          2192
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          self
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ctx.self
-        </td>
-      </tr><tr>
-        <td>
-          46
-        </td>
-        <td>
-          504
+          515
         </td>
         <td>
           2127
@@ -516,31 +516,31 @@
           46
         </td>
         <td>
-          506
+          518
         </td>
         <td>
-          2127
+          2184
           -
-          2150
+          2192
         </td>
         <td>
-          Apply
+          Select
         </td>
         <td>
-          ActorRefOps
+          self
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          ctx.system.receptionist
+          ctx.self
         </td>
       </tr><tr>
         <td>
           46
         </td>
         <td>
-          509
+          520
         </td>
         <td>
           2127
@@ -564,7 +564,7 @@
           49
         </td>
         <td>
-          512
+          523
         </td>
         <td>
           2250
@@ -588,31 +588,7 @@
           50
         </td>
         <td>
-          510
-        </td>
-        <td>
-          2278
-          -
-          2285
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          log
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ctx.log
-        </td>
-      </tr><tr>
-        <td>
-          50
-        </td>
-        <td>
-          511
+          522
         </td>
         <td>
           2278
@@ -633,10 +609,34 @@
         </td>
       </tr><tr>
         <td>
+          50
+        </td>
+        <td>
+          521
+        </td>
+        <td>
+          2278
+          -
+          2285
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.log
+        </td>
+      </tr><tr>
+        <td>
           52
         </td>
         <td>
-          520
+          531
         </td>
         <td>
           2336
@@ -660,7 +660,7 @@
           53
         </td>
         <td>
-          514
+          525
         </td>
         <td>
           2356
@@ -684,7 +684,7 @@
           53
         </td>
         <td>
-          513
+          524
         </td>
         <td>
           2356
@@ -708,7 +708,7 @@
           54
         </td>
         <td>
-          517
+          528
         </td>
         <td>
           2412
@@ -732,31 +732,7 @@
           54
         </td>
         <td>
-          516
-        </td>
-        <td>
-          2465
-          -
-          2499
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          &lt;init&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          InteractionGuiImpl(ctx1, ctx.self)
-        </td>
-      </tr><tr>
-        <td>
-          54
-        </td>
-        <td>
-          519
+          530
         </td>
         <td>
           2402
@@ -780,7 +756,31 @@
           54
         </td>
         <td>
-          515
+          527
+        </td>
+        <td>
+          2465
+          -
+          2499
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          InteractionGuiImpl(ctx1, ctx.self)
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
+          526
         </td>
         <td>
           2490
@@ -804,7 +804,7 @@
           54
         </td>
         <td>
-          518
+          529
         </td>
         <td>
           2402
@@ -828,79 +828,7 @@
           56
         </td>
         <td>
-          523
-        </td>
-        <td>
-          2546
-          -
-          2660
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          setup
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          Behaviors.setup[Command | Receptionist.Listing](context =&gt; new PlayerBehaviorImpl(context, interaction, ctx.self))
-        </td>
-      </tr><tr>
-        <td>
-          56
-        </td>
-        <td>
-          525
-        </td>
-        <td>
-          2536
-          -
-          2671
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          spawn
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](context =&gt; new PlayerBehaviorImpl(context, interaction, ctx.self)), &quot;player&quot;)
-        </td>
-      </tr><tr>
-        <td>
-          56
-        </td>
-        <td>
-          522
-        </td>
-        <td>
-          2605
-          -
-          2659
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          &lt;init&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          new PlayerBehaviorImpl(context, interaction, ctx.self)
-        </td>
-      </tr><tr>
-        <td>
-          56
-        </td>
-        <td>
-          521
+          532
         </td>
         <td>
           2650
@@ -924,7 +852,79 @@
           56
         </td>
         <td>
-          524
+          534
+        </td>
+        <td>
+          2546
+          -
+          2660
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          setup
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Behaviors.setup[Command | Receptionist.Listing](context =&gt; new PlayerBehaviorImpl(context, interaction, ctx.self))
+        </td>
+      </tr><tr>
+        <td>
+          56
+        </td>
+        <td>
+          533
+        </td>
+        <td>
+          2605
+          -
+          2659
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          new PlayerBehaviorImpl(context, interaction, ctx.self)
+        </td>
+      </tr><tr>
+        <td>
+          56
+        </td>
+        <td>
+          536
+        </td>
+        <td>
+          2536
+          -
+          2671
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          spawn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](context =&gt; new PlayerBehaviorImpl(context, interaction, ctx.self)), &quot;player&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          56
+        </td>
+        <td>
+          535
         </td>
         <td>
           2536
@@ -948,31 +948,7 @@
           57
         </td>
         <td>
-          528
-        </td>
-        <td>
-          2703
-          -
-          2792
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          setup
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          Behaviors.setup[Event | Receptionist.Listing](context =&gt; PlayerClusterListener(ctx.self))
-        </td>
-      </tr><tr>
-        <td>
-          57
-        </td>
-        <td>
-          530
+          541
         </td>
         <td>
           2693
@@ -996,31 +972,31 @@
           57
         </td>
         <td>
-          527
+          540
         </td>
         <td>
-          2760
+          2693
           -
-          2791
+          2702
         </td>
         <td>
-          Apply
+          Select
         </td>
         <td>
-          apply
+          spawn$default$3
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          PlayerClusterListener(ctx.self)
+          ctx.spawn
         </td>
       </tr><tr>
         <td>
           57
         </td>
         <td>
-          526
+          537
         </td>
         <td>
           2782
@@ -1044,31 +1020,55 @@
           57
         </td>
         <td>
-          529
+          539
         </td>
         <td>
-          2693
+          2703
           -
-          2702
+          2792
         </td>
         <td>
-          Select
+          Apply
         </td>
         <td>
-          spawn$default$3
+          setup
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          ctx.spawn
+          Behaviors.setup[Event | Receptionist.Listing](context =&gt; PlayerClusterListener(ctx.self))
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          538
+        </td>
+        <td>
+          2760
+          -
+          2791
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          PlayerClusterListener(ctx.self)
         </td>
       </tr><tr>
         <td>
           58
         </td>
         <td>
-          532
+          543
         </td>
         <td>
           2827
@@ -1092,7 +1092,7 @@
           58
         </td>
         <td>
-          531
+          542
         </td>
         <td>
           2827
@@ -1116,7 +1116,7 @@
           59
         </td>
         <td>
-          533
+          544
         </td>
         <td>
           2848
@@ -1140,7 +1140,7 @@
           61
         </td>
         <td>
-          553
+          564
         </td>
         <td>
           2878
@@ -1180,7 +1180,7 @@
           62
         </td>
         <td>
-          541
+          552
         </td>
         <td>
           2922
@@ -1204,31 +1204,7 @@
           63
         </td>
         <td>
-          534
-        </td>
-        <td>
-          2954
-          -
-          2965
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          ActorRefOps
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          interaction
-        </td>
-      </tr><tr>
-        <td>
-          63
-        </td>
-        <td>
-          535
+          546
         </td>
         <td>
           2954
@@ -1249,10 +1225,58 @@
         </td>
       </tr><tr>
         <td>
+          63
+        </td>
+        <td>
+          545
+        </td>
+        <td>
+          2954
+          -
+          2965
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interaction
+        </td>
+      </tr><tr>
+        <td>
           65
         </td>
         <td>
-          537
+          549
+        </td>
+        <td>
+          3043
+          -
+          3057
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case Some(ref)
+        </td>
+      </tr><tr>
+        <td>
+          65
+        </td>
+        <td>
+          548
         </td>
         <td>
           3061
@@ -1276,7 +1300,7 @@
           65
         </td>
         <td>
-          536
+          547
         </td>
         <td>
           3061
@@ -1297,34 +1321,10 @@
         </td>
       </tr><tr>
         <td>
-          65
-        </td>
-        <td>
-          538
-        </td>
-        <td>
-          3043
-          -
-          3057
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          case Some(ref)
-        </td>
-      </tr><tr>
-        <td>
           66
         </td>
         <td>
-          539
+          550
         </td>
         <td>
           3093
@@ -1348,7 +1348,7 @@
           68
         </td>
         <td>
-          540
+          551
         </td>
         <td>
           3125
@@ -1372,7 +1372,7 @@
           69
         </td>
         <td>
-          552
+          563
         </td>
         <td>
           3148
@@ -1396,7 +1396,31 @@
           70
         </td>
         <td>
-          543
+          555
+        </td>
+        <td>
+          3179
+          -
+          3221
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.log.info(&quot;MESSAGGIO RICEVUTO: &quot; + msg)
+        </td>
+      </tr><tr>
+        <td>
+          70
+        </td>
+        <td>
+          554
         </td>
         <td>
           3192
@@ -1420,7 +1444,7 @@
           70
         </td>
         <td>
-          542
+          553
         </td>
         <td>
           3179
@@ -1441,34 +1465,34 @@
         </td>
       </tr><tr>
         <td>
-          70
+          72
         </td>
         <td>
-          544
+          558
         </td>
         <td>
-          3179
+          3259
           -
-          3221
+          3273
         </td>
         <td>
-          Apply
+          Block
         </td>
         <td>
-          info
+          &lt;none&gt;
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          ctx.log.info(&quot;MESSAGGIO RICEVUTO: &quot; + msg)
+          case Some(ref)
         </td>
       </tr><tr>
         <td>
           72
         </td>
         <td>
-          546
+          557
         </td>
         <td>
           3277
@@ -1492,7 +1516,7 @@
           72
         </td>
         <td>
-          545
+          556
         </td>
         <td>
           3277
@@ -1513,34 +1537,10 @@
         </td>
       </tr><tr>
         <td>
-          72
-        </td>
-        <td>
-          547
-        </td>
-        <td>
-          3259
-          -
-          3273
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          case Some(ref)
-        </td>
-      </tr><tr>
-        <td>
           73
         </td>
         <td>
-          548
+          559
         </td>
         <td>
           3299
@@ -1564,7 +1564,7 @@
           75
         </td>
         <td>
-          550
+          561
         </td>
         <td>
           3331
@@ -1588,7 +1588,7 @@
           75
         </td>
         <td>
-          549
+          560
         </td>
         <td>
           3331
@@ -1612,7 +1612,7 @@
           76
         </td>
         <td>
-          551
+          562
         </td>
         <td>
           3354
@@ -1636,7 +1636,31 @@
           77
         </td>
         <td>
-          558
+          568
+        </td>
+        <td>
+          3393
+          -
+          3422
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case (ctx, t @ Terminated(_))
+        </td>
+      </tr><tr>
+        <td>
+          77
+        </td>
+        <td>
+          569
         </td>
         <td>
           2878
@@ -1676,34 +1700,10 @@
         </td>
       </tr><tr>
         <td>
-          77
-        </td>
-        <td>
-          557
-        </td>
-        <td>
-          3393
-          -
-          3422
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case (ctx, t @ Terminated(_))
-        </td>
-      </tr><tr>
-        <td>
           78
         </td>
         <td>
-          555
+          566
         </td>
         <td>
           3434
@@ -1727,7 +1727,7 @@
           78
         </td>
         <td>
-          554
+          565
         </td>
         <td>
           3434
@@ -1751,7 +1751,7 @@
           79
         </td>
         <td>
-          556
+          567
         </td>
         <td>
           3500
@@ -1775,7 +1775,7 @@
           83
         </td>
         <td>
-          565
+          576
         </td>
         <td>
           3723
@@ -1799,7 +1799,7 @@
           85
         </td>
         <td>
-          603
+          614
         </td>
         <td>
           3785
@@ -1823,7 +1823,7 @@
           86
         </td>
         <td>
-          577
+          588
         </td>
         <td>
           3905
@@ -1847,31 +1847,7 @@
           87
         </td>
         <td>
-          567
-        </td>
-        <td>
-          3945
-          -
-          3983
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          info
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          context.log.info(&quot;RECEIVED SOMETHING&quot;)
-        </td>
-      </tr><tr>
-        <td>
-          87
-        </td>
-        <td>
-          566
+          577
         </td>
         <td>
           3945
@@ -1892,10 +1868,34 @@
         </td>
       </tr><tr>
         <td>
+          87
+        </td>
+        <td>
+          578
+        </td>
+        <td>
+          3945
+          -
+          3983
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log.info(&quot;RECEIVED SOMETHING&quot;)
+        </td>
+      </tr><tr>
+        <td>
           88
         </td>
         <td>
-          568
+          579
         </td>
         <td>
           4053
@@ -1919,7 +1919,7 @@
           88
         </td>
         <td>
-          569
+          580
         </td>
         <td>
           4053
@@ -1943,7 +1943,7 @@
           89
         </td>
         <td>
-          570
+          581
         </td>
         <td>
           4123
@@ -1967,7 +1967,55 @@
           90
         </td>
         <td>
-          573
+          585
+        </td>
+        <td>
+          4149
+          -
+          4189
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.self ! AskToEnter(services.head)
+        </td>
+      </tr><tr>
+        <td>
+          90
+        </td>
+        <td>
+          582
+        </td>
+        <td>
+          4149
+          -
+          4161
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          self
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.self
+        </td>
+      </tr><tr>
+        <td>
+          90
+        </td>
+        <td>
+          584
         </td>
         <td>
           4175
@@ -1991,31 +2039,7 @@
           90
         </td>
         <td>
-          572
-        </td>
-        <td>
-          4149
-          -
-          4161
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          ActorRefOps
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          context.self
-        </td>
-      </tr><tr>
-        <td>
-          90
-        </td>
-        <td>
-          575
+          586
         </td>
         <td>
           4149
@@ -2039,7 +2063,7 @@
           90
         </td>
         <td>
-          571
+          583
         </td>
         <td>
           4149
@@ -2047,10 +2071,10 @@
           4161
         </td>
         <td>
-          Select
+          Apply
         </td>
         <td>
-          self
+          ActorRefOps
         </td>
         <td>
           
@@ -2060,34 +2084,10 @@
         </td>
       </tr><tr>
         <td>
-          90
-        </td>
-        <td>
-          574
-        </td>
-        <td>
-          4149
-          -
-          4189
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          !
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          context.self ! AskToEnter(services.head)
-        </td>
-      </tr><tr>
-        <td>
           91
         </td>
         <td>
-          576
+          587
         </td>
         <td>
           4196
@@ -2111,7 +2111,7 @@
           92
         </td>
         <td>
-          585
+          596
         </td>
         <td>
           4215
@@ -2135,7 +2135,55 @@
           93
         </td>
         <td>
-          579
+          594
+        </td>
+        <td>
+          4235
+          -
+          4333
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.system.receptionist ! Receptionist.Subscribe(PlayersManagerBehavior.Service, context.self)
+        </td>
+      </tr><tr>
+        <td>
+          93
+        </td>
+        <td>
+          591
+        </td>
+        <td>
+          4235
+          -
+          4262
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.system.receptionist
+        </td>
+      </tr><tr>
+        <td>
+          93
+        </td>
+        <td>
+          590
         </td>
         <td>
           4235
@@ -2159,7 +2207,7 @@
           93
         </td>
         <td>
-          582
+          593
         </td>
         <td>
           4265
@@ -2183,31 +2231,7 @@
           93
         </td>
         <td>
-          581
-        </td>
-        <td>
-          4320
-          -
-          4332
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          self
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          context.self
-        </td>
-      </tr><tr>
-        <td>
-          93
-        </td>
-        <td>
-          578
+          589
         </td>
         <td>
           4235
@@ -2231,55 +2255,31 @@
           93
         </td>
         <td>
-          580
+          592
         </td>
         <td>
-          4235
+          4320
           -
-          4262
+          4332
         </td>
         <td>
-          Apply
+          Select
         </td>
         <td>
-          ActorRefOps
+          self
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          context.system.receptionist
-        </td>
-      </tr><tr>
-        <td>
-          93
-        </td>
-        <td>
-          583
-        </td>
-        <td>
-          4235
-          -
-          4333
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          !
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          context.system.receptionist ! Receptionist.Subscribe(PlayersManagerBehavior.Service, context.self)
+          context.self
         </td>
       </tr><tr>
         <td>
           94
         </td>
         <td>
-          584
+          595
         </td>
         <td>
           4340
@@ -2303,7 +2303,7 @@
           95
         </td>
         <td>
-          589
+          600
         </td>
         <td>
           4359
@@ -2327,31 +2327,7 @@
           96
         </td>
         <td>
-          587
-        </td>
-        <td>
-          4393
-          -
-          4445
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          !
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          replyTo ! PlayersManagerBehavior.AskEnter(rootActor)
-        </td>
-      </tr><tr>
-        <td>
-          96
-        </td>
-        <td>
-          586
+          597
         </td>
         <td>
           4393
@@ -2372,10 +2348,34 @@
         </td>
       </tr><tr>
         <td>
+          96
+        </td>
+        <td>
+          598
+        </td>
+        <td>
+          4393
+          -
+          4445
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          replyTo ! PlayersManagerBehavior.AskEnter(rootActor)
+        </td>
+      </tr><tr>
+        <td>
           97
         </td>
         <td>
-          588
+          599
         </td>
         <td>
           4452
@@ -2399,7 +2399,7 @@
           98
         </td>
         <td>
-          593
+          604
         </td>
         <td>
           4471
@@ -2423,7 +2423,7 @@
           99
         </td>
         <td>
-          591
+          602
         </td>
         <td>
           4494
@@ -2447,7 +2447,7 @@
           99
         </td>
         <td>
-          590
+          601
         </td>
         <td>
           4494
@@ -2471,7 +2471,7 @@
           100
         </td>
         <td>
-          592
+          603
         </td>
         <td>
           4530
@@ -2495,7 +2495,7 @@
           101
         </td>
         <td>
-          597
+          608
         </td>
         <td>
           4549
@@ -2519,31 +2519,7 @@
           102
         </td>
         <td>
-          594
-        </td>
-        <td>
-          4572
-          -
-          4588
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          ActorRefOps
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          interactionActor
-        </td>
-      </tr><tr>
-        <td>
-          102
-        </td>
-        <td>
-          595
+          606
         </td>
         <td>
           4572
@@ -2564,10 +2540,34 @@
         </td>
       </tr><tr>
         <td>
+          102
+        </td>
+        <td>
+          605
+        </td>
+        <td>
+          4572
+          -
+          4588
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          interactionActor
+        </td>
+      </tr><tr>
+        <td>
           103
         </td>
         <td>
-          596
+          607
         </td>
         <td>
           4653
@@ -2591,7 +2591,7 @@
           104
         </td>
         <td>
-          602
+          613
         </td>
         <td>
           4675
@@ -2615,7 +2615,31 @@
           105
         </td>
         <td>
-          600
+          609
+        </td>
+        <td>
+          4691
+          -
+          4702
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          105
+        </td>
+        <td>
+          611
         </td>
         <td>
           4691
@@ -2639,7 +2663,7 @@
           105
         </td>
         <td>
-          599
+          610
         </td>
         <td>
           4708
@@ -2660,34 +2684,10 @@
         </td>
       </tr><tr>
         <td>
-          105
-        </td>
-        <td>
-          598
-        </td>
-        <td>
-          4691
-          -
-          4702
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          log
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          context.log
-        </td>
-      </tr><tr>
-        <td>
           106
         </td>
         <td>
-          601
+          612
         </td>
         <td>
           4748
@@ -2711,7 +2711,31 @@
           109
         </td>
         <td>
-          612
+          624
+        </td>
+        <td>
+          4770
+          -
+          4786
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          waitForCards
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def waitForCards
+        </td>
+      </tr><tr>
+        <td>
+          109
+        </td>
+        <td>
+          623
         </td>
         <td>
           4833
@@ -2739,34 +2763,10 @@
         </td>
       </tr><tr>
         <td>
-          109
-        </td>
-        <td>
-          613
-        </td>
-        <td>
-          4770
-          -
-          4786
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          waitForCards
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          def waitForCards
-        </td>
-      </tr><tr>
-        <td>
           110
         </td>
         <td>
-          609
+          620
         </td>
         <td>
           4864
@@ -2790,31 +2790,7 @@
           112
         </td>
         <td>
-          605
-        </td>
-        <td>
-          4947
-          -
-          4981
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          info
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          context.log.info(&quot;Carte ottenute&quot;)
-        </td>
-      </tr><tr>
-        <td>
-          112
-        </td>
-        <td>
-          604
+          615
         </td>
         <td>
           4947
@@ -2835,34 +2811,34 @@
         </td>
       </tr><tr>
         <td>
-          113
+          112
         </td>
         <td>
-          606
+          616
         </td>
         <td>
-          4988
+          4947
           -
-          5004
+          4981
         </td>
         <td>
           Apply
         </td>
         <td>
-          ActorRefOps
+          info
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          interactionActor
+          context.log.info(&quot;Carte ottenute&quot;)
         </td>
       </tr><tr>
         <td>
           113
         </td>
         <td>
-          607
+          618
         </td>
         <td>
           4988
@@ -2883,10 +2859,34 @@
         </td>
       </tr><tr>
         <td>
+          113
+        </td>
+        <td>
+          617
+        </td>
+        <td>
+          4988
+          -
+          5004
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interactionActor
+        </td>
+      </tr><tr>
+        <td>
           114
         </td>
         <td>
-          608
+          619
         </td>
         <td>
           5053
@@ -2910,31 +2910,7 @@
           115
         </td>
         <td>
-          611
-        </td>
-        <td>
-          5066
-          -
-          5072
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case _
-        </td>
-      </tr><tr>
-        <td>
-          115
-        </td>
-        <td>
-          610
+          621
         </td>
         <td>
           5076
@@ -2950,15 +2926,39 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          115
+        </td>
+        <td>
+          622
+        </td>
+        <td>
+          5066
+          -
+          5072
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case _
         </td>
       </tr><tr>
         <td>
           118
         </td>
         <td>
-          639
+          650
         </td>
         <td>
           5098
@@ -2982,7 +2982,7 @@
           118
         </td>
         <td>
-          638
+          649
         </td>
         <td>
           5155
@@ -3026,7 +3026,7 @@
           119
         </td>
         <td>
-          620
+          631
         </td>
         <td>
           5186
@@ -3050,7 +3050,7 @@
           122
         </td>
         <td>
-          615
+          626
         </td>
         <td>
           5391
@@ -3074,7 +3074,7 @@
           122
         </td>
         <td>
-          614
+          625
         </td>
         <td>
           5391
@@ -3098,7 +3098,31 @@
           123
         </td>
         <td>
-          618
+          627
+        </td>
+        <td>
+          5449
+          -
+          5465
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interactionActor
+        </td>
+      </tr><tr>
+        <td>
+          123
+        </td>
+        <td>
+          629
         </td>
         <td>
           5449
@@ -3122,7 +3146,7 @@
           123
         </td>
         <td>
-          617
+          628
         </td>
         <td>
           5502
@@ -3143,34 +3167,10 @@
         </td>
       </tr><tr>
         <td>
-          123
-        </td>
-        <td>
-          616
-        </td>
-        <td>
-          5449
-          -
-          5465
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          ActorRefOps
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          interactionActor
-        </td>
-      </tr><tr>
-        <td>
           124
         </td>
         <td>
-          619
+          630
         </td>
         <td>
           5522
@@ -3194,7 +3194,7 @@
           125
         </td>
         <td>
-          624
+          635
         </td>
         <td>
           5542
@@ -3218,31 +3218,7 @@
           126
         </td>
         <td>
-          621
-        </td>
-        <td>
-          5591
-          -
-          5607
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          ActorRefOps
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          interactionActor
-        </td>
-      </tr><tr>
-        <td>
-          126
-        </td>
-        <td>
-          622
+          633
         </td>
         <td>
           5591
@@ -3263,10 +3239,34 @@
         </td>
       </tr><tr>
         <td>
+          126
+        </td>
+        <td>
+          632
+        </td>
+        <td>
+          5591
+          -
+          5607
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interactionActor
+        </td>
+      </tr><tr>
+        <td>
           127
         </td>
         <td>
-          623
+          634
         </td>
         <td>
           5664
@@ -3290,7 +3290,7 @@
           128
         </td>
         <td>
-          628
+          639
         </td>
         <td>
           5690
@@ -3314,31 +3314,7 @@
           129
         </td>
         <td>
-          626
-        </td>
-        <td>
-          5718
-          -
-          5770
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          !
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          interactionActor ! InteractionBehavior.NewCard(card)
-        </td>
-      </tr><tr>
-        <td>
-          129
-        </td>
-        <td>
-          625
+          636
         </td>
         <td>
           5718
@@ -3359,10 +3335,34 @@
         </td>
       </tr><tr>
         <td>
+          129
+        </td>
+        <td>
+          637
+        </td>
+        <td>
+          5718
+          -
+          5770
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          interactionActor ! InteractionBehavior.NewCard(card)
+        </td>
+      </tr><tr>
+        <td>
           130
         </td>
         <td>
-          627
+          638
         </td>
         <td>
           5777
@@ -3386,7 +3386,7 @@
           131
         </td>
         <td>
-          630
+          641
         </td>
         <td>
           5796
@@ -3410,7 +3410,7 @@
           131
         </td>
         <td>
-          629
+          640
         </td>
         <td>
           5818
@@ -3434,7 +3434,7 @@
           133
         </td>
         <td>
-          635
+          646
         </td>
         <td>
           5838
@@ -3458,7 +3458,31 @@
           134
         </td>
         <td>
-          633
+          642
+        </td>
+        <td>
+          5868
+          -
+          5884
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          interactionActor
+        </td>
+      </tr><tr>
+        <td>
+          134
+        </td>
+        <td>
+          644
         </td>
         <td>
           5868
@@ -3482,7 +3506,7 @@
           134
         </td>
         <td>
-          632
+          643
         </td>
         <td>
           5920
@@ -3503,34 +3527,10 @@
         </td>
       </tr><tr>
         <td>
-          134
-        </td>
-        <td>
-          631
-        </td>
-        <td>
-          5868
-          -
-          5884
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          ActorRefOps
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          interactionActor
-        </td>
-      </tr><tr>
-        <td>
           135
         </td>
         <td>
-          634
+          645
         </td>
         <td>
           5973
@@ -3554,31 +3554,7 @@
           137
         </td>
         <td>
-          636
-        </td>
-        <td>
-          6006
-          -
-          6020
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          same
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          Behaviors.same
-        </td>
-      </tr><tr>
-        <td>
-          137
-        </td>
-        <td>
-          637
+          648
         </td>
         <td>
           5996
@@ -3599,34 +3575,34 @@
         </td>
       </tr><tr>
         <td>
-          140
+          137
         </td>
         <td>
-          653
+          647
         </td>
         <td>
-          6028
+          6006
           -
-          6037
+          6020
         </td>
         <td>
-          DefDef
+          Select
         </td>
         <td>
-          guess
+          same
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          def guess
+          Behaviors.same
         </td>
       </tr><tr>
         <td>
           140
         </td>
         <td>
-          652
+          663
         </td>
         <td>
           6141
@@ -3657,10 +3633,34 @@
         </td>
       </tr><tr>
         <td>
+          140
+        </td>
+        <td>
+          664
+        </td>
+        <td>
+          6028
+          -
+          6037
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          guess
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def guess
+        </td>
+      </tr><tr>
+        <td>
           141
         </td>
         <td>
-          643
+          654
         </td>
         <td>
           6172
@@ -3684,31 +3684,7 @@
           142
         </td>
         <td>
-          641
-        </td>
-        <td>
-          6212
-          -
-          6271
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          !
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          replyTo ! ForemanBehavior.SelectionToApply(card, rootActor)
-        </td>
-      </tr><tr>
-        <td>
-          142
-        </td>
-        <td>
-          640
+          651
         </td>
         <td>
           6212
@@ -3729,10 +3705,34 @@
         </td>
       </tr><tr>
         <td>
+          142
+        </td>
+        <td>
+          652
+        </td>
+        <td>
+          6212
+          -
+          6271
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          replyTo ! ForemanBehavior.SelectionToApply(card, rootActor)
+        </td>
+      </tr><tr>
+        <td>
           143
         </td>
         <td>
-          642
+          653
         </td>
         <td>
           6278
@@ -3756,7 +3756,7 @@
           144
         </td>
         <td>
-          647
+          658
         </td>
         <td>
           6297
@@ -3780,7 +3780,7 @@
           145
         </td>
         <td>
-          645
+          656
         </td>
         <td>
           6341
@@ -3804,7 +3804,7 @@
           145
         </td>
         <td>
-          644
+          655
         </td>
         <td>
           6341
@@ -3828,7 +3828,7 @@
           146
         </td>
         <td>
-          646
+          657
         </td>
         <td>
           6429
@@ -3852,31 +3852,7 @@
           147
         </td>
         <td>
-          648
-        </td>
-        <td>
-          6471
-          -
-          6479
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          gameOn
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          gameOn()
-        </td>
-      </tr><tr>
-        <td>
-          147
-        </td>
-        <td>
-          649
+          660
         </td>
         <td>
           6449
@@ -3897,10 +3873,34 @@
         </td>
       </tr><tr>
         <td>
+          147
+        </td>
+        <td>
+          659
+        </td>
+        <td>
+          6471
+          -
+          6479
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          gameOn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          gameOn()
+        </td>
+      </tr><tr>
+        <td>
           149
         </td>
         <td>
-          651
+          662
         </td>
         <td>
           6485
@@ -3924,7 +3924,7 @@
           149
         </td>
         <td>
-          650
+          661
         </td>
         <td>
           6495
@@ -3948,7 +3948,7 @@
           152
         </td>
         <td>
-          672
+          683
         </td>
         <td>
           6517
@@ -3972,7 +3972,7 @@
           152
         </td>
         <td>
-          671
+          682
         </td>
         <td>
           6616
@@ -4009,7 +4009,7 @@
           153
         </td>
         <td>
-          659
+          670
         </td>
         <td>
           6647
@@ -4033,31 +4033,7 @@
           154
         </td>
         <td>
-          654
-        </td>
-        <td>
-          6695
-          -
-          6702
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          ActorRefOps
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          replyTo
-        </td>
-      </tr><tr>
-        <td>
-          154
-        </td>
-        <td>
-          655
+          666
         </td>
         <td>
           6695
@@ -4078,10 +4054,34 @@
         </td>
       </tr><tr>
         <td>
+          154
+        </td>
+        <td>
+          665
+        </td>
+        <td>
+          6695
+          -
+          6702
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          replyTo
+        </td>
+      </tr><tr>
+        <td>
           155
         </td>
         <td>
-          657
+          668
         </td>
         <td>
           6765
@@ -4105,7 +4105,7 @@
           155
         </td>
         <td>
-          656
+          667
         </td>
         <td>
           6765
@@ -4129,7 +4129,7 @@
           156
         </td>
         <td>
-          658
+          669
         </td>
         <td>
           6827
@@ -4153,7 +4153,7 @@
           157
         </td>
         <td>
-          663
+          674
         </td>
         <td>
           6840
@@ -4177,31 +4177,7 @@
           158
         </td>
         <td>
-          660
-        </td>
-        <td>
-          6880
-          -
-          6887
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          ActorRefOps
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          replyTo
-        </td>
-      </tr><tr>
-        <td>
-          158
-        </td>
-        <td>
-          661
+          672
         </td>
         <td>
           6880
@@ -4222,10 +4198,34 @@
         </td>
       </tr><tr>
         <td>
+          158
+        </td>
+        <td>
+          671
+        </td>
+        <td>
+          6880
+          -
+          6887
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          replyTo
+        </td>
+      </tr><tr>
+        <td>
           159
         </td>
         <td>
-          662
+          673
         </td>
         <td>
           6946
@@ -4249,31 +4249,7 @@
           161
         </td>
         <td>
-          665
-        </td>
-        <td>
-          6980
-          -
-          6998
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case TurnCancelled
-        </td>
-      </tr><tr>
-        <td>
-          161
-        </td>
-        <td>
-          664
+          675
         </td>
         <td>
           7002
@@ -4294,58 +4270,34 @@
         </td>
       </tr><tr>
         <td>
-          163
+          161
         </td>
         <td>
-          666
+          676
         </td>
         <td>
-          7028
+          6980
           -
-          7039
+          6998
         </td>
         <td>
-          Select
+          Block
         </td>
         <td>
-          log
+          &lt;none&gt;
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          context.log
+          case TurnCancelled
         </td>
       </tr><tr>
         <td>
           163
         </td>
         <td>
-          668
-        </td>
-        <td>
-          7028
-          -
-          7071
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          info
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          context.log.info(&quot;Unknown message: &quot; + msg)
-        </td>
-      </tr><tr>
-        <td>
-          163
-        </td>
-        <td>
-          667
+          678
         </td>
         <td>
           7045
@@ -4369,7 +4321,7 @@
           163
         </td>
         <td>
-          670
+          681
         </td>
         <td>
           7016
@@ -4390,10 +4342,58 @@
         </td>
       </tr><tr>
         <td>
+          163
+        </td>
+        <td>
+          677
+        </td>
+        <td>
+          7028
+          -
+          7039
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          163
+        </td>
+        <td>
+          679
+        </td>
+        <td>
+          7028
+          -
+          7071
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log.info(&quot;Unknown message: &quot; + msg)
+        </td>
+      </tr><tr>
+        <td>
           164
         </td>
         <td>
-          669
+          680
         </td>
         <td>
           7078
@@ -4417,31 +4417,7 @@
           167
         </td>
         <td>
-          683
-        </td>
-        <td>
-          7100
-          -
-          7123
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          waitForCardRevealed
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          def waitForCardRevealed
-        </td>
-      </tr><tr>
-        <td>
-          167
-        </td>
-        <td>
-          682
+          693
         </td>
         <td>
           7212
@@ -4471,10 +4447,34 @@
         </td>
       </tr><tr>
         <td>
+          167
+        </td>
+        <td>
+          694
+        </td>
+        <td>
+          7100
+          -
+          7123
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          waitForCardRevealed
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def waitForCardRevealed
+        </td>
+      </tr><tr>
+        <td>
           168
         </td>
         <td>
-          674
+          685
         </td>
         <td>
           7243
@@ -4498,7 +4498,7 @@
           170
         </td>
         <td>
-          673
+          684
         </td>
         <td>
           7341
@@ -4522,31 +4522,7 @@
           172
         </td>
         <td>
-          675
-        </td>
-        <td>
-          7377
-          -
-          7385
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          gameOn
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          gameOn()
-        </td>
-      </tr><tr>
-        <td>
-          172
-        </td>
-        <td>
-          676
+          687
         </td>
         <td>
           7355
@@ -4567,34 +4543,58 @@
         </td>
       </tr><tr>
         <td>
-          174
+          172
         </td>
         <td>
-          678
+          686
         </td>
         <td>
-          7420
+          7377
           -
-          7445
+          7385
         </td>
         <td>
           Apply
         </td>
         <td>
-          +
+          gameOn
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          &quot;Unknown message: &quot; + msg
+          gameOn()
         </td>
       </tr><tr>
         <td>
           174
         </td>
         <td>
-          681
+          690
+        </td>
+        <td>
+          7403
+          -
+          7446
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log.info(&quot;Unknown message: &quot; + msg)
+        </td>
+      </tr><tr>
+        <td>
+          174
+        </td>
+        <td>
+          692
         </td>
         <td>
           7391
@@ -4618,7 +4618,31 @@
           174
         </td>
         <td>
-          677
+          689
+        </td>
+        <td>
+          7420
+          -
+          7445
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          &quot;Unknown message: &quot; + msg
+        </td>
+      </tr><tr>
+        <td>
+          174
+        </td>
+        <td>
+          688
         </td>
         <td>
           7403
@@ -4639,34 +4663,10 @@
         </td>
       </tr><tr>
         <td>
-          174
-        </td>
-        <td>
-          679
-        </td>
-        <td>
-          7403
-          -
-          7446
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          info
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          context.log.info(&quot;Unknown message: &quot; + msg)
-        </td>
-      </tr><tr>
-        <td>
           175
         </td>
         <td>
-          680
+          691
         </td>
         <td>
           7453

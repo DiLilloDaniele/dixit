@@ -201,7 +201,7 @@
 </span>177 <span style=''></span><span style='background: #AEF1AE'>    statement.executeUpdate(query.query)
 </span>178 <span style=''></span><span style='background: #AEF1AE'>    return true
 </span>179 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''> catch {
-</span>180 <span style=''>    </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>e.printStackTrace</span><span style=''>
+</span>180 <span style=''>    </span><span style='background: #AEF1AE'>case e: Exception</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>e.printStackTrace</span><span style=''>
 </span>181 <span style=''>      return false
 </span>182 <span style=''>  } finally </span><span style='background: #AEF1AE'>{
 </span>183 <span style=''></span><span style='background: #AEF1AE'>    if (connection != null) try connection.close
@@ -226,31 +226,7 @@
           8
         </td>
         <td>
-          1243
-        </td>
-        <td>
-          193
-          -
-          202
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          apply
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          def apply
-        </td>
-      </tr><tr>
-        <td>
-          8
-        </td>
-        <td>
-          1244
+          1261
         </td>
         <td>
           217
@@ -271,10 +247,34 @@
         </td>
       </tr><tr>
         <td>
+          8
+        </td>
+        <td>
+          1260
+        </td>
+        <td>
+          193
+          -
+          202
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def apply
+        </td>
+      </tr><tr>
+        <td>
           9
         </td>
         <td>
-          1245
+          1262
         </td>
         <td>
           249
@@ -298,7 +298,7 @@
           10
         </td>
         <td>
-          1246
+          1263
         </td>
         <td>
           283
@@ -322,7 +322,7 @@
           11
         </td>
         <td>
-          1247
+          1264
         </td>
         <td>
           316
@@ -346,7 +346,7 @@
           12
         </td>
         <td>
-          1248
+          1265
         </td>
         <td>
           351
@@ -370,7 +370,7 @@
           13
         </td>
         <td>
-          1249
+          1266
         </td>
         <td>
           386
@@ -394,31 +394,7 @@
           14
         </td>
         <td>
-          1242
-        </td>
-        <td>
-          453
-          -
-          538
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          &lt;init&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          new AccessAdapter(url, port, driver, dbName, username, password, connectionStringExt)
-        </td>
-      </tr><tr>
-        <td>
-          14
-        </td>
-        <td>
-          1250
+          1267
         </td>
         <td>
           432
@@ -439,10 +415,34 @@
         </td>
       </tr><tr>
         <td>
+          14
+        </td>
+        <td>
+          1259
+        </td>
+        <td>
+          453
+          -
+          538
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          new AccessAdapter(url, port, driver, dbName, username, password, connectionStringExt)
+        </td>
+      </tr><tr>
+        <td>
           16
         </td>
         <td>
-          1256
+          1273
         </td>
         <td>
           542
@@ -466,7 +466,7 @@
           17
         </td>
         <td>
-          1252
+          1269
         </td>
         <td>
           598
@@ -490,7 +490,7 @@
           17
         </td>
         <td>
-          1251
+          1268
         </td>
         <td>
           598
@@ -514,7 +514,7 @@
           18
         </td>
         <td>
-          1253
+          1270
         </td>
         <td>
           663
@@ -538,7 +538,7 @@
           19
         </td>
         <td>
-          1255
+          1272
         </td>
         <td>
           686
@@ -562,7 +562,7 @@
           19
         </td>
         <td>
-          1254
+          1271
         </td>
         <td>
           694
@@ -586,7 +586,7 @@
           21
         </td>
         <td>
-          1262
+          1279
         </td>
         <td>
           727
@@ -610,7 +610,7 @@
           23
         </td>
         <td>
-          1257
+          1274
         </td>
         <td>
           831
@@ -634,31 +634,31 @@
           24
         </td>
         <td>
-          1258
+          1276
         </td>
         <td>
           850
           -
-          876
+          889
         </td>
         <td>
           Apply
         </td>
         <td>
-          select
+          from
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          queryWrapper select &quot;this&quot;
+          queryWrapper select &quot;this&quot; from &quot;table&quot;
         </td>
       </tr><tr>
         <td>
           24
         </td>
         <td>
-          1261
+          1278
         </td>
         <td>
           850
@@ -682,7 +682,31 @@
           24
         </td>
         <td>
-          1260
+          1275
+        </td>
+        <td>
+          850
+          -
+          876
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          select
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          queryWrapper select &quot;this&quot;
+        </td>
+      </tr><tr>
+        <td>
+          24
+        </td>
+        <td>
+          1277
         </td>
         <td>
           850
@@ -703,34 +727,10 @@
         </td>
       </tr><tr>
         <td>
-          24
-        </td>
-        <td>
-          1259
-        </td>
-        <td>
-          850
-          -
-          889
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          from
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          queryWrapper select &quot;this&quot; from &quot;table&quot;
-        </td>
-      </tr><tr>
-        <td>
           28
         </td>
         <td>
-          1235
+          1252
         </td>
         <td>
           1109
@@ -754,7 +754,7 @@
           29
         </td>
         <td>
-          1236
+          1253
         </td>
         <td>
           1152
@@ -778,7 +778,7 @@
           30
         </td>
         <td>
-          1237
+          1254
         </td>
         <td>
           1198
@@ -802,7 +802,7 @@
           31
         </td>
         <td>
-          1238
+          1255
         </td>
         <td>
           1244
@@ -826,7 +826,7 @@
           32
         </td>
         <td>
-          1239
+          1256
         </td>
         <td>
           1292
@@ -850,7 +850,7 @@
           33
         </td>
         <td>
-          1240
+          1257
         </td>
         <td>
           1340
@@ -874,7 +874,7 @@
           34
         </td>
         <td>
-          1241
+          1258
         </td>
         <td>
           1398
@@ -898,12 +898,12 @@
           36
         </td>
         <td>
-          1264
+          1282
         </td>
         <td>
           1429
           -
-          1453
+          1459
         </td>
         <td>
           Apply
@@ -915,134 +915,14 @@
           
         </td>
         <td style="background: #AEF1AE">
-          &quot;jdbc:&quot; + driver + &quot;://&quot;
+          &quot;jdbc:&quot; + driver + &quot;://&quot; + url
         </td>
       </tr><tr>
         <td>
           36
         </td>
         <td>
-          1267
-        </td>
-        <td>
-          1429
-          -
-          1472
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot; + port
-        </td>
-      </tr><tr>
-        <td>
-          36
-        </td>
-        <td>
-          1270
-        </td>
-        <td>
-          1429
-          -
-          1524
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot; + port + &quot;/&quot; + dbName + &quot;?autoReconnect=true&amp;useSSL=false&quot;
-        </td>
-      </tr><tr>
-        <td>
-          36
-        </td>
-        <td>
-          1269
-        </td>
-        <td>
-          1429
-          -
-          1487
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot; + port + &quot;/&quot; + dbName
-        </td>
-      </tr><tr>
-        <td>
-          36
-        </td>
-        <td>
-          1263
-        </td>
-        <td>
-          1429
-          -
-          1445
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          &quot;jdbc:&quot; + driver
-        </td>
-      </tr><tr>
-        <td>
-          36
-        </td>
-        <td>
-          1266
-        </td>
-        <td>
-          1429
-          -
-          1465
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot;
-        </td>
-      </tr><tr>
-        <td>
-          36
-        </td>
-        <td>
-          1268
+          1285
         </td>
         <td>
           1429
@@ -1066,12 +946,12 @@
           36
         </td>
         <td>
-          1265
+          1287
         </td>
         <td>
           1429
           -
-          1459
+          1524
         </td>
         <td>
           Apply
@@ -1083,14 +963,134 @@
           
         </td>
         <td style="background: #AEF1AE">
-          &quot;jdbc:&quot; + driver + &quot;://&quot; + url
+          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot; + port + &quot;/&quot; + dbName + &quot;?autoReconnect=true&amp;useSSL=false&quot;
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          1281
+        </td>
+        <td>
+          1429
+          -
+          1453
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;jdbc:&quot; + driver + &quot;://&quot;
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          1284
+        </td>
+        <td>
+          1429
+          -
+          1472
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot; + port
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          1283
+        </td>
+        <td>
+          1429
+          -
+          1465
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot;
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          1286
+        </td>
+        <td>
+          1429
+          -
+          1487
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot; + port + &quot;/&quot; + dbName
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          1280
+        </td>
+        <td>
+          1429
+          -
+          1445
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;jdbc:&quot; + driver
         </td>
       </tr><tr>
         <td>
           39
         </td>
         <td>
-          1275
+          1292
         </td>
         <td>
           1561
@@ -1114,7 +1114,7 @@
           40
         </td>
         <td>
-          1271
+          1288
         </td>
         <td>
           1636
@@ -1138,7 +1138,7 @@
           41
         </td>
         <td>
-          1273
+          1290
         </td>
         <td>
           1683
@@ -1165,7 +1165,7 @@
           42
         </td>
         <td>
-          1272
+          1289
         </td>
         <td>
           1704
@@ -1189,7 +1189,7 @@
           45
         </td>
         <td>
-          1274
+          1291
         </td>
         <td>
           1780
@@ -1213,7 +1213,7 @@
           48
         </td>
         <td>
-          1278
+          1295
         </td>
         <td>
           1816
@@ -1237,7 +1237,7 @@
           50
         </td>
         <td>
-          1276
+          1293
         </td>
         <td>
           1914
@@ -1261,7 +1261,7 @@
           51
         </td>
         <td>
-          1277
+          1294
         </td>
         <td>
           1970
@@ -1285,7 +1285,7 @@
           53
         </td>
         <td>
-          1285
+          1302
         </td>
         <td>
           2072
@@ -1324,7 +1324,7 @@
           53
         </td>
         <td>
-          1293
+          1310
         </td>
         <td>
           2039
@@ -1348,31 +1348,7 @@
           55
         </td>
         <td>
-          1279
-        </td>
-        <td>
-          2116
-          -
-          2125
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          connect
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          connect()
-        </td>
-      </tr><tr>
-        <td>
-          55
-        </td>
-        <td>
-          1280
+          1297
         </td>
         <td>
           2116
@@ -1393,10 +1369,34 @@
         </td>
       </tr><tr>
         <td>
+          55
+        </td>
+        <td>
+          1296
+        </td>
+        <td>
+          2116
+          -
+          2125
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          connect
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          connect()
+        </td>
+      </tr><tr>
+        <td>
           57
         </td>
         <td>
-          1282
+          1299
         </td>
         <td>
           2145
@@ -1420,7 +1420,7 @@
           57
         </td>
         <td>
-          1281
+          1298
         </td>
         <td>
           2158
@@ -1444,7 +1444,7 @@
           58
         </td>
         <td>
-          1283
+          1300
         </td>
         <td>
           2258
@@ -1468,7 +1468,7 @@
           66
         </td>
         <td>
-          1284
+          1301
         </td>
         <td>
           2575
@@ -1492,31 +1492,7 @@
           69
         </td>
         <td>
-          1287
-        </td>
-        <td>
-          2638
-          -
-          2655
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case e: Exception
-        </td>
-      </tr><tr>
-        <td>
-          69
-        </td>
-        <td>
-          1286
+          1303
         </td>
         <td>
           2659
@@ -1537,10 +1513,34 @@
         </td>
       </tr><tr>
         <td>
+          69
+        </td>
+        <td>
+          1304
+        </td>
+        <td>
+          2638
+          -
+          2655
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case e: Exception
+        </td>
+      </tr><tr>
+        <td>
           71
         </td>
         <td>
-          1292
+          1309
         </td>
         <td>
           2708
@@ -1569,15 +1569,15 @@
           72
         </td>
         <td>
-          1291
+          1306
         </td>
         <td>
-          2738
+          2742
           -
-          2820
+          2758
         </td>
         <td>
-          Try
+          Block
         </td>
         <td>
           &lt;none&gt;
@@ -1586,17 +1586,14 @@
           
         </td>
         <td style="background: #AEF1AE">
-          try connection.close
-    catch {
-      case e: SQLException =&gt; /* Ignored */
-    }
+          connection.close
         </td>
       </tr><tr>
         <td>
           72
         </td>
         <td>
-          1288
+          1305
         </td>
         <td>
           2742
@@ -1620,15 +1617,15 @@
           72
         </td>
         <td>
-          1289
+          1308
         </td>
         <td>
-          2742
+          2738
           -
-          2758
+          2820
         </td>
         <td>
-          Block
+          Try
         </td>
         <td>
           &lt;none&gt;
@@ -1637,14 +1634,17 @@
           
         </td>
         <td style="background: #AEF1AE">
-          connection.close
+          try connection.close
+    catch {
+      case e: SQLException =&gt; /* Ignored */
+    }
         </td>
       </tr><tr>
         <td>
           74
         </td>
         <td>
-          1290
+          1307
         </td>
         <td>
           2777
@@ -1668,7 +1668,7 @@
           79
         </td>
         <td>
-          1309
+          1326
         </td>
         <td>
           2831
@@ -1692,7 +1692,7 @@
           80
         </td>
         <td>
-          1300
+          1317
         </td>
         <td>
           2862
@@ -1725,31 +1725,7 @@
           82
         </td>
         <td>
-          1294
-        </td>
-        <td>
-          2915
-          -
-          2924
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          connect
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          connect()
-        </td>
-      </tr><tr>
-        <td>
-          82
-        </td>
-        <td>
-          1295
+          1312
         </td>
         <td>
           2904
@@ -1770,10 +1746,34 @@
         </td>
       </tr><tr>
         <td>
+          82
+        </td>
+        <td>
+          1311
+        </td>
+        <td>
+          2915
+          -
+          2924
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          connect
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          connect()
+        </td>
+      </tr><tr>
+        <td>
           83
         </td>
         <td>
-          1297
+          1314
         </td>
         <td>
           2933
@@ -1797,7 +1797,7 @@
           83
         </td>
         <td>
-          1296
+          1313
         </td>
         <td>
           2956
@@ -1821,7 +1821,7 @@
           85
         </td>
         <td>
-          1298
+          1315
         </td>
         <td>
           3065
@@ -1845,7 +1845,7 @@
           88
         </td>
         <td>
-          1299
+          1316
         </td>
         <td>
           3207
@@ -1869,7 +1869,7 @@
           90
         </td>
         <td>
-          1303
+          1320
         </td>
         <td>
           3258
@@ -1893,7 +1893,7 @@
           91
         </td>
         <td>
-          1301
+          1318
         </td>
         <td>
           3288
@@ -1917,7 +1917,7 @@
           92
         </td>
         <td>
-          1302
+          1319
         </td>
         <td>
           3314
@@ -1941,7 +1941,7 @@
           93
         </td>
         <td>
-          1308
+          1325
         </td>
         <td>
           3336
@@ -1970,55 +1970,7 @@
           94
         </td>
         <td>
-          1305
-        </td>
-        <td>
-          3372
-          -
-          3388
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          connection.close
-        </td>
-      </tr><tr>
-        <td>
-          94
-        </td>
-        <td>
-          1304
-        </td>
-        <td>
-          3372
-          -
-          3388
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          close
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          connection.close
-        </td>
-      </tr><tr>
-        <td>
-          94
-        </td>
-        <td>
-          1307
+          1324
         </td>
         <td>
           3368
@@ -2042,10 +1994,58 @@
         </td>
       </tr><tr>
         <td>
+          94
+        </td>
+        <td>
+          1321
+        </td>
+        <td>
+          3372
+          -
+          3388
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          close
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          94
+        </td>
+        <td>
+          1322
+        </td>
+        <td>
+          3372
+          -
+          3388
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
           96
         </td>
         <td>
-          1306
+          1323
         </td>
         <td>
           3411
@@ -2069,7 +2069,7 @@
           100
         </td>
         <td>
-          1313
+          1330
         </td>
         <td>
           3466
@@ -2093,31 +2093,7 @@
           102
         </td>
         <td>
-          1311
-        </td>
-        <td>
-          3513
-          -
-          3519
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case m
-        </td>
-      </tr><tr>
-        <td>
-          102
-        </td>
-        <td>
-          1310
+          1327
         </td>
         <td>
           3523
@@ -2138,10 +2114,34 @@
         </td>
       </tr><tr>
         <td>
+          102
+        </td>
+        <td>
+          1328
+        </td>
+        <td>
+          3513
+          -
+          3519
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case m
+        </td>
+      </tr><tr>
+        <td>
           103
         </td>
         <td>
-          1312
+          1329
         </td>
         <td>
           3537
@@ -2165,7 +2165,7 @@
           105
         </td>
         <td>
-          1331
+          1348
         </td>
         <td>
           3553
@@ -2189,7 +2189,7 @@
           107
         </td>
         <td>
-          1323
+          1340
         </td>
         <td>
           3633
@@ -2224,7 +2224,7 @@
           109
         </td>
         <td>
-          1315
+          1332
         </td>
         <td>
           3675
@@ -2248,7 +2248,7 @@
           109
         </td>
         <td>
-          1314
+          1331
         </td>
         <td>
           3686
@@ -2272,31 +2272,7 @@
           110
         </td>
         <td>
-          1317
-        </td>
-        <td>
-          3704
-          -
-          3710
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          case _
-        </td>
-      </tr><tr>
-        <td>
-          110
-        </td>
-        <td>
-          1316
+          1333
         </td>
         <td>
           3727
@@ -2317,10 +2293,34 @@
         </td>
       </tr><tr>
         <td>
+          110
+        </td>
+        <td>
+          1334
+        </td>
+        <td>
+          3704
+          -
+          3710
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case _
+        </td>
+      </tr><tr>
+        <td>
           112
         </td>
         <td>
-          1318
+          1335
         </td>
         <td>
           3836
@@ -2344,7 +2344,7 @@
           114
         </td>
         <td>
-          1319
+          1336
         </td>
         <td>
           3987
@@ -2368,7 +2368,7 @@
           115
         </td>
         <td>
-          1320
+          1337
         </td>
         <td>
           4023
@@ -2392,7 +2392,7 @@
           116
         </td>
         <td>
-          1321
+          1338
         </td>
         <td>
           4055
@@ -2416,7 +2416,7 @@
           117
         </td>
         <td>
-          1322
+          1339
         </td>
         <td>
           4088
@@ -2440,7 +2440,7 @@
           119
         </td>
         <td>
-          1325
+          1342
         </td>
         <td>
           4131
@@ -2465,7 +2465,7 @@
           120
         </td>
         <td>
-          1324
+          1341
         </td>
         <td>
           4161
@@ -2489,7 +2489,7 @@
           122
         </td>
         <td>
-          1330
+          1347
         </td>
         <td>
           4214
@@ -2518,7 +2518,7 @@
           123
         </td>
         <td>
-          1327
+          1344
         </td>
         <td>
           4250
@@ -2542,7 +2542,31 @@
           123
         </td>
         <td>
-          1329
+          1343
+        </td>
+        <td>
+          4250
+          -
+          4266
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          close
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          123
+        </td>
+        <td>
+          1346
         </td>
         <td>
           4246
@@ -2566,34 +2590,10 @@
         </td>
       </tr><tr>
         <td>
-          123
-        </td>
-        <td>
-          1326
-        </td>
-        <td>
-          4250
-          -
-          4266
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          close
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          connection.close
-        </td>
-      </tr><tr>
-        <td>
           125
         </td>
         <td>
-          1328
+          1345
         </td>
         <td>
           4289
@@ -2617,7 +2617,7 @@
           129
         </td>
         <td>
-          1356
+          1373
         </td>
         <td>
           4357
@@ -2641,7 +2641,7 @@
           130
         </td>
         <td>
-          1332
+          1349
         </td>
         <td>
           4451
@@ -2665,7 +2665,7 @@
           131
         </td>
         <td>
-          1348
+          1365
         </td>
         <td>
           4472
@@ -2701,31 +2701,7 @@
           133
         </td>
         <td>
-          1333
-        </td>
-        <td>
-          4518
-          -
-          4527
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          connect
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          connect()
-        </td>
-      </tr><tr>
-        <td>
-          133
-        </td>
-        <td>
-          1334
+          1351
         </td>
         <td>
           4518
@@ -2746,10 +2722,34 @@
         </td>
       </tr><tr>
         <td>
+          133
+        </td>
+        <td>
+          1350
+        </td>
+        <td>
+          4518
+          -
+          4527
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          connect
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          connect()
+        </td>
+      </tr><tr>
+        <td>
           135
         </td>
         <td>
-          1336
+          1353
         </td>
         <td>
           4547
@@ -2773,7 +2773,7 @@
           135
         </td>
         <td>
-          1335
+          1352
         </td>
         <td>
           4560
@@ -2797,7 +2797,7 @@
           136
         </td>
         <td>
-          1337
+          1354
         </td>
         <td>
           4662
@@ -2821,7 +2821,7 @@
           138
         </td>
         <td>
-          1338
+          1355
         </td>
         <td>
           4750
@@ -2845,7 +2845,7 @@
           139
         </td>
         <td>
-          1339
+          1356
         </td>
         <td>
           4786
@@ -2869,7 +2869,31 @@
           140
         </td>
         <td>
-          1345
+          1357
+        </td>
+        <td>
+          4850
+          -
+          4877
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          resultSet.getString(&quot;Name&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          140
+        </td>
+        <td>
+          1362
         </td>
         <td>
           4818
@@ -2893,31 +2917,7 @@
           140
         </td>
         <td>
-          1341
-        </td>
-        <td>
-          4879
-          -
-          4905
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          getInt
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          resultSet.getInt(&quot;Points&quot;)
-        </td>
-      </tr><tr>
-        <td>
-          140
-        </td>
-        <td>
-          1344
+          1361
         </td>
         <td>
           4838
@@ -2942,55 +2942,31 @@
           140
         </td>
         <td>
-          1340
+          1358
         </td>
         <td>
-          4850
+          4879
           -
-          4877
+          4905
         </td>
         <td>
           Apply
         </td>
         <td>
-          getString
+          getInt
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          resultSet.getString(&quot;Name&quot;)
+          resultSet.getInt(&quot;Points&quot;)
         </td>
       </tr><tr>
         <td>
           141
         </td>
         <td>
-          1342
-        </td>
-        <td>
-          4917
-          -
-          4948
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          getString
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          resultSet.getString(&quot;Password&quot;)
-        </td>
-      </tr><tr>
-        <td>
-          141
-        </td>
-        <td>
-          1343
+          1360
         </td>
         <td>
           4950
@@ -3011,34 +2987,34 @@
         </td>
       </tr><tr>
         <td>
-          142
+          141
         </td>
         <td>
-          1347
+          1359
         </td>
         <td>
-          4990
+          4917
           -
-          4996
+          4948
         </td>
         <td>
-          Block
+          Apply
         </td>
         <td>
-          &lt;none&gt;
+          getString
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          case _
+          resultSet.getString(&quot;Password&quot;)
         </td>
       </tr><tr>
         <td>
           142
         </td>
         <td>
-          1346
+          1363
         </td>
         <td>
           5007
@@ -3059,15 +3035,15 @@
         </td>
       </tr><tr>
         <td>
-          144
+          142
         </td>
         <td>
-          1350
+          1364
         </td>
         <td>
-          5040
+          4990
           -
-          5057
+          4996
         </td>
         <td>
           Block
@@ -3078,15 +3054,15 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
-          case e: Exception
+        <td style="background: #AEF1AE">
+          case _
         </td>
       </tr><tr>
         <td>
           144
         </td>
         <td>
-          1349
+          1366
         </td>
         <td>
           5061
@@ -3107,10 +3083,34 @@
         </td>
       </tr><tr>
         <td>
+          144
+        </td>
+        <td>
+          1367
+        </td>
+        <td>
+          5040
+          -
+          5057
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case e: Exception
+        </td>
+      </tr><tr>
+        <td>
           145
         </td>
         <td>
-          1355
+          1372
         </td>
         <td>
           5093
@@ -3139,7 +3139,31 @@
           146
         </td>
         <td>
-          1351
+          1369
+        </td>
+        <td>
+          5129
+          -
+          5145
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          146
+        </td>
+        <td>
+          1368
         </td>
         <td>
           5129
@@ -3163,7 +3187,7 @@
           146
         </td>
         <td>
-          1354
+          1371
         </td>
         <td>
           5125
@@ -3187,34 +3211,10 @@
         </td>
       </tr><tr>
         <td>
-          146
-        </td>
-        <td>
-          1352
-        </td>
-        <td>
-          5129
-          -
-          5145
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          connection.close
-        </td>
-      </tr><tr>
-        <td>
           148
         </td>
         <td>
-          1353
+          1370
         </td>
         <td>
           5168
@@ -3238,7 +3238,7 @@
           153
         </td>
         <td>
-          1371
+          1388
         </td>
         <td>
           5232
@@ -3262,7 +3262,7 @@
           154
         </td>
         <td>
-          1363
+          1380
         </td>
         <td>
           5286
@@ -3293,31 +3293,7 @@
           156
         </td>
         <td>
-          1357
-        </td>
-        <td>
-          5332
-          -
-          5341
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          connect
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          connect()
-        </td>
-      </tr><tr>
-        <td>
-          156
-        </td>
-        <td>
-          1358
+          1375
         </td>
         <td>
           5332
@@ -3338,10 +3314,34 @@
         </td>
       </tr><tr>
         <td>
+          156
+        </td>
+        <td>
+          1374
+        </td>
+        <td>
+          5332
+          -
+          5341
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          connect
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          connect()
+        </td>
+      </tr><tr>
+        <td>
           158
         </td>
         <td>
-          1360
+          1377
         </td>
         <td>
           5361
@@ -3365,7 +3365,7 @@
           158
         </td>
         <td>
-          1359
+          1376
         </td>
         <td>
           5374
@@ -3389,7 +3389,7 @@
           159
         </td>
         <td>
-          1361
+          1378
         </td>
         <td>
           5476
@@ -3413,7 +3413,7 @@
           160
         </td>
         <td>
-          1362
+          1379
         </td>
         <td>
           5511
@@ -3437,31 +3437,7 @@
           162
         </td>
         <td>
-          1365
-        </td>
-        <td>
-          5568
-          -
-          5585
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case e: Exception
-        </td>
-      </tr><tr>
-        <td>
-          162
-        </td>
-        <td>
-          1364
+          1381
         </td>
         <td>
           5589
@@ -3482,10 +3458,34 @@
         </td>
       </tr><tr>
         <td>
+          162
+        </td>
+        <td>
+          1382
+        </td>
+        <td>
+          5568
+          -
+          5585
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case e: Exception
+        </td>
+      </tr><tr>
+        <td>
           163
         </td>
         <td>
-          1370
+          1387
         </td>
         <td>
           5621
@@ -3514,7 +3514,31 @@
           164
         </td>
         <td>
-          1366
+          1384
+        </td>
+        <td>
+          5657
+          -
+          5673
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          164
+        </td>
+        <td>
+          1383
         </td>
         <td>
           5657
@@ -3538,7 +3562,7 @@
           164
         </td>
         <td>
-          1369
+          1386
         </td>
         <td>
           5653
@@ -3562,34 +3586,10 @@
         </td>
       </tr><tr>
         <td>
-          164
-        </td>
-        <td>
-          1367
-        </td>
-        <td>
-          5657
-          -
-          5673
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          connection.close
-        </td>
-      </tr><tr>
-        <td>
           166
         </td>
         <td>
-          1368
+          1385
         </td>
         <td>
           5696
@@ -3613,7 +3613,7 @@
           170
         </td>
         <td>
-          1378
+          1395
         </td>
         <td>
           5799
@@ -3645,7 +3645,7 @@
           170
         </td>
         <td>
-          1386
+          1403
         </td>
         <td>
           5751
@@ -3669,31 +3669,7 @@
           172
         </td>
         <td>
-          1372
-        </td>
-        <td>
-          5843
-          -
-          5852
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          connect
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          connect()
-        </td>
-      </tr><tr>
-        <td>
-          172
-        </td>
-        <td>
-          1373
+          1390
         </td>
         <td>
           5843
@@ -3714,10 +3690,34 @@
         </td>
       </tr><tr>
         <td>
+          172
+        </td>
+        <td>
+          1389
+        </td>
+        <td>
+          5843
+          -
+          5852
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          connect
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          connect()
+        </td>
+      </tr><tr>
+        <td>
           174
         </td>
         <td>
-          1375
+          1392
         </td>
         <td>
           5872
@@ -3741,7 +3741,7 @@
           174
         </td>
         <td>
-          1374
+          1391
         </td>
         <td>
           5885
@@ -3765,7 +3765,7 @@
           175
         </td>
         <td>
-          1376
+          1393
         </td>
         <td>
           5985
@@ -3789,7 +3789,7 @@
           176
         </td>
         <td>
-          1377
+          1394
         </td>
         <td>
           6018
@@ -3813,31 +3813,7 @@
           179
         </td>
         <td>
-          1380
-        </td>
-        <td>
-          6087
-          -
-          6104
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case e: Exception
-        </td>
-      </tr><tr>
-        <td>
-          179
-        </td>
-        <td>
-          1379
+          1396
         </td>
         <td>
           6108
@@ -3853,15 +3829,39 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           e.printStackTrace
+        </td>
+      </tr><tr>
+        <td>
+          179
+        </td>
+        <td>
+          1397
+        </td>
+        <td>
+          6087
+          -
+          6104
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case e: Exception
         </td>
       </tr><tr>
         <td>
           181
         </td>
         <td>
-          1385
+          1402
         </td>
         <td>
           6157
@@ -3890,15 +3890,15 @@
           182
         </td>
         <td>
-          1384
+          1399
         </td>
         <td>
-          6187
+          6191
           -
-          6269
+          6207
         </td>
         <td>
-          Try
+          Block
         </td>
         <td>
           &lt;none&gt;
@@ -3907,17 +3907,14 @@
           
         </td>
         <td style="background: #AEF1AE">
-          try connection.close
-    catch {
-      case e: SQLException =&gt; /* Ignored */
-    }
+          connection.close
         </td>
       </tr><tr>
         <td>
           182
         </td>
         <td>
-          1381
+          1398
         </td>
         <td>
           6191
@@ -3941,15 +3938,15 @@
           182
         </td>
         <td>
-          1382
+          1401
         </td>
         <td>
-          6191
+          6187
           -
-          6207
+          6269
         </td>
         <td>
-          Block
+          Try
         </td>
         <td>
           &lt;none&gt;
@@ -3958,14 +3955,17 @@
           
         </td>
         <td style="background: #AEF1AE">
-          connection.close
+          try connection.close
+    catch {
+      case e: SQLException =&gt; /* Ignored */
+    }
         </td>
       </tr><tr>
         <td>
           184
         </td>
         <td>
-          1383
+          1400
         </td>
         <td>
           6226
