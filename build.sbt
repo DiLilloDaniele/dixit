@@ -14,7 +14,7 @@ lazy val startupTransition: State => State = "conventionalCommits" :: _
 
 coverageEnabled := true
 
-coverageExcludedPackages := "<empty>;.*view.*;.*grpcService.*;"
+coverageExcludedPackages := ".*view.*"
 
 lazy val root = project
   .in(file("."))
