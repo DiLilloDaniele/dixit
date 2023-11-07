@@ -72,7 +72,7 @@ class ServerTest extends AnyFunSpec with BeforeAndAfterAll with Matchers {
                     val future: Future[OpenedGames] = client.getAvailableGames((bool) => {})
                     assert(future.isReadyWithin(5000 millis))
                     whenReady(future) { s =>
-                        s shouldBe OpenedGames(List("address"))
+                        s shouldBe OpenedGames(List("user"))
                     }
                 }
                 
