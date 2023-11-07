@@ -31,7 +31,7 @@
 </span>7 <span style=''>  
 </span>8 <span style=''>  </span><span style='background: #AEF1AE'>def protoToUserCredentials</span><span style=''>(req: LoginRequest): Tuple2[String, String] = (req.name, req.password)
 </span>9 <span style=''>
-</span>10 <span style=''>  </span><span style='background: #AEF1AE'>def protoToGames</span><span style=''>(game: Set[Game]): OpenedGames = </span><span style='background: #AEF1AE'>OpenedGames</span><span style=''>(</span><span style='background: #AEF1AE'>game.map(game =&gt; game.address).toSeq</span><span style=''>)
+</span>10 <span style=''>  </span><span style='background: #AEF1AE'>def protoToGames</span><span style=''>(games: Set[Game]): OpenedGames = </span><span style='background: #AEF1AE'>OpenedGames</span><span style=''>(</span><span style='background: #AEF1AE'>games.map(game =&gt; game.foreman).toSeq</span><span style=''>)
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -49,7 +49,7 @@
           7
         </td>
         <td>
-          1214
+          1231
         </td>
         <td>
           163
@@ -73,12 +73,36 @@
           9
         </td>
         <td>
-          1216
+          1234
         </td>
         <td>
-          324
+          313
           -
-          360
+          324
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          $lessinit$greater$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          OpenedGames
+        </td>
+      </tr><tr>
+        <td>
+          9
+        </td>
+        <td>
+          1233
+        </td>
+        <td>
+          325
+          -
+          362
         </td>
         <td>
           Select
@@ -90,14 +114,38 @@
           
         </td>
         <td style="background: #AEF1AE">
-          game.map(game =&gt; game.address).toSeq
+          games.map(game =&gt; game.foreman).toSeq
         </td>
       </tr><tr>
         <td>
           9
         </td>
         <td>
-          1218
+          1232
+        </td>
+        <td>
+          325
+          -
+          356
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          games.map(game =&gt; game.foreman)
+        </td>
+      </tr><tr>
+        <td>
+          9
+        </td>
+        <td>
+          1235
         </td>
         <td>
           263
@@ -115,54 +163,6 @@
         </td>
         <td style="background: #AEF1AE">
           def protoToGames
-        </td>
-      </tr><tr>
-        <td>
-          9
-        </td>
-        <td>
-          1215
-        </td>
-        <td>
-          324
-          -
-          354
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          map
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          game.map(game =&gt; game.address)
-        </td>
-      </tr><tr>
-        <td>
-          9
-        </td>
-        <td>
-          1217
-        </td>
-        <td>
-          312
-          -
-          323
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          $lessinit$greater$default$2
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          OpenedGames
         </td>
       </tr>
     </table>

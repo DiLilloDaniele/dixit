@@ -48,25 +48,35 @@
 </span>24 <span style=''>  
 </span>25 <span style=''>  </span><span style='background: #F0ADAD'>def register</span><span style=''>(username: String, password: String, success: SuccessFun[Boolean]): Unit = </span><span style='background: #F0ADAD'>client.register(username, password, success)</span><span style=''>
 </span>26 <span style=''>
-</span>27 <span style=''>  </span><span style='background: #F0ADAD'>def joinGame</span><span style=''>(address: String) = </span><span style='background: #F0ADAD'>???</span><span style=''>
-</span>28 <span style=''>
-</span>29 <span style=''>  </span><span style='background: #F0ADAD'>def createGame</span><span style=''>(port: String = &quot;2551&quot;, address: String = &quot;127.0.0.1&quot;) =
-</span>30 <span style=''>    //startupWithRole(&quot;foreman&quot;, port, address)(???)
-</span>31 <span style=''>    if(username != &quot;&quot;)
-</span>32 <span style=''>      </span><span style='background: #F0ADAD'>println(&quot;CREO IL GIOCO.....&quot;)
-</span>33 <span style=''></span><span style='background: #F0ADAD'>      client.createGame(s&quot;$address:$port&quot;, username, (_) =&gt; {
-</span>34 <span style=''></span><span style='background: #F0ADAD'>        println(&quot;GIOCO CREATO&quot;)
-</span>35 <span style=''></span><span style='background: #F0ADAD'>        val foreman = utils.startupWithRole(&quot;foreman&quot;, &quot;2551&quot;, &quot;127.0.0.1&quot;)(ForemanBehavior())
-</span>36 <span style=''></span><span style='background: #F0ADAD'>        
-</span>37 <span style=''></span><span style='background: #F0ADAD'>        val future = utils.startupWithRole(&quot;player&quot;, &quot;2552&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior()).getWhenTerminated
-</span>38 <span style=''></span><span style='background: #F0ADAD'>        future.whenComplete((done, reject) =&gt; {
-</span>39 <span style=''></span><span style='background: #F0ADAD'>          foreman.terminate()
-</span>40 <span style=''></span><span style='background: #F0ADAD'>          println(&quot;SISTEMA TERMINATO&quot;)
-</span>41 <span style=''></span><span style='background: #F0ADAD'>        })
-</span>42 <span style=''></span><span style='background: #F0ADAD'>      })</span><span style=''>
-</span>43 <span style=''>
-</span>44 <span style=''>
-</span>45 <span style=''>}
+</span>27 <span style=''>  val updateUserPoints = (points: Int) =&gt; {
+</span>28 <span style=''>    username match
+</span>29 <span style=''>      </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style=''> =&gt; ()
+</span>30 <span style=''>      </span><span style='background: #F0ADAD'>case v</span><span style=''> =&gt; val fut = </span><span style='background: #F0ADAD'>client.updateUsersPoints(List(v), List(points), (bool) =&gt; ())</span><span style=''>
+</span>31 <span style=''>  }
+</span>32 <span style=''>
+</span>33 <span style=''>  </span><span style='background: #F0ADAD'>def joinGame</span><span style=''>(address: String) = 
+</span>34 <span style=''>    val future = </span><span style='background: #F0ADAD'>utils.startupWithRole(&quot;player&quot;, &quot;2552&quot;, &quot;127.0.0.1&quot;, address)(PlayerBehavior(onStop = updateUserPoints)).getWhenTerminated</span><span style=''>
+</span>35 <span style=''>    </span><span style='background: #F0ADAD'>future.whenComplete((done, reject) =&gt; {
+</span>36 <span style=''></span><span style='background: #F0ADAD'>      println(&quot;SISTEMA TERMINATO&quot;)
+</span>37 <span style=''></span><span style='background: #F0ADAD'>    })</span><span style=''>
+</span>38 <span style=''>
+</span>39 <span style=''>  </span><span style='background: #F0ADAD'>def createGame</span><span style=''>(port: String = &quot;2551&quot;, address: String = &quot;127.0.0.1&quot;) =
+</span>40 <span style=''>    //startupWithRole(&quot;foreman&quot;, port, address)(???)
+</span>41 <span style=''>    if(username != &quot;&quot;)
+</span>42 <span style=''>      </span><span style='background: #F0ADAD'>println(&quot;CREO IL GIOCO.....&quot;)
+</span>43 <span style=''></span><span style='background: #F0ADAD'>      client.createGame(s&quot;$address:$port&quot;, username, (_) =&gt; {
+</span>44 <span style=''></span><span style='background: #F0ADAD'>        println(&quot;GIOCO CREATO&quot;)
+</span>45 <span style=''></span><span style='background: #F0ADAD'>        val foreman = utils.startupWithRole(&quot;foreman&quot;, &quot;2551&quot;, &quot;127.0.0.1&quot;)(ForemanBehavior())
+</span>46 <span style=''></span><span style='background: #F0ADAD'>        
+</span>47 <span style=''></span><span style='background: #F0ADAD'>        val future = utils.startupWithRole(&quot;player&quot;, &quot;2552&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior(onStop = updateUserPoints)).getWhenTerminated
+</span>48 <span style=''></span><span style='background: #F0ADAD'>        future.whenComplete((done, reject) =&gt; {
+</span>49 <span style=''></span><span style='background: #F0ADAD'>          foreman.terminate()
+</span>50 <span style=''></span><span style='background: #F0ADAD'>          println(&quot;SISTEMA TERMINATO&quot;)
+</span>51 <span style=''></span><span style='background: #F0ADAD'>        })
+</span>52 <span style=''></span><span style='background: #F0ADAD'>      })</span><span style=''>
+</span>53 <span style=''>
+</span>54 <span style=''>
+</span>55 <span style=''>}
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -84,31 +94,7 @@
           18
         </td>
         <td>
-          866
-        </td>
-        <td>
-          560
-          -
-          593
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          getAvailableGames
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          client.getAvailableGames(success)
-        </td>
-      </tr><tr>
-        <td>
-          18
-        </td>
-        <td>
-          867
+          884
         </td>
         <td>
           504
@@ -129,10 +115,34 @@
         </td>
       </tr><tr>
         <td>
+          18
+        </td>
+        <td>
+          883
+        </td>
+        <td>
+          560
+          -
+          593
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getAvailableGames
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          client.getAvailableGames(success)
+        </td>
+      </tr><tr>
+        <td>
           20
         </td>
         <td>
-          869
+          886
         </td>
         <td>
           597
@@ -156,7 +166,7 @@
           22
         </td>
         <td>
-          868
+          885
         </td>
         <td>
           715
@@ -180,31 +190,7 @@
           24
         </td>
         <td>
-          871
-        </td>
-        <td>
-          762
-          -
-          774
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          register
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          def register
-        </td>
-      </tr><tr>
-        <td>
-          24
-        </td>
-        <td>
-          870
+          887
         </td>
         <td>
           849
@@ -225,15 +211,159 @@
         </td>
       </tr><tr>
         <td>
-          26
+          24
         </td>
         <td>
-          873
+          888
         </td>
         <td>
-          897
+          762
           -
-          909
+          774
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          register
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def register
+        </td>
+      </tr><tr>
+        <td>
+          28
+        </td>
+        <td>
+          889
+        </td>
+        <td>
+          964
+          -
+          971
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case &quot;&quot;
+        </td>
+      </tr><tr>
+        <td>
+          29
+        </td>
+        <td>
+          891
+        </td>
+        <td>
+          1038
+          -
+          1050
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          List(points)
+        </td>
+      </tr><tr>
+        <td>
+          29
+        </td>
+        <td>
+          890
+        </td>
+        <td>
+          1029
+          -
+          1036
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          List(v)
+        </td>
+      </tr><tr>
+        <td>
+          29
+        </td>
+        <td>
+          893
+        </td>
+        <td>
+          984
+          -
+          990
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case v
+        </td>
+      </tr><tr>
+        <td>
+          29
+        </td>
+        <td>
+          892
+        </td>
+        <td>
+          1004
+          -
+          1065
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          updateUsersPoints
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          client.updateUsersPoints(List(v), List(points), (bool) =&gt; ())
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          898
+        </td>
+        <td>
+          1073
+          -
+          1085
         </td>
         <td>
           DefDef
@@ -249,39 +379,113 @@
         </td>
       </tr><tr>
         <td>
-          26
+          33
         </td>
         <td>
-          872
+          895
         </td>
         <td>
-          929
+          1123
           -
-          932
+          1245
         </td>
         <td>
-          Ident
+          Select
         </td>
         <td>
-          ???
+          getWhenTerminated
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          ???
+          utils.startupWithRole(&quot;player&quot;, &quot;2552&quot;, &quot;127.0.0.1&quot;, address)(PlayerBehavior(onStop = updateUserPoints)).getWhenTerminated
         </td>
       </tr><tr>
         <td>
-          28
+          33
         </td>
         <td>
-          887
+          894
         </td>
         <td>
-          992
+          1123
           -
-          992
+          1227
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          startupWithRole
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          utils.startupWithRole(&quot;player&quot;, &quot;2552&quot;, &quot;127.0.0.1&quot;, address)(PlayerBehavior(onStop = updateUserPoints))
+        </td>
+      </tr><tr>
+        <td>
+          34
+        </td>
+        <td>
+          897
+        </td>
+        <td>
+          1250
+          -
+          1331
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          whenComplete
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          future.whenComplete((done, reject) =&gt; {
+      println(&quot;SISTEMA TERMINATO&quot;)
+    })
+        </td>
+      </tr><tr>
+        <td>
+          35
+        </td>
+        <td>
+          896
+        </td>
+        <td>
+          1296
+          -
+          1324
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(&quot;SISTEMA TERMINATO&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          38
+        </td>
+        <td>
+          914
+        </td>
+        <td>
+          1391
+          -
+          1391
         </td>
         <td>
           DefDef
@@ -297,15 +501,15 @@
         </td>
       </tr><tr>
         <td>
-          28
+          38
         </td>
         <td>
-          886
+          913
         </td>
         <td>
-          966
+          1365
           -
-          966
+          1365
         </td>
         <td>
           DefDef
@@ -321,15 +525,15 @@
         </td>
       </tr><tr>
         <td>
-          28
+          38
         </td>
         <td>
-          885
+          912
         </td>
         <td>
-          936
+          1335
           -
-          950
+          1349
         </td>
         <td>
           DefDef
@@ -345,15 +549,39 @@
         </td>
       </tr><tr>
         <td>
-          31
+          41
         </td>
         <td>
-          884
+          899
         </td>
         <td>
-          1089
+          1488
           -
-          1563
+          1517
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(&quot;CREO IL GIOCO.....&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          911
+        </td>
+        <td>
+          1488
+          -
+          1987
         </td>
         <td>
           Block
@@ -370,7 +598,7 @@
         println(&quot;GIOCO CREATO&quot;)
         val foreman = utils.startupWithRole(&quot;foreman&quot;, &quot;2551&quot;, &quot;127.0.0.1&quot;)(ForemanBehavior())
         
-        val future = utils.startupWithRole(&quot;player&quot;, &quot;2552&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior()).getWhenTerminated
+        val future = utils.startupWithRole(&quot;player&quot;, &quot;2552&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior(onStop = updateUserPoints)).getWhenTerminated
         future.whenComplete((done, reject) =&gt; {
           foreman.terminate()
           println(&quot;SISTEMA TERMINATO&quot;)
@@ -379,63 +607,15 @@
         </td>
       </tr><tr>
         <td>
-          31
+          42
         </td>
         <td>
-          874
+          910
         </td>
         <td>
-          1089
+          1524
           -
-          1118
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          println
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          println(&quot;CREO IL GIOCO.....&quot;)
-        </td>
-      </tr><tr>
-        <td>
-          32
-        </td>
-        <td>
-          875
-        </td>
-        <td>
-          1143
-          -
-          1160
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          s
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          s&quot;$address:$port&quot;
-        </td>
-      </tr><tr>
-        <td>
-          32
-        </td>
-        <td>
-          883
-        </td>
-        <td>
-          1125
-          -
-          1563
+          1987
         </td>
         <td>
           Apply
@@ -451,7 +631,7 @@
         println(&quot;GIOCO CREATO&quot;)
         val foreman = utils.startupWithRole(&quot;foreman&quot;, &quot;2551&quot;, &quot;127.0.0.1&quot;)(ForemanBehavior())
         
-        val future = utils.startupWithRole(&quot;player&quot;, &quot;2552&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior()).getWhenTerminated
+        val future = utils.startupWithRole(&quot;player&quot;, &quot;2552&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior(onStop = updateUserPoints)).getWhenTerminated
         future.whenComplete((done, reject) =&gt; {
           foreman.terminate()
           println(&quot;SISTEMA TERMINATO&quot;)
@@ -460,15 +640,39 @@
         </td>
       </tr><tr>
         <td>
-          33
+          42
         </td>
         <td>
-          876
+          900
         </td>
         <td>
-          1189
+          1542
           -
-          1212
+          1559
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;$address:$port&quot;
+        </td>
+      </tr><tr>
+        <td>
+          43
+        </td>
+        <td>
+          901
+        </td>
+        <td>
+          1588
+          -
+          1611
         </td>
         <td>
           Apply
@@ -484,15 +688,39 @@
         </td>
       </tr><tr>
         <td>
-          34
+          44
         </td>
         <td>
-          877
+          902
         </td>
         <td>
-          1235
+          1634
           -
-          1307
+          1655
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          startupWithRole$default$4
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          utils.startupWithRole
+        </td>
+      </tr><tr>
+        <td>
+          44
+        </td>
+        <td>
+          903
+        </td>
+        <td>
+          1634
+          -
+          1706
         </td>
         <td>
           Apply
@@ -508,15 +736,15 @@
         </td>
       </tr><tr>
         <td>
-          36
+          46
         </td>
         <td>
-          878
+          905
         </td>
         <td>
-          1338
+          1737
           -
-          1408
+          1832
         </td>
         <td>
           Apply
@@ -528,19 +756,43 @@
           
         </td>
         <td style="background: #F0ADAD">
-          utils.startupWithRole(&quot;player&quot;, &quot;2552&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())
+          utils.startupWithRole(&quot;player&quot;, &quot;2552&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior(onStop = updateUserPoints))
         </td>
       </tr><tr>
         <td>
-          36
+          46
         </td>
         <td>
-          879
+          904
         </td>
         <td>
-          1338
+          1737
           -
-          1426
+          1758
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          startupWithRole$default$4
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          utils.startupWithRole
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          906
+        </td>
+        <td>
+          1737
+          -
+          1850
         </td>
         <td>
           Select
@@ -552,19 +804,19 @@
           
         </td>
         <td style="background: #F0ADAD">
-          utils.startupWithRole(&quot;player&quot;, &quot;2552&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior()).getWhenTerminated
+          utils.startupWithRole(&quot;player&quot;, &quot;2552&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior(onStop = updateUserPoints)).getWhenTerminated
         </td>
       </tr><tr>
         <td>
-          37
+          47
         </td>
         <td>
-          882
+          909
         </td>
         <td>
-          1435
+          1859
           -
-          1554
+          1978
         </td>
         <td>
           Apply
@@ -583,15 +835,15 @@
         </td>
       </tr><tr>
         <td>
-          38
+          48
         </td>
         <td>
-          880
+          907
         </td>
         <td>
-          1485
+          1909
           -
-          1504
+          1928
         </td>
         <td>
           Apply
@@ -607,15 +859,15 @@
         </td>
       </tr><tr>
         <td>
-          39
+          49
         </td>
         <td>
-          881
+          908
         </td>
         <td>
-          1515
+          1939
           -
-          1543
+          1967
         </td>
         <td>
           Apply

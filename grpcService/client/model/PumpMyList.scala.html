@@ -39,25 +39,11 @@
 </span>15 <span style=''>    </span><span style='background: #F0ADAD'>def equals</span><span style=''>(l2: List[A]): Boolean =
 </span>16 <span style=''>      </span><span style='background: #F0ADAD'>l.toSet</span><span style=''> == </span><span style='background: #F0ADAD'>l2.toSet</span><span style=''>
 </span>17 <span style=''>
-</span>18 <span style=''>    </span><span style='background: #F0ADAD'>def -</span><span style=''>(el: A): List[A] =
-</span>19 <span style=''>      </span><span style='background: #F0ADAD'>l.filter { i =&gt; i != el}</span><span style=''>
+</span>18 <span style=''>    </span><span style='background: #AEF1AE'>def -</span><span style=''>(el: A): List[A] =
+</span>19 <span style=''>      </span><span style='background: #AEF1AE'>l.filter { i =&gt; i != el}</span><span style=''>
 </span>20 <span style=''>
-</span>21 <span style=''>    </span><span style='background: #F0ADAD'>def removeIntersection</span><span style=''>(l2: List[A]): List[A] =
-</span>22 <span style=''>      </span><span style='background: #F0ADAD'>l.filter { i =&gt; !l2.contains(i)}</span><span style=''>
-</span>23 <span style=''>
-</span>24 <span style=''>  </span><span style='background: #F0ADAD'>@main def test</span><span style=''>() =
-</span>25 <span style=''>    var l = </span><span style='background: #F0ADAD'>List(1,2,3,4,5,6)</span><span style=''>
-</span>26 <span style=''>    var newL = </span><span style='background: #F0ADAD'>l.filterMap {
-</span>27 <span style=''></span><span style='background: #F0ADAD'>      i =&gt; i % 2 == 0
-</span>28 <span style=''></span><span style='background: #F0ADAD'>    } {
-</span>29 <span style=''></span><span style='background: #F0ADAD'>      i =&gt; i * 2
-</span>30 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
-</span>31 <span style=''>    newL = </span><span style='background: #F0ADAD'>newL :+ 7</span><span style=''>
-</span>32 <span style=''>    newL = </span><span style='background: #F0ADAD'>newL - 8</span><span style=''>
-</span>33 <span style=''>    val l1 = </span><span style='background: #F0ADAD'>List(1,2,3,4)</span><span style=''>
-</span>34 <span style=''>    val l2= </span><span style='background: #F0ADAD'>List(3,4,5,6)</span><span style=''>
-</span>35 <span style=''>    </span><span style='background: #F0ADAD'>println(l1.removeIntersection(l2))</span><span style=''>
-</span>36 <span style=''>    </span><span style='background: #F0ADAD'>println(newL)</span><span style=''>
+</span>21 <span style=''>    </span><span style='background: #AEF1AE'>def removeIntersection</span><span style=''>(l2: List[A]): List[A] =
+</span>22 <span style=''>      </span><span style='background: #AEF1AE'>l.filter { i =&gt; !l2.contains(i)}</span><span style=''>
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -75,7 +61,7 @@
           5
         </td>
         <td>
-          893
+          920
         </td>
         <td>
           86
@@ -99,7 +85,7 @@
           6
         </td>
         <td>
-          892
+          919
         </td>
         <td>
           150
@@ -129,7 +115,7 @@
           7
         </td>
         <td>
-          890
+          917
         </td>
         <td>
           183
@@ -155,7 +141,7 @@
           7
         </td>
         <td>
-          888
+          915
         </td>
         <td>
           174
@@ -179,7 +165,7 @@
           8
         </td>
         <td>
-          889
+          916
         </td>
         <td>
           195
@@ -203,7 +189,7 @@
           9
         </td>
         <td>
-          891
+          918
         </td>
         <td>
           217
@@ -229,7 +215,7 @@
           14
         </td>
         <td>
-          896
+          923
         </td>
         <td>
           254
@@ -253,7 +239,7 @@
           15
         </td>
         <td>
-          895
+          922
         </td>
         <td>
           306
@@ -277,7 +263,7 @@
           15
         </td>
         <td>
-          894
+          921
         </td>
         <td>
           295
@@ -301,7 +287,7 @@
           17
         </td>
         <td>
-          898
+          925
         </td>
         <td>
           320
@@ -317,7 +303,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def -
         </td>
       </tr><tr>
@@ -325,7 +311,7 @@
           18
         </td>
         <td>
-          897
+          924
         </td>
         <td>
           350
@@ -341,7 +327,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           l.filter { i =&gt; i != el}
         </td>
       </tr><tr>
@@ -349,7 +335,7 @@
           20
         </td>
         <td>
-          901
+          928
         </td>
         <td>
           380
@@ -365,7 +351,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def removeIntersection
         </td>
       </tr><tr>
@@ -373,7 +359,7 @@
           21
         </td>
         <td>
-          899
+          926
         </td>
         <td>
           450
@@ -389,7 +375,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           l2.contains(i)
         </td>
       </tr><tr>
@@ -397,7 +383,7 @@
           21
         </td>
         <td>
-          900
+          927
         </td>
         <td>
           433
@@ -413,252 +399,8 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           l.filter { i =&gt; !l2.contains(i)}
-        </td>
-      </tr><tr>
-        <td>
-          23
-        </td>
-        <td>
-          911
-        </td>
-        <td>
-          469
-          -
-          483
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          test
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          @main def test
-        </td>
-      </tr><tr>
-        <td>
-          24
-        </td>
-        <td>
-          902
-        </td>
-        <td>
-          500
-          -
-          517
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          apply
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          List(1,2,3,4,5,6)
-        </td>
-      </tr><tr>
-        <td>
-          27
-        </td>
-        <td>
-          903
-        </td>
-        <td>
-          533
-          -
-          599
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          filterMap
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          l.filterMap {
-      i =&gt; i % 2 == 0
-    } {
-      i =&gt; i * 2
-    }
-        </td>
-      </tr><tr>
-        <td>
-          30
-        </td>
-        <td>
-          904
-        </td>
-        <td>
-          611
-          -
-          620
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          :+
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          newL :+ 7
-        </td>
-      </tr><tr>
-        <td>
-          31
-        </td>
-        <td>
-          905
-        </td>
-        <td>
-          632
-          -
-          640
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          -
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          newL - 8
-        </td>
-      </tr><tr>
-        <td>
-          32
-        </td>
-        <td>
-          906
-        </td>
-        <td>
-          654
-          -
-          667
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          apply
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          List(1,2,3,4)
-        </td>
-      </tr><tr>
-        <td>
-          33
-        </td>
-        <td>
-          907
-        </td>
-        <td>
-          680
-          -
-          693
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          apply
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          List(3,4,5,6)
-        </td>
-      </tr><tr>
-        <td>
-          34
-        </td>
-        <td>
-          908
-        </td>
-        <td>
-          706
-          -
-          731
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          removeIntersection
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          l1.removeIntersection(l2)
-        </td>
-      </tr><tr>
-        <td>
-          34
-        </td>
-        <td>
-          909
-        </td>
-        <td>
-          698
-          -
-          732
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          println
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          println(l1.removeIntersection(l2))
-        </td>
-      </tr><tr>
-        <td>
-          35
-        </td>
-        <td>
-          910
-        </td>
-        <td>
-          737
-          -
-          750
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          println
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          println(newL)
         </td>
       </tr>
     </table>
