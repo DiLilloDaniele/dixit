@@ -9,6 +9,6 @@ object StartNewPlayer {
 
     def main(args: Array[String]) = {
         println(args)
-        executePlayer("player", "2554", "127.0.0.1")
+        executePlayer("player", "2554", "127.0.0.10")
   }
 }

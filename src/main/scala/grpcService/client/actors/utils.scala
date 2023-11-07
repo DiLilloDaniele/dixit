@@ -40,7 +40,7 @@ object utils:
 
 
 
-  def startupWithRole[X](role: String, port: String, ip: String)(root: => Behavior[X]): ActorSystem[X] =
+  def startupWithRole[X](role: String, port: String, ip: String, clusterName: String = "ClusterSystem")(root: => Behavior[X]): ActorSystem[X] =
     val config = ConfigFactory
       .parseString(
         s"""
@@ -51,7 +51,7 @@ object utils:
       .withFallback(ConfigFactory.load("base-cluster"))
 
     // Create an Akka system
-    ActorSystem(root, "ClusterSystem", config)
+    ActorSystem(root, clusterName, config)
 
   @main def startSeedNode() =
     startupWithRole("seed", "2551", "192.168.1.118")(ForemanBehavior());

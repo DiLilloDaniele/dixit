@@ -10,11 +10,11 @@ object ManualTesting {
     val foreman = utils.startupWithRole("foreman", "2551", "127.0.0.1")(ForemanBehavior())
     
     Thread.sleep(2000)
-    utils.startupWithRole("player", "2555", "127.0.0.1")(PlayerBehavior())
+    utils.startupWithRole("player", "2555", "127.0.0.2")(PlayerBehavior())
     Thread.sleep(2000)
-    utils.startupWithRole("player", "2553", "127.0.0.1")(PlayerBehavior())
-    Thread.sleep(2000)
-    utils.startupWithRole("player", "2554", "127.0.0.1")(PlayerBehavior())
+    utils.startupWithRole("player", "2553", "127.0.0.3")(PlayerBehavior())
+    // Thread.sleep(2000)
+    // utils.startupWithRole("player", "2554", "127.0.0.4")(PlayerBehavior())
 
 
   def executeForeman() =
