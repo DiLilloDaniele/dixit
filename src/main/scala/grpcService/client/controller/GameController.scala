@@ -24,7 +24,17 @@ class GameController(val client: ClientImpl) {
   
   def register(username: String, password: String, success: SuccessFun[Boolean]): Unit = client.register(username, password, success)
 
-  def joinGame(address: String) = ???
+  val updateUserPoints = (points: Int) => {
+    username match
+      case "" => ()
+      case v => val fut = client.updateUsersPoints(List(v), List(points), (bool) => ())
+  }
+
+  def joinGame(address: String) = 
+    val future = utils.startupWithRole("player", "2552", "127.0.0.1", address)(PlayerBehavior(onStop = updateUserPoints)).getWhenTerminated
+    future.whenComplete((done, reject) => {
+      println("SISTEMA TERMINATO")
+    })
 
   def createGame(port: String = "2551", address: String = "127.0.0.1") =
     //startupWithRole("foreman", port, address)(???)
@@ -34,7 +44,7 @@ class GameController(val client: ClientImpl) {
         println("GIOCO CREATO")
         val foreman = utils.startupWithRole("foreman", "2551", "127.0.0.1")(ForemanBehavior())
         
-        val future = utils.startupWithRole("player", "2552", "127.0.0.1")(PlayerBehavior()).getWhenTerminated
+        val future = utils.startupWithRole("player", "2552", "127.0.0.1")(PlayerBehavior(onStop = updateUserPoints)).getWhenTerminated
         future.whenComplete((done, reject) => {
           foreman.terminate()
           println("SISTEMA TERMINATO")

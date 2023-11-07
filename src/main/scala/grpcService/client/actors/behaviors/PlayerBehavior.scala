@@ -42,7 +42,7 @@ object PlayerBehavior:
   case class EndGame(points: Int) extends Command
   case class NewCard(card: String) extends Command
 
-  def apply(logger: Option[ActorRef[Command]] = Option.empty, interactionExt: Option[ActorRef[InteractionBehavior.Command]] = Option.empty): Behavior[Command] =
+  def apply(logger: Option[ActorRef[Command]] = Option.empty, interactionExt: Option[ActorRef[InteractionBehavior.Command]] = Option.empty, onStop: (Int) => Unit = (v) => ()): Behavior[Command] =
     Behaviors.setup[Command] { ctx =>
       ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
 
@@ -54,7 +54,7 @@ object PlayerBehavior:
           ctx.log.info("INTERACTION INTERNO")
           ctx.spawn(Behaviors.setup[InteractionBehavior.Command](ctx1 => InteractionGuiImpl(ctx1, ctx.self)), "gui")
       }
-      val player = ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](context => new PlayerBehaviorImpl(context, interaction, ctx.self)), "player")
+      val player = ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](context => new PlayerBehaviorImpl(context, interaction, ctx.self, onStop)), "player")
       val listener = ctx.spawn(Behaviors.setup[Event | Receptionist.Listing](context => PlayerClusterListener(ctx.self)), "player-cluster-listener")
       player ! Start
       ctx.watch(interaction)
@@ -81,7 +81,7 @@ object PlayerBehavior:
       }
     }
 
-class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], interactionActor: ActorRef[InteractionBehavior.Command], rootActor: ActorRef[PlayerBehavior.Command]) extends AbstractBehavior[Command | Receptionist.Listing](context):
+class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], interactionActor: ActorRef[InteractionBehavior.Command], rootActor: ActorRef[PlayerBehavior.Command], onStop: (Int) => Unit) extends AbstractBehavior[Command | Receptionist.Listing](context):
 
   override def onMessage(msg: Command | Receptionist.Listing): Behavior[Command | Receptionist.Listing] = msg match {
     case msg: Receptionist.Listing =>
@@ -133,6 +133,7 @@ class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], 
 
     case EndGame(points) =>
       interactionActor ! InteractionBehavior.MessageError(s"Gioco terminato, punti guadagnati: $points")
+      onStop(points)
       Behaviors.stopped
 
     case _ => Behaviors.same
