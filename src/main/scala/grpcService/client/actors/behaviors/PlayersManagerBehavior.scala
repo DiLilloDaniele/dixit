@@ -3,7 +3,7 @@ package grpcService.client.actors.behaviors
 import akka.actor.typed.receptionist.{Receptionist, ServiceKey}
 import akka.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors, TimerScheduler}
 import akka.actor.typed.{ActorRef, Behavior, Terminated}
-import grpcService.client.actors.Message
+import grpcService.client.actors.utils.Message
 import grpcService.client.actors.behaviors.PlayersManagerBehavior.{AskEnter, CheckMembers, Command, PlayerExited, Service, Startup, Stop}
 
 import scala.language.postfixOps

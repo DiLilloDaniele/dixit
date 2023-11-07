@@ -2,7 +2,7 @@ package grpcService.client.actors.behaviors
 
 import akka.actor.typed.{ActorRef, Behavior, Terminated}
 import akka.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors}
-import grpcService.client.actors.Message
+import grpcService.client.actors.utils.Message
 import grpcService.client.actors.behaviors.InteractionBehavior.{ResetInteraction, CardsAssigned, ChooseTheCard, Command, GuessCard, MessageError, NewCard, ShowCardsProposed, Stop}
 import grpcService.client.controller.GameController
 import grpcService.client.ClientImpl
@@ -14,8 +14,8 @@ import javax.swing.{JFrame, SwingUtilities, WindowConstants}
 object InteractionBehavior:
 
   @main def guiTest =
-    import grpcService.client.actors.utils
-    utils.startupWithRole("gui", "2551", "127.0.0.1")(InteractionBehavior())
+    import grpcService.client.actors.utils.Utils
+    Utils.startupWithRole("gui", "2551", "127.0.0.1")(InteractionBehavior())
 
   sealed trait Command extends Message
   case class CardsAssigned(list: List[String]) extends Command

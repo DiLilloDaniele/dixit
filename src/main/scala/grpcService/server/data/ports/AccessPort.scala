@@ -23,6 +23,8 @@ object AccessPort:
 
 class AccessPort(accessAdapter: AccessAdapter) extends AccessRepository {
   
+  accessAdapter.createTable()
+
   override def selectUser(userId: String): Option[User] =
     val queryWrapper = QueryBuilder()
     val query = queryWrapper select "*" from "User" where "Name" equal userId

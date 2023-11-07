@@ -4,7 +4,8 @@ import akka.actor.typed.{ActorRef, Behavior, Terminated}
 import akka.actor.typed.receptionist.Receptionist
 import akka.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors}
 import grpcService.client.actors.ClusterListener.Event
-import grpcService.client.actors.{ClusterListener, Message}
+import grpcService.client.actors.{ClusterListener}
+import grpcService.client.actors.utils.Message
 import grpcService.client.actors.behaviors.ForemanBehavior.{Stop, CardToGuess, Command, GuessSelection, NewTurn, PlayerRejoined, SelectionToApply, Start, list}
 import grpcService.client.actors.behaviors.PlayerBehavior
 import grpcService.client.actors.behaviors.PlayerBehavior.{CardChoosenByOther, CardRevealed, CardsSubmittedByOthers, YourTurn}

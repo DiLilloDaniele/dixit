@@ -7,7 +7,7 @@ import grpcService.client.actors.utils
 import grpcService.client.controller.GameControllerObj.SuccessFun
 
 import scala.util.{Failure, Success}
-import grpcService.client.actors.utils.*
+import grpcService.client.actors.utils.Utils
 
 object GameControllerObj:
   type SuccessFun[A] = (A) => Unit
@@ -31,7 +31,7 @@ class GameController(val client: ClientImpl) {
   }
 
   def joinGame(address: String) = 
-    val future = utils.startupWithRole("player", "2552", "127.0.0.1", address)(PlayerBehavior(onStop = updateUserPoints)).getWhenTerminated
+    val future = Utils.startupWithRole("player", "2552", "127.0.0.1", address)(PlayerBehavior(onStop = updateUserPoints)).getWhenTerminated
     future.whenComplete((done, reject) => {
       println("SISTEMA TERMINATO")
     })
@@ -42,9 +42,9 @@ class GameController(val client: ClientImpl) {
       println("CREO IL GIOCO.....")
       client.createGame(s"$address:$port", username, (_) => {
         println("GIOCO CREATO")
-        val foreman = utils.startupWithRole("foreman", "2551", "127.0.0.1")(ForemanBehavior())
+        val foreman = Utils.startupWithRole("foreman", "2551", "127.0.0.1")(ForemanBehavior())
         
-        val future = utils.startupWithRole("player", "2552", "127.0.0.1")(PlayerBehavior(onStop = updateUserPoints)).getWhenTerminated
+        val future = Utils.startupWithRole("player", "2552", "127.0.0.1")(PlayerBehavior(onStop = updateUserPoints)).getWhenTerminated
         future.whenComplete((done, reject) => {
           foreman.terminate()
           println("SISTEMA TERMINATO")

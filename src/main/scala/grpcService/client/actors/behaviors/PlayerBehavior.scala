@@ -3,11 +3,11 @@ package grpcService.client.actors.behaviors
 import akka.actor.typed.{ActorRef, Behavior, Terminated}
 import akka.actor.typed.receptionist.{Receptionist, ServiceKey}
 import akka.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors}
-import grpcService.client.actors.Message
+import grpcService.client.actors.utils.Message
 import grpcService.client.actors.behaviors.PlayerBehavior.*
 import grpcService.client.actors.behaviors.ForemanBehavior
 import grpcService.client.actors.PlayerClusterListener.Event
-import grpcService.client.actors.{PlayerClusterListener, Message}
+import grpcService.client.actors.{PlayerClusterListener}
 
 import concurrent.duration.DurationInt
 import scala.language.postfixOps

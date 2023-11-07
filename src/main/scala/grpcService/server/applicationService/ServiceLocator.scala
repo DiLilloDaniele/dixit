@@ -5,10 +5,10 @@ import grpcService.server.data.adapters.AccessAdapter
 object ServiceLocator:
   
   def getDataAdapter(): AccessAdapter = AccessAdapter(
-    "localhost",
-    "3306",
+    "127.0.0.1",
+    "6033",
     "mysql",
     "DIXIT",
-    "root",
-    "root"
+    "user_name",
+    "root_password"
   )

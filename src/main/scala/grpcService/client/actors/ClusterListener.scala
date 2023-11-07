@@ -11,6 +11,7 @@ import grpcService.client.actors.behaviors.ForemanBehavior.{Start, list}
 import akka.actor.ActorSelection
 import akka.util.Timeout
 import grpcService.client.actors.behaviors.{ForemanBehavior, PlayerBehavior, PlayersManagerBehavior}
+import grpcService.client.actors.utils.Message
 
 import java.util.concurrent.TimeUnit
 import scala.language.postfixOps

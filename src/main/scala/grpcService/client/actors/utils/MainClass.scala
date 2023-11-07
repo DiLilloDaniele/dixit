@@ -1,7 +1,7 @@
-package grpcService.client.actors
+package grpcService.client.actors.utils
 
 object MainClass {
   def main(args: Array[String]) = {
-    utils.main()
+    Utils.main()
   }
 }
