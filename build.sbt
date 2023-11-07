@@ -14,7 +14,7 @@ lazy val startupTransition: State => State = "conventionalCommits" :: _
 
 coverageEnabled := true
 
-coverageExcludedPackages := ".*view.*"
+coverageExcludedPackages := "<empty>;.*view.*;view;.view.*;.view.;view.*;target/.*;"
 
 lazy val root = project
   .in(file("."))
@@ -42,7 +42,7 @@ libraryDependencies ++= Seq(
 val runApp = taskKey[Unit]("sbt equivalent of gradle's JavaExec")
 runApp := {
   (runner in Compile).value.run(
-    mainClass = "grpcService.client.actors.ManualTesting",
+    mainClass = "grpcService.client.actors.utils.ManualTesting",
     classpath = (fullClasspath in Runtime).value.files,
     options = Array(""),
     log = streams.value.log
@@ -52,7 +52,7 @@ runApp := {
 val runNewPlayer = taskKey[Unit]("sbt equivalent of gradle's JavaExec")
 runNewPlayer := {
   (runner in Compile).value.run(
-    mainClass = "grpcService.client.actors.StartNewPlayer",
+    mainClass = "grpcService.client.actors.utils.StartNewPlayer",
     classpath = (fullClasspath in Runtime).value.files,
     options = Array(""),
     log = streams.value.log
