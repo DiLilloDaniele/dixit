@@ -27,7 +27,7 @@
 </span>3 <span style=''>import akka.actor.typed.receptionist.{Receptionist, ServiceKey}
 </span>4 <span style=''>import akka.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors, TimerScheduler}
 </span>5 <span style=''>import akka.actor.typed.{ActorRef, Behavior, Terminated}
-</span>6 <span style=''>import grpcService.client.actors.Message
+</span>6 <span style=''>import grpcService.client.actors.utils.Message
 </span>7 <span style=''>import grpcService.client.actors.behaviors.PlayersManagerBehavior.{AskEnter, CheckMembers, Command, PlayerExited, Service, Startup, Stop}
 </span>8 <span style=''>
 </span>9 <span style=''>import scala.language.postfixOps
@@ -148,12 +148,12 @@
           13
         </td>
         <td>
-          704
+          674
         </td>
         <td>
-          585
+          591
           -
-          619
+          625
         </td>
         <td>
           Apply
@@ -172,12 +172,12 @@
           23
         </td>
         <td>
-          731
+          701
         </td>
         <td>
-          904
+          910
           -
-          913
+          919
         </td>
         <td>
           DefDef
@@ -196,12 +196,12 @@
           24
         </td>
         <td>
-          730
+          700
         </td>
         <td>
-          1000
+          1006
           -
-          1614
+          1620
         </td>
         <td>
           Apply
@@ -235,36 +235,12 @@
           25
         </td>
         <td>
-          705
+          678
         </td>
         <td>
-          1040
+          1103
           -
-          1050
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          system
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ctx.system
-        </td>
-      </tr><tr>
-        <td>
-          25
-        </td>
-        <td>
-          708
-        </td>
-        <td>
-          1097
-          -
-          1105
+          1111
         </td>
         <td>
           Select
@@ -283,12 +259,60 @@
           25
         </td>
         <td>
-          710
+          675
         </td>
         <td>
-          1040
+          1046
           -
-          1106
+          1056
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          system
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.system
+        </td>
+      </tr><tr>
+        <td>
+          25
+        </td>
+        <td>
+          677
+        </td>
+        <td>
+          1046
+          -
+          1069
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.system.receptionist
+        </td>
+      </tr><tr>
+        <td>
+          25
+        </td>
+        <td>
+          680
+        </td>
+        <td>
+          1046
+          -
+          1112
         </td>
         <td>
           Apply
@@ -307,36 +331,12 @@
           25
         </td>
         <td>
-          707
+          676
         </td>
         <td>
-          1040
+          1046
           -
-          1063
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          ActorRefOps
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ctx.system.receptionist
-        </td>
-      </tr><tr>
-        <td>
-          25
-        </td>
-        <td>
-          706
-        </td>
-        <td>
-          1040
-          -
-          1063
+          1069
         </td>
         <td>
           Select
@@ -355,12 +355,12 @@
           25
         </td>
         <td>
-          709
+          679
         </td>
         <td>
-          1066
+          1072
           -
-          1106
+          1112
         </td>
         <td>
           Apply
@@ -379,36 +379,12 @@
           26
         </td>
         <td>
-          714
+          681
         </td>
         <td>
-          1127
+          1198
           -
-          1257
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          spawn
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx =&gt; PlayersManagerBehaviorImpl(ctx, maxPlayers, foreman)), &quot;manager&quot;)
-        </td>
-      </tr><tr>
-        <td>
-          26
-        </td>
-        <td>
-          711
-        </td>
-        <td>
-          1192
-          -
-          1244
+          1250
         </td>
         <td>
           Apply
@@ -427,12 +403,36 @@
           26
         </td>
         <td>
-          713
+          684
         </td>
         <td>
-          1127
+          1133
           -
-          1136
+          1263
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          spawn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx =&gt; PlayersManagerBehaviorImpl(ctx, maxPlayers, foreman)), &quot;manager&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          683
+        </td>
+        <td>
+          1133
+          -
+          1142
         </td>
         <td>
           Select
@@ -451,12 +451,12 @@
           26
         </td>
         <td>
-          712
+          682
         </td>
         <td>
-          1137
+          1143
           -
-          1245
+          1251
         </td>
         <td>
           Apply
@@ -475,12 +475,12 @@
           27
         </td>
         <td>
-          716
+          686
         </td>
         <td>
-          1264
+          1270
           -
-          1281
+          1287
         </td>
         <td>
           Apply
@@ -499,12 +499,12 @@
           27
         </td>
         <td>
-          715
+          685
         </td>
         <td>
-          1264
+          1270
           -
-          1271
+          1277
         </td>
         <td>
           Apply
@@ -523,12 +523,12 @@
           28
         </td>
         <td>
-          717
+          687
         </td>
         <td>
-          1288
+          1294
           -
-          1306
+          1312
         </td>
         <td>
           Apply
@@ -547,12 +547,12 @@
           29
         </td>
         <td>
-          722
+          692
         </td>
         <td>
-          1313
+          1319
           -
-          1434
+          1440
         </td>
         <td>
           Apply
@@ -575,12 +575,12 @@
           30
         </td>
         <td>
-          721
+          691
         </td>
         <td>
-          1357
+          1363
           -
-          1374
+          1380
         </td>
         <td>
           Block
@@ -599,12 +599,12 @@
           31
         </td>
         <td>
-          719
+          689
         </td>
         <td>
-          1388
+          1394
           -
-          1401
+          1407
         </td>
         <td>
           Apply
@@ -623,12 +623,12 @@
           31
         </td>
         <td>
-          718
+          688
         </td>
         <td>
-          1388
+          1394
           -
-          1395
+          1401
         </td>
         <td>
           Apply
@@ -647,12 +647,12 @@
           32
         </td>
         <td>
-          720
+          690
         </td>
         <td>
-          1412
+          1418
           -
-          1426
+          1432
         </td>
         <td>
           Select
@@ -671,12 +671,12 @@
           33
         </td>
         <td>
-          729
+          699
         </td>
         <td>
-          1313
+          1319
           -
-          1607
+          1613
         </td>
         <td>
           Apply
@@ -703,12 +703,12 @@
           33
         </td>
         <td>
-          728
+          698
         </td>
         <td>
-          1451
+          1457
           -
-          1480
+          1486
         </td>
         <td>
           Block
@@ -727,12 +727,12 @@
           34
         </td>
         <td>
-          723
+          693
         </td>
         <td>
-          1492
+          1498
           -
-          1499
+          1505
         </td>
         <td>
           Select
@@ -751,12 +751,12 @@
           34
         </td>
         <td>
-          724
+          694
         </td>
         <td>
-          1492
+          1498
           -
-          1550
+          1556
         </td>
         <td>
           Apply
@@ -775,12 +775,12 @@
           35
         </td>
         <td>
-          726
+          696
         </td>
         <td>
-          1559
+          1565
           -
-          1573
+          1579
         </td>
         <td>
           Apply
@@ -799,12 +799,12 @@
           35
         </td>
         <td>
-          725
+          695
         </td>
         <td>
-          1559
+          1565
           -
-          1566
+          1572
         </td>
         <td>
           Apply
@@ -823,12 +823,12 @@
           36
         </td>
         <td>
-          727
+          697
         </td>
         <td>
-          1582
+          1588
           -
-          1599
+          1605
         </td>
         <td>
           Select
@@ -847,12 +847,12 @@
           45
         </td>
         <td>
-          732
+          702
         </td>
         <td>
-          1819
+          1825
           -
-          1853
+          1859
         </td>
         <td>
           Apply
@@ -871,12 +871,12 @@
           47
         </td>
         <td>
-          733
+          703
         </td>
         <td>
-          1916
-          -
           1922
+          -
+          1928
         </td>
         <td>
           Apply
@@ -895,12 +895,12 @@
           49
         </td>
         <td>
-          738
+          708
         </td>
         <td>
-          1926
+          1932
           -
-          1948
+          1954
         </td>
         <td>
           DefDef
@@ -919,12 +919,12 @@
           50
         </td>
         <td>
-          735
+          705
         </td>
         <td>
-          2000
+          2006
           -
-          2012
+          2018
         </td>
         <td>
           Block
@@ -943,12 +943,12 @@
           50
         </td>
         <td>
-          734
+          704
         </td>
         <td>
-          2016
+          2022
           -
-          2051
+          2057
         </td>
         <td>
           Apply
@@ -967,12 +967,12 @@
           51
         </td>
         <td>
-          737
+          707
         </td>
         <td>
-          2056
-          -
           2062
+          -
+          2068
         </td>
         <td>
           Block
@@ -991,12 +991,12 @@
           51
         </td>
         <td>
-          736
+          706
         </td>
         <td>
-          2066
+          2072
           -
-          2080
+          2086
         </td>
         <td>
           Select
@@ -1015,12 +1015,12 @@
           54
         </td>
         <td>
-          759
+          729
         </td>
         <td>
-          2210
+          2216
           -
-          2895
+          2901
         </td>
         <td>
           Apply
@@ -1058,12 +1058,12 @@
           54
         </td>
         <td>
-          760
+          730
         </td>
         <td>
-          2088
+          2094
           -
-          2103
+          2109
         </td>
         <td>
           DefDef
@@ -1082,12 +1082,12 @@
           55
         </td>
         <td>
-          754
+          724
         </td>
         <td>
-          2250
+          2256
           -
-          2272
+          2278
         </td>
         <td>
           Block
@@ -1106,12 +1106,12 @@
           57
         </td>
         <td>
-          749
+          719
         </td>
         <td>
-          2365
+          2371
           -
-          2689
+          2695
         </td>
         <td>
           Block
@@ -1138,12 +1138,12 @@
           58
         </td>
         <td>
-          739
+          709
         </td>
         <td>
-          2389
+          2395
           -
-          2411
+          2417
         </td>
         <td>
           Apply
@@ -1162,12 +1162,12 @@
           59
         </td>
         <td>
-          741
+          711
         </td>
         <td>
-          2420
+          2426
           -
-          2453
+          2459
         </td>
         <td>
           Apply
@@ -1186,12 +1186,12 @@
           59
         </td>
         <td>
-          740
+          710
         </td>
         <td>
-          2420
+          2426
           -
-          2427
+          2433
         </td>
         <td>
           Apply
@@ -1210,12 +1210,12 @@
           61
         </td>
         <td>
-          744
+          714
         </td>
         <td>
-          2505
+          2511
           -
-          2555
+          2561
         </td>
         <td>
           Apply
@@ -1234,12 +1234,12 @@
           61
         </td>
         <td>
-          743
+          713
         </td>
         <td>
-          2537
+          2543
           -
-          2554
+          2560
         </td>
         <td>
           Select
@@ -1258,12 +1258,12 @@
           61
         </td>
         <td>
-          746
+          716
         </td>
         <td>
-          2505
+          2511
           -
-          2609
+          2615
         </td>
         <td>
           Block
@@ -1283,12 +1283,12 @@
           61
         </td>
         <td>
-          742
+          712
         </td>
         <td>
-          2505
+          2511
           -
-          2512
+          2518
         </td>
         <td>
           Apply
@@ -1307,12 +1307,12 @@
           62
         </td>
         <td>
-          745
+          715
         </td>
         <td>
-          2566
+          2572
           -
-          2609
+          2615
         </td>
         <td>
           Apply
@@ -1331,12 +1331,12 @@
           64
         </td>
         <td>
-          747
+          717
         </td>
         <td>
-          2633
+          2639
           -
-          2681
+          2687
         </td>
         <td>
           Apply
@@ -1355,12 +1355,12 @@
           64
         </td>
         <td>
-          748
+          718
         </td>
         <td>
-          2633
+          2639
           -
-          2681
+          2687
         </td>
         <td>
           Block
@@ -1379,12 +1379,12 @@
           65
         </td>
         <td>
-          753
+          723
         </td>
         <td>
-          2695
+          2701
           -
-          2769
+          2775
         </td>
         <td>
           Block
@@ -1406,12 +1406,12 @@
           66
         </td>
         <td>
-          750
+          720
         </td>
         <td>
-          2705
+          2711
           -
-          2712
+          2718
         </td>
         <td>
           Apply
@@ -1430,12 +1430,12 @@
           66
         </td>
         <td>
-          751
+          721
         </td>
         <td>
-          2705
+          2711
           -
-          2738
+          2744
         </td>
         <td>
           Apply
@@ -1454,12 +1454,12 @@
           67
         </td>
         <td>
-          752
+          722
         </td>
         <td>
-          2747
+          2753
           -
-          2761
+          2767
         </td>
         <td>
           Select
@@ -1478,12 +1478,12 @@
           69
         </td>
         <td>
-          756
+          726
         </td>
         <td>
-          2774
+          2780
           -
-          2791
+          2797
         </td>
         <td>
           Block
@@ -1502,12 +1502,12 @@
           70
         </td>
         <td>
-          755
+          725
         </td>
         <td>
-          2801
+          2807
           -
-          2856
+          2862
         </td>
         <td>
           Apply
@@ -1526,12 +1526,12 @@
           71
         </td>
         <td>
-          758
+          728
         </td>
         <td>
-          2861
-          -
           2867
+          -
+          2873
         </td>
         <td>
           Block
@@ -1550,12 +1550,12 @@
           72
         </td>
         <td>
-          757
+          727
         </td>
         <td>
-          2877
+          2883
           -
-          2891
+          2897
         </td>
         <td>
           Select
@@ -1574,12 +1574,12 @@
           75
         </td>
         <td>
-          806
+          776
         </td>
         <td>
-          2899
+          2905
           -
-          2909
+          2915
         </td>
         <td>
           DefDef
@@ -1598,12 +1598,12 @@
           75
         </td>
         <td>
-          805
+          775
         </td>
         <td>
-          3016
+          3022
           -
-          4267
+          4273
         </td>
         <td>
           Apply
@@ -1655,12 +1655,12 @@
           76
         </td>
         <td>
-          778
+          748
         </td>
         <td>
-          3056
+          3062
           -
-          3078
+          3084
         </td>
         <td>
           Block
@@ -1679,12 +1679,12 @@
           77
         </td>
         <td>
-          762
+          732
         </td>
         <td>
-          3134
+          3140
           -
-          3148
+          3154
         </td>
         <td>
           Select
@@ -1703,12 +1703,12 @@
           77
         </td>
         <td>
-          761
+          731
         </td>
         <td>
-          3134
-          -
           3140
+          -
+          3146
         </td>
         <td>
           Select
@@ -1727,12 +1727,12 @@
           77
         </td>
         <td>
-          763
+          733
         </td>
         <td>
-          3111
+          3117
           -
-          3158
+          3164
         </td>
         <td>
           Apply
@@ -1751,12 +1751,12 @@
           78
         </td>
         <td>
-          765
+          735
         </td>
         <td>
-          3194
+          3200
           -
-          3214
+          3220
         </td>
         <td>
           Select
@@ -1775,12 +1775,12 @@
           78
         </td>
         <td>
-          764
+          734
         </td>
         <td>
-          3194
+          3200
           -
-          3206
+          3212
         </td>
         <td>
           Select
@@ -1799,12 +1799,12 @@
           78
         </td>
         <td>
-          766
+          736
         </td>
         <td>
-          3168
+          3174
           -
-          3224
+          3230
         </td>
         <td>
           Apply
@@ -1823,12 +1823,12 @@
           79
         </td>
         <td>
-          768
+          738
         </td>
         <td>
-          3234
+          3240
           -
-          3278
+          3284
         </td>
         <td>
           Apply
@@ -1847,12 +1847,12 @@
           79
         </td>
         <td>
-          767
+          737
         </td>
         <td>
-          3234
+          3240
           -
-          3245
+          3251
         </td>
         <td>
           Select
@@ -1871,12 +1871,12 @@
           79
         </td>
         <td>
-          776
+          746
         </td>
         <td>
-          3234
+          3240
           -
-          3423
+          3429
         </td>
         <td>
           Block
@@ -1898,12 +1898,12 @@
           80
         </td>
         <td>
-          770
+          740
         </td>
         <td>
-          3287
+          3293
           -
-          3320
+          3326
         </td>
         <td>
           Apply
@@ -1922,12 +1922,12 @@
           80
         </td>
         <td>
-          769
+          739
         </td>
         <td>
-          3287
+          3293
           -
-          3294
+          3300
         </td>
         <td>
           Apply
@@ -1946,36 +1946,12 @@
           81
         </td>
         <td>
-          774
+          741
         </td>
         <td>
-          3329
+          3335
           -
-          3400
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          !
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          foreman ! ForemanBehavior.PlayerRejoined(replyTo.path.address.toString)
-        </td>
-      </tr><tr>
-        <td>
-          81
-        </td>
-        <td>
-          771
-        </td>
-        <td>
-          3329
-          -
-          3336
+          3342
         </td>
         <td>
           Apply
@@ -1994,12 +1970,36 @@
           81
         </td>
         <td>
-          773
+          744
         </td>
         <td>
-          3370
+          3335
           -
-          3390
+          3406
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          foreman ! ForemanBehavior.PlayerRejoined(replyTo.path.address.toString)
+        </td>
+      </tr><tr>
+        <td>
+          81
+        </td>
+        <td>
+          743
+        </td>
+        <td>
+          3376
+          -
+          3396
         </td>
         <td>
           Select
@@ -2018,12 +2018,12 @@
           81
         </td>
         <td>
-          772
+          742
         </td>
         <td>
-          3370
+          3376
           -
-          3382
+          3388
         </td>
         <td>
           Select
@@ -2042,12 +2042,12 @@
           82
         </td>
         <td>
-          775
+          745
         </td>
         <td>
-          3409
+          3415
           -
-          3423
+          3429
         </td>
         <td>
           Select
@@ -2066,12 +2066,12 @@
           84
         </td>
         <td>
-          777
+          747
         </td>
         <td>
-          3479
+          3485
           -
-          3522
+          3528
         </td>
         <td>
           Apply
@@ -2090,12 +2090,12 @@
           85
         </td>
         <td>
-          785
+          755
         </td>
         <td>
-          3527
+          3533
           -
-          3544
+          3550
         </td>
         <td>
           Block
@@ -2114,36 +2114,12 @@
           87
         </td>
         <td>
-          779
+          750
         </td>
         <td>
-          3603
+          3609
           -
-          3614
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          log
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          context.log
-        </td>
-      </tr><tr>
-        <td>
-          87
-        </td>
-        <td>
-          780
-        </td>
-        <td>
-          3603
-          -
-          3647
+          3653
         </td>
         <td>
           Apply
@@ -2159,15 +2135,39 @@
         </td>
       </tr><tr>
         <td>
+          87
+        </td>
+        <td>
+          749
+        </td>
+        <td>
+          3609
+          -
+          3620
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
           88
         </td>
         <td>
-          784
+          754
         </td>
         <td>
-          3654
+          3660
           -
-          3810
+          3816
         </td>
         <td>
           Apply
@@ -2189,12 +2189,12 @@
           89
         </td>
         <td>
-          782
+          752
         </td>
         <td>
-          3694
+          3700
           -
-          3750
+          3756
         </td>
         <td>
           Apply
@@ -2213,12 +2213,12 @@
           89
         </td>
         <td>
-          781
+          751
         </td>
         <td>
-          3731
+          3737
           -
-          3749
+          3755
         </td>
         <td>
           Select
@@ -2237,12 +2237,12 @@
           90
         </td>
         <td>
-          783
+          753
         </td>
         <td>
-          3759
+          3765
           -
-          3802
+          3808
         </td>
         <td>
           Apply
@@ -2261,12 +2261,12 @@
           93
         </td>
         <td>
-          799
+          769
         </td>
         <td>
-          3816
+          3822
           -
-          3833
+          3839
         </td>
         <td>
           Block
@@ -2285,12 +2285,12 @@
           94
         </td>
         <td>
-          786
+          756
         </td>
         <td>
-          3843
+          3849
           -
-          3854
+          3860
         </td>
         <td>
           Select
@@ -2309,12 +2309,12 @@
           94
         </td>
         <td>
-          787
+          757
         </td>
         <td>
-          3843
+          3849
           -
-          3874
+          3880
         </td>
         <td>
           Apply
@@ -2333,36 +2333,36 @@
           96
         </td>
         <td>
-          788
+          759
         </td>
         <td>
-          3924
+          3930
           -
-          3935
+          3959
         </td>
         <td>
-          Select
+          Apply
         </td>
         <td>
-          log
+          info
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          context.log
+          context.log.info(&quot;Stop game&quot;)
         </td>
       </tr><tr>
         <td>
           96
         </td>
         <td>
-          794
+          764
         </td>
         <td>
-          3924
+          3930
           -
-          4004
+          4010
         </td>
         <td>
           Block
@@ -2383,36 +2383,36 @@
           96
         </td>
         <td>
-          789
+          758
         </td>
         <td>
-          3924
+          3930
           -
-          3953
+          3941
         </td>
         <td>
-          Apply
+          Select
         </td>
         <td>
-          info
+          log
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          context.log.info(&quot;Stop game&quot;)
+          context.log
         </td>
       </tr><tr>
         <td>
           97
         </td>
         <td>
-          792
+          762
         </td>
         <td>
-          3962
+          3968
           -
-          3981
+          3987
         </td>
         <td>
           Apply
@@ -2431,12 +2431,12 @@
           97
         </td>
         <td>
-          791
+          761
         </td>
         <td>
-          3962
+          3968
           -
-          3974
+          3980
         </td>
         <td>
           Apply
@@ -2455,12 +2455,12 @@
           97
         </td>
         <td>
-          790
+          760
         </td>
         <td>
-          3962
+          3968
           -
-          3974
+          3980
         </td>
         <td>
           Select
@@ -2479,12 +2479,12 @@
           98
         </td>
         <td>
-          793
+          763
         </td>
         <td>
-          3990
+          3996
           -
-          4004
+          4010
         </td>
         <td>
           Select
@@ -2503,12 +2503,12 @@
           100
         </td>
         <td>
-          795
+          765
         </td>
         <td>
-          4024
+          4030
           -
-          4035
+          4041
         </td>
         <td>
           Select
@@ -2527,36 +2527,12 @@
           100
         </td>
         <td>
-          796
+          768
         </td>
         <td>
-          4024
+          4030
           -
-          4056
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          info
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          context.log.info(&quot;NO stop game&quot;)
-        </td>
-      </tr><tr>
-        <td>
-          100
-        </td>
-        <td>
-          798
-        </td>
-        <td>
-          4024
-          -
-          4079
+          4085
         </td>
         <td>
           Block
@@ -2573,15 +2549,39 @@
         </td>
       </tr><tr>
         <td>
+          100
+        </td>
+        <td>
+          766
+        </td>
+        <td>
+          4030
+          -
+          4062
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log.info(&quot;NO stop game&quot;)
+        </td>
+      </tr><tr>
+        <td>
           101
         </td>
         <td>
-          797
+          767
         </td>
         <td>
-          4065
+          4071
           -
-          4079
+          4085
         </td>
         <td>
           Select
@@ -2600,12 +2600,12 @@
           103
         </td>
         <td>
-          804
+          774
         </td>
         <td>
-          4085
+          4091
           -
-          4094
+          4100
         </td>
         <td>
           Block
@@ -2624,12 +2624,12 @@
           104
         </td>
         <td>
-          802
+          772
         </td>
         <td>
-          4104
+          4110
           -
-          4239
+          4245
         </td>
         <td>
           Apply
@@ -2650,12 +2650,12 @@
           105
         </td>
         <td>
-          801
+          771
         </td>
         <td>
-          4139
+          4145
           -
-          4231
+          4237
         </td>
         <td>
           Apply
@@ -2674,12 +2674,12 @@
           105
         </td>
         <td>
-          800
+          770
         </td>
         <td>
-          4139
+          4145
           -
-          4140
+          4146
         </td>
         <td>
           Apply
@@ -2698,12 +2698,12 @@
           107
         </td>
         <td>
-          803
+          773
         </td>
         <td>
-          4246
+          4252
           -
-          4263
+          4269
         </td>
         <td>
           Select

@@ -2,7 +2,7 @@
       <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title id="title">
-          grpcService/client/actors/StartNewPlayer.scala.html
+          grpcService/client/actors/utils/StartNewPlayer.scala.html
         </title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
         $(document).ready(function() {$(".tablesorter").tablesorter();});
@@ -22,14 +22,14 @@
         </ul>
         <div class="tab-content">
           <div class="tab-pane active" id="codegrid">
-            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.client.actors
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.client.actors.utils
 </span>2 <span style=''>
 </span>3 <span style=''>import grpcService.client.actors.behaviors.PlayerBehavior
 </span>4 <span style=''>
 </span>5 <span style=''>object StartNewPlayer {
 </span>6 <span style=''>
 </span>7 <span style=''>    </span><span style='background: #F0ADAD'>def executePlayer</span><span style=''>(role: String, port: String, ip: String) =
-</span>8 <span style=''>        </span><span style='background: #F0ADAD'>utils.startupWithRole(role, port, ip)(PlayerBehavior())</span><span style=''>
+</span>8 <span style=''>        </span><span style='background: #F0ADAD'>Utils.startupWithRole(role, port, ip)(PlayerBehavior())</span><span style=''>
 </span>9 <span style=''>
 </span>10 <span style=''>    </span><span style='background: #F0ADAD'>def main</span><span style=''>(args: Array[String]) = {
 </span>11 <span style=''>        </span><span style='background: #F0ADAD'>println(args)</span><span style=''>
@@ -53,12 +53,12 @@
           6
         </td>
         <td>
-          198
+          803
         </td>
         <td>
-          123
+          129
           -
-          140
+          146
         </td>
         <td>
           DefDef
@@ -77,12 +77,12 @@
           7
         </td>
         <td>
-          196
+          801
         </td>
         <td>
-          191
+          197
           -
-          212
+          218
         </td>
         <td>
           Select
@@ -94,19 +94,19 @@
           
         </td>
         <td style="background: #F0ADAD">
-          utils.startupWithRole
+          Utils.startupWithRole
         </td>
       </tr><tr>
         <td>
           7
         </td>
         <td>
-          197
+          802
         </td>
         <td>
-          191
+          197
           -
-          246
+          252
         </td>
         <td>
           Apply
@@ -118,19 +118,19 @@
           
         </td>
         <td style="background: #F0ADAD">
-          utils.startupWithRole(role, port, ip)(PlayerBehavior())
+          Utils.startupWithRole(role, port, ip)(PlayerBehavior())
         </td>
       </tr><tr>
         <td>
           9
         </td>
         <td>
-          201
+          806
         </td>
         <td>
-          252
+          258
           -
-          260
+          266
         </td>
         <td>
           DefDef
@@ -149,12 +149,12 @@
           10
         </td>
         <td>
-          199
+          804
         </td>
         <td>
-          294
+          300
           -
-          307
+          313
         </td>
         <td>
           Apply
@@ -173,12 +173,12 @@
           11
         </td>
         <td>
-          200
+          805
         </td>
         <td>
-          316
+          322
           -
-          361
+          367
         </td>
         <td>
           Apply
