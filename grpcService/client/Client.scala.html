@@ -35,21 +35,21 @@
 </span>11 <span style=''>import grpcService.client.view.HomepageView
 </span>12 <span style=''>
 </span>13 <span style=''>import scala.concurrent.Future
-</span>14 <span style=''>
+</span>14 <span style=''>/*
 </span>15 <span style=''>object Client {
-</span>16 <span style=''>  </span><span style='background: #F0ADAD'>@main def startClient</span><span style=''>() = {
+</span>16 <span style=''>  @main def startClient() = {
 </span>17 <span style=''>    // Boot akka
-</span>18 <span style=''>    implicit val sys = </span><span style='background: #F0ADAD'>ActorSystem(&quot;HelloWorldClient&quot;)</span><span style=''>
-</span>19 <span style=''>    implicit val ec = </span><span style='background: #F0ADAD'>sys.dispatcher</span><span style=''>
+</span>18 <span style=''>    implicit val sys = ActorSystem(&quot;HelloWorldClient&quot;)
+</span>19 <span style=''>    implicit val ec = sys.dispatcher
 </span>20 <span style=''>
 </span>21 <span style=''>    // Configure the client by code:
-</span>22 <span style=''>    val clientSettings = </span><span style='background: #F0ADAD'>GrpcClientSettings.connectToServiceAt(&quot;127.0.0.1&quot;, 8083).withTls(false)</span><span style=''>
+</span>22 <span style=''>    val clientSettings = GrpcClientSettings.connectToServiceAt(&quot;127.0.0.1&quot;, 8083).withTls(false)
 </span>23 <span style=''>
 </span>24 <span style=''>    // Or via application.conf:
 </span>25 <span style=''>    // val clientSettings = GrpcClientSettings.fromConfig(GreeterService.name)
 </span>26 <span style=''>
 </span>27 <span style=''>    // Create a client-side stub for the service
-</span>28 <span style=''>    val client: Server = </span><span style='background: #F0ADAD'>ServerClient(clientSettings)</span><span style=''>
+</span>28 <span style=''>    val client: Server = ServerClient(clientSettings)
 </span>29 <span style=''>/*
 </span>30 <span style=''>    val reply = client.hello(HelloMessage(&quot;Daniele&quot;))
 </span>31 <span style=''>    reply.onComplete {
@@ -61,12 +61,12 @@
 </span>37 <span style=''>*/
 </span>38 <span style=''>  }
 </span>39 <span style=''>  
-</span>40 <span style=''>  </span><span style='background: #F0ADAD'>def main</span><span style=''>(args: Array[String]): Unit =
-</span>41 <span style=''>    val client = </span><span style='background: #F0ADAD'>ClientImpl()</span><span style=''>
+</span>40 <span style=''>  def main(args: Array[String]): Unit =
+</span>41 <span style=''>    val client = ClientImpl()
 </span>42 <span style=''>    
 </span>43 <span style=''>  
 </span>44 <span style=''>}
-</span>45 <span style=''>
+</span>45 <span style=''>*/
 </span>46 <span style=''>class ClientImpl() {
 </span>47 <span style=''> 
 </span>48 <span style=''>  implicit val sys: ActorSystem = </span><span style='background: #AEF1AE'>ActorSystem(&quot;HelloWorldClient&quot;)</span><span style=''>
@@ -153,207 +153,15 @@
         <th>Code</th>
       </tr><tr>
         <td>
-          15
-        </td>
-        <td>
-          5
-        </td>
-        <td>
-          588
-          -
-          609
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          startClient
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          @main def startClient
-        </td>
-      </tr><tr>
-        <td>
-          17
+          47
         </td>
         <td>
           0
         </td>
         <td>
-          656
+          1448
           -
-          687
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          apply
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          ActorSystem(&quot;HelloWorldClient&quot;)
-        </td>
-      </tr><tr>
-        <td>
-          18
-        </td>
-        <td>
-          1
-        </td>
-        <td>
-          710
-          -
-          724
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          dispatcher
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          sys.dispatcher
-        </td>
-      </tr><tr>
-        <td>
-          21
-        </td>
-        <td>
-          2
-        </td>
-        <td>
-          788
-          -
-          844
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          connectToServiceAt
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          GrpcClientSettings.connectToServiceAt(&quot;127.0.0.1&quot;, 8083)
-        </td>
-      </tr><tr>
-        <td>
-          21
-        </td>
-        <td>
-          3
-        </td>
-        <td>
-          788
-          -
-          859
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          withTls
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          GrpcClientSettings.connectToServiceAt(&quot;127.0.0.1&quot;, 8083).withTls(false)
-        </td>
-      </tr><tr>
-        <td>
-          27
-        </td>
-        <td>
-          4
-        </td>
-        <td>
-          1047
-          -
-          1075
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          apply
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          ServerClient(clientSettings)
-        </td>
-      </tr><tr>
-        <td>
-          39
-        </td>
-        <td>
-          7
-        </td>
-        <td>
-          1308
-          -
-          1316
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          main
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          def main
-        </td>
-      </tr><tr>
-        <td>
-          40
-        </td>
-        <td>
-          6
-        </td>
-        <td>
-          1363
-          -
-          1375
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          &lt;init&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          ClientImpl()
-        </td>
-      </tr><tr>
-        <td>
-          47
-        </td>
-        <td>
-          8
-        </td>
-        <td>
-          1444
-          -
-          1475
+          1479
         </td>
         <td>
           Apply
@@ -372,12 +180,12 @@
           48
         </td>
         <td>
-          9
+          1
         </td>
         <td>
-          1522
+          1526
           -
-          1536
+          1540
         </td>
         <td>
           Select
@@ -396,36 +204,12 @@
           50
         </td>
         <td>
-          11
+          2
         </td>
         <td>
-          1561
+          1565
           -
-          1632
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          withTls
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          GrpcClientSettings.connectToServiceAt(&quot;127.0.0.1&quot;, 8083).withTls(false)
-        </td>
-      </tr><tr>
-        <td>
-          50
-        </td>
-        <td>
-          10
-        </td>
-        <td>
-          1561
-          -
-          1617
+          1621
         </td>
         <td>
           Apply
@@ -441,15 +225,39 @@
         </td>
       </tr><tr>
         <td>
+          50
+        </td>
+        <td>
+          3
+        </td>
+        <td>
+          1565
+          -
+          1636
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          withTls
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          GrpcClientSettings.connectToServiceAt(&quot;127.0.0.1&quot;, 8083).withTls(false)
+        </td>
+      </tr><tr>
+        <td>
           52
         </td>
         <td>
-          12
+          4
         </td>
         <td>
-          1657
+          1661
           -
-          1685
+          1689
         </td>
         <td>
           Apply
@@ -468,36 +276,12 @@
           54
         </td>
         <td>
-          14
+          5
         </td>
         <td>
-          1746
+          1763
           -
-          1780
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          hello
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          client.hello(HelloMessage(string))
-        </td>
-      </tr><tr>
-        <td>
-          54
-        </td>
-        <td>
-          13
-        </td>
-        <td>
-          1759
-          -
-          1771
+          1775
         </td>
         <td>
           Select
@@ -516,12 +300,12 @@
           54
         </td>
         <td>
-          15
+          7
         </td>
         <td>
-          1689
+          1693
           -
-          1705
+          1709
         </td>
         <td>
           DefDef
@@ -537,15 +321,39 @@
         </td>
       </tr><tr>
         <td>
+          54
+        </td>
+        <td>
+          6
+        </td>
+        <td>
+          1750
+          -
+          1784
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          hello
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          client.hello(HelloMessage(string))
+        </td>
+      </tr><tr>
+        <td>
           56
         </td>
         <td>
-          25
+          17
         </td>
         <td>
-          1784
+          1788
           -
-          1805
+          1809
         </td>
         <td>
           DefDef
@@ -564,36 +372,12 @@
           57
         </td>
         <td>
-          17
+          8
         </td>
         <td>
-          1880
+          1906
           -
-          1923
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          getOpenedGames
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          client.getOpenedGames(OpenedGamesRequest())
-        </td>
-      </tr><tr>
-        <td>
-          57
-        </td>
-        <td>
-          16
-        </td>
-        <td>
-          1902
-          -
-          1920
+          1924
         </td>
         <td>
           Select
@@ -609,15 +393,39 @@
         </td>
       </tr><tr>
         <td>
+          57
+        </td>
+        <td>
+          9
+        </td>
+        <td>
+          1884
+          -
+          1927
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getOpenedGames
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          client.getOpenedGames(OpenedGamesRequest())
+        </td>
+      </tr><tr>
+        <td>
           58
         </td>
         <td>
-          24
+          16
         </td>
         <td>
-          1928
+          1932
           -
-          2083
+          2087
         </td>
         <td>
           Apply
@@ -641,12 +449,12 @@
           59
         </td>
         <td>
-          20
+          12
         </td>
         <td>
-          1953
+          1957
           -
-          1970
+          1974
         </td>
         <td>
           Block
@@ -665,12 +473,12 @@
           60
         </td>
         <td>
-          19
+          11
         </td>
         <td>
-          1982
+          1986
           -
-          2013
+          2017
         </td>
         <td>
           Apply
@@ -689,12 +497,12 @@
           60
         </td>
         <td>
-          18
+          10
         </td>
         <td>
-          1990
+          1994
           -
-          2012
+          2016
         </td>
         <td>
           Select
@@ -713,12 +521,12 @@
           61
         </td>
         <td>
-          23
+          15
         </td>
         <td>
-          2020
+          2024
           -
-          2035
+          2039
         </td>
         <td>
           Block
@@ -737,12 +545,12 @@
           62
         </td>
         <td>
-          22
+          14
         </td>
         <td>
-          2047
+          2051
           -
-          2077
+          2081
         </td>
         <td>
           Apply
@@ -761,12 +569,12 @@
           62
         </td>
         <td>
-          21
+          13
         </td>
         <td>
-          2055
+          2059
           -
-          2076
+          2080
         </td>
         <td>
           Apply
@@ -785,12 +593,12 @@
           66
         </td>
         <td>
-          34
+          26
         </td>
         <td>
-          2101
+          2105
           -
-          2110
+          2114
         </td>
         <td>
           DefDef
@@ -809,36 +617,12 @@
           67
         </td>
         <td>
-          26
+          19
         </td>
         <td>
-          2229
+          2220
           -
-          2241
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          $lessinit$greater$default$3
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          LoginRequest
-        </td>
-      </tr><tr>
-        <td>
-          67
-        </td>
-        <td>
-          27
-        </td>
-        <td>
-          2216
-          -
-          2262
+          2266
         </td>
         <td>
           Apply
@@ -854,15 +638,39 @@
         </td>
       </tr><tr>
         <td>
+          67
+        </td>
+        <td>
+          18
+        </td>
+        <td>
+          2233
+          -
+          2245
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          $lessinit$greater$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          LoginRequest
+        </td>
+      </tr><tr>
+        <td>
           68
         </td>
         <td>
-          33
+          25
         </td>
         <td>
-          2267
+          2271
           -
-          2412
+          2416
         </td>
         <td>
           Apply
@@ -886,12 +694,12 @@
           69
         </td>
         <td>
-          29
+          21
         </td>
         <td>
-          2292
+          2296
           -
-          2309
+          2313
         </td>
         <td>
           Block
@@ -910,12 +718,12 @@
           70
         </td>
         <td>
-          28
+          20
         </td>
         <td>
-          2321
+          2325
           -
-          2342
+          2346
         </td>
         <td>
           Apply
@@ -934,12 +742,12 @@
           71
         </td>
         <td>
-          32
+          24
         </td>
         <td>
-          2349
+          2353
           -
-          2364
+          2368
         </td>
         <td>
           Block
@@ -958,12 +766,12 @@
           72
         </td>
         <td>
-          31
+          23
         </td>
         <td>
-          2376
+          2380
           -
-          2406
+          2410
         </td>
         <td>
           Apply
@@ -982,12 +790,12 @@
           72
         </td>
         <td>
-          30
+          22
         </td>
         <td>
-          2384
+          2388
           -
-          2405
+          2409
         </td>
         <td>
           Apply
@@ -1006,12 +814,12 @@
           76
         </td>
         <td>
-          43
+          35
         </td>
         <td>
-          2430
+          2434
           -
-          2442
+          2446
         </td>
         <td>
           DefDef
@@ -1030,36 +838,12 @@
           77
         </td>
         <td>
-          35
+          28
         </td>
         <td>
-          2564
+          2552
           -
-          2576
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          $lessinit$greater$default$3
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          LoginRequest
-        </td>
-      </tr><tr>
-        <td>
-          77
-        </td>
-        <td>
-          36
-        </td>
-        <td>
-          2548
-          -
-          2597
+          2601
         </td>
         <td>
           Apply
@@ -1075,15 +859,39 @@
         </td>
       </tr><tr>
         <td>
+          77
+        </td>
+        <td>
+          27
+        </td>
+        <td>
+          2568
+          -
+          2580
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          $lessinit$greater$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          LoginRequest
+        </td>
+      </tr><tr>
+        <td>
           78
         </td>
         <td>
-          42
+          34
         </td>
         <td>
-          2602
+          2606
           -
-          2747
+          2751
         </td>
         <td>
           Apply
@@ -1107,12 +915,12 @@
           79
         </td>
         <td>
-          38
+          30
         </td>
         <td>
-          2627
+          2631
           -
-          2644
+          2648
         </td>
         <td>
           Block
@@ -1131,12 +939,12 @@
           80
         </td>
         <td>
-          37
+          29
         </td>
         <td>
-          2656
+          2660
           -
-          2677
+          2681
         </td>
         <td>
           Apply
@@ -1155,12 +963,12 @@
           81
         </td>
         <td>
-          41
+          33
         </td>
         <td>
-          2684
+          2688
           -
-          2699
+          2703
         </td>
         <td>
           Block
@@ -1179,12 +987,12 @@
           82
         </td>
         <td>
-          40
+          32
         </td>
         <td>
-          2711
+          2715
           -
-          2741
+          2745
         </td>
         <td>
           Apply
@@ -1203,12 +1011,12 @@
           82
         </td>
         <td>
-          39
+          31
         </td>
         <td>
-          2719
+          2723
           -
-          2740
+          2744
         </td>
         <td>
           Apply
@@ -1227,12 +1035,12 @@
           86
         </td>
         <td>
-          52
+          44
         </td>
         <td>
-          2761
+          2765
           -
-          2775
+          2779
         </td>
         <td>
           DefDef
@@ -1251,36 +1059,12 @@
           87
         </td>
         <td>
-          44
+          37
         </td>
         <td>
-          2895
+          2884
           -
-          2906
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          $lessinit$greater$default$3
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          GameMessage
-        </td>
-      </tr><tr>
-        <td>
-          87
-        </td>
-        <td>
-          45
-        </td>
-        <td>
-          2880
-          -
-          2922
+          2926
         </td>
         <td>
           Apply
@@ -1296,15 +1080,39 @@
         </td>
       </tr><tr>
         <td>
+          87
+        </td>
+        <td>
+          36
+        </td>
+        <td>
+          2899
+          -
+          2910
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          $lessinit$greater$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          GameMessage
+        </td>
+      </tr><tr>
+        <td>
           88
         </td>
         <td>
-          51
+          43
         </td>
         <td>
-          2927
+          2931
           -
-          3064
+          3068
         </td>
         <td>
           Apply
@@ -1328,12 +1136,12 @@
           89
         </td>
         <td>
-          47
+          39
         </td>
         <td>
-          2952
+          2956
           -
-          2969
+          2973
         </td>
         <td>
           Block
@@ -1352,12 +1160,12 @@
           90
         </td>
         <td>
-          46
+          38
         </td>
         <td>
-          2981
+          2985
           -
-          2994
+          2998
         </td>
         <td>
           Apply
@@ -1376,12 +1184,12 @@
           91
         </td>
         <td>
-          50
+          42
         </td>
         <td>
-          3001
+          3005
           -
-          3016
+          3020
         </td>
         <td>
           Block
@@ -1400,12 +1208,12 @@
           92
         </td>
         <td>
-          49
+          41
         </td>
         <td>
-          3028
+          3032
           -
-          3058
+          3062
         </td>
         <td>
           Apply
@@ -1424,12 +1232,12 @@
           92
         </td>
         <td>
-          48
+          40
         </td>
         <td>
-          3036
+          3040
           -
-          3057
+          3061
         </td>
         <td>
           Apply
@@ -1448,12 +1256,12 @@
           96
         </td>
         <td>
-          61
+          53
         </td>
         <td>
-          3078
+          3082
           -
-          3091
+          3095
         </td>
         <td>
           DefDef
@@ -1472,36 +1280,12 @@
           97
         </td>
         <td>
-          53
+          46
         </td>
         <td>
-          3213
+          3200
           -
-          3224
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          $lessinit$greater$default$3
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          GameMessage
-        </td>
-      </tr><tr>
-        <td>
-          97
-        </td>
-        <td>
-          54
-        </td>
-        <td>
-          3196
-          -
-          3240
+          3244
         </td>
         <td>
           Apply
@@ -1517,15 +1301,39 @@
         </td>
       </tr><tr>
         <td>
+          97
+        </td>
+        <td>
+          45
+        </td>
+        <td>
+          3217
+          -
+          3228
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          $lessinit$greater$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          GameMessage
+        </td>
+      </tr><tr>
+        <td>
           98
         </td>
         <td>
-          60
+          52
         </td>
         <td>
-          3245
+          3249
           -
-          3382
+          3386
         </td>
         <td>
           Apply
@@ -1549,12 +1357,12 @@
           99
         </td>
         <td>
-          56
+          48
         </td>
         <td>
-          3270
+          3274
           -
-          3287
+          3291
         </td>
         <td>
           Block
@@ -1573,12 +1381,12 @@
           100
         </td>
         <td>
-          55
+          47
         </td>
         <td>
-          3299
+          3303
           -
-          3312
+          3316
         </td>
         <td>
           Apply
@@ -1597,12 +1405,12 @@
           101
         </td>
         <td>
-          59
+          51
         </td>
         <td>
-          3319
+          3323
           -
-          3334
+          3338
         </td>
         <td>
           Block
@@ -1621,12 +1429,12 @@
           102
         </td>
         <td>
-          58
+          50
         </td>
         <td>
-          3346
+          3350
           -
-          3376
+          3380
         </td>
         <td>
           Apply
@@ -1645,12 +1453,12 @@
           102
         </td>
         <td>
-          57
+          49
         </td>
         <td>
-          3354
+          3358
           -
-          3375
+          3379
         </td>
         <td>
           Apply
@@ -1669,12 +1477,12 @@
           106
         </td>
         <td>
-          72
+          64
         </td>
         <td>
-          3396
+          3400
           -
-          3417
+          3421
         </td>
         <td>
           DefDef
@@ -1693,60 +1501,12 @@
           107
         </td>
         <td>
-          62
+          56
         </td>
         <td>
-          3569
+          3562
           -
-          3584
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          toSeq
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          usernames.toSeq
-        </td>
-      </tr><tr>
-        <td>
-          107
-        </td>
-        <td>
-          65
-        </td>
-        <td>
-          3534
-          -
-          3600
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          updateUserPoints
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          client.updateUserPoints(UserPoints(usernames.toSeq, points.toSeq))
-        </td>
-      </tr><tr>
-        <td>
-          107
-        </td>
-        <td>
-          64
-        </td>
-        <td>
-          3558
-          -
-          3568
+          3572
         </td>
         <td>
           Select
@@ -1765,12 +1525,12 @@
           107
         </td>
         <td>
-          63
+          55
         </td>
         <td>
-          3586
+          3590
           -
-          3598
+          3602
         </td>
         <td>
           Select
@@ -1786,15 +1546,63 @@
         </td>
       </tr><tr>
         <td>
+          107
+        </td>
+        <td>
+          54
+        </td>
+        <td>
+          3573
+          -
+          3588
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          toSeq
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          usernames.toSeq
+        </td>
+      </tr><tr>
+        <td>
+          107
+        </td>
+        <td>
+          57
+        </td>
+        <td>
+          3538
+          -
+          3604
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          updateUserPoints
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          client.updateUserPoints(UserPoints(usernames.toSeq, points.toSeq))
+        </td>
+      </tr><tr>
+        <td>
           108
         </td>
         <td>
-          71
+          63
         </td>
         <td>
-          3605
+          3609
           -
-          3742
+          3746
         </td>
         <td>
           Apply
@@ -1818,12 +1626,12 @@
           109
         </td>
         <td>
-          67
+          59
         </td>
         <td>
-          3630
+          3634
           -
-          3647
+          3651
         </td>
         <td>
           Block
@@ -1842,12 +1650,12 @@
           110
         </td>
         <td>
-          66
+          58
         </td>
         <td>
-          3659
+          3663
           -
-          3672
+          3676
         </td>
         <td>
           Apply
@@ -1866,12 +1674,12 @@
           111
         </td>
         <td>
-          70
+          62
         </td>
         <td>
-          3679
+          3683
           -
-          3694
+          3698
         </td>
         <td>
           Block
@@ -1890,36 +1698,12 @@
           112
         </td>
         <td>
-          68
+          61
         </td>
         <td>
-          3714
+          3710
           -
-          3735
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          s
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          s&quot;Error sayHello: $e&quot;
-        </td>
-      </tr><tr>
-        <td>
-          112
-        </td>
-        <td>
-          69
-        </td>
-        <td>
-          3706
-          -
-          3736
+          3740
         </td>
         <td>
           Apply
@@ -1932,6 +1716,30 @@
         </td>
         <td style="background: #F0ADAD">
           println(s&quot;Error sayHello: $e&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          112
+        </td>
+        <td>
+          60
+        </td>
+        <td>
+          3718
+          -
+          3739
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;Error sayHello: $e&quot;
         </td>
       </tr>
     </table>
