@@ -10,17 +10,6 @@ import grpcService.server.domain.repository.AccessRepository
 
 import java.sql.{ResultSet, SQLException}
 
-object AccessPort:
-
-  @main def main() =
-    val accessPort = AccessPort(ServiceLocator.getDataAdapter())
-    //accessPort.insertNewUser("Daniele", "password")
-    //accessPort.addPointsToUser("1", 10)
-    accessPort.selectUser("Daniele") match {
-      case Some(value) => println(value.name + " - " + value.password)
-      case _ => ()
-    }
-
 class AccessPort(accessAdapter: AccessAdapter) extends AccessRepository {
   
   accessAdapter.createTable()

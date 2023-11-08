@@ -3,14 +3,6 @@ package grpcService.server.domain.service
 import grpcService.server.domain.model.{Game, User}
 import grpcService.server.domain.repository.AccessRepository
 
-object ServerLogic:
-
-  @main def testSet() =
-    val opt = Option.empty
-    opt match
-      case Some(_user) => print(_user)
-      case _ => print("utente non esistente")
-
 case class ServerLogic(accessRepository: AccessRepository) {
 
   var openGames: Set[Game] = Set()

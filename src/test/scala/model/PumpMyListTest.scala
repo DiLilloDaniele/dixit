@@ -28,7 +28,7 @@ class PumpMyListTest extends AnyFunSpec with Matchers {
                 val l1 = List(1,2,3,4)
                 val l2= List(3,4,5,6)
                 assert(l1.removeIntersection(l2) == List(1,2))
-                
+                assert(!l1.equals(l2))
             }
         }
     }

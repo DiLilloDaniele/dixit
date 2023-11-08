@@ -11,7 +11,7 @@ import grpcService.client.controller.GameControllerObj.SuccessFun
 import grpcService.client.view.HomepageView
 
 import scala.concurrent.Future
-
+/*
 object Client {
   @main def startClient() = {
     // Boot akka
@@ -42,7 +42,7 @@ object Client {
     
   
 }
-
+*/
 class ClientImpl() {
  
   implicit val sys: ActorSystem = ActorSystem("HelloWorldClient")
