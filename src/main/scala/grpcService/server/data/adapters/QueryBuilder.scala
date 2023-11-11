@@ -45,7 +45,7 @@ class QueryBuilder():
     cond match
       case "" => throw SQLException()
       case _ =>
-        query += " = " + cond
+        query += " = '" + cond + "'"
         this
 
   def disequal(cond: String) =
