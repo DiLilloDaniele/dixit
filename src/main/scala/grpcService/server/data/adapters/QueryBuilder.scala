@@ -38,14 +38,14 @@ class QueryBuilder():
     cond match
       case "" => throw SQLException()
       case _ =>
-        query += " AND " + cond
+        query += " OR " + cond
         this
 
   def equal(cond: String) =
     cond match
       case "" => throw SQLException()
       case _ =>
-        query += " = '" + cond + "'"
+        query += " = " + cond
         this
 
   def disequal(cond: String) =
