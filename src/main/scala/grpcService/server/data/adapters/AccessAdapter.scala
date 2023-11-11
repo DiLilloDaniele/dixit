@@ -14,16 +14,6 @@ object AccessAdapter:
             password: String = "",
             connectionStringExt: String = ""): AccessAdapter = new AccessAdapter(url, port, driver, dbName, username, password, connectionStringExt)
 
-  def main(args: Array[String]): Unit =
-    val adapter = apply("localhost", "3306", "mysql", "DIXIT", "root", "root")
-    adapter.createDb()
-    println(adapter.checkDatabaseExist())
-
-  @main def queryTest() =
-    import grpcService.server.data.adapters.QueryBuilder
-    var queryWrapper = QueryBuilder()
-    queryWrapper select "this" from "table" where "cs" equal ""
-
 //il query wrapper viene passato dall'accessport all'access adapter, cosicché non venga eseguito codice malevolo nelle query
 //ho controllo sulla query inviata
 class AccessAdapter(val url: String = "",
