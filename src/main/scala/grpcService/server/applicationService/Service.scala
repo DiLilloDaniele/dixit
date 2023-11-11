@@ -20,19 +20,9 @@ object Service {
     createService()
   }
 
-  def createService(): Service = 
+  def createService(accessAdapter: AccessAdapter = ServiceLocator.getDataAdapter()): Service = 
     // Important: enable HTTP/2 in ActorSystem's config
     // We do it here programmatically, but you can also set it in the application.conf
-    val conf = ConfigFactory
-      .parseString("akka.http.server.preview.enable-http2 = on")
-      .withFallback(ConfigFactory.defaultApplication())
-    val system = ActorSystem("HelloWorld", conf)
-    val service = new Service(system, ServiceLocator.getDataAdapter())
-    service.run()
-    return service
-    // ActorSystem threads will keep the app alive until `system.terminate()` is called
-
-  def createTestService(accessAdapter: AccessAdapter): Service = 
     val conf = ConfigFactory
       .parseString("akka.http.server.preview.enable-http2 = on")
       .withFallback(ConfigFactory.defaultApplication())
@@ -40,6 +30,7 @@ object Service {
     val service = new Service(system, accessAdapter)
     service.run()
     return service
+    // ActorSystem threads will keep the app alive until `system.terminate()` is called
 
 }
 

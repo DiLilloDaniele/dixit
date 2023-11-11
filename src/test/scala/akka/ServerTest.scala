@@ -10,7 +10,7 @@ import scala.concurrent.Future
 import java.sql.{Connection, DriverManager, ResultSet, SQLException, Statement}
 
 import grpcService.client.ClientImpl
-import grpcService.server.applicationService.Service
+import grpcService.server.applicationService.*
 import grpcService.{HelloMessage, NewGameResponse, OpenedGames, LoginResult, ClosingResponse, UserPoints, UpdateResponse}
 
 import grpcService.server.data.wrapper.MySqlContainerWrapper
@@ -28,7 +28,7 @@ class ServerTest extends AnyFunSpec with BeforeAndAfterAll with Matchers {
     val user = mysql.getUsername()
     val pass = mysql.getPassword()
     val accessAdapter = AccessAdapter(username = user, password = pass, connectionStringExt = url)
-    val server = Service.createTestService(accessAdapter)
+    val server = Service.createService(accessAdapter)
 
     override def beforeAll(): Unit =
         accessAdapter.connectWithUrl(url, user, pass)
@@ -124,6 +124,17 @@ class ServerTest extends AnyFunSpec with BeforeAndAfterAll with Matchers {
                     }
                 }
                 
+            }
+        }
+        describe("the service locator") {
+            it("shout retrieve the correct infos to link to the database") {
+                val accessAdapter: AccessAdapter = ServiceLocator.getDataAdapter()
+                assert(accessAdapter.url = "127.0.0.1")
+                assert(accessAdapter.port = "6033")
+                assert(accessAdapter.driver = "mysql")
+                assert(accessAdapter.dbName = "DIXIT")
+                assert(accessAdapter.username = "user_name")
+                assert(accessAdapter.password = "root_password")
             }
         }
     }
