@@ -31,14 +31,14 @@
 </span>7 <span style=''>
 </span>8 <span style=''>  </span><span style='background: #AEF1AE'>def insertInto</span><span style=''>(table: String) =
 </span>9 <span style=''>    table match
-</span>10 <span style=''>      </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>throw SQLException()</span><span style=''>
+</span>10 <span style=''>      </span><span style='background: #AEF1AE'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>throw SQLException()</span><span style=''>
 </span>11 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
 </span>12 <span style=''>        query = </span><span style='background: #AEF1AE'>&quot;INSERT INTO &quot; + table</span><span style=''>
 </span>13 <span style=''>        this
 </span>14 <span style=''>
 </span>15 <span style=''>  </span><span style='background: #AEF1AE'>def values</span><span style=''>(values: String) =
 </span>16 <span style=''>    values match
-</span>17 <span style=''>      </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>throw SQLException()</span><span style=''>
+</span>17 <span style=''>      </span><span style='background: #AEF1AE'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>throw SQLException()</span><span style=''>
 </span>18 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
 </span>19 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; VALUES (&quot; + values + &quot;)&quot;</span><span style=''>
 </span>20 <span style=''>        this
@@ -59,7 +59,7 @@
           7
         </td>
         <td>
-          1360
+          1343
         </td>
         <td>
           113
@@ -83,31 +83,7 @@
           9
         </td>
         <td>
-          1357
-        </td>
-        <td>
-          167
-          -
-          174
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case &quot;&quot;
-        </td>
-      </tr><tr>
-        <td>
-          9
-        </td>
-        <td>
-          1356
+          1339
         </td>
         <td>
           178
@@ -123,7 +99,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           throw SQLException()
         </td>
       </tr><tr>
@@ -131,7 +107,7 @@
           9
         </td>
         <td>
-          1355
+          1338
         </td>
         <td>
           184
@@ -147,15 +123,39 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           SQLException()
+        </td>
+      </tr><tr>
+        <td>
+          9
+        </td>
+        <td>
+          1340
+        </td>
+        <td>
+          167
+          -
+          174
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case &quot;&quot;
         </td>
       </tr><tr>
         <td>
           10
         </td>
         <td>
-          1359
+          1342
         </td>
         <td>
           205
@@ -179,7 +179,7 @@
           11
         </td>
         <td>
-          1358
+          1341
         </td>
         <td>
           231
@@ -203,7 +203,7 @@
           14
         </td>
         <td>
-          1368
+          1351
         </td>
         <td>
           270
@@ -227,31 +227,7 @@
           16
         </td>
         <td>
-          1363
-        </td>
-        <td>
-          322
-          -
-          329
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case &quot;&quot;
-        </td>
-      </tr><tr>
-        <td>
-          16
-        </td>
-        <td>
-          1362
+          1345
         </td>
         <td>
           333
@@ -267,7 +243,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           throw SQLException()
         </td>
       </tr><tr>
@@ -275,7 +251,7 @@
           16
         </td>
         <td>
-          1361
+          1344
         </td>
         <td>
           339
@@ -291,15 +267,39 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           SQLException()
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          1346
+        </td>
+        <td>
+          322
+          -
+          329
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case &quot;&quot;
         </td>
       </tr><tr>
         <td>
           17
         </td>
         <td>
-          1367
+          1350
         </td>
         <td>
           360
@@ -323,31 +323,7 @@
           18
         </td>
         <td>
-          1366
-        </td>
-        <td>
-          378
-          -
-          413
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          query += &quot; VALUES (&quot; + values + &quot;)&quot;
-        </td>
-      </tr><tr>
-        <td>
-          18
-        </td>
-        <td>
-          1365
+          1348
         </td>
         <td>
           387
@@ -371,7 +347,7 @@
           18
         </td>
         <td>
-          1364
+          1347
         </td>
         <td>
           387
@@ -389,6 +365,30 @@
         </td>
         <td style="background: #AEF1AE">
           &quot; VALUES (&quot; + values
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          1349
+        </td>
+        <td>
+          378
+          -
+          413
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          query += &quot; VALUES (&quot; + values + &quot;)&quot;
         </td>
       </tr>
     </table>

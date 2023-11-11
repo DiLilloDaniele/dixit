@@ -38,177 +38,167 @@
 </span>14 <span style=''>            password: String = &quot;&quot;,
 </span>15 <span style=''>            connectionStringExt: String = &quot;&quot;): AccessAdapter = </span><span style='background: #AEF1AE'>new AccessAdapter(url, port, driver, dbName, username, password, connectionStringExt)</span><span style=''>
 </span>16 <span style=''>
-</span>17 <span style=''>  </span><span style='background: #F0ADAD'>def main</span><span style=''>(args: Array[String]): Unit =
-</span>18 <span style=''>    val adapter = </span><span style='background: #F0ADAD'>apply(&quot;localhost&quot;, &quot;3306&quot;, &quot;mysql&quot;, &quot;DIXIT&quot;, &quot;root&quot;, &quot;root&quot;)</span><span style=''>
-</span>19 <span style=''>    </span><span style='background: #F0ADAD'>adapter.createDb()</span><span style=''>
-</span>20 <span style=''>    </span><span style='background: #F0ADAD'>println(adapter.checkDatabaseExist())</span><span style=''>
-</span>21 <span style=''>
-</span>22 <span style=''>  </span><span style='background: #F0ADAD'>@main def queryTest</span><span style=''>() =
-</span>23 <span style=''>    import grpcService.server.data.adapters.QueryBuilder
-</span>24 <span style=''>    var queryWrapper = </span><span style='background: #F0ADAD'>QueryBuilder()</span><span style=''>
-</span>25 <span style=''>    </span><span style='background: #F0ADAD'>queryWrapper select &quot;this&quot; from &quot;table&quot; where &quot;cs&quot; equal &quot;&quot;</span><span style=''>
+</span>17 <span style=''>//il query wrapper viene passato dall'accessport all'access adapter, cosicché non venga eseguito codice malevolo nelle query
+</span>18 <span style=''>//ho controllo sulla query inviata
+</span>19 <span style=''>class AccessAdapter(val url: String = &quot;&quot;,
+</span>20 <span style=''>                    val port: String = &quot;&quot;, 
+</span>21 <span style=''>                    val driver: String = &quot;&quot;, 
+</span>22 <span style=''>                    val dbName: String = &quot;&quot;, 
+</span>23 <span style=''>                    val username: String = &quot;&quot;, 
+</span>24 <span style=''>                    val password: String = &quot;&quot;,
+</span>25 <span style=''>                    val connectionStringExt: String = &quot;&quot;):
 </span>26 <span style=''>
-</span>27 <span style=''>//il query wrapper viene passato dall'accessport all'access adapter, cosicché non venga eseguito codice malevolo nelle query
-</span>28 <span style=''>//ho controllo sulla query inviata
-</span>29 <span style=''>class AccessAdapter(val url: String = &quot;&quot;,
-</span>30 <span style=''>                    val port: String = &quot;&quot;, 
-</span>31 <span style=''>                    val driver: String = &quot;&quot;, 
-</span>32 <span style=''>                    val dbName: String = &quot;&quot;, 
-</span>33 <span style=''>                    val username: String = &quot;&quot;, 
-</span>34 <span style=''>                    val password: String = &quot;&quot;,
-</span>35 <span style=''>                    val connectionStringExt: String = &quot;&quot;):
-</span>36 <span style=''>
-</span>37 <span style=''>  val connectionString = </span><span style='background: #AEF1AE'>&quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot; + port + &quot;/&quot; + dbName + &quot;?autoReconnect=true&amp;useSSL=false&quot;</span><span style=''>
-</span>38 <span style=''>  var connection: Connection = _
-</span>39 <span style=''>
-</span>40 <span style=''>  </span><span style='background: #AEF1AE'>def connectWithUrl</span><span style=''>(url: String, user: String, pass: String): Boolean =
-</span>41 <span style=''>    </span><span style='background: #AEF1AE'>Class.forName(&quot;com.mysql.jdbc.Driver&quot;)</span><span style=''>
-</span>42 <span style=''>    try </span><span style='background: #AEF1AE'>{
-</span>43 <span style=''></span><span style='background: #AEF1AE'>      connection = DriverManager.getConnection(url, user, pass)
-</span>44 <span style=''></span><span style='background: #AEF1AE'>      true
-</span>45 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''> catch {
-</span>46 <span style=''>      </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; false
-</span>47 <span style=''>    }
-</span>48 <span style=''>
-</span>49 <span style=''>  </span><span style='background: #F0ADAD'>def connect</span><span style=''>(): Unit =
-</span>50 <span style=''>    //jdbc:mysql://localhost:3306/DIXIT?autoReconnect=true&amp;useSSL=false
-</span>51 <span style=''>    </span><span style='background: #F0ADAD'>Class.forName(&quot;com.mysql.jdbc.Driver&quot;)</span><span style=''>
-</span>52 <span style=''>    connection = </span><span style='background: #F0ADAD'>DriverManager.getConnection(connectionString, username, password)</span><span style=''>
-</span>53 <span style=''>
-</span>54 <span style=''>  </span><span style='background: #AEF1AE'>def createTable</span><span style=''>(): Boolean = try </span><span style='background: #AEF1AE'>{
-</span>55 <span style=''></span><span style='background: #AEF1AE'>    if(connectionStringExt == &quot;&quot;)
-</span>56 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>connect()</span><span style='background: #AEF1AE'>
-</span>57 <span style=''></span><span style='background: #AEF1AE'>      else
-</span>58 <span style=''></span><span style='background: #AEF1AE'>        connection = DriverManager.getConnection(connectionStringExt, username, password)
-</span>59 <span style=''></span><span style='background: #AEF1AE'>    val statement: Statement = connection.createStatement()
-</span>60 <span style=''></span><span style='background: #AEF1AE'>    val query = &quot;&quot;&quot;CREATE TABLE `User` (
-</span>61 <span style=''></span><span style='background: #AEF1AE'>        `UserId` int NOT NULL AUTO_INCREMENT,
-</span>62 <span style=''></span><span style='background: #AEF1AE'>        `Name` varchar(200) NOT NULL UNIQUE,
-</span>63 <span style=''></span><span style='background: #AEF1AE'>        `Password` varchar(512) NOT NULL,
-</span>64 <span style=''></span><span style='background: #AEF1AE'>        `Points` int NOT NULL,
-</span>65 <span style=''></span><span style='background: #AEF1AE'>        PRIMARY KEY (UserId)
-</span>66 <span style=''></span><span style='background: #AEF1AE'>      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;&quot;&quot;&quot;
-</span>67 <span style=''></span><span style='background: #AEF1AE'>    statement.executeUpdate(query)
-</span>68 <span style=''></span><span style='background: #AEF1AE'>    return true
-</span>69 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''> catch {
-</span>70 <span style=''>    </span><span style='background: #AEF1AE'>case e: Exception</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>e.printStackTrace</span><span style=''>
-</span>71 <span style=''>      return false
-</span>72 <span style=''>  } finally </span><span style='background: #AEF1AE'>{
-</span>73 <span style=''></span><span style='background: #AEF1AE'>    if (connection != null) try connection.close
-</span>74 <span style=''></span><span style='background: #AEF1AE'>    catch {
-</span>75 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case e: SQLException</span><span style='background: #AEF1AE'> =&gt; /* Ignored */
-</span>76 <span style=''></span><span style='background: #AEF1AE'>    }
-</span>77 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
-</span>78 <span style=''>  
-</span>79 <span style=''>
-</span>80 <span style=''>  </span><span style='background: #AEF1AE'>def createDb</span><span style=''>(): Unit =
-</span>81 <span style=''>    try </span><span style='background: #AEF1AE'>{
-</span>82 <span style=''></span><span style='background: #AEF1AE'>      connectionStringExt match
-</span>83 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>connect()</span><span style='background: #AEF1AE'>
-</span>84 <span style=''></span><span style='background: #AEF1AE'>        case _ =&gt; connection = DriverManager.getConnection(connectionStringExt, username, password)
-</span>85 <span style=''></span><span style='background: #AEF1AE'>      
-</span>86 <span style=''></span><span style='background: #AEF1AE'>      val statement: Statement = connection.createStatement()
-</span>87 <span style=''></span><span style='background: #AEF1AE'>      val query = &quot;CREATE DATABASE IF NOT EXISTS DIXIT&quot;
-</span>88 <span style=''></span><span style='background: #AEF1AE'>      //val result = statement.executeQuery(query)
-</span>89 <span style=''></span><span style='background: #AEF1AE'>      statement.executeUpdate(query)
-</span>90 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''> catch {
-</span>91 <span style=''>      </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; 
-</span>92 <span style=''>        </span><span style='background: #F0ADAD'>e.printStackTrace</span><span style=''>
-</span>93 <span style=''>        </span><span style='background: #F0ADAD'>throw e</span><span style=''>
-</span>94 <span style=''>    } finally </span><span style='background: #AEF1AE'>{
-</span>95 <span style=''></span><span style='background: #AEF1AE'>      if (connection != null) try connection.close
-</span>96 <span style=''></span><span style='background: #AEF1AE'>      catch {
-</span>97 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case e: SQLException</span><span style='background: #AEF1AE'> =&gt; /* Ignored */
-</span>98 <span style=''></span><span style='background: #AEF1AE'>      }
-</span>99 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
-</span>100 <span style=''>
-</span>101 <span style=''>  </span><span style='background: #F0ADAD'>def close</span><span style=''>(): Unit =
-</span>102 <span style=''>    connection match
-</span>103 <span style=''>      </span><span style='background: #F0ADAD'>case m</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>m.close</span><span style=''>
-</span>104 <span style=''>      </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt; ()
-</span>105 <span style=''>
-</span>106 <span style=''>  </span><span style='background: #AEF1AE'>def checkDatabaseExist</span><span style=''>(): Boolean =
-</span>107 <span style=''>    //SHOW DATABASES LIKE 'dbname';
-</span>108 <span style=''>    try </span><span style='background: #AEF1AE'>{
-</span>109 <span style=''></span><span style='background: #AEF1AE'>      connectionStringExt match
-</span>110 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>connect()</span><span style='background: #AEF1AE'>
-</span>111 <span style=''></span><span style='background: #AEF1AE'>        case _ =&gt; connection = DriverManager.getConnection(connectionStringExt, username, password)
-</span>112 <span style=''></span><span style='background: #AEF1AE'>      
-</span>113 <span style=''></span><span style='background: #AEF1AE'>      val statement: Statement = connection.createStatement()
-</span>114 <span style=''></span><span style='background: #AEF1AE'>      val query = &quot;SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'DIXIT'&quot;
-</span>115 <span style=''></span><span style='background: #AEF1AE'>      val resultSet = statement.executeQuery(query)
-</span>116 <span style=''></span><span style='background: #AEF1AE'>      resultSet.first() match
-</span>117 <span style=''></span><span style='background: #AEF1AE'>        case true =&gt; return true
-</span>118 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt; return false
-</span>119 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''> catch {
-</span>120 <span style=''>      </span><span style='background: #F0ADAD'>case e: 
-</span>121 <span style=''></span><span style='background: #F0ADAD'>        Exception</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>e.printStackTrace</span><span style=''>
-</span>122 <span style=''>        return false
-</span>123 <span style=''>    } finally </span><span style='background: #AEF1AE'>{
-</span>124 <span style=''></span><span style='background: #AEF1AE'>      if (connection != null) try connection.close
-</span>125 <span style=''></span><span style='background: #AEF1AE'>      catch {
-</span>126 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case e: SQLException</span><span style='background: #AEF1AE'> =&gt; return false /* Ignored */
-</span>127 <span style=''></span><span style='background: #AEF1AE'>      }
-</span>128 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
-</span>129 <span style=''>
-</span>130 <span style=''>  </span><span style='background: #AEF1AE'>def selectSingleRow</span><span style=''>(queryWrapper: QueryBuilder): Option[User] =
-</span>131 <span style=''>    var user : Option[User] = </span><span style='background: #AEF1AE'>Option.empty</span><span style=''>
-</span>132 <span style=''>    try </span><span style='background: #AEF1AE'>{
-</span>133 <span style=''></span><span style='background: #AEF1AE'>      if(connectionStringExt == &quot;&quot;)
-</span>134 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>connect()</span><span style='background: #AEF1AE'>
-</span>135 <span style=''></span><span style='background: #AEF1AE'>      else
-</span>136 <span style=''></span><span style='background: #AEF1AE'>        connection = DriverManager.getConnection(connectionStringExt, username, password)
-</span>137 <span style=''></span><span style='background: #AEF1AE'>      val statement: Statement = connection.createStatement()
-</span>138 <span style=''></span><span style='background: #AEF1AE'>      val query = queryWrapper.query
-</span>139 <span style=''></span><span style='background: #AEF1AE'>      val resultSet = statement.executeQuery(query)
-</span>140 <span style=''></span><span style='background: #AEF1AE'>      resultSet.first() match
-</span>141 <span style=''></span><span style='background: #AEF1AE'>        case true =&gt; user = Option(User(resultSet.getString(&quot;Name&quot;), resultSet.getInt(&quot;Points&quot;),
-</span>142 <span style=''></span><span style='background: #AEF1AE'>          resultSet.getString(&quot;Password&quot;), resultSet.getString(&quot;UserId&quot;)))
-</span>143 <span style=''></span><span style='background: #AEF1AE'>        case _ =&gt; user = Option.empty
-</span>144 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''> catch {
-</span>145 <span style=''>      </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>e.printStackTrace</span><span style=''>
-</span>146 <span style=''>    } finally </span><span style='background: #AEF1AE'>{
-</span>147 <span style=''></span><span style='background: #AEF1AE'>      if (connection != null) try connection.close
-</span>148 <span style=''></span><span style='background: #AEF1AE'>      catch {
-</span>149 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case e: SQLException</span><span style='background: #AEF1AE'> =&gt; /* Ignored */
-</span>150 <span style=''></span><span style='background: #AEF1AE'>      }
-</span>151 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
-</span>152 <span style=''>    user
-</span>153 <span style=''>
-</span>154 <span style=''>  </span><span style='background: #AEF1AE'>def insertQuery</span><span style=''>(query: InsertBuilder): Unit =
-</span>155 <span style=''>    try </span><span style='background: #AEF1AE'>{
-</span>156 <span style=''></span><span style='background: #AEF1AE'>      if(connectionStringExt == &quot;&quot;)
-</span>157 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>connect()</span><span style='background: #AEF1AE'>
-</span>158 <span style=''></span><span style='background: #AEF1AE'>      else
-</span>159 <span style=''></span><span style='background: #AEF1AE'>        connection = DriverManager.getConnection(connectionStringExt, username, password)
-</span>160 <span style=''></span><span style='background: #AEF1AE'>      val statement: Statement = connection.createStatement()
-</span>161 <span style=''></span><span style='background: #AEF1AE'>      statement.executeUpdate(query.query)
-</span>162 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''> catch {
-</span>163 <span style=''>      </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>e.printStackTrace</span><span style=''>
-</span>164 <span style=''>    } finally </span><span style='background: #AEF1AE'>{
-</span>165 <span style=''></span><span style='background: #AEF1AE'>      if (connection != null) try connection.close
-</span>166 <span style=''></span><span style='background: #AEF1AE'>      catch {
-</span>167 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case e: SQLException</span><span style='background: #AEF1AE'> =&gt; /* Ignored */
-</span>168 <span style=''></span><span style='background: #AEF1AE'>      }
-</span>169 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
-</span>170 <span style=''>
-</span>171 <span style=''>  </span><span style='background: #AEF1AE'>def update</span><span style=''>(query: UpdateBuilder): Boolean = try </span><span style='background: #AEF1AE'>{
-</span>172 <span style=''></span><span style='background: #AEF1AE'>    if(connectionStringExt == &quot;&quot;)
-</span>173 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>connect()</span><span style='background: #AEF1AE'>
-</span>174 <span style=''></span><span style='background: #AEF1AE'>      else
-</span>175 <span style=''></span><span style='background: #AEF1AE'>        connection = DriverManager.getConnection(connectionStringExt, username, password)
-</span>176 <span style=''></span><span style='background: #AEF1AE'>    val statement: Statement = connection.createStatement()
-</span>177 <span style=''></span><span style='background: #AEF1AE'>    statement.executeUpdate(query.query)
-</span>178 <span style=''></span><span style='background: #AEF1AE'>    return true
-</span>179 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''> catch {
-</span>180 <span style=''>    </span><span style='background: #AEF1AE'>case e: Exception</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>e.printStackTrace</span><span style=''>
-</span>181 <span style=''>      return false
-</span>182 <span style=''>  } finally </span><span style='background: #AEF1AE'>{
-</span>183 <span style=''></span><span style='background: #AEF1AE'>    if (connection != null) try connection.close
-</span>184 <span style=''></span><span style='background: #AEF1AE'>    catch {
-</span>185 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case e: SQLException</span><span style='background: #AEF1AE'> =&gt; /* Ignored */
-</span>186 <span style=''></span><span style='background: #AEF1AE'>    }
-</span>187 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>27 <span style=''>  val connectionString = </span><span style='background: #AEF1AE'>&quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot; + port + &quot;/&quot; + dbName + &quot;?autoReconnect=true&amp;useSSL=false&quot;</span><span style=''>
+</span>28 <span style=''>  var connection: Connection = _
+</span>29 <span style=''>
+</span>30 <span style=''>  </span><span style='background: #AEF1AE'>def connectWithUrl</span><span style=''>(url: String, user: String, pass: String): Boolean =
+</span>31 <span style=''>    </span><span style='background: #AEF1AE'>Class.forName(&quot;com.mysql.jdbc.Driver&quot;)</span><span style=''>
+</span>32 <span style=''>    try </span><span style='background: #AEF1AE'>{
+</span>33 <span style=''></span><span style='background: #AEF1AE'>      connection = DriverManager.getConnection(url, user, pass)
+</span>34 <span style=''></span><span style='background: #AEF1AE'>      true
+</span>35 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''> catch {
+</span>36 <span style=''>      </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; false
+</span>37 <span style=''>    }
+</span>38 <span style=''>
+</span>39 <span style=''>  </span><span style='background: #F0ADAD'>def connect</span><span style=''>(): Unit =
+</span>40 <span style=''>    //jdbc:mysql://localhost:3306/DIXIT?autoReconnect=true&amp;useSSL=false
+</span>41 <span style=''>    </span><span style='background: #F0ADAD'>Class.forName(&quot;com.mysql.jdbc.Driver&quot;)</span><span style=''>
+</span>42 <span style=''>    connection = </span><span style='background: #F0ADAD'>DriverManager.getConnection(connectionString, username, password)</span><span style=''>
+</span>43 <span style=''>
+</span>44 <span style=''>  </span><span style='background: #AEF1AE'>def createTable</span><span style=''>(): Boolean = try </span><span style='background: #AEF1AE'>{
+</span>45 <span style=''></span><span style='background: #AEF1AE'>    if(connectionStringExt == &quot;&quot;)
+</span>46 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>connect()</span><span style='background: #AEF1AE'>
+</span>47 <span style=''></span><span style='background: #AEF1AE'>      else
+</span>48 <span style=''></span><span style='background: #AEF1AE'>        connection = DriverManager.getConnection(connectionStringExt, username, password)
+</span>49 <span style=''></span><span style='background: #AEF1AE'>    val statement: Statement = connection.createStatement()
+</span>50 <span style=''></span><span style='background: #AEF1AE'>    val query = &quot;&quot;&quot;CREATE TABLE `User` (
+</span>51 <span style=''></span><span style='background: #AEF1AE'>        `UserId` int NOT NULL AUTO_INCREMENT,
+</span>52 <span style=''></span><span style='background: #AEF1AE'>        `Name` varchar(200) NOT NULL UNIQUE,
+</span>53 <span style=''></span><span style='background: #AEF1AE'>        `Password` varchar(512) NOT NULL,
+</span>54 <span style=''></span><span style='background: #AEF1AE'>        `Points` int NOT NULL,
+</span>55 <span style=''></span><span style='background: #AEF1AE'>        PRIMARY KEY (UserId)
+</span>56 <span style=''></span><span style='background: #AEF1AE'>      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;&quot;&quot;&quot;
+</span>57 <span style=''></span><span style='background: #AEF1AE'>    statement.executeUpdate(query)
+</span>58 <span style=''></span><span style='background: #AEF1AE'>    return true
+</span>59 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''> catch {
+</span>60 <span style=''>    </span><span style='background: #AEF1AE'>case e: Exception</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>e.printStackTrace</span><span style=''>
+</span>61 <span style=''>      return false
+</span>62 <span style=''>  } finally </span><span style='background: #AEF1AE'>{
+</span>63 <span style=''></span><span style='background: #AEF1AE'>    if (connection != null) try connection.close
+</span>64 <span style=''></span><span style='background: #AEF1AE'>    catch {
+</span>65 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case e: SQLException</span><span style='background: #AEF1AE'> =&gt; /* Ignored */
+</span>66 <span style=''></span><span style='background: #AEF1AE'>    }
+</span>67 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>68 <span style=''>  
+</span>69 <span style=''>
+</span>70 <span style=''>  </span><span style='background: #AEF1AE'>def createDb</span><span style=''>(): Unit =
+</span>71 <span style=''>    try </span><span style='background: #AEF1AE'>{
+</span>72 <span style=''></span><span style='background: #AEF1AE'>      connectionStringExt match
+</span>73 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>connect()</span><span style='background: #AEF1AE'>
+</span>74 <span style=''></span><span style='background: #AEF1AE'>        case _ =&gt; connection = DriverManager.getConnection(connectionStringExt, username, password)
+</span>75 <span style=''></span><span style='background: #AEF1AE'>      
+</span>76 <span style=''></span><span style='background: #AEF1AE'>      val statement: Statement = connection.createStatement()
+</span>77 <span style=''></span><span style='background: #AEF1AE'>      val query = &quot;CREATE DATABASE IF NOT EXISTS DIXIT&quot;
+</span>78 <span style=''></span><span style='background: #AEF1AE'>      //val result = statement.executeQuery(query)
+</span>79 <span style=''></span><span style='background: #AEF1AE'>      statement.executeUpdate(query)
+</span>80 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''> catch {
+</span>81 <span style=''>      </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; 
+</span>82 <span style=''>        </span><span style='background: #F0ADAD'>e.printStackTrace</span><span style=''>
+</span>83 <span style=''>        </span><span style='background: #F0ADAD'>throw e</span><span style=''>
+</span>84 <span style=''>    } finally </span><span style='background: #AEF1AE'>{
+</span>85 <span style=''></span><span style='background: #AEF1AE'>      if (connection != null) try connection.close
+</span>86 <span style=''></span><span style='background: #AEF1AE'>      catch {
+</span>87 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case e: SQLException</span><span style='background: #AEF1AE'> =&gt; /* Ignored */
+</span>88 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>89 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>90 <span style=''>
+</span>91 <span style=''>  </span><span style='background: #F0ADAD'>def close</span><span style=''>(): Unit =
+</span>92 <span style=''>    connection match
+</span>93 <span style=''>      </span><span style='background: #F0ADAD'>case m</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>m.close</span><span style=''>
+</span>94 <span style=''>      </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt; ()
+</span>95 <span style=''>
+</span>96 <span style=''>  </span><span style='background: #AEF1AE'>def checkDatabaseExist</span><span style=''>(): Boolean =
+</span>97 <span style=''>    //SHOW DATABASES LIKE 'dbname';
+</span>98 <span style=''>    try </span><span style='background: #AEF1AE'>{
+</span>99 <span style=''></span><span style='background: #AEF1AE'>      connectionStringExt match
+</span>100 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case &quot;&quot;</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>connect()</span><span style='background: #AEF1AE'>
+</span>101 <span style=''></span><span style='background: #AEF1AE'>        case _ =&gt; connection = DriverManager.getConnection(connectionStringExt, username, password)
+</span>102 <span style=''></span><span style='background: #AEF1AE'>      
+</span>103 <span style=''></span><span style='background: #AEF1AE'>      val statement: Statement = connection.createStatement()
+</span>104 <span style=''></span><span style='background: #AEF1AE'>      val query = &quot;SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'DIXIT'&quot;
+</span>105 <span style=''></span><span style='background: #AEF1AE'>      val resultSet = statement.executeQuery(query)
+</span>106 <span style=''></span><span style='background: #AEF1AE'>      resultSet.first() match
+</span>107 <span style=''></span><span style='background: #AEF1AE'>        case true =&gt; return true
+</span>108 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt; return false
+</span>109 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''> catch {
+</span>110 <span style=''>      </span><span style='background: #F0ADAD'>case e: 
+</span>111 <span style=''></span><span style='background: #F0ADAD'>        Exception</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>e.printStackTrace</span><span style=''>
+</span>112 <span style=''>        return false
+</span>113 <span style=''>    } finally </span><span style='background: #AEF1AE'>{
+</span>114 <span style=''></span><span style='background: #AEF1AE'>      if (connection != null) try connection.close
+</span>115 <span style=''></span><span style='background: #AEF1AE'>      catch {
+</span>116 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case e: SQLException</span><span style='background: #AEF1AE'> =&gt; return false /* Ignored */
+</span>117 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>118 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>119 <span style=''>
+</span>120 <span style=''>  </span><span style='background: #AEF1AE'>def selectSingleRow</span><span style=''>(queryWrapper: QueryBuilder): Option[User] =
+</span>121 <span style=''>    var user : Option[User] = </span><span style='background: #AEF1AE'>Option.empty</span><span style=''>
+</span>122 <span style=''>    try </span><span style='background: #AEF1AE'>{
+</span>123 <span style=''></span><span style='background: #AEF1AE'>      if(connectionStringExt == &quot;&quot;)
+</span>124 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>connect()</span><span style='background: #AEF1AE'>
+</span>125 <span style=''></span><span style='background: #AEF1AE'>      else
+</span>126 <span style=''></span><span style='background: #AEF1AE'>        connection = DriverManager.getConnection(connectionStringExt, username, password)
+</span>127 <span style=''></span><span style='background: #AEF1AE'>      val statement: Statement = connection.createStatement()
+</span>128 <span style=''></span><span style='background: #AEF1AE'>      val query = queryWrapper.query
+</span>129 <span style=''></span><span style='background: #AEF1AE'>      val resultSet = statement.executeQuery(query)
+</span>130 <span style=''></span><span style='background: #AEF1AE'>      resultSet.first() match
+</span>131 <span style=''></span><span style='background: #AEF1AE'>        case true =&gt; user = Option(User(resultSet.getString(&quot;Name&quot;), resultSet.getInt(&quot;Points&quot;),
+</span>132 <span style=''></span><span style='background: #AEF1AE'>          resultSet.getString(&quot;Password&quot;), resultSet.getString(&quot;UserId&quot;)))
+</span>133 <span style=''></span><span style='background: #AEF1AE'>        case _ =&gt; user = Option.empty
+</span>134 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''> catch {
+</span>135 <span style=''>      </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>e.printStackTrace</span><span style=''>
+</span>136 <span style=''>    } finally </span><span style='background: #AEF1AE'>{
+</span>137 <span style=''></span><span style='background: #AEF1AE'>      if (connection != null) try connection.close
+</span>138 <span style=''></span><span style='background: #AEF1AE'>      catch {
+</span>139 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case e: SQLException</span><span style='background: #AEF1AE'> =&gt; /* Ignored */
+</span>140 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>141 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>142 <span style=''>    user
+</span>143 <span style=''>
+</span>144 <span style=''>  </span><span style='background: #AEF1AE'>def insertQuery</span><span style=''>(query: InsertBuilder): Unit =
+</span>145 <span style=''>    try </span><span style='background: #AEF1AE'>{
+</span>146 <span style=''></span><span style='background: #AEF1AE'>      if(connectionStringExt == &quot;&quot;)
+</span>147 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>connect()</span><span style='background: #AEF1AE'>
+</span>148 <span style=''></span><span style='background: #AEF1AE'>      else
+</span>149 <span style=''></span><span style='background: #AEF1AE'>        connection = DriverManager.getConnection(connectionStringExt, username, password)
+</span>150 <span style=''></span><span style='background: #AEF1AE'>      val statement: Statement = connection.createStatement()
+</span>151 <span style=''></span><span style='background: #AEF1AE'>      statement.executeUpdate(query.query)
+</span>152 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''> catch {
+</span>153 <span style=''>      </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>e.printStackTrace</span><span style=''>
+</span>154 <span style=''>    } finally </span><span style='background: #AEF1AE'>{
+</span>155 <span style=''></span><span style='background: #AEF1AE'>      if (connection != null) try connection.close
+</span>156 <span style=''></span><span style='background: #AEF1AE'>      catch {
+</span>157 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case e: SQLException</span><span style='background: #AEF1AE'> =&gt; /* Ignored */
+</span>158 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>159 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>160 <span style=''>
+</span>161 <span style=''>  </span><span style='background: #AEF1AE'>def update</span><span style=''>(query: UpdateBuilder): Boolean = try </span><span style='background: #AEF1AE'>{
+</span>162 <span style=''></span><span style='background: #AEF1AE'>    if(connectionStringExt == &quot;&quot;)
+</span>163 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>connect()</span><span style='background: #AEF1AE'>
+</span>164 <span style=''></span><span style='background: #AEF1AE'>      else
+</span>165 <span style=''></span><span style='background: #AEF1AE'>        connection = DriverManager.getConnection(connectionStringExt, username, password)
+</span>166 <span style=''></span><span style='background: #AEF1AE'>    val statement: Statement = connection.createStatement()
+</span>167 <span style=''></span><span style='background: #AEF1AE'>    statement.executeUpdate(query.query)
+</span>168 <span style=''></span><span style='background: #AEF1AE'>    return true
+</span>169 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''> catch {
+</span>170 <span style=''>    </span><span style='background: #AEF1AE'>case e: Exception</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>e.printStackTrace</span><span style=''>
+</span>171 <span style=''>      return false
+</span>172 <span style=''>  } finally </span><span style='background: #AEF1AE'>{
+</span>173 <span style=''></span><span style='background: #AEF1AE'>    if (connection != null) try connection.close
+</span>174 <span style=''></span><span style='background: #AEF1AE'>    catch {
+</span>175 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case e: SQLException</span><span style='background: #AEF1AE'> =&gt; /* Ignored */
+</span>176 <span style=''></span><span style='background: #AEF1AE'>    }
+</span>177 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -226,7 +216,7 @@
           8
         </td>
         <td>
-          1212
+          1207
         </td>
         <td>
           217
@@ -250,7 +240,7 @@
           8
         </td>
         <td>
-          1211
+          1206
         </td>
         <td>
           193
@@ -274,7 +264,7 @@
           9
         </td>
         <td>
-          1213
+          1208
         </td>
         <td>
           249
@@ -298,7 +288,7 @@
           10
         </td>
         <td>
-          1214
+          1209
         </td>
         <td>
           283
@@ -322,7 +312,7 @@
           11
         </td>
         <td>
-          1215
+          1210
         </td>
         <td>
           316
@@ -346,7 +336,7 @@
           12
         </td>
         <td>
-          1216
+          1211
         </td>
         <td>
           351
@@ -370,7 +360,7 @@
           13
         </td>
         <td>
-          1217
+          1212
         </td>
         <td>
           386
@@ -394,7 +384,7 @@
           14
         </td>
         <td>
-          1210
+          1205
         </td>
         <td>
           453
@@ -418,7 +408,7 @@
           14
         </td>
         <td>
-          1218
+          1213
         </td>
         <td>
           432
@@ -434,308 +424,20 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           
-        </td>
-      </tr><tr>
-        <td>
-          16
-        </td>
-        <td>
-          1224
-        </td>
-        <td>
-          542
-          -
-          550
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          main
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          def main
-        </td>
-      </tr><tr>
-        <td>
-          17
-        </td>
-        <td>
-          1219
-        </td>
-        <td>
-          598
-          -
-          603
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          apply$default$7
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          apply
-        </td>
-      </tr><tr>
-        <td>
-          17
-        </td>
-        <td>
-          1220
-        </td>
-        <td>
-          598
-          -
-          658
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          apply
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          apply(&quot;localhost&quot;, &quot;3306&quot;, &quot;mysql&quot;, &quot;DIXIT&quot;, &quot;root&quot;, &quot;root&quot;)
         </td>
       </tr><tr>
         <td>
           18
         </td>
         <td>
-          1221
+          1198
         </td>
         <td>
-          663
+          738
           -
-          681
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          createDb
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          adapter.createDb()
-        </td>
-      </tr><tr>
-        <td>
-          19
-        </td>
-        <td>
-          1222
-        </td>
-        <td>
-          694
-          -
-          722
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          checkDatabaseExist
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          adapter.checkDatabaseExist()
-        </td>
-      </tr><tr>
-        <td>
-          19
-        </td>
-        <td>
-          1223
-        </td>
-        <td>
-          686
-          -
-          723
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          println
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          println(adapter.checkDatabaseExist())
-        </td>
-      </tr><tr>
-        <td>
-          21
-        </td>
-        <td>
-          1230
-        </td>
-        <td>
-          727
-          -
-          746
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          queryTest
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          @main def queryTest
-        </td>
-      </tr><tr>
-        <td>
-          23
-        </td>
-        <td>
-          1225
-        </td>
-        <td>
-          831
-          -
-          845
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          &lt;init&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          QueryBuilder()
-        </td>
-      </tr><tr>
-        <td>
-          24
-        </td>
-        <td>
-          1228
-        </td>
-        <td>
-          850
-          -
-          900
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          where
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          queryWrapper select &quot;this&quot; from &quot;table&quot; where &quot;cs&quot;
-        </td>
-      </tr><tr>
-        <td>
-          24
-        </td>
-        <td>
-          1227
-        </td>
-        <td>
-          850
-          -
-          889
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          from
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          queryWrapper select &quot;this&quot; from &quot;table&quot;
-        </td>
-      </tr><tr>
-        <td>
-          24
-        </td>
-        <td>
-          1226
-        </td>
-        <td>
-          850
-          -
-          876
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          select
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          queryWrapper select &quot;this&quot;
-        </td>
-      </tr><tr>
-        <td>
-          24
-        </td>
-        <td>
-          1229
-        </td>
-        <td>
-          850
-          -
-          909
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          equal
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          queryWrapper select &quot;this&quot; from &quot;table&quot; where &quot;cs&quot; equal &quot;&quot;
-        </td>
-      </tr><tr>
-        <td>
-          28
-        </td>
-        <td>
-          1203
-        </td>
-        <td>
-          1109
-          -
-          1109
+          738
         </td>
         <td>
           DefDef
@@ -751,15 +453,15 @@
         </td>
       </tr><tr>
         <td>
-          29
+          19
         </td>
         <td>
-          1204
+          1199
         </td>
         <td>
-          1152
+          781
           -
-          1152
+          781
         </td>
         <td>
           DefDef
@@ -775,15 +477,15 @@
         </td>
       </tr><tr>
         <td>
-          30
+          20
         </td>
         <td>
-          1205
+          1200
         </td>
         <td>
-          1198
+          827
           -
-          1198
+          827
         </td>
         <td>
           DefDef
@@ -799,15 +501,15 @@
         </td>
       </tr><tr>
         <td>
-          31
+          21
         </td>
         <td>
-          1206
+          1201
         </td>
         <td>
-          1244
+          873
           -
-          1244
+          873
         </td>
         <td>
           DefDef
@@ -823,15 +525,15 @@
         </td>
       </tr><tr>
         <td>
-          32
+          22
         </td>
         <td>
-          1207
+          1202
         </td>
         <td>
-          1292
+          921
           -
-          1292
+          921
         </td>
         <td>
           DefDef
@@ -847,15 +549,15 @@
         </td>
       </tr><tr>
         <td>
-          33
+          23
         </td>
         <td>
-          1208
+          1203
         </td>
         <td>
-          1340
+          969
           -
-          1340
+          969
         </td>
         <td>
           DefDef
@@ -871,15 +573,15 @@
         </td>
       </tr><tr>
         <td>
-          34
+          24
         </td>
         <td>
-          1209
+          1204
         </td>
         <td>
-          1398
+          1027
           -
-          1398
+          1027
         </td>
         <td>
           DefDef
@@ -895,39 +597,15 @@
         </td>
       </tr><tr>
         <td>
-          36
+          26
         </td>
         <td>
-          1237
+          1214
         </td>
         <td>
-          1429
+          1058
           -
-          1487
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot; + port + &quot;/&quot; + dbName
-        </td>
-      </tr><tr>
-        <td>
-          36
-        </td>
-        <td>
-          1231
-        </td>
-        <td>
-          1429
-          -
-          1445
+          1074
         </td>
         <td>
           Apply
@@ -943,63 +621,15 @@
         </td>
       </tr><tr>
         <td>
-          36
+          26
         </td>
         <td>
-          1234
+          1216
         </td>
         <td>
-          1429
+          1058
           -
-          1465
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot;
-        </td>
-      </tr><tr>
-        <td>
-          36
-        </td>
-        <td>
-          1236
-        </td>
-        <td>
-          1429
-          -
-          1478
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot; + port + &quot;/&quot;
-        </td>
-      </tr><tr>
-        <td>
-          36
-        </td>
-        <td>
-          1233
-        </td>
-        <td>
-          1429
-          -
-          1459
+          1088
         </td>
         <td>
           Apply
@@ -1015,15 +645,15 @@
         </td>
       </tr><tr>
         <td>
-          36
+          26
         </td>
         <td>
-          1232
+          1219
         </td>
         <td>
-          1429
+          1058
           -
-          1453
+          1107
         </td>
         <td>
           Apply
@@ -1035,19 +665,19 @@
           
         </td>
         <td style="background: #AEF1AE">
-          &quot;jdbc:&quot; + driver + &quot;://&quot;
+          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot; + port + &quot;/&quot;
         </td>
       </tr><tr>
         <td>
-          36
+          26
         </td>
         <td>
-          1235
+          1218
         </td>
         <td>
-          1429
+          1058
           -
-          1472
+          1101
         </td>
         <td>
           Apply
@@ -1063,15 +693,15 @@
         </td>
       </tr><tr>
         <td>
-          36
+          26
         </td>
         <td>
-          1238
+          1221
         </td>
         <td>
-          1429
+          1058
           -
-          1524
+          1153
         </td>
         <td>
           Apply
@@ -1087,15 +717,87 @@
         </td>
       </tr><tr>
         <td>
-          39
+          26
         </td>
         <td>
-          1243
+          1215
         </td>
         <td>
-          1561
+          1058
           -
-          1579
+          1082
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;jdbc:&quot; + driver + &quot;://&quot;
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          1217
+        </td>
+        <td>
+          1058
+          -
+          1094
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot;
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          1220
+        </td>
+        <td>
+          1058
+          -
+          1116
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;jdbc:&quot; + driver + &quot;://&quot; + url + &quot;:&quot; + port + &quot;/&quot; + dbName
+        </td>
+      </tr><tr>
+        <td>
+          29
+        </td>
+        <td>
+          1226
+        </td>
+        <td>
+          1190
+          -
+          1208
         </td>
         <td>
           DefDef
@@ -1111,15 +813,15 @@
         </td>
       </tr><tr>
         <td>
-          40
+          30
         </td>
         <td>
-          1239
+          1222
         </td>
         <td>
-          1636
+          1265
           -
-          1674
+          1303
         </td>
         <td>
           Apply
@@ -1135,15 +837,15 @@
         </td>
       </tr><tr>
         <td>
-          41
+          31
         </td>
         <td>
-          1241
+          1224
         </td>
         <td>
-          1683
+          1312
           -
-          1765
+          1394
         </td>
         <td>
           Block
@@ -1162,15 +864,15 @@
         </td>
       </tr><tr>
         <td>
-          42
+          32
         </td>
         <td>
-          1240
+          1223
         </td>
         <td>
-          1704
+          1333
           -
-          1748
+          1377
         </td>
         <td>
           Apply
@@ -1186,15 +888,15 @@
         </td>
       </tr><tr>
         <td>
-          45
+          35
         </td>
         <td>
-          1242
+          1225
         </td>
         <td>
-          1780
+          1409
           -
-          1797
+          1426
         </td>
         <td>
           Block
@@ -1210,15 +912,15 @@
         </td>
       </tr><tr>
         <td>
-          48
+          38
         </td>
         <td>
-          1246
+          1229
         </td>
         <td>
-          1816
+          1445
           -
-          1827
+          1456
         </td>
         <td>
           DefDef
@@ -1234,15 +936,15 @@
         </td>
       </tr><tr>
         <td>
-          50
+          40
         </td>
         <td>
-          1244
+          1227
         </td>
         <td>
-          1914
+          1543
           -
-          1952
+          1581
         </td>
         <td>
           Apply
@@ -1258,15 +960,15 @@
         </td>
       </tr><tr>
         <td>
-          51
+          41
         </td>
         <td>
-          1245
+          1228
         </td>
         <td>
-          1970
+          1599
           -
-          2035
+          1664
         </td>
         <td>
           Apply
@@ -1282,39 +984,15 @@
         </td>
       </tr><tr>
         <td>
-          53
+          43
         </td>
         <td>
-          1261
+          1236
         </td>
         <td>
-          2039
+          1701
           -
-          2054
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          createTable
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          def createTable
-        </td>
-      </tr><tr>
-        <td>
-          53
-        </td>
-        <td>
-          1253
-        </td>
-        <td>
-          2072
-          -
-          2625
+          2254
         </td>
         <td>
           Block
@@ -1345,15 +1023,39 @@
         </td>
       </tr><tr>
         <td>
-          55
+          43
         </td>
         <td>
-          1248
+          1244
         </td>
         <td>
-          2116
+          1668
           -
-          2125
+          1683
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          createTable
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def createTable
+        </td>
+      </tr><tr>
+        <td>
+          45
+        </td>
+        <td>
+          1231
+        </td>
+        <td>
+          1745
+          -
+          1754
         </td>
         <td>
           Block
@@ -1369,15 +1071,15 @@
         </td>
       </tr><tr>
         <td>
-          55
+          45
         </td>
         <td>
-          1247
+          1230
         </td>
         <td>
-          2116
+          1745
           -
-          2125
+          1754
         </td>
         <td>
           Apply
@@ -1393,39 +1095,15 @@
         </td>
       </tr><tr>
         <td>
-          57
+          47
         </td>
         <td>
-          1249
+          1233
         </td>
         <td>
-          2158
+          1774
           -
-          2226
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          getConnection
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          DriverManager.getConnection(connectionStringExt, username, password)
-        </td>
-      </tr><tr>
-        <td>
-          57
-        </td>
-        <td>
-          1250
-        </td>
-        <td>
-          2145
-          -
-          2226
+          1855
         </td>
         <td>
           Assign
@@ -1441,15 +1119,39 @@
         </td>
       </tr><tr>
         <td>
-          58
+          47
         </td>
         <td>
-          1251
+          1232
         </td>
         <td>
-          2258
+          1787
           -
-          2286
+          1855
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getConnection
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          DriverManager.getConnection(connectionStringExt, username, password)
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          1234
+        </td>
+        <td>
+          1887
+          -
+          1915
         </td>
         <td>
           Apply
@@ -1465,15 +1167,15 @@
         </td>
       </tr><tr>
         <td>
-          66
+          56
         </td>
         <td>
-          1252
+          1235
         </td>
         <td>
-          2575
+          2204
           -
-          2605
+          2234
         </td>
         <td>
           Apply
@@ -1489,39 +1191,15 @@
         </td>
       </tr><tr>
         <td>
-          69
+          59
         </td>
         <td>
-          1255
+          1237
         </td>
         <td>
-          2638
+          2288
           -
-          2655
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          case e: Exception
-        </td>
-      </tr><tr>
-        <td>
-          69
-        </td>
-        <td>
-          1254
-        </td>
-        <td>
-          2659
-          -
-          2676
+          2305
         </td>
         <td>
           Apply
@@ -1537,15 +1215,39 @@
         </td>
       </tr><tr>
         <td>
-          71
+          59
         </td>
         <td>
-          1260
+          1238
         </td>
         <td>
-          2708
+          2267
           -
-          2824
+          2284
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case e: Exception
+        </td>
+      </tr><tr>
+        <td>
+          61
+        </td>
+        <td>
+          1243
+        </td>
+        <td>
+          2337
+          -
+          2453
         </td>
         <td>
           Block
@@ -1566,15 +1268,15 @@
         </td>
       </tr><tr>
         <td>
-          72
+          62
         </td>
         <td>
-          1257
+          1240
         </td>
         <td>
-          2742
+          2371
           -
-          2758
+          2387
         </td>
         <td>
           Block
@@ -1590,15 +1292,39 @@
         </td>
       </tr><tr>
         <td>
-          72
+          62
         </td>
         <td>
-          1259
+          1239
         </td>
         <td>
-          2738
+          2371
           -
-          2820
+          2387
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          close
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          62
+        </td>
+        <td>
+          1242
+        </td>
+        <td>
+          2367
+          -
+          2449
         </td>
         <td>
           Try
@@ -1617,39 +1343,15 @@
         </td>
       </tr><tr>
         <td>
-          72
+          64
         </td>
         <td>
-          1256
+          1241
         </td>
         <td>
-          2742
+          2406
           -
-          2758
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          close
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          connection.close
-        </td>
-      </tr><tr>
-        <td>
-          74
-        </td>
-        <td>
-          1258
-        </td>
-        <td>
-          2777
-          -
-          2797
+          2426
         </td>
         <td>
           Block
@@ -1665,15 +1367,15 @@
         </td>
       </tr><tr>
         <td>
-          79
+          69
         </td>
         <td>
-          1277
+          1260
         </td>
         <td>
-          2831
+          2460
           -
-          2843
+          2472
         </td>
         <td>
           DefDef
@@ -1689,15 +1391,15 @@
         </td>
       </tr><tr>
         <td>
-          80
+          70
         </td>
         <td>
-          1268
+          1251
         </td>
         <td>
-          2862
+          2491
           -
-          3243
+          2872
         </td>
         <td>
           Block
@@ -1722,15 +1424,15 @@
         </td>
       </tr><tr>
         <td>
-          82
+          72
         </td>
         <td>
-          1263
+          1246
         </td>
         <td>
-          2904
+          2533
           -
-          2911
+          2540
         </td>
         <td>
           Block
@@ -1746,15 +1448,15 @@
         </td>
       </tr><tr>
         <td>
-          82
+          72
         </td>
         <td>
-          1262
+          1245
         </td>
         <td>
-          2915
+          2544
           -
-          2924
+          2553
         </td>
         <td>
           Apply
@@ -1770,39 +1472,15 @@
         </td>
       </tr><tr>
         <td>
-          83
+          73
         </td>
         <td>
-          1264
+          1248
         </td>
         <td>
-          2956
+          2562
           -
-          3024
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          getConnection
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          DriverManager.getConnection(connectionStringExt, username, password)
-        </td>
-      </tr><tr>
-        <td>
-          83
-        </td>
-        <td>
-          1265
-        </td>
-        <td>
-          2933
-          -
-          2939
+          2568
         </td>
         <td>
           Block
@@ -1818,15 +1496,39 @@
         </td>
       </tr><tr>
         <td>
-          85
+          73
         </td>
         <td>
-          1266
+          1247
         </td>
         <td>
-          3065
+          2585
           -
-          3093
+          2653
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getConnection
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          DriverManager.getConnection(connectionStringExt, username, password)
+        </td>
+      </tr><tr>
+        <td>
+          75
+        </td>
+        <td>
+          1249
+        </td>
+        <td>
+          2694
+          -
+          2722
         </td>
         <td>
           Apply
@@ -1842,15 +1544,15 @@
         </td>
       </tr><tr>
         <td>
-          88
+          78
         </td>
         <td>
-          1267
+          1250
         </td>
         <td>
-          3207
+          2836
           -
-          3237
+          2866
         </td>
         <td>
           Apply
@@ -1866,15 +1568,15 @@
         </td>
       </tr><tr>
         <td>
-          90
+          80
         </td>
         <td>
-          1271
+          1254
         </td>
         <td>
-          3258
+          2887
           -
-          3275
+          2904
         </td>
         <td>
           Block
@@ -1890,15 +1592,15 @@
         </td>
       </tr><tr>
         <td>
-          91
+          81
         </td>
         <td>
-          1269
+          1252
         </td>
         <td>
-          3288
+          2917
           -
-          3305
+          2934
         </td>
         <td>
           Apply
@@ -1914,15 +1616,15 @@
         </td>
       </tr><tr>
         <td>
-          92
+          82
         </td>
         <td>
-          1270
+          1253
         </td>
         <td>
-          3314
+          2943
           -
-          3321
+          2950
         </td>
         <td>
           Apply
@@ -1938,15 +1640,15 @@
         </td>
       </tr><tr>
         <td>
-          93
+          83
         </td>
         <td>
-          1276
+          1259
         </td>
         <td>
-          3336
+          2965
           -
-          3462
+          3091
         </td>
         <td>
           Block
@@ -1967,39 +1669,15 @@
         </td>
       </tr><tr>
         <td>
-          94
+          84
         </td>
         <td>
-          1273
+          1255
         </td>
         <td>
-          3372
+          3001
           -
-          3388
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          connection.close
-        </td>
-      </tr><tr>
-        <td>
-          94
-        </td>
-        <td>
-          1272
-        </td>
-        <td>
-          3372
-          -
-          3388
+          3017
         </td>
         <td>
           Apply
@@ -2015,15 +1693,15 @@
         </td>
       </tr><tr>
         <td>
-          94
+          84
         </td>
         <td>
-          1275
+          1258
         </td>
         <td>
-          3368
+          2997
           -
-          3456
+          3085
         </td>
         <td>
           Try
@@ -2042,15 +1720,39 @@
         </td>
       </tr><tr>
         <td>
-          96
+          84
         </td>
         <td>
-          1274
+          1256
         </td>
         <td>
-          3411
+          3001
           -
-          3431
+          3017
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          86
+        </td>
+        <td>
+          1257
+        </td>
+        <td>
+          3040
+          -
+          3060
         </td>
         <td>
           Block
@@ -2066,15 +1768,15 @@
         </td>
       </tr><tr>
         <td>
-          100
+          90
         </td>
         <td>
-          1281
+          1264
         </td>
         <td>
-          3466
+          3095
           -
-          3475
+          3104
         </td>
         <td>
           DefDef
@@ -2090,39 +1792,15 @@
         </td>
       </tr><tr>
         <td>
-          102
+          92
         </td>
         <td>
-          1279
+          1261
         </td>
         <td>
-          3513
+          3152
           -
-          3519
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case m
-        </td>
-      </tr><tr>
-        <td>
-          102
-        </td>
-        <td>
-          1278
-        </td>
-        <td>
-          3523
-          -
-          3530
+          3159
         </td>
         <td>
           Apply
@@ -2138,15 +1816,39 @@
         </td>
       </tr><tr>
         <td>
-          103
+          92
         </td>
         <td>
-          1280
+          1262
         </td>
         <td>
-          3537
+          3142
           -
-          3543
+          3148
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case m
+        </td>
+      </tr><tr>
+        <td>
+          93
+        </td>
+        <td>
+          1263
+        </td>
+        <td>
+          3166
+          -
+          3172
         </td>
         <td>
           Block
@@ -2162,15 +1864,15 @@
         </td>
       </tr><tr>
         <td>
-          105
+          95
         </td>
         <td>
-          1299
+          1282
         </td>
         <td>
-          3553
+          3182
           -
-          3575
+          3204
         </td>
         <td>
           DefDef
@@ -2186,15 +1888,15 @@
         </td>
       </tr><tr>
         <td>
-          107
+          97
         </td>
         <td>
-          1291
+          1274
         </td>
         <td>
-          3633
+          3262
           -
-          4116
+          3745
         </td>
         <td>
           Block
@@ -2221,39 +1923,15 @@
         </td>
       </tr><tr>
         <td>
-          109
+          99
         </td>
         <td>
-          1282
+          1266
         </td>
         <td>
-          3686
+          3304
           -
-          3695
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          connect
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          connect()
-        </td>
-      </tr><tr>
-        <td>
-          109
-        </td>
-        <td>
-          1283
-        </td>
-        <td>
-          3675
-          -
-          3682
+          3311
         </td>
         <td>
           Block
@@ -2269,39 +1947,39 @@
         </td>
       </tr><tr>
         <td>
-          110
+          99
         </td>
         <td>
-          1285
+          1265
         </td>
         <td>
-          3704
+          3315
           -
-          3710
+          3324
         </td>
         <td>
-          Block
+          Apply
         </td>
         <td>
-          &lt;none&gt;
+          connect
         </td>
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
-          case _
+        <td style="background: #F0ADAD">
+          connect()
         </td>
       </tr><tr>
         <td>
-          110
+          100
         </td>
         <td>
-          1284
+          1267
         </td>
         <td>
-          3727
+          3356
           -
-          3795
+          3424
         </td>
         <td>
           Apply
@@ -2317,15 +1995,39 @@
         </td>
       </tr><tr>
         <td>
-          112
+          100
         </td>
         <td>
-          1286
+          1268
         </td>
         <td>
-          3836
+          3333
           -
-          3864
+          3339
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          102
+        </td>
+        <td>
+          1269
+        </td>
+        <td>
+          3465
+          -
+          3493
         </td>
         <td>
           Apply
@@ -2341,15 +2043,15 @@
         </td>
       </tr><tr>
         <td>
-          114
+          104
         </td>
         <td>
-          1287
+          1270
         </td>
         <td>
-          3987
+          3616
           -
-          4016
+          3645
         </td>
         <td>
           Apply
@@ -2365,15 +2067,15 @@
         </td>
       </tr><tr>
         <td>
-          115
+          105
         </td>
         <td>
-          1288
+          1271
         </td>
         <td>
-          4023
+          3652
           -
-          4040
+          3669
         </td>
         <td>
           Apply
@@ -2389,15 +2091,15 @@
         </td>
       </tr><tr>
         <td>
-          116
+          106
         </td>
         <td>
-          1289
+          1272
         </td>
         <td>
-          4055
+          3684
           -
-          4064
+          3693
         </td>
         <td>
           Block
@@ -2413,15 +2115,15 @@
         </td>
       </tr><tr>
         <td>
-          117
+          107
         </td>
         <td>
-          1290
+          1273
         </td>
         <td>
-          4088
+          3717
           -
-          4094
+          3723
         </td>
         <td>
           Block
@@ -2437,15 +2139,15 @@
         </td>
       </tr><tr>
         <td>
-          119
+          109
         </td>
         <td>
-          1293
+          1276
         </td>
         <td>
-          4131
+          3760
           -
-          4157
+          3786
         </td>
         <td>
           Block
@@ -2462,15 +2164,15 @@
         </td>
       </tr><tr>
         <td>
-          120
+          110
         </td>
         <td>
-          1292
+          1275
         </td>
         <td>
-          4161
+          3790
           -
-          4178
+          3807
         </td>
         <td>
           Apply
@@ -2486,15 +2188,15 @@
         </td>
       </tr><tr>
         <td>
-          122
+          112
         </td>
         <td>
-          1298
+          1281
         </td>
         <td>
-          4214
+          3843
           -
-          4353
+          3982
         </td>
         <td>
           Block
@@ -2515,15 +2217,63 @@
         </td>
       </tr><tr>
         <td>
-          123
+          113
         </td>
         <td>
-          1297
+          1278
         </td>
         <td>
-          4246
+          3879
           -
-          4347
+          3895
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          113
+        </td>
+        <td>
+          1277
+        </td>
+        <td>
+          3879
+          -
+          3895
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          close
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          113
+        </td>
+        <td>
+          1280
+        </td>
+        <td>
+          3875
+          -
+          3976
         </td>
         <td>
           Try
@@ -2542,63 +2292,15 @@
         </td>
       </tr><tr>
         <td>
-          123
+          115
         </td>
         <td>
-          1294
+          1279
         </td>
         <td>
-          4250
+          3918
           -
-          4266
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          close
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          connection.close
-        </td>
-      </tr><tr>
-        <td>
-          123
-        </td>
-        <td>
-          1295
-        </td>
-        <td>
-          4250
-          -
-          4266
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          connection.close
-        </td>
-      </tr><tr>
-        <td>
-          125
-        </td>
-        <td>
-          1296
-        </td>
-        <td>
-          4289
-          -
-          4309
+          3938
         </td>
         <td>
           Block
@@ -2614,15 +2316,15 @@
         </td>
       </tr><tr>
         <td>
-          129
+          119
         </td>
         <td>
-          1324
+          1307
         </td>
         <td>
-          4357
+          3986
           -
-          4376
+          4005
         </td>
         <td>
           DefDef
@@ -2638,15 +2340,15 @@
         </td>
       </tr><tr>
         <td>
-          130
+          120
         </td>
         <td>
-          1300
+          1283
         </td>
         <td>
-          4451
+          4080
           -
-          4463
+          4092
         </td>
         <td>
           Select
@@ -2662,15 +2364,15 @@
         </td>
       </tr><tr>
         <td>
-          131
+          121
         </td>
         <td>
-          1316
+          1299
         </td>
         <td>
-          4472
+          4101
           -
-          5025
+          4654
         </td>
         <td>
           Block
@@ -2698,15 +2400,15 @@
         </td>
       </tr><tr>
         <td>
-          133
+          123
         </td>
         <td>
-          1302
+          1285
         </td>
         <td>
-          4518
+          4147
           -
-          4527
+          4156
         </td>
         <td>
           Block
@@ -2722,15 +2424,15 @@
         </td>
       </tr><tr>
         <td>
-          133
+          123
         </td>
         <td>
-          1301
+          1284
         </td>
         <td>
-          4518
+          4147
           -
-          4527
+          4156
         </td>
         <td>
           Apply
@@ -2746,39 +2448,15 @@
         </td>
       </tr><tr>
         <td>
-          135
+          125
         </td>
         <td>
-          1303
+          1287
         </td>
         <td>
-          4560
+          4176
           -
-          4628
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          getConnection
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          DriverManager.getConnection(connectionStringExt, username, password)
-        </td>
-      </tr><tr>
-        <td>
-          135
-        </td>
-        <td>
-          1304
-        </td>
-        <td>
-          4547
-          -
-          4628
+          4257
         </td>
         <td>
           Assign
@@ -2794,15 +2472,39 @@
         </td>
       </tr><tr>
         <td>
-          136
+          125
         </td>
         <td>
-          1305
+          1286
         </td>
         <td>
-          4662
+          4189
           -
-          4690
+          4257
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getConnection
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          DriverManager.getConnection(connectionStringExt, username, password)
+        </td>
+      </tr><tr>
+        <td>
+          126
+        </td>
+        <td>
+          1288
+        </td>
+        <td>
+          4291
+          -
+          4319
         </td>
         <td>
           Apply
@@ -2818,15 +2520,15 @@
         </td>
       </tr><tr>
         <td>
-          138
+          128
         </td>
         <td>
-          1306
+          1289
         </td>
         <td>
-          4750
+          4379
           -
-          4779
+          4408
         </td>
         <td>
           Apply
@@ -2842,15 +2544,15 @@
         </td>
       </tr><tr>
         <td>
-          139
+          129
         </td>
         <td>
-          1307
+          1290
         </td>
         <td>
-          4786
+          4415
           -
-          4803
+          4432
         </td>
         <td>
           Apply
@@ -2866,15 +2568,63 @@
         </td>
       </tr><tr>
         <td>
-          140
+          130
         </td>
         <td>
-          1309
+          1291
         </td>
         <td>
-          4879
+          4479
           -
-          4905
+          4506
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          resultSet.getString(&quot;Name&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          130
+        </td>
+        <td>
+          1296
+        </td>
+        <td>
+          4447
+          -
+          4456
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case true
+        </td>
+      </tr><tr>
+        <td>
+          130
+        </td>
+        <td>
+          1292
+        </td>
+        <td>
+          4508
+          -
+          4534
         </td>
         <td>
           Apply
@@ -2890,15 +2640,15 @@
         </td>
       </tr><tr>
         <td>
-          140
+          130
         </td>
         <td>
-          1312
+          1295
         </td>
         <td>
-          4838
+          4467
           -
-          4981
+          4610
         </td>
         <td>
           Apply
@@ -2915,63 +2665,15 @@
         </td>
       </tr><tr>
         <td>
-          140
+          131
         </td>
         <td>
-          1308
+          1294
         </td>
         <td>
-          4850
+          4579
           -
-          4877
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          getString
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          resultSet.getString(&quot;Name&quot;)
-        </td>
-      </tr><tr>
-        <td>
-          140
-        </td>
-        <td>
-          1313
-        </td>
-        <td>
-          4818
-          -
-          4827
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          case true
-        </td>
-      </tr><tr>
-        <td>
-          141
-        </td>
-        <td>
-          1311
-        </td>
-        <td>
-          4950
-          -
-          4979
+          4608
         </td>
         <td>
           Apply
@@ -2987,15 +2689,15 @@
         </td>
       </tr><tr>
         <td>
-          141
+          131
         </td>
         <td>
-          1310
+          1293
         </td>
         <td>
-          4917
+          4546
           -
-          4948
+          4577
         </td>
         <td>
           Apply
@@ -3011,39 +2713,15 @@
         </td>
       </tr><tr>
         <td>
-          142
+          132
         </td>
         <td>
-          1315
+          1297
         </td>
         <td>
-          4990
+          4636
           -
-          4996
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          case _
-        </td>
-      </tr><tr>
-        <td>
-          142
-        </td>
-        <td>
-          1314
-        </td>
-        <td>
-          5007
-          -
-          5019
+          4648
         </td>
         <td>
           Select
@@ -3059,15 +2737,15 @@
         </td>
       </tr><tr>
         <td>
-          144
+          132
         </td>
         <td>
-          1318
+          1298
         </td>
         <td>
-          5040
+          4619
           -
-          5057
+          4625
         </td>
         <td>
           Block
@@ -3078,20 +2756,20 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
-          case e: Exception
+        <td style="background: #AEF1AE">
+          case _
         </td>
       </tr><tr>
         <td>
-          144
+          134
         </td>
         <td>
-          1317
+          1300
         </td>
         <td>
-          5061
+          4690
           -
-          5078
+          4707
         </td>
         <td>
           Apply
@@ -3107,15 +2785,39 @@
         </td>
       </tr><tr>
         <td>
-          145
+          134
         </td>
         <td>
-          1323
+          1301
         </td>
         <td>
-          5093
+          4669
           -
-          5219
+          4686
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case e: Exception
+        </td>
+      </tr><tr>
+        <td>
+          135
+        </td>
+        <td>
+          1306
+        </td>
+        <td>
+          4722
+          -
+          4848
         </td>
         <td>
           Block
@@ -3136,15 +2838,15 @@
         </td>
       </tr><tr>
         <td>
-          146
+          136
         </td>
         <td>
-          1320
+          1303
         </td>
         <td>
-          5129
+          4758
           -
-          5145
+          4774
         </td>
         <td>
           Block
@@ -3160,39 +2862,15 @@
         </td>
       </tr><tr>
         <td>
-          146
+          136
         </td>
         <td>
-          1319
+          1305
         </td>
         <td>
-          5129
+          4754
           -
-          5145
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          close
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          connection.close
-        </td>
-      </tr><tr>
-        <td>
-          146
-        </td>
-        <td>
-          1322
-        </td>
-        <td>
-          5125
-          -
-          5213
+          4842
         </td>
         <td>
           Try
@@ -3211,15 +2889,39 @@
         </td>
       </tr><tr>
         <td>
-          148
+          136
         </td>
         <td>
-          1321
+          1302
         </td>
         <td>
-          5168
+          4758
           -
-          5188
+          4774
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          close
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          138
+        </td>
+        <td>
+          1304
+        </td>
+        <td>
+          4797
+          -
+          4817
         </td>
         <td>
           Block
@@ -3235,15 +2937,15 @@
         </td>
       </tr><tr>
         <td>
-          153
+          143
         </td>
         <td>
-          1339
+          1322
         </td>
         <td>
-          5232
+          4861
           -
-          5247
+          4876
         </td>
         <td>
           DefDef
@@ -3259,15 +2961,15 @@
         </td>
       </tr><tr>
         <td>
-          154
+          144
         </td>
         <td>
-          1331
+          1314
         </td>
         <td>
-          5286
+          4915
           -
-          5553
+          5182
         </td>
         <td>
           Block
@@ -3290,15 +2992,15 @@
         </td>
       </tr><tr>
         <td>
-          156
+          146
         </td>
         <td>
-          1326
+          1309
         </td>
         <td>
-          5332
+          4961
           -
-          5341
+          4970
         </td>
         <td>
           Block
@@ -3314,15 +3016,15 @@
         </td>
       </tr><tr>
         <td>
-          156
+          146
         </td>
         <td>
-          1325
+          1308
         </td>
         <td>
-          5332
+          4961
           -
-          5341
+          4970
         </td>
         <td>
           Apply
@@ -3338,39 +3040,15 @@
         </td>
       </tr><tr>
         <td>
-          158
+          148
         </td>
         <td>
-          1327
+          1311
         </td>
         <td>
-          5374
+          4990
           -
-          5442
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          getConnection
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          DriverManager.getConnection(connectionStringExt, username, password)
-        </td>
-      </tr><tr>
-        <td>
-          158
-        </td>
-        <td>
-          1328
-        </td>
-        <td>
-          5361
-          -
-          5442
+          5071
         </td>
         <td>
           Assign
@@ -3386,15 +3064,39 @@
         </td>
       </tr><tr>
         <td>
-          159
+          148
         </td>
         <td>
-          1329
+          1310
         </td>
         <td>
-          5476
+          5003
           -
-          5504
+          5071
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getConnection
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          DriverManager.getConnection(connectionStringExt, username, password)
+        </td>
+      </tr><tr>
+        <td>
+          149
+        </td>
+        <td>
+          1312
+        </td>
+        <td>
+          5105
+          -
+          5133
         </td>
         <td>
           Apply
@@ -3410,15 +3112,15 @@
         </td>
       </tr><tr>
         <td>
-          160
+          150
         </td>
         <td>
-          1330
+          1313
         </td>
         <td>
-          5511
+          5140
           -
-          5547
+          5176
         </td>
         <td>
           Apply
@@ -3434,39 +3136,15 @@
         </td>
       </tr><tr>
         <td>
-          162
+          152
         </td>
         <td>
-          1333
+          1315
         </td>
         <td>
-          5568
+          5218
           -
-          5585
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case e: Exception
-        </td>
-      </tr><tr>
-        <td>
-          162
-        </td>
-        <td>
-          1332
-        </td>
-        <td>
-          5589
-          -
-          5606
+          5235
         </td>
         <td>
           Apply
@@ -3482,15 +3160,39 @@
         </td>
       </tr><tr>
         <td>
-          163
+          152
         </td>
         <td>
-          1338
+          1316
         </td>
         <td>
-          5621
+          5197
           -
-          5747
+          5214
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case e: Exception
+        </td>
+      </tr><tr>
+        <td>
+          153
+        </td>
+        <td>
+          1321
+        </td>
+        <td>
+          5250
+          -
+          5376
         </td>
         <td>
           Block
@@ -3511,15 +3213,15 @@
         </td>
       </tr><tr>
         <td>
-          164
+          154
         </td>
         <td>
-          1335
+          1318
         </td>
         <td>
-          5657
+          5286
           -
-          5673
+          5302
         </td>
         <td>
           Block
@@ -3535,39 +3237,15 @@
         </td>
       </tr><tr>
         <td>
-          164
+          154
         </td>
         <td>
-          1334
+          1320
         </td>
         <td>
-          5657
+          5282
           -
-          5673
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          close
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          connection.close
-        </td>
-      </tr><tr>
-        <td>
-          164
-        </td>
-        <td>
-          1337
-        </td>
-        <td>
-          5653
-          -
-          5741
+          5370
         </td>
         <td>
           Try
@@ -3586,15 +3264,39 @@
         </td>
       </tr><tr>
         <td>
-          166
+          154
         </td>
         <td>
-          1336
+          1317
         </td>
         <td>
-          5696
+          5286
           -
-          5716
+          5302
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          close
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          156
+        </td>
+        <td>
+          1319
+        </td>
+        <td>
+          5325
+          -
+          5345
         </td>
         <td>
           Block
@@ -3610,39 +3312,15 @@
         </td>
       </tr><tr>
         <td>
-          170
+          160
         </td>
         <td>
-          1354
+          1329
         </td>
         <td>
-          5751
+          5428
           -
-          5761
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          update
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          def update
-        </td>
-      </tr><tr>
-        <td>
-          170
-        </td>
-        <td>
-          1346
-        </td>
-        <td>
-          5799
-          -
-          6074
+          5703
         </td>
         <td>
           Block
@@ -3666,15 +3344,39 @@
         </td>
       </tr><tr>
         <td>
-          172
+          160
         </td>
         <td>
-          1341
+          1337
         </td>
         <td>
-          5843
+          5380
           -
-          5852
+          5390
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          update
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def update
+        </td>
+      </tr><tr>
+        <td>
+          162
+        </td>
+        <td>
+          1324
+        </td>
+        <td>
+          5472
+          -
+          5481
         </td>
         <td>
           Block
@@ -3690,15 +3392,15 @@
         </td>
       </tr><tr>
         <td>
-          172
+          162
         </td>
         <td>
-          1340
+          1323
         </td>
         <td>
-          5843
+          5472
           -
-          5852
+          5481
         </td>
         <td>
           Apply
@@ -3714,39 +3416,15 @@
         </td>
       </tr><tr>
         <td>
-          174
+          164
         </td>
         <td>
-          1342
+          1326
         </td>
         <td>
-          5885
+          5501
           -
-          5953
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          getConnection
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          DriverManager.getConnection(connectionStringExt, username, password)
-        </td>
-      </tr><tr>
-        <td>
-          174
-        </td>
-        <td>
-          1343
-        </td>
-        <td>
-          5872
-          -
-          5953
+          5582
         </td>
         <td>
           Assign
@@ -3762,15 +3440,39 @@
         </td>
       </tr><tr>
         <td>
-          175
+          164
         </td>
         <td>
-          1344
+          1325
         </td>
         <td>
-          5985
+          5514
           -
-          6013
+          5582
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getConnection
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          DriverManager.getConnection(connectionStringExt, username, password)
+        </td>
+      </tr><tr>
+        <td>
+          165
+        </td>
+        <td>
+          1327
+        </td>
+        <td>
+          5614
+          -
+          5642
         </td>
         <td>
           Apply
@@ -3786,15 +3488,15 @@
         </td>
       </tr><tr>
         <td>
-          176
+          166
         </td>
         <td>
-          1345
+          1328
         </td>
         <td>
-          6018
+          5647
           -
-          6054
+          5683
         </td>
         <td>
           Apply
@@ -3810,39 +3512,15 @@
         </td>
       </tr><tr>
         <td>
-          179
+          169
         </td>
         <td>
-          1348
+          1330
         </td>
         <td>
-          6087
+          5737
           -
-          6104
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          case e: Exception
-        </td>
-      </tr><tr>
-        <td>
-          179
-        </td>
-        <td>
-          1347
-        </td>
-        <td>
-          6108
-          -
-          6125
+          5754
         </td>
         <td>
           Apply
@@ -3858,15 +3536,39 @@
         </td>
       </tr><tr>
         <td>
-          181
+          169
         </td>
         <td>
-          1353
+          1331
         </td>
         <td>
-          6157
+          5716
           -
-          6273
+          5733
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case e: Exception
+        </td>
+      </tr><tr>
+        <td>
+          171
+        </td>
+        <td>
+          1336
+        </td>
+        <td>
+          5786
+          -
+          5902
         </td>
         <td>
           Block
@@ -3887,15 +3589,15 @@
         </td>
       </tr><tr>
         <td>
-          182
+          172
         </td>
         <td>
-          1350
+          1333
         </td>
         <td>
-          6191
+          5820
           -
-          6207
+          5836
         </td>
         <td>
           Block
@@ -3911,15 +3613,39 @@
         </td>
       </tr><tr>
         <td>
-          182
+          172
         </td>
         <td>
-          1352
+          1332
         </td>
         <td>
-          6187
+          5820
           -
-          6269
+          5836
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          close
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          connection.close
+        </td>
+      </tr><tr>
+        <td>
+          172
+        </td>
+        <td>
+          1335
+        </td>
+        <td>
+          5816
+          -
+          5898
         </td>
         <td>
           Try
@@ -3938,39 +3664,15 @@
         </td>
       </tr><tr>
         <td>
-          182
+          174
         </td>
         <td>
-          1349
+          1334
         </td>
         <td>
-          6191
+          5855
           -
-          6207
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          close
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          connection.close
-        </td>
-      </tr><tr>
-        <td>
-          184
-        </td>
-        <td>
-          1351
-        </td>
-        <td>
-          6226
-          -
-          6246
+          5875
         </td>
         <td>
           Block
