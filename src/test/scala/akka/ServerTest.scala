@@ -129,12 +129,12 @@ class ServerTest extends AnyFunSpec with BeforeAndAfterAll with Matchers {
         describe("the service locator") {
             it("shout retrieve the correct infos to link to the database") {
                 val accessAdapter: AccessAdapter = ServiceLocator.getDataAdapter()
-                assert(accessAdapter.url = "127.0.0.1")
-                assert(accessAdapter.port = "6033")
-                assert(accessAdapter.driver = "mysql")
-                assert(accessAdapter.dbName = "DIXIT")
-                assert(accessAdapter.username = "user_name")
-                assert(accessAdapter.password = "root_password")
+                assert(accessAdapter.url == "127.0.0.1")
+                assert(accessAdapter.port == "6033")
+                assert(accessAdapter.driver == "mysql")
+                assert(accessAdapter.dbName == "DIXIT")
+                assert(accessAdapter.username == "user_name")
+                assert(accessAdapter.password == "root_password")
             }
         }
     }
