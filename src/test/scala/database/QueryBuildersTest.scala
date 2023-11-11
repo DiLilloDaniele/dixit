@@ -40,7 +40,7 @@ class QueryBuildersTest extends AnyFunSpec with Matchers {
             it("should create the query string correctly") {
                 val builder = QueryBuilder()
                 val queryString = builder select "*" from "TABLE" where "D = F" and "A" equal "B" or "B" disequal "C" 
-                assert(queryString.query == "select * from TABLE where D = F AND A = B OR B != C")
+                assert(queryString.query == "select * from TABLE where D = F AND A = 'B' OR B != C")
                 assertFail(() => { builder select "" })
                 assertFail(() => { builder from "" })
                 assertFail(() => { builder where "" })
