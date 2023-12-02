@@ -37,7 +37,6 @@ class GameController(val client: ClientImpl) {
     })
 
   def createGame(port: String = "2551", address: String = "127.0.0.1") =
-    //startupWithRole("foreman", port, address)(???)
     if(username != "")
       println("CREO IL GIOCO.....")
       client.createGame(s"$address:$port", username, (_) => {
