@@ -67,6 +67,7 @@ class PlayersManagerBehaviorImpl(context: ActorContext[Command],
         replyTo ! PlayerBehavior.MemberKO
         Behaviors.same
       }
+      //TODO non proprio correttissimo, togliere dalla lista replyTo e fare mailbox a priorità
     case PlayerExited =>
       waitPlayers(maxPlayers, currentNumPlayers - 1, foreman)
     case _ =>
@@ -81,6 +82,7 @@ class PlayersManagerBehaviorImpl(context: ActorContext[Command],
         replyTo ! PlayerBehavior.MemberOK
         foreman ! ForemanBehavior.PlayerRejoined(replyTo.path.address.toString)
         Behaviors.same
+        // TODO altrimenti invia KO
       val currentPlayers = currentNumPlayers + 1
       gameOn(maxPlayers, currentPlayers, foreman)
     case PlayerExited =>
@@ -88,7 +90,7 @@ class PlayersManagerBehaviorImpl(context: ActorContext[Command],
       context.log.info("un giocatore ha quittato")
       Behaviors.withTimers { timer =>
         timer.startSingleTimer(CheckMembers, 15000 milliseconds)
-        gameOn(maxPlayers, currentPlayers, foreman)
+        gameOn(maxPlayers, currentPlayers - 1, foreman)
       }
 
     case CheckMembers =>
