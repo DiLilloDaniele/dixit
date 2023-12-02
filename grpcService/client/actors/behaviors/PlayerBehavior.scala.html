@@ -47,159 +47,158 @@
 </span>23 <span style=''>  case object MemberOK extends Command
 </span>24 <span style=''>  case object MemberKO extends Command
 </span>25 <span style=''>  case object Start extends Command
-</span>26 <span style=''>  case class TurnOf(val player: String) extends Command
-</span>27 <span style=''>  case class GameInfo(msg: String) extends Command
-</span>28 <span style=''>
-</span>29 <span style=''>  //turn messages
-</span>30 <span style=''>  case class YourTurn(val replyTo: ActorRef[ForemanBehavior.Command]) extends Command
-</span>31 <span style=''>
-</span>32 <span style=''>  //guess messages
-</span>33 <span style=''>  case class CardChoosenByOther(val title: String, val replyTo: ActorRef[ForemanBehavior.Command]) extends Command
-</span>34 <span style=''>  case class CardsSubmittedByOthers(val cards: List[String]) extends Command
-</span>35 <span style=''>  case class CardRevealed(val cardId: String) extends Command
-</span>36 <span style=''>  case class CardChoosenForTurn(val cardId: String, val title: String) extends Command
-</span>37 <span style=''>  case object EndTurn extends Command
-</span>38 <span style=''>  case class CardsAssigned(cardsId: List[String]) extends Command
-</span>39 <span style=''>  case class SingleCardSubmitted(cardId: String) extends Command
-</span>40 <span style=''>  case class GuessedCardbyUser(cardId: String) extends Command
-</span>41 <span style=''>  case object TurnCancelled extends Command
-</span>42 <span style=''>  case class EndGame(points: Int) extends Command
-</span>43 <span style=''>  case class NewCard(card: String) extends Command
-</span>44 <span style=''>
-</span>45 <span style=''>  </span><span style='background: #AEF1AE'>def apply</span><span style=''>(logger: Option[ActorRef[Command]] = </span><span style='background: #AEF1AE'>Option.empty</span><span style=''>, interactionExt: Option[ActorRef[InteractionBehavior.Command]] = </span><span style='background: #F0ADAD'>Option.empty</span><span style=''>, onStop: (Int) =&gt; Unit = (v) =&gt; ()): Behavior[Command] =
-</span>46 <span style=''>    </span><span style='background: #AEF1AE'>Behaviors.setup[Command] { ctx =&gt;
-</span>47 <span style=''></span><span style='background: #AEF1AE'>      ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
-</span>48 <span style=''></span><span style='background: #AEF1AE'>
-</span>49 <span style=''></span><span style='background: #AEF1AE'>      val interaction = interactionExt match {
-</span>50 <span style=''></span><span style='background: #AEF1AE'>        case Some(ref) =&gt;
-</span>51 <span style=''></span><span style='background: #AEF1AE'>          ctx.log.info(&quot;INTERACTION ESTERNO&quot;)
-</span>52 <span style=''></span><span style='background: #AEF1AE'>          ref
-</span>53 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt;
-</span>54 <span style=''></span><span style='background: #AEF1AE'>          </span><span style='background: #F0ADAD'>ctx.log.info(&quot;INTERACTION INTERNO&quot;)</span><span style='background: #AEF1AE'>
-</span>55 <span style=''></span><span style='background: #AEF1AE'>          </span><span style='background: #F0ADAD'>ctx.spawn(Behaviors.setup[InteractionBehavior.Command](ctx1 =&gt; InteractionGuiImpl(ctx1, ctx.self)), &quot;gui&quot;)</span><span style='background: #AEF1AE'>
-</span>56 <span style=''></span><span style='background: #AEF1AE'>      }
-</span>57 <span style=''></span><span style='background: #AEF1AE'>      val player = ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](context =&gt; new PlayerBehaviorImpl(context, interaction, ctx.self, onStop)), &quot;player&quot;)
-</span>58 <span style=''></span><span style='background: #AEF1AE'>      val listener = ctx.spawn(Behaviors.setup[Event | Receptionist.Listing](context =&gt; PlayerClusterListener(ctx.self)), &quot;player-cluster-listener&quot;)
-</span>59 <span style=''></span><span style='background: #AEF1AE'>      player ! Start
-</span>60 <span style=''></span><span style='background: #AEF1AE'>      ctx.watch(interaction)
-</span>61 <span style=''></span><span style='background: #AEF1AE'>
-</span>62 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.receiveMessage[Command] {
-</span>63 <span style=''></span><span style='background: #AEF1AE'>        case GameInfo(msg) =&gt;
-</span>64 <span style=''></span><span style='background: #AEF1AE'>          interaction ! InteractionBehavior.MessageError(msg)
-</span>65 <span style=''></span><span style='background: #AEF1AE'>          logger match {
-</span>66 <span style=''></span><span style='background: #AEF1AE'>            case Some(ref) =&gt; ref ! GameInfo(msg)
-</span>67 <span style=''></span><span style='background: #AEF1AE'>            case _ =&gt;
-</span>68 <span style=''></span><span style='background: #AEF1AE'>          }
-</span>69 <span style=''></span><span style='background: #AEF1AE'>          Behaviors.same
-</span>70 <span style=''></span><span style='background: #AEF1AE'>        case msg: Command =&gt;
-</span>71 <span style=''></span><span style='background: #AEF1AE'>          ctx.log.info(&quot;MESSAGGIO RICEVUTO: &quot; + msg)
-</span>72 <span style=''></span><span style='background: #AEF1AE'>          logger match {
-</span>73 <span style=''></span><span style='background: #AEF1AE'>            case Some(ref) =&gt; ref ! msg
-</span>74 <span style=''></span><span style='background: #AEF1AE'>            case _ =&gt;
-</span>75 <span style=''></span><span style='background: #AEF1AE'>          }
-</span>76 <span style=''></span><span style='background: #AEF1AE'>          player ! msg
-</span>77 <span style=''></span><span style='background: #AEF1AE'>          Behaviors.same
-</span>78 <span style=''></span><span style='background: #AEF1AE'>      }.receiveSignal { </span><span style='background: #F0ADAD'>case (ctx, t @ Terminated(_))</span><span style='background: #AEF1AE'> =&gt;
-</span>79 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>ctx.log.info(&quot;System terminated [PLAYER]. Shutting down&quot;)</span><span style='background: #AEF1AE'>
-</span>80 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>Behaviors.stopped</span><span style='background: #AEF1AE'>
-</span>81 <span style=''></span><span style='background: #AEF1AE'>      }
-</span>82 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>26 <span style=''>  case class GameInfo(msg: String) extends Command
+</span>27 <span style=''>
+</span>28 <span style=''>  //turn messages
+</span>29 <span style=''>  case class YourTurn(val replyTo: ActorRef[ForemanBehavior.Command]) extends Command
+</span>30 <span style=''>
+</span>31 <span style=''>  //guess messages
+</span>32 <span style=''>  case class CardChoosenByOther(val title: String, val replyTo: ActorRef[ForemanBehavior.Command]) extends Command
+</span>33 <span style=''>  case class CardsSubmittedByOthers(val cards: List[String]) extends Command
+</span>34 <span style=''>  case class CardRevealed(val cardId: String) extends Command
+</span>35 <span style=''>  case class CardChoosenForTurn(val cardId: String, val title: String) extends Command
+</span>36 <span style=''>  case class CardsAssigned(cardsId: List[String]) extends Command
+</span>37 <span style=''>  case class SingleCardSubmitted(cardId: String) extends Command
+</span>38 <span style=''>  case class GuessedCardbyUser(cardId: String) extends Command
+</span>39 <span style=''>  case object TurnCancelled extends Command
+</span>40 <span style=''>  case class EndGame(points: Int) extends Command
+</span>41 <span style=''>  case class NewCard(card: String) extends Command
+</span>42 <span style=''>
+</span>43 <span style=''>  </span><span style='background: #AEF1AE'>def apply</span><span style=''>(logger: Option[ActorRef[Command]] = </span><span style='background: #AEF1AE'>Option.empty</span><span style=''>, interactionExt: Option[ActorRef[InteractionBehavior.Command]] = </span><span style='background: #F0ADAD'>Option.empty</span><span style=''>, onStop: (Int) =&gt; Unit = (v) =&gt; ()): Behavior[Command] =
+</span>44 <span style=''>    </span><span style='background: #AEF1AE'>Behaviors.setup[Command] { ctx =&gt;
+</span>45 <span style=''></span><span style='background: #AEF1AE'>      ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
+</span>46 <span style=''></span><span style='background: #AEF1AE'>
+</span>47 <span style=''></span><span style='background: #AEF1AE'>      val interaction = interactionExt match {
+</span>48 <span style=''></span><span style='background: #AEF1AE'>        case Some(ref) =&gt;
+</span>49 <span style=''></span><span style='background: #AEF1AE'>          ctx.log.info(&quot;INTERACTION ESTERNO&quot;)
+</span>50 <span style=''></span><span style='background: #AEF1AE'>          ref
+</span>51 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt;
+</span>52 <span style=''></span><span style='background: #AEF1AE'>          </span><span style='background: #F0ADAD'>ctx.log.info(&quot;INTERACTION INTERNO&quot;)</span><span style='background: #AEF1AE'>
+</span>53 <span style=''></span><span style='background: #AEF1AE'>          </span><span style='background: #F0ADAD'>ctx.spawn(Behaviors.setup[InteractionBehavior.Command](ctx1 =&gt; InteractionGuiImpl(ctx1, ctx.self)), &quot;gui&quot;)</span><span style='background: #AEF1AE'>
+</span>54 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>55 <span style=''></span><span style='background: #AEF1AE'>      val player = ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](context =&gt; new PlayerBehaviorImpl(context, interaction, ctx.self, onStop)), &quot;player&quot;)
+</span>56 <span style=''></span><span style='background: #AEF1AE'>      val listener = ctx.spawn(Behaviors.setup[Event | Receptionist.Listing](context =&gt; PlayerClusterListener(ctx.self)), &quot;player-cluster-listener&quot;)
+</span>57 <span style=''></span><span style='background: #AEF1AE'>      player ! Start
+</span>58 <span style=''></span><span style='background: #AEF1AE'>      ctx.watch(interaction)
+</span>59 <span style=''></span><span style='background: #AEF1AE'>
+</span>60 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.receiveMessage[Command] {
+</span>61 <span style=''></span><span style='background: #AEF1AE'>        case GameInfo(msg) =&gt;
+</span>62 <span style=''></span><span style='background: #AEF1AE'>          interaction ! InteractionBehavior.MessageError(msg)
+</span>63 <span style=''></span><span style='background: #AEF1AE'>          logger match {
+</span>64 <span style=''></span><span style='background: #AEF1AE'>            case Some(ref) =&gt; ref ! GameInfo(msg)
+</span>65 <span style=''></span><span style='background: #AEF1AE'>            case _ =&gt;
+</span>66 <span style=''></span><span style='background: #AEF1AE'>          }
+</span>67 <span style=''></span><span style='background: #AEF1AE'>          Behaviors.same
+</span>68 <span style=''></span><span style='background: #AEF1AE'>        case msg: Command =&gt;
+</span>69 <span style=''></span><span style='background: #AEF1AE'>          ctx.log.info(&quot;MESSAGGIO RICEVUTO: &quot; + msg)
+</span>70 <span style=''></span><span style='background: #AEF1AE'>          logger match {
+</span>71 <span style=''></span><span style='background: #AEF1AE'>            case Some(ref) =&gt; ref ! msg
+</span>72 <span style=''></span><span style='background: #AEF1AE'>            case _ =&gt;
+</span>73 <span style=''></span><span style='background: #AEF1AE'>          }
+</span>74 <span style=''></span><span style='background: #AEF1AE'>          player ! msg
+</span>75 <span style=''></span><span style='background: #AEF1AE'>          Behaviors.same
+</span>76 <span style=''></span><span style='background: #AEF1AE'>      }.receiveSignal { case (ctx, t @ Terminated(_)) =&gt;
+</span>77 <span style=''></span><span style='background: #AEF1AE'>        ctx.log.info(&quot;System terminated [PLAYER]. Shutting down&quot;)
+</span>78 <span style=''></span><span style='background: #AEF1AE'>        Behaviors.stopped
+</span>79 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>80 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>81 <span style=''>
+</span>82 <span style=''>class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], interactionActor: ActorRef[InteractionBehavior.Command], rootActor: ActorRef[PlayerBehavior.Command], onStop: (Int) =&gt; Unit) extends </span><span style='background: #AEF1AE'>AbstractBehavior[Command | Receptionist.Listing](context)</span><span style=''>:
 </span>83 <span style=''>
-</span>84 <span style=''>class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], interactionActor: ActorRef[InteractionBehavior.Command], rootActor: ActorRef[PlayerBehavior.Command], onStop: (Int) =&gt; Unit) extends </span><span style='background: #AEF1AE'>AbstractBehavior[Command | Receptionist.Listing](context)</span><span style=''>:
-</span>85 <span style=''>
-</span>86 <span style=''>  </span><span style='background: #AEF1AE'>override def onMessage</span><span style=''>(msg: Command | Receptionist.Listing): Behavior[Command | Receptionist.Listing] = msg match {
-</span>87 <span style=''>    </span><span style='background: #AEF1AE'>case msg: Receptionist.Listing</span><span style=''> =&gt;
-</span>88 <span style=''>      </span><span style='background: #AEF1AE'>context.log.info(&quot;RECEIVED SOMETHING&quot;)</span><span style=''>
-</span>89 <span style=''>      val services: List[ActorRef[PlayersManagerBehavior.Command]] = </span><span style='background: #AEF1AE'>msg.serviceInstances(PlayersManagerBehavior.Service).toList</span><span style=''>
-</span>90 <span style=''>      if(!</span><span style='background: #AEF1AE'>services.isEmpty</span><span style=''>)
-</span>91 <span style=''>        </span><span style='background: #AEF1AE'>context.self ! AskToEnter(services.head)</span><span style=''>
-</span>92 <span style=''>      </span><span style='background: #AEF1AE'>Behaviors.same</span><span style=''>
-</span>93 <span style=''>    </span><span style='background: #AEF1AE'>case Start</span><span style=''> =&gt;
-</span>94 <span style=''>      </span><span style='background: #AEF1AE'>context.system.receptionist ! Receptionist.Subscribe(PlayersManagerBehavior.Service, context.self)</span><span style=''>
-</span>95 <span style=''>      </span><span style='background: #AEF1AE'>Behaviors.same</span><span style=''>
-</span>96 <span style=''>    </span><span style='background: #AEF1AE'>case AskToEnter(replyTo)</span><span style=''> =&gt;
-</span>97 <span style=''>      </span><span style='background: #AEF1AE'>replyTo ! PlayersManagerBehavior.AskEnter(rootActor)</span><span style=''>
-</span>98 <span style=''>      </span><span style='background: #AEF1AE'>Behaviors.same</span><span style=''>
-</span>99 <span style=''>    </span><span style='background: #AEF1AE'>case MemberOK</span><span style=''> =&gt;
-</span>100 <span style=''>      </span><span style='background: #AEF1AE'>context.log.info(&quot;MEMBER OK&quot;)</span><span style=''>
-</span>101 <span style=''>      </span><span style='background: #AEF1AE'>waitForCards()</span><span style=''>
-</span>102 <span style=''>    </span><span style='background: #F0ADAD'>case MemberKO</span><span style=''> =&gt;
-</span>103 <span style=''>      </span><span style='background: #F0ADAD'>interactionActor ! InteractionBehavior.MessageError(&quot;Impossibile entrare&quot;)</span><span style=''>
-</span>104 <span style=''>      </span><span style='background: #F0ADAD'>Behaviors.stopped</span><span style=''>
-</span>105 <span style=''>    </span><span style='background: #F0ADAD'>case m</span><span style=''> =&gt;
-</span>106 <span style=''>      </span><span style='background: #F0ADAD'>context.log.info(&quot;Unknown message: &quot; + m.toString)</span><span style=''>
-</span>107 <span style=''>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style=''>
-</span>108 <span style=''>  }
-</span>109 <span style=''>
-</span>110 <span style=''>  </span><span style='background: #AEF1AE'>def waitForCards</span><span style=''>(): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
-</span>111 <span style=''></span><span style='background: #AEF1AE'>    case CardsAssigned(list) =&gt;
-</span>112 <span style=''></span><span style='background: #AEF1AE'>      //interaction actor deve ricevere le carte
-</span>113 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(&quot;Carte ottenute&quot;)
-</span>114 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.CardsAssigned(list)
-</span>115 <span style=''></span><span style='background: #AEF1AE'>      gameOn()
-</span>116 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
-</span>117 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
-</span>118 <span style=''>
-</span>119 <span style=''>  </span><span style='background: #AEF1AE'>def gameOn</span><span style=''>(): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
-</span>120 <span style=''></span><span style='background: #AEF1AE'>    case YourTurn(replyTo) =&gt; 
-</span>121 <span style=''></span><span style='background: #AEF1AE'>      // deve inviare un CardToGuess ad un attore InteractionActor, che può essere 
-</span>122 <span style=''></span><span style='background: #AEF1AE'>      // un attore che sceglie random una carta e la invia qui, o la gui vera e propria
-</span>123 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(&quot;SONO IL PLAYER, E' IL MIO TURNO&quot;)
-</span>124 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.ChooseTheCard(context.self)
-</span>125 <span style=''></span><span style='background: #AEF1AE'>      choose(replyTo)
-</span>126 <span style=''></span><span style='background: #AEF1AE'>    case CardChoosenByOther(title, replyTo) =&gt;
-</span>127 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.GuessCard(rootActor, title)
-</span>128 <span style=''></span><span style='background: #AEF1AE'>      guess(title, replyTo)
-</span>129 <span style=''></span><span style='background: #AEF1AE'>    case NewCard(card) =&gt;
-</span>130 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.NewCard(card)
-</span>131 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.same
-</span>132 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case TurnCancelled</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
-</span>133 <span style=''></span><span style='background: #AEF1AE'>
-</span>134 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case EndGame(points)</span><span style='background: #AEF1AE'> =&gt;
-</span>135 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>interactionActor ! InteractionBehavior.MessageError(s&quot;Gioco terminato, punti guadagnati: $points&quot;)</span><span style='background: #AEF1AE'>
-</span>136 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>onStop(points)</span><span style='background: #AEF1AE'>
-</span>137 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.stopped</span><span style='background: #AEF1AE'>
-</span>138 <span style=''></span><span style='background: #AEF1AE'>
-</span>139 <span style=''></span><span style='background: #AEF1AE'>    case _ =&gt; Behaviors.same
-</span>140 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
-</span>141 <span style=''>
-</span>142 <span style=''>  </span><span style='background: #AEF1AE'>def guess</span><span style=''>(title: String, replyTo: ActorRef[ForemanBehavior.Command]): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
-</span>143 <span style=''></span><span style='background: #AEF1AE'>    case SingleCardSubmitted(card) =&gt;
-</span>144 <span style=''></span><span style='background: #AEF1AE'>      replyTo ! ForemanBehavior.SelectionToApply(card, rootActor)
-</span>145 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.same
-</span>146 <span style=''></span><span style='background: #AEF1AE'>    case CardsSubmittedByOthers(cards) =&gt;
-</span>147 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.ShowCardsProposed(rootActor, cards, title)
-</span>148 <span style=''></span><span style='background: #AEF1AE'>      choose(replyTo)
-</span>149 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case TurnCancelled</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>gameOn()</span><span style='background: #AEF1AE'>
-</span>150 <span style=''></span><span style='background: #AEF1AE'>
-</span>151 <span style=''></span><span style='background: #AEF1AE'>    case _ =&gt; Behaviors.same
-</span>152 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
-</span>153 <span style=''>
-</span>154 <span style=''>  </span><span style='background: #AEF1AE'>def choose</span><span style=''>(replyTo: ActorRef[ForemanBehavior.Command]): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
-</span>155 <span style=''></span><span style='background: #AEF1AE'>    case CardChoosenForTurn(cardId, title) =&gt;
-</span>156 <span style=''></span><span style='background: #AEF1AE'>      replyTo ! ForemanBehavior.CardToGuess(cardId, title, rootActor)
-</span>157 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.ResetInteraction
-</span>158 <span style=''></span><span style='background: #AEF1AE'>      gameOn()
-</span>159 <span style=''></span><span style='background: #AEF1AE'>    case GuessedCardbyUser(cardId) =&gt;
-</span>160 <span style=''></span><span style='background: #AEF1AE'>      replyTo ! ForemanBehavior.GuessSelection(cardId, rootActor)
-</span>161 <span style=''></span><span style='background: #AEF1AE'>      waitForCardRevealed(replyTo)
-</span>162 <span style=''></span><span style='background: #AEF1AE'>
-</span>163 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case TurnCancelled</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>gameOn()</span><span style='background: #AEF1AE'>
-</span>164 <span style=''></span><span style='background: #AEF1AE'>
-</span>165 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case msg</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>context.log.info(&quot;Unknown message: &quot; + msg)</span><span style='background: #AEF1AE'>
-</span>166 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
-</span>167 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
-</span>168 <span style=''>
-</span>169 <span style=''>  </span><span style='background: #AEF1AE'>def waitForCardRevealed</span><span style=''>(replyTo: ActorRef[ForemanBehavior.Command]): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
-</span>170 <span style=''></span><span style='background: #AEF1AE'>    case CardRevealed(cardId) =&gt;
-</span>171 <span style=''></span><span style='background: #AEF1AE'>      // TODO reset interaction with image revealed (optional)
-</span>172 <span style=''></span><span style='background: #AEF1AE'>      gameOn()
-</span>173 <span style=''></span><span style='background: #AEF1AE'>
-</span>174 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case TurnCancelled</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>gameOn()</span><span style='background: #AEF1AE'>
-</span>175 <span style=''></span><span style='background: #AEF1AE'>
-</span>176 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case msg</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>context.log.info(&quot;Unknown message: &quot; + msg)</span><span style='background: #AEF1AE'>
-</span>177 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
-</span>178 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>84 <span style=''>  </span><span style='background: #AEF1AE'>override def onMessage</span><span style=''>(msg: Command | Receptionist.Listing): Behavior[Command | Receptionist.Listing] = msg match {
+</span>85 <span style=''>    </span><span style='background: #AEF1AE'>case msg: Receptionist.Listing</span><span style=''> =&gt;
+</span>86 <span style=''>      </span><span style='background: #AEF1AE'>context.log.info(&quot;RECEIVED SOMETHING&quot;)</span><span style=''>
+</span>87 <span style=''>      val services: List[ActorRef[PlayersManagerBehavior.Command]] = </span><span style='background: #AEF1AE'>msg.serviceInstances(PlayersManagerBehavior.Service).toList</span><span style=''>
+</span>88 <span style=''>      if(!</span><span style='background: #AEF1AE'>services.isEmpty</span><span style=''>)
+</span>89 <span style=''>        </span><span style='background: #AEF1AE'>context.self ! AskToEnter(services.head)</span><span style=''>
+</span>90 <span style=''>      </span><span style='background: #AEF1AE'>Behaviors.same</span><span style=''>
+</span>91 <span style=''>    </span><span style='background: #AEF1AE'>case Start</span><span style=''> =&gt;
+</span>92 <span style=''>      </span><span style='background: #AEF1AE'>context.system.receptionist ! Receptionist.Subscribe(PlayersManagerBehavior.Service, context.self)</span><span style=''>
+</span>93 <span style=''>      </span><span style='background: #AEF1AE'>Behaviors.same</span><span style=''>
+</span>94 <span style=''>    </span><span style='background: #AEF1AE'>case AskToEnter(replyTo)</span><span style=''> =&gt;
+</span>95 <span style=''>      </span><span style='background: #AEF1AE'>replyTo ! PlayersManagerBehavior.AskEnter(rootActor)</span><span style=''>
+</span>96 <span style=''>      </span><span style='background: #AEF1AE'>Behaviors.same</span><span style=''>
+</span>97 <span style=''>    </span><span style='background: #AEF1AE'>case MemberOK</span><span style=''> =&gt;
+</span>98 <span style=''>      </span><span style='background: #AEF1AE'>context.log.info(&quot;MEMBER OK&quot;)</span><span style=''>
+</span>99 <span style=''>      </span><span style='background: #AEF1AE'>waitForCards()</span><span style=''>
+</span>100 <span style=''>    </span><span style='background: #F0ADAD'>case MemberKO</span><span style=''> =&gt;
+</span>101 <span style=''>      </span><span style='background: #F0ADAD'>interactionActor ! InteractionBehavior.MessageError(&quot;Impossibile entrare&quot;)</span><span style=''>
+</span>102 <span style=''>      </span><span style='background: #F0ADAD'>Behaviors.stopped</span><span style=''>
+</span>103 <span style=''>    </span><span style='background: #F0ADAD'>case m</span><span style=''> =&gt;
+</span>104 <span style=''>      </span><span style='background: #F0ADAD'>context.log.info(&quot;Unknown message: &quot; + m.toString)</span><span style=''>
+</span>105 <span style=''>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style=''>
+</span>106 <span style=''>  }
+</span>107 <span style=''>
+</span>108 <span style=''>  </span><span style='background: #AEF1AE'>def waitForCards</span><span style=''>(): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
+</span>109 <span style=''></span><span style='background: #AEF1AE'>    case CardsAssigned(list) =&gt;
+</span>110 <span style=''></span><span style='background: #AEF1AE'>      //interaction actor deve ricevere le carte
+</span>111 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(&quot;Carte ottenute&quot;)
+</span>112 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.CardsAssigned(list)
+</span>113 <span style=''></span><span style='background: #AEF1AE'>      gameOn()
+</span>114 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>115 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>116 <span style=''>
+</span>117 <span style=''>  </span><span style='background: #AEF1AE'>def gameOn</span><span style=''>(): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
+</span>118 <span style=''></span><span style='background: #AEF1AE'>    case YourTurn(replyTo) =&gt; 
+</span>119 <span style=''></span><span style='background: #AEF1AE'>      // deve inviare un CardToGuess ad un attore InteractionActor, che può essere 
+</span>120 <span style=''></span><span style='background: #AEF1AE'>      // un attore che sceglie random una carta e la invia qui, o la gui vera e propria
+</span>121 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(&quot;SONO IL PLAYER, E' IL MIO TURNO&quot;)
+</span>122 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.ChooseTheCard(context.self)
+</span>123 <span style=''></span><span style='background: #AEF1AE'>      choose(replyTo)
+</span>124 <span style=''></span><span style='background: #AEF1AE'>    case CardChoosenByOther(title, replyTo) =&gt;
+</span>125 <span style=''></span><span style='background: #AEF1AE'>    //TODO rename to TitleChoosenByOther
+</span>126 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.GuessCard(rootActor, title)
+</span>127 <span style=''></span><span style='background: #AEF1AE'>      guess(title, replyTo)
+</span>128 <span style=''></span><span style='background: #AEF1AE'>    case NewCard(card) =&gt;
+</span>129 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.NewCard(card)
+</span>130 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.same
+</span>131 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case TurnCancelled</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>132 <span style=''></span><span style='background: #AEF1AE'>
+</span>133 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case EndGame(points)</span><span style='background: #AEF1AE'> =&gt;
+</span>134 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>interactionActor ! InteractionBehavior.MessageError(s&quot;Gioco terminato, punti guadagnati: $points&quot;)</span><span style='background: #AEF1AE'>
+</span>135 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>onStop(points)</span><span style='background: #AEF1AE'>
+</span>136 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.stopped</span><span style='background: #AEF1AE'>
+</span>137 <span style=''></span><span style='background: #AEF1AE'>
+</span>138 <span style=''></span><span style='background: #AEF1AE'>    case _ =&gt; Behaviors.same
+</span>139 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>140 <span style=''>
+</span>141 <span style=''>  </span><span style='background: #AEF1AE'>def guess</span><span style=''>(title: String, replyTo: ActorRef[ForemanBehavior.Command]): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
+</span>142 <span style=''></span><span style='background: #AEF1AE'>    case SingleCardSubmitted(card) =&gt;
+</span>143 <span style=''></span><span style='background: #AEF1AE'>      replyTo ! ForemanBehavior.SelectionToApply(card, rootActor)
+</span>144 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.same
+</span>145 <span style=''></span><span style='background: #AEF1AE'>    case CardsSubmittedByOthers(cards) =&gt;
+</span>146 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.ShowCardsProposed(rootActor, cards, title)
+</span>147 <span style=''></span><span style='background: #AEF1AE'>      choose(replyTo)
+</span>148 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case TurnCancelled</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>gameOn()</span><span style='background: #AEF1AE'>
+</span>149 <span style=''></span><span style='background: #AEF1AE'>
+</span>150 <span style=''></span><span style='background: #AEF1AE'>    case _ =&gt; Behaviors.same
+</span>151 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>152 <span style=''>
+</span>153 <span style=''>  </span><span style='background: #AEF1AE'>def choose</span><span style=''>(replyTo: ActorRef[ForemanBehavior.Command]): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
+</span>154 <span style=''></span><span style='background: #AEF1AE'>    case CardChoosenForTurn(cardId, title) =&gt;
+</span>155 <span style=''></span><span style='background: #AEF1AE'>      replyTo ! ForemanBehavior.CardToGuess(cardId, title, rootActor)
+</span>156 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.ResetInteraction
+</span>157 <span style=''></span><span style='background: #AEF1AE'>      gameOn()
+</span>158 <span style=''></span><span style='background: #AEF1AE'>    case GuessedCardbyUser(cardId) =&gt;
+</span>159 <span style=''></span><span style='background: #AEF1AE'>      replyTo ! ForemanBehavior.GuessSelection(cardId, rootActor)
+</span>160 <span style=''></span><span style='background: #AEF1AE'>      waitForCardRevealed(replyTo)
+</span>161 <span style=''></span><span style='background: #AEF1AE'>
+</span>162 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case TurnCancelled</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>gameOn()</span><span style='background: #AEF1AE'>
+</span>163 <span style=''></span><span style='background: #AEF1AE'>
+</span>164 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case msg</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>context.log.info(&quot;Unknown message: &quot; + msg)</span><span style='background: #AEF1AE'>
+</span>165 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>166 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>167 <span style=''>
+</span>168 <span style=''>  </span><span style='background: #AEF1AE'>def waitForCardRevealed</span><span style=''>(replyTo: ActorRef[ForemanBehavior.Command]): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
+</span>169 <span style=''></span><span style='background: #AEF1AE'>    case CardRevealed(cardId) =&gt;
+</span>170 <span style=''></span><span style='background: #AEF1AE'>      // TODO reset interaction with image revealed (optional)
+</span>171 <span style=''></span><span style='background: #AEF1AE'>      gameOn()
+</span>172 <span style=''></span><span style='background: #AEF1AE'>
+</span>173 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case TurnCancelled</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>gameOn()</span><span style='background: #AEF1AE'>
+</span>174 <span style=''></span><span style='background: #AEF1AE'>
+</span>175 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case msg</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>context.log.info(&quot;Unknown message: &quot; + msg)</span><span style='background: #AEF1AE'>
+</span>176 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>177 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -238,15 +237,15 @@
         </td>
       </tr><tr>
         <td>
-          44
+          42
         </td>
         <td>
           541
         </td>
         <td>
-          1967
+          1873
           -
-          1979
+          1885
         </td>
         <td>
           Select
@@ -262,15 +261,15 @@
         </td>
       </tr><tr>
         <td>
-          44
+          42
         </td>
         <td>
           540
         </td>
         <td>
-          1921
+          1827
           -
-          1930
+          1836
         </td>
         <td>
           DefDef
@@ -286,15 +285,15 @@
         </td>
       </tr><tr>
         <td>
-          44
+          42
         </td>
         <td>
           543
         </td>
         <td>
-          2045
+          1951
           -
-          2057
+          1963
         </td>
         <td>
           Select
@@ -310,15 +309,15 @@
         </td>
       </tr><tr>
         <td>
-          44
+          42
         </td>
         <td>
           542
         </td>
         <td>
-          1967
+          1873
           -
-          1967
+          1873
         </td>
         <td>
           DefDef
@@ -334,15 +333,15 @@
         </td>
       </tr><tr>
         <td>
-          44
+          42
         </td>
         <td>
           545
         </td>
         <td>
-          2083
+          1989
           -
-          2083
+          1989
         </td>
         <td>
           DefDef
@@ -358,15 +357,15 @@
         </td>
       </tr><tr>
         <td>
-          44
+          42
         </td>
         <td>
           544
         </td>
         <td>
-          2045
+          1951
           -
-          2045
+          1951
         </td>
         <td>
           DefDef
@@ -382,15 +381,15 @@
         </td>
       </tr><tr>
         <td>
-          45
+          43
         </td>
         <td>
           539
         </td>
         <td>
-          2119
+          2025
           -
-          3571
+          3477
         </td>
         <td>
           Apply
@@ -442,15 +441,15 @@
         </td>
       </tr><tr>
         <td>
-          46
+          44
         </td>
         <td>
           487
         </td>
         <td>
-          2216
+          2122
           -
-          2224
+          2130
         </td>
         <td>
           Select
@@ -466,15 +465,15 @@
         </td>
       </tr><tr>
         <td>
-          46
+          44
         </td>
         <td>
           489
         </td>
         <td>
-          2159
+          2065
           -
-          2225
+          2131
         </td>
         <td>
           Apply
@@ -490,15 +489,15 @@
         </td>
       </tr><tr>
         <td>
-          46
+          44
         </td>
         <td>
           486
         </td>
         <td>
-          2159
+          2065
           -
-          2182
+          2088
         </td>
         <td>
           Apply
@@ -514,15 +513,15 @@
         </td>
       </tr><tr>
         <td>
-          46
+          44
         </td>
         <td>
           488
         </td>
         <td>
-          2185
+          2091
           -
-          2225
+          2131
         </td>
         <td>
           Apply
@@ -538,15 +537,15 @@
         </td>
       </tr><tr>
         <td>
-          46
+          44
         </td>
         <td>
           485
         </td>
         <td>
-          2159
+          2065
           -
-          2182
+          2088
         </td>
         <td>
           Select
@@ -562,15 +561,15 @@
         </td>
       </tr><tr>
         <td>
-          46
+          44
         </td>
         <td>
           484
         </td>
         <td>
-          2159
+          2065
           -
-          2169
+          2075
         </td>
         <td>
           Select
@@ -586,15 +585,15 @@
         </td>
       </tr><tr>
         <td>
-          49
+          47
         </td>
         <td>
           492
         </td>
         <td>
-          2282
+          2188
           -
-          2296
+          2202
         </td>
         <td>
           Block
@@ -610,15 +609,15 @@
         </td>
       </tr><tr>
         <td>
-          50
+          48
         </td>
         <td>
           490
         </td>
         <td>
-          2310
+          2216
           -
-          2317
+          2223
         </td>
         <td>
           Select
@@ -634,15 +633,15 @@
         </td>
       </tr><tr>
         <td>
-          50
+          48
         </td>
         <td>
           491
         </td>
         <td>
-          2310
+          2216
           -
-          2345
+          2251
         </td>
         <td>
           Apply
@@ -658,15 +657,15 @@
         </td>
       </tr><tr>
         <td>
-          52
+          50
         </td>
         <td>
           500
         </td>
         <td>
-          2368
+          2274
           -
-          2374
+          2280
         </td>
         <td>
           Block
@@ -682,15 +681,15 @@
         </td>
       </tr><tr>
         <td>
-          53
+          51
         </td>
         <td>
           494
         </td>
         <td>
-          2388
+          2294
           -
-          2423
+          2329
         </td>
         <td>
           Apply
@@ -706,15 +705,15 @@
         </td>
       </tr><tr>
         <td>
-          53
+          51
         </td>
         <td>
           493
         </td>
         <td>
-          2388
+          2294
           -
-          2395
+          2301
         </td>
         <td>
           Select
@@ -730,15 +729,15 @@
         </td>
       </tr><tr>
         <td>
-          54
+          52
         </td>
         <td>
           496
         </td>
         <td>
-          2497
+          2403
           -
-          2531
+          2437
         </td>
         <td>
           Apply
@@ -754,15 +753,15 @@
         </td>
       </tr><tr>
         <td>
-          54
+          52
         </td>
         <td>
           499
         </td>
         <td>
-          2434
+          2340
           -
-          2540
+          2446
         </td>
         <td>
           Apply
@@ -778,15 +777,15 @@
         </td>
       </tr><tr>
         <td>
-          54
+          52
         </td>
         <td>
           498
         </td>
         <td>
-          2434
+          2340
           -
-          2443
+          2349
         </td>
         <td>
           Select
@@ -802,15 +801,15 @@
         </td>
       </tr><tr>
         <td>
-          54
+          52
         </td>
         <td>
           495
         </td>
         <td>
-          2522
+          2428
           -
-          2530
+          2436
         </td>
         <td>
           Select
@@ -826,15 +825,15 @@
         </td>
       </tr><tr>
         <td>
-          54
+          52
         </td>
         <td>
           497
         </td>
         <td>
-          2444
+          2350
           -
-          2532
+          2438
         </td>
         <td>
           Apply
@@ -850,15 +849,15 @@
         </td>
       </tr><tr>
         <td>
-          56
+          54
         </td>
         <td>
           505
         </td>
         <td>
-          2568
+          2474
           -
-          2711
+          2617
         </td>
         <td>
           Apply
@@ -874,15 +873,15 @@
         </td>
       </tr><tr>
         <td>
-          56
+          54
         </td>
         <td>
           501
         </td>
         <td>
-          2682
+          2588
           -
-          2690
+          2596
         </td>
         <td>
           Select
@@ -898,15 +897,15 @@
         </td>
       </tr><tr>
         <td>
-          56
+          54
         </td>
         <td>
           504
         </td>
         <td>
-          2568
+          2474
           -
-          2577
+          2483
         </td>
         <td>
           Select
@@ -922,15 +921,15 @@
         </td>
       </tr><tr>
         <td>
-          56
+          54
         </td>
         <td>
           503
         </td>
         <td>
-          2578
+          2484
           -
-          2700
+          2606
         </td>
         <td>
           Apply
@@ -946,15 +945,15 @@
         </td>
       </tr><tr>
         <td>
-          56
+          54
         </td>
         <td>
           502
         </td>
         <td>
-          2637
+          2543
           -
-          2699
+          2605
         </td>
         <td>
           Apply
@@ -970,15 +969,15 @@
         </td>
       </tr><tr>
         <td>
-          57
+          55
         </td>
         <td>
           508
         </td>
         <td>
-          2743
+          2649
           -
-          2832
+          2738
         </td>
         <td>
           Apply
@@ -994,15 +993,15 @@
         </td>
       </tr><tr>
         <td>
-          57
+          55
         </td>
         <td>
           507
         </td>
         <td>
-          2800
+          2706
           -
-          2831
+          2737
         </td>
         <td>
           Apply
@@ -1018,15 +1017,15 @@
         </td>
       </tr><tr>
         <td>
-          57
+          55
         </td>
         <td>
           510
         </td>
         <td>
-          2733
+          2639
           -
-          2860
+          2766
         </td>
         <td>
           Apply
@@ -1042,15 +1041,15 @@
         </td>
       </tr><tr>
         <td>
-          57
+          55
         </td>
         <td>
           506
         </td>
         <td>
-          2822
+          2728
           -
-          2830
+          2736
         </td>
         <td>
           Select
@@ -1066,15 +1065,15 @@
         </td>
       </tr><tr>
         <td>
-          57
+          55
         </td>
         <td>
           509
         </td>
         <td>
-          2733
+          2639
           -
-          2742
+          2648
         </td>
         <td>
           Select
@@ -1090,15 +1089,15 @@
         </td>
       </tr><tr>
         <td>
-          58
+          56
         </td>
         <td>
           512
         </td>
         <td>
-          2867
+          2773
           -
-          2881
+          2787
         </td>
         <td>
           Apply
@@ -1114,15 +1113,15 @@
         </td>
       </tr><tr>
         <td>
-          58
+          56
         </td>
         <td>
           511
         </td>
         <td>
-          2867
+          2773
           -
-          2873
+          2779
         </td>
         <td>
           Apply
@@ -1138,15 +1137,15 @@
         </td>
       </tr><tr>
         <td>
-          59
+          57
         </td>
         <td>
           513
         </td>
         <td>
-          2888
+          2794
           -
-          2910
+          2816
         </td>
         <td>
           Apply
@@ -1162,15 +1161,15 @@
         </td>
       </tr><tr>
         <td>
-          61
+          59
         </td>
         <td>
           533
         </td>
         <td>
-          2918
+          2824
           -
-          3416
+          3322
         </td>
         <td>
           Apply
@@ -1202,15 +1201,15 @@
         </td>
       </tr><tr>
         <td>
-          62
+          60
         </td>
         <td>
           521
         </td>
         <td>
-          2962
+          2868
           -
-          2980
+          2886
         </td>
         <td>
           Block
@@ -1226,15 +1225,15 @@
         </td>
       </tr><tr>
         <td>
-          63
+          61
         </td>
         <td>
           514
         </td>
         <td>
-          2994
+          2900
           -
-          3005
+          2911
         </td>
         <td>
           Apply
@@ -1250,15 +1249,15 @@
         </td>
       </tr><tr>
         <td>
-          63
+          61
         </td>
         <td>
           515
         </td>
         <td>
-          2994
+          2900
           -
-          3045
+          2951
         </td>
         <td>
           Apply
@@ -1274,15 +1273,15 @@
         </td>
       </tr><tr>
         <td>
-          65
+          63
         </td>
         <td>
           517
         </td>
         <td>
-          3101
+          3007
           -
-          3120
+          3026
         </td>
         <td>
           Apply
@@ -1298,15 +1297,15 @@
         </td>
       </tr><tr>
         <td>
-          65
+          63
         </td>
         <td>
           516
         </td>
         <td>
-          3101
+          3007
           -
-          3104
+          3010
         </td>
         <td>
           Apply
@@ -1322,15 +1321,15 @@
         </td>
       </tr><tr>
         <td>
-          65
+          63
         </td>
         <td>
           518
         </td>
         <td>
-          3083
+          2989
           -
-          3097
+          3003
         </td>
         <td>
           Block
@@ -1346,15 +1345,15 @@
         </td>
       </tr><tr>
         <td>
-          66
+          64
         </td>
         <td>
           519
         </td>
         <td>
-          3133
+          3039
           -
-          3139
+          3045
         </td>
         <td>
           Block
@@ -1370,15 +1369,15 @@
         </td>
       </tr><tr>
         <td>
-          68
+          66
         </td>
         <td>
           520
         </td>
         <td>
-          3165
+          3071
           -
-          3179
+          3085
         </td>
         <td>
           Select
@@ -1394,15 +1393,15 @@
         </td>
       </tr><tr>
         <td>
-          69
+          67
         </td>
         <td>
           532
         </td>
         <td>
-          3188
+          3094
           -
-          3205
+          3111
         </td>
         <td>
           Block
@@ -1418,15 +1417,15 @@
         </td>
       </tr><tr>
         <td>
-          70
+          68
         </td>
         <td>
           523
         </td>
         <td>
-          3232
+          3138
           -
-          3260
+          3166
         </td>
         <td>
           Apply
@@ -1442,15 +1441,15 @@
         </td>
       </tr><tr>
         <td>
-          70
+          68
         </td>
         <td>
           522
         </td>
         <td>
-          3219
+          3125
           -
-          3226
+          3132
         </td>
         <td>
           Select
@@ -1466,15 +1465,15 @@
         </td>
       </tr><tr>
         <td>
-          70
+          68
         </td>
         <td>
           524
         </td>
         <td>
-          3219
+          3125
           -
-          3261
+          3167
         </td>
         <td>
           Apply
@@ -1490,15 +1489,15 @@
         </td>
       </tr><tr>
         <td>
-          72
+          70
         </td>
         <td>
           525
         </td>
         <td>
-          3317
+          3223
           -
-          3320
+          3226
         </td>
         <td>
           Apply
@@ -1514,15 +1513,15 @@
         </td>
       </tr><tr>
         <td>
-          72
+          70
         </td>
         <td>
           527
         </td>
         <td>
-          3299
+          3205
           -
-          3313
+          3219
         </td>
         <td>
           Block
@@ -1538,15 +1537,15 @@
         </td>
       </tr><tr>
         <td>
-          72
+          70
         </td>
         <td>
           526
         </td>
         <td>
-          3317
+          3223
           -
-          3326
+          3232
         </td>
         <td>
           Apply
@@ -1562,15 +1561,15 @@
         </td>
       </tr><tr>
         <td>
-          73
+          71
         </td>
         <td>
           528
         </td>
         <td>
-          3339
+          3245
           -
-          3345
+          3251
         </td>
         <td>
           Block
@@ -1586,15 +1585,15 @@
         </td>
       </tr><tr>
         <td>
-          75
+          73
         </td>
         <td>
           530
         </td>
         <td>
-          3371
+          3277
           -
-          3383
+          3289
         </td>
         <td>
           Apply
@@ -1610,15 +1609,15 @@
         </td>
       </tr><tr>
         <td>
-          75
+          73
         </td>
         <td>
           529
         </td>
         <td>
-          3371
+          3277
           -
-          3377
+          3283
         </td>
         <td>
           Apply
@@ -1634,15 +1633,15 @@
         </td>
       </tr><tr>
         <td>
-          76
+          74
         </td>
         <td>
           531
         </td>
         <td>
-          3394
+          3300
           -
-          3408
+          3314
         </td>
         <td>
           Select
@@ -1658,15 +1657,15 @@
         </td>
       </tr><tr>
         <td>
-          77
+          75
         </td>
         <td>
           537
         </td>
         <td>
-          3433
+          3339
           -
-          3462
+          3368
         </td>
         <td>
           Block
@@ -1677,20 +1676,20 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case (ctx, t @ Terminated(_))
         </td>
       </tr><tr>
         <td>
-          77
+          75
         </td>
         <td>
           538
         </td>
         <td>
-          2918
+          2824
           -
-          3565
+          3471
         </td>
         <td>
           Apply
@@ -1725,15 +1724,15 @@
         </td>
       </tr><tr>
         <td>
-          78
+          76
         </td>
         <td>
           534
         </td>
         <td>
-          3474
+          3380
           -
-          3481
+          3387
         </td>
         <td>
           Select
@@ -1744,20 +1743,20 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log
         </td>
       </tr><tr>
         <td>
-          78
+          76
         </td>
         <td>
           535
         </td>
         <td>
-          3474
+          3380
           -
-          3531
+          3437
         </td>
         <td>
           Apply
@@ -1768,20 +1767,20 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           ctx.log.info(&quot;System terminated [PLAYER]. Shutting down&quot;)
         </td>
       </tr><tr>
         <td>
-          79
+          77
         </td>
         <td>
           536
         </td>
         <td>
-          3540
+          3446
           -
-          3557
+          3463
         </td>
         <td>
           Select
@@ -1792,20 +1791,20 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.stopped
         </td>
       </tr><tr>
         <td>
-          83
+          81
         </td>
         <td>
           546
         </td>
         <td>
-          3786
+          3692
           -
-          3843
+          3749
         </td>
         <td>
           Apply
@@ -1821,15 +1820,15 @@
         </td>
       </tr><tr>
         <td>
-          85
+          83
         </td>
         <td>
           584
         </td>
         <td>
-          3848
+          3754
           -
-          3870
+          3776
         </td>
         <td>
           DefDef
@@ -1845,15 +1844,15 @@
         </td>
       </tr><tr>
         <td>
-          86
+          84
         </td>
         <td>
           558
         </td>
         <td>
-          3968
+          3874
           -
-          3998
+          3904
         </td>
         <td>
           Block
@@ -1869,15 +1868,15 @@
         </td>
       </tr><tr>
         <td>
-          87
+          85
         </td>
         <td>
           548
         </td>
         <td>
-          4008
+          3914
           -
-          4046
+          3952
         </td>
         <td>
           Apply
@@ -1893,15 +1892,15 @@
         </td>
       </tr><tr>
         <td>
-          87
+          85
         </td>
         <td>
           547
         </td>
         <td>
-          4008
+          3914
           -
-          4019
+          3925
         </td>
         <td>
           Select
@@ -1917,15 +1916,15 @@
         </td>
       </tr><tr>
         <td>
-          88
+          86
         </td>
         <td>
           550
         </td>
         <td>
-          4116
+          4022
           -
-          4175
+          4081
         </td>
         <td>
           Select
@@ -1941,15 +1940,15 @@
         </td>
       </tr><tr>
         <td>
-          88
+          86
         </td>
         <td>
           549
         </td>
         <td>
-          4116
+          4022
           -
-          4168
+          4074
         </td>
         <td>
           Apply
@@ -1965,15 +1964,15 @@
         </td>
       </tr><tr>
         <td>
-          89
+          87
         </td>
         <td>
           551
         </td>
         <td>
-          4186
+          4092
           -
-          4202
+          4108
         </td>
         <td>
           Select
@@ -1989,15 +1988,15 @@
         </td>
       </tr><tr>
         <td>
-          90
+          88
         </td>
         <td>
           552
         </td>
         <td>
-          4212
+          4118
           -
-          4224
+          4130
         </td>
         <td>
           Select
@@ -2013,15 +2012,15 @@
         </td>
       </tr><tr>
         <td>
-          90
+          88
         </td>
         <td>
           555
         </td>
         <td>
-          4212
+          4118
           -
-          4252
+          4158
         </td>
         <td>
           Apply
@@ -2037,15 +2036,15 @@
         </td>
       </tr><tr>
         <td>
-          90
+          88
         </td>
         <td>
           554
         </td>
         <td>
-          4238
+          4144
           -
-          4251
+          4157
         </td>
         <td>
           Select
@@ -2061,15 +2060,15 @@
         </td>
       </tr><tr>
         <td>
-          90
+          88
         </td>
         <td>
           553
         </td>
         <td>
-          4212
+          4118
           -
-          4224
+          4130
         </td>
         <td>
           Apply
@@ -2085,15 +2084,15 @@
         </td>
       </tr><tr>
         <td>
-          90
+          88
         </td>
         <td>
           556
         </td>
         <td>
-          4212
+          4118
           -
-          4252
+          4158
         </td>
         <td>
           Block
@@ -2109,15 +2108,15 @@
         </td>
       </tr><tr>
         <td>
-          91
+          89
         </td>
         <td>
           557
         </td>
         <td>
-          4259
+          4165
           -
-          4273
+          4179
         </td>
         <td>
           Select
@@ -2133,15 +2132,15 @@
         </td>
       </tr><tr>
         <td>
-          92
+          90
         </td>
         <td>
           566
         </td>
         <td>
-          4278
+          4184
           -
-          4288
+          4194
         </td>
         <td>
           Block
@@ -2157,15 +2156,15 @@
         </td>
       </tr><tr>
         <td>
-          93
+          91
         </td>
         <td>
           559
         </td>
         <td>
-          4298
+          4204
           -
-          4312
+          4218
         </td>
         <td>
           Select
@@ -2181,15 +2180,15 @@
         </td>
       </tr><tr>
         <td>
-          93
+          91
         </td>
         <td>
           561
         </td>
         <td>
-          4298
+          4204
           -
-          4325
+          4231
         </td>
         <td>
           Apply
@@ -2205,15 +2204,15 @@
         </td>
       </tr><tr>
         <td>
-          93
+          91
         </td>
         <td>
           564
         </td>
         <td>
-          4298
+          4204
           -
-          4396
+          4302
         </td>
         <td>
           Apply
@@ -2229,15 +2228,15 @@
         </td>
       </tr><tr>
         <td>
-          93
+          91
         </td>
         <td>
           563
         </td>
         <td>
-          4328
+          4234
           -
-          4396
+          4302
         </td>
         <td>
           Apply
@@ -2253,15 +2252,15 @@
         </td>
       </tr><tr>
         <td>
-          93
+          91
         </td>
         <td>
           560
         </td>
         <td>
-          4298
+          4204
           -
-          4325
+          4231
         </td>
         <td>
           Select
@@ -2277,15 +2276,15 @@
         </td>
       </tr><tr>
         <td>
-          93
+          91
         </td>
         <td>
           562
         </td>
         <td>
-          4383
+          4289
           -
-          4395
+          4301
         </td>
         <td>
           Select
@@ -2301,15 +2300,15 @@
         </td>
       </tr><tr>
         <td>
-          94
+          92
         </td>
         <td>
           565
         </td>
         <td>
-          4403
+          4309
           -
-          4417
+          4323
         </td>
         <td>
           Select
@@ -2325,15 +2324,15 @@
         </td>
       </tr><tr>
         <td>
-          95
+          93
         </td>
         <td>
           570
         </td>
         <td>
-          4422
+          4328
           -
-          4446
+          4352
         </td>
         <td>
           Block
@@ -2349,15 +2348,15 @@
         </td>
       </tr><tr>
         <td>
-          96
+          94
         </td>
         <td>
           568
         </td>
         <td>
-          4456
+          4362
           -
-          4508
+          4414
         </td>
         <td>
           Apply
@@ -2373,15 +2372,15 @@
         </td>
       </tr><tr>
         <td>
-          96
+          94
         </td>
         <td>
           567
         </td>
         <td>
-          4456
+          4362
           -
-          4463
+          4369
         </td>
         <td>
           Apply
@@ -2397,15 +2396,15 @@
         </td>
       </tr><tr>
         <td>
-          97
+          95
         </td>
         <td>
           569
         </td>
         <td>
-          4515
+          4421
           -
-          4529
+          4435
         </td>
         <td>
           Select
@@ -2421,15 +2420,15 @@
         </td>
       </tr><tr>
         <td>
-          98
+          96
         </td>
         <td>
           574
         </td>
         <td>
-          4534
+          4440
           -
-          4547
+          4453
         </td>
         <td>
           Block
@@ -2445,15 +2444,15 @@
         </td>
       </tr><tr>
         <td>
-          99
+          97
         </td>
         <td>
           572
         </td>
         <td>
-          4557
+          4463
           -
-          4586
+          4492
         </td>
         <td>
           Apply
@@ -2469,15 +2468,15 @@
         </td>
       </tr><tr>
         <td>
-          99
+          97
         </td>
         <td>
           571
         </td>
         <td>
-          4557
+          4463
           -
-          4568
+          4474
         </td>
         <td>
           Select
@@ -2493,15 +2492,15 @@
         </td>
       </tr><tr>
         <td>
-          100
+          98
         </td>
         <td>
           573
         </td>
         <td>
-          4593
+          4499
           -
-          4607
+          4513
         </td>
         <td>
           Apply
@@ -2517,15 +2516,15 @@
         </td>
       </tr><tr>
         <td>
-          101
+          99
         </td>
         <td>
           578
         </td>
         <td>
-          4612
+          4518
           -
-          4625
+          4531
         </td>
         <td>
           Block
@@ -2541,15 +2540,15 @@
         </td>
       </tr><tr>
         <td>
-          102
+          100
         </td>
         <td>
           576
         </td>
         <td>
-          4635
+          4541
           -
-          4709
+          4615
         </td>
         <td>
           Apply
@@ -2565,15 +2564,15 @@
         </td>
       </tr><tr>
         <td>
-          102
+          100
         </td>
         <td>
           575
         </td>
         <td>
-          4635
+          4541
           -
-          4651
+          4557
         </td>
         <td>
           Apply
@@ -2589,15 +2588,15 @@
         </td>
       </tr><tr>
         <td>
-          103
+          101
         </td>
         <td>
           577
         </td>
         <td>
-          4716
+          4622
           -
-          4733
+          4639
         </td>
         <td>
           Select
@@ -2613,15 +2612,15 @@
         </td>
       </tr><tr>
         <td>
-          104
+          102
         </td>
         <td>
           583
         </td>
         <td>
-          4738
+          4644
           -
-          4744
+          4650
         </td>
         <td>
           Block
@@ -2637,15 +2636,15 @@
         </td>
       </tr><tr>
         <td>
-          105
+          103
         </td>
         <td>
           579
         </td>
         <td>
-          4754
+          4660
           -
-          4765
+          4671
         </td>
         <td>
           Select
@@ -2661,15 +2660,15 @@
         </td>
       </tr><tr>
         <td>
-          105
+          103
         </td>
         <td>
           581
         </td>
         <td>
-          4754
+          4660
           -
-          4804
+          4710
         </td>
         <td>
           Apply
@@ -2685,15 +2684,15 @@
         </td>
       </tr><tr>
         <td>
-          105
+          103
         </td>
         <td>
           580
         </td>
         <td>
-          4771
+          4677
           -
-          4803
+          4709
         </td>
         <td>
           Apply
@@ -2709,15 +2708,15 @@
         </td>
       </tr><tr>
         <td>
-          106
+          104
         </td>
         <td>
           582
         </td>
         <td>
-          4811
+          4717
           -
-          4825
+          4731
         </td>
         <td>
           Select
@@ -2733,15 +2732,15 @@
         </td>
       </tr><tr>
         <td>
-          109
+          107
         </td>
         <td>
           594
         </td>
         <td>
-          4833
+          4739
           -
-          4849
+          4755
         </td>
         <td>
           DefDef
@@ -2757,15 +2756,15 @@
         </td>
       </tr><tr>
         <td>
-          109
+          107
         </td>
         <td>
           593
         </td>
         <td>
-          4896
+          4802
           -
-          5157
+          5063
         </td>
         <td>
           Apply
@@ -2788,15 +2787,15 @@
         </td>
       </tr><tr>
         <td>
-          110
+          108
         </td>
         <td>
           590
         </td>
         <td>
-          4927
+          4833
           -
-          4951
+          4857
         </td>
         <td>
           Block
@@ -2812,15 +2811,15 @@
         </td>
       </tr><tr>
         <td>
-          112
+          110
         </td>
         <td>
           585
         </td>
         <td>
-          5010
+          4916
           -
-          5021
+          4927
         </td>
         <td>
           Select
@@ -2836,15 +2835,15 @@
         </td>
       </tr><tr>
         <td>
-          112
+          110
         </td>
         <td>
           586
         </td>
         <td>
-          5010
+          4916
           -
-          5044
+          4950
         </td>
         <td>
           Apply
@@ -2860,15 +2859,15 @@
         </td>
       </tr><tr>
         <td>
-          113
+          111
         </td>
         <td>
           588
         </td>
         <td>
-          5051
+          4957
           -
-          5109
+          5015
         </td>
         <td>
           Apply
@@ -2884,15 +2883,15 @@
         </td>
       </tr><tr>
         <td>
-          113
+          111
         </td>
         <td>
           587
         </td>
         <td>
-          5051
+          4957
           -
-          5067
+          4973
         </td>
         <td>
           Apply
@@ -2908,15 +2907,15 @@
         </td>
       </tr><tr>
         <td>
-          114
+          112
         </td>
         <td>
           589
         </td>
         <td>
-          5116
+          5022
           -
-          5124
+          5030
         </td>
         <td>
           Apply
@@ -2932,15 +2931,15 @@
         </td>
       </tr><tr>
         <td>
-          115
+          113
         </td>
         <td>
           591
         </td>
         <td>
-          5139
+          5045
           -
-          5153
+          5059
         </td>
         <td>
           Select
@@ -2956,15 +2955,15 @@
         </td>
       </tr><tr>
         <td>
-          115
+          113
         </td>
         <td>
           592
         </td>
         <td>
-          5129
+          5035
           -
-          5135
+          5041
         </td>
         <td>
           Block
@@ -2980,15 +2979,15 @@
         </td>
       </tr><tr>
         <td>
-          118
+          116
         </td>
         <td>
           621
         </td>
         <td>
-          5161
+          5067
           -
-          5171
+          5077
         </td>
         <td>
           DefDef
@@ -3004,15 +3003,15 @@
         </td>
       </tr><tr>
         <td>
-          118
+          116
         </td>
         <td>
           620
         </td>
         <td>
-          5218
+          5124
           -
-          6108
+          6055
         </td>
         <td>
           Apply
@@ -3032,6 +3031,7 @@
       interactionActor ! InteractionBehavior.ChooseTheCard(context.self)
       choose(replyTo)
     case CardChoosenByOther(title, replyTo) =&gt;
+    //TODO rename to TitleChoosenByOther
       interactionActor ! InteractionBehavior.GuessCard(rootActor, title)
       guess(title, replyTo)
     case NewCard(card) =&gt;
@@ -3049,15 +3049,15 @@
         </td>
       </tr><tr>
         <td>
-          119
+          117
         </td>
         <td>
           601
         </td>
         <td>
-          5249
+          5155
           -
-          5271
+          5177
         </td>
         <td>
           Block
@@ -3073,15 +3073,15 @@
         </td>
       </tr><tr>
         <td>
-          122
+          120
         </td>
         <td>
           596
         </td>
         <td>
-          5454
+          5360
           -
-          5505
+          5411
         </td>
         <td>
           Apply
@@ -3097,15 +3097,15 @@
         </td>
       </tr><tr>
         <td>
-          122
+          120
         </td>
         <td>
           595
         </td>
         <td>
-          5454
+          5360
           -
-          5465
+          5371
         </td>
         <td>
           Select
@@ -3121,15 +3121,15 @@
         </td>
       </tr><tr>
         <td>
-          123
+          121
         </td>
         <td>
           597
         </td>
         <td>
-          5512
+          5418
           -
-          5528
+          5434
         </td>
         <td>
           Apply
@@ -3145,15 +3145,15 @@
         </td>
       </tr><tr>
         <td>
-          123
+          121
         </td>
         <td>
           599
         </td>
         <td>
-          5512
+          5418
           -
-          5578
+          5484
         </td>
         <td>
           Apply
@@ -3169,15 +3169,15 @@
         </td>
       </tr><tr>
         <td>
-          123
+          121
         </td>
         <td>
           598
         </td>
         <td>
-          5565
+          5471
           -
-          5577
+          5483
         </td>
         <td>
           Select
@@ -3193,15 +3193,15 @@
         </td>
       </tr><tr>
         <td>
-          124
+          122
         </td>
         <td>
           600
         </td>
         <td>
-          5585
+          5491
           -
-          5600
+          5506
         </td>
         <td>
           Apply
@@ -3217,15 +3217,15 @@
         </td>
       </tr><tr>
         <td>
-          125
+          123
         </td>
         <td>
           605
         </td>
         <td>
-          5605
+          5511
           -
-          5644
+          5550
         </td>
         <td>
           Block
@@ -3241,15 +3241,15 @@
         </td>
       </tr><tr>
         <td>
-          126
+          125
         </td>
         <td>
           603
         </td>
         <td>
-          5654
+          5601
           -
-          5720
+          5667
         </td>
         <td>
           Apply
@@ -3265,15 +3265,15 @@
         </td>
       </tr><tr>
         <td>
-          126
+          125
         </td>
         <td>
           602
         </td>
         <td>
-          5654
+          5601
           -
-          5670
+          5617
         </td>
         <td>
           Apply
@@ -3289,15 +3289,15 @@
         </td>
       </tr><tr>
         <td>
-          127
+          126
         </td>
         <td>
           604
         </td>
         <td>
-          5727
+          5674
           -
-          5748
+          5695
         </td>
         <td>
           Apply
@@ -3313,15 +3313,15 @@
         </td>
       </tr><tr>
         <td>
-          128
+          127
         </td>
         <td>
           609
         </td>
         <td>
-          5753
+          5700
           -
-          5771
+          5718
         </td>
         <td>
           Block
@@ -3337,15 +3337,15 @@
         </td>
       </tr><tr>
         <td>
-          129
+          128
         </td>
         <td>
           606
         </td>
         <td>
-          5781
+          5728
           -
-          5797
+          5744
         </td>
         <td>
           Apply
@@ -3361,15 +3361,15 @@
         </td>
       </tr><tr>
         <td>
-          129
+          128
         </td>
         <td>
           607
         </td>
         <td>
-          5781
+          5728
           -
-          5833
+          5780
         </td>
         <td>
           Apply
@@ -3385,15 +3385,15 @@
         </td>
       </tr><tr>
         <td>
-          130
+          129
         </td>
         <td>
           608
         </td>
         <td>
-          5840
+          5787
           -
-          5854
+          5801
         </td>
         <td>
           Select
@@ -3409,15 +3409,15 @@
         </td>
       </tr><tr>
         <td>
-          131
+          130
         </td>
         <td>
           611
         </td>
         <td>
-          5859
+          5806
           -
-          5877
+          5824
         </td>
         <td>
           Block
@@ -3433,15 +3433,15 @@
         </td>
       </tr><tr>
         <td>
-          131
+          130
         </td>
         <td>
           610
         </td>
         <td>
-          5881
+          5828
           -
-          5895
+          5842
         </td>
         <td>
           Select
@@ -3457,15 +3457,15 @@
         </td>
       </tr><tr>
         <td>
-          133
+          132
         </td>
         <td>
           617
         </td>
         <td>
-          5901
+          5848
           -
-          5921
+          5868
         </td>
         <td>
           Block
@@ -3481,15 +3481,15 @@
         </td>
       </tr><tr>
         <td>
-          134
+          133
         </td>
         <td>
           612
         </td>
         <td>
-          5931
+          5878
           -
-          5947
+          5894
         </td>
         <td>
           Apply
@@ -3505,15 +3505,15 @@
         </td>
       </tr><tr>
         <td>
-          134
+          133
         </td>
         <td>
           614
         </td>
         <td>
-          5931
+          5878
           -
-          6029
+          5976
         </td>
         <td>
           Apply
@@ -3529,15 +3529,15 @@
         </td>
       </tr><tr>
         <td>
-          134
+          133
         </td>
         <td>
           613
         </td>
         <td>
-          5983
+          5930
           -
-          6028
+          5975
         </td>
         <td>
           Apply
@@ -3553,15 +3553,15 @@
         </td>
       </tr><tr>
         <td>
-          135
+          134
         </td>
         <td>
           615
         </td>
         <td>
-          6036
+          5983
           -
-          6050
+          5997
         </td>
         <td>
           Apply
@@ -3577,15 +3577,15 @@
         </td>
       </tr><tr>
         <td>
-          136
+          135
         </td>
         <td>
           616
         </td>
         <td>
-          6057
+          6004
           -
-          6074
+          6021
         </td>
         <td>
           Select
@@ -3601,15 +3601,15 @@
         </td>
       </tr><tr>
         <td>
-          138
+          137
         </td>
         <td>
           618
         </td>
         <td>
-          6090
+          6037
           -
-          6104
+          6051
         </td>
         <td>
           Select
@@ -3625,15 +3625,15 @@
         </td>
       </tr><tr>
         <td>
-          138
+          137
         </td>
         <td>
           619
         </td>
         <td>
-          6080
+          6027
           -
-          6086
+          6033
         </td>
         <td>
           Block
@@ -3649,15 +3649,15 @@
         </td>
       </tr><tr>
         <td>
-          141
+          140
         </td>
         <td>
           635
         </td>
         <td>
-          6112
+          6059
           -
-          6121
+          6068
         </td>
         <td>
           DefDef
@@ -3673,15 +3673,15 @@
         </td>
       </tr><tr>
         <td>
-          141
+          140
         </td>
         <td>
           634
         </td>
         <td>
-          6225
+          6172
           -
-          6597
+          6544
         </td>
         <td>
           Apply
@@ -3707,15 +3707,15 @@
         </td>
       </tr><tr>
         <td>
-          142
+          141
         </td>
         <td>
           625
         </td>
         <td>
-          6256
+          6203
           -
-          6286
+          6233
         </td>
         <td>
           Block
@@ -3731,15 +3731,15 @@
         </td>
       </tr><tr>
         <td>
-          143
+          142
         </td>
         <td>
           623
         </td>
         <td>
-          6296
+          6243
           -
-          6355
+          6302
         </td>
         <td>
           Apply
@@ -3755,15 +3755,15 @@
         </td>
       </tr><tr>
         <td>
-          143
+          142
         </td>
         <td>
           622
         </td>
         <td>
-          6296
+          6243
           -
-          6303
+          6250
         </td>
         <td>
           Apply
@@ -3779,15 +3779,15 @@
         </td>
       </tr><tr>
         <td>
-          144
+          143
         </td>
         <td>
           624
         </td>
         <td>
-          6362
+          6309
           -
-          6376
+          6323
         </td>
         <td>
           Select
@@ -3803,15 +3803,15 @@
         </td>
       </tr><tr>
         <td>
-          145
+          144
         </td>
         <td>
           629
         </td>
         <td>
-          6381
+          6328
           -
-          6415
+          6362
         </td>
         <td>
           Block
@@ -3827,15 +3827,15 @@
         </td>
       </tr><tr>
         <td>
-          146
+          145
         </td>
         <td>
           627
         </td>
         <td>
-          6425
+          6372
           -
-          6506
+          6453
         </td>
         <td>
           Apply
@@ -3851,15 +3851,15 @@
         </td>
       </tr><tr>
         <td>
-          146
+          145
         </td>
         <td>
           626
         </td>
         <td>
-          6425
+          6372
           -
-          6441
+          6388
         </td>
         <td>
           Apply
@@ -3875,15 +3875,15 @@
         </td>
       </tr><tr>
         <td>
-          147
+          146
         </td>
         <td>
           628
         </td>
         <td>
-          6513
+          6460
           -
-          6528
+          6475
         </td>
         <td>
           Apply
@@ -3899,15 +3899,15 @@
         </td>
       </tr><tr>
         <td>
-          148
+          147
         </td>
         <td>
           630
         </td>
         <td>
-          6555
+          6502
           -
-          6563
+          6510
         </td>
         <td>
           Apply
@@ -3923,15 +3923,15 @@
         </td>
       </tr><tr>
         <td>
-          148
+          147
         </td>
         <td>
           631
         </td>
         <td>
-          6533
+          6480
           -
-          6551
+          6498
         </td>
         <td>
           Block
@@ -3947,15 +3947,15 @@
         </td>
       </tr><tr>
         <td>
-          150
+          149
         </td>
         <td>
           633
         </td>
         <td>
-          6569
+          6516
           -
-          6575
+          6522
         </td>
         <td>
           Block
@@ -3971,15 +3971,15 @@
         </td>
       </tr><tr>
         <td>
-          150
+          149
         </td>
         <td>
           632
         </td>
         <td>
-          6579
+          6526
           -
-          6593
+          6540
         </td>
         <td>
           Select
@@ -3995,15 +3995,15 @@
         </td>
       </tr><tr>
         <td>
-          153
+          152
         </td>
         <td>
           654
         </td>
         <td>
-          6601
+          6548
           -
-          6611
+          6558
         </td>
         <td>
           DefDef
@@ -4019,15 +4019,15 @@
         </td>
       </tr><tr>
         <td>
-          153
+          152
         </td>
         <td>
           653
         </td>
         <td>
-          6700
+          6647
           -
-          7180
+          7127
         </td>
         <td>
           Apply
@@ -4056,15 +4056,15 @@
         </td>
       </tr><tr>
         <td>
-          154
+          153
         </td>
         <td>
           641
         </td>
         <td>
-          6731
+          6678
           -
-          6769
+          6716
         </td>
         <td>
           Block
@@ -4080,15 +4080,15 @@
         </td>
       </tr><tr>
         <td>
-          155
+          154
         </td>
         <td>
           636
         </td>
         <td>
-          6779
+          6726
           -
-          6786
+          6733
         </td>
         <td>
           Apply
@@ -4104,15 +4104,15 @@
         </td>
       </tr><tr>
         <td>
-          155
+          154
         </td>
         <td>
           637
         </td>
         <td>
-          6779
+          6726
           -
-          6842
+          6789
         </td>
         <td>
           Apply
@@ -4128,15 +4128,15 @@
         </td>
       </tr><tr>
         <td>
-          156
+          155
         </td>
         <td>
           639
         </td>
         <td>
-          6849
+          6796
           -
-          6904
+          6851
         </td>
         <td>
           Apply
@@ -4152,15 +4152,15 @@
         </td>
       </tr><tr>
         <td>
-          156
+          155
         </td>
         <td>
           638
         </td>
         <td>
-          6849
+          6796
           -
-          6865
+          6812
         </td>
         <td>
           Apply
@@ -4176,15 +4176,15 @@
         </td>
       </tr><tr>
         <td>
-          157
+          156
         </td>
         <td>
           640
         </td>
         <td>
-          6911
+          6858
           -
-          6919
+          6866
         </td>
         <td>
           Apply
@@ -4200,15 +4200,15 @@
         </td>
       </tr><tr>
         <td>
-          158
+          157
         </td>
         <td>
           645
         </td>
         <td>
-          6924
+          6871
           -
-          6954
+          6901
         </td>
         <td>
           Block
@@ -4224,15 +4224,15 @@
         </td>
       </tr><tr>
         <td>
-          159
+          158
         </td>
         <td>
           642
         </td>
         <td>
-          6964
+          6911
           -
-          6971
+          6918
         </td>
         <td>
           Apply
@@ -4248,15 +4248,15 @@
         </td>
       </tr><tr>
         <td>
-          159
+          158
         </td>
         <td>
           643
         </td>
         <td>
-          6964
+          6911
           -
-          7023
+          6970
         </td>
         <td>
           Apply
@@ -4272,15 +4272,15 @@
         </td>
       </tr><tr>
         <td>
-          160
+          159
         </td>
         <td>
           644
         </td>
         <td>
-          7030
+          6977
           -
-          7058
+          7005
         </td>
         <td>
           Apply
@@ -4296,15 +4296,15 @@
         </td>
       </tr><tr>
         <td>
-          162
+          161
         </td>
         <td>
           647
         </td>
         <td>
-          7064
+          7011
           -
-          7082
+          7029
         </td>
         <td>
           Block
@@ -4320,15 +4320,15 @@
         </td>
       </tr><tr>
         <td>
-          162
+          161
         </td>
         <td>
           646
         </td>
         <td>
-          7086
+          7033
           -
-          7094
+          7041
         </td>
         <td>
           Apply
@@ -4344,15 +4344,15 @@
         </td>
       </tr><tr>
         <td>
-          164
+          163
         </td>
         <td>
           648
         </td>
         <td>
-          7112
+          7059
           -
-          7123
+          7070
         </td>
         <td>
           Select
@@ -4368,15 +4368,15 @@
         </td>
       </tr><tr>
         <td>
-          164
+          163
         </td>
         <td>
           650
         </td>
         <td>
-          7112
+          7059
           -
-          7155
+          7102
         </td>
         <td>
           Apply
@@ -4392,15 +4392,15 @@
         </td>
       </tr><tr>
         <td>
-          164
+          163
         </td>
         <td>
           649
         </td>
         <td>
-          7129
+          7076
           -
-          7154
+          7101
         </td>
         <td>
           Apply
@@ -4416,15 +4416,15 @@
         </td>
       </tr><tr>
         <td>
-          164
+          163
         </td>
         <td>
           652
         </td>
         <td>
-          7100
+          7047
           -
-          7108
+          7055
         </td>
         <td>
           Block
@@ -4440,15 +4440,15 @@
         </td>
       </tr><tr>
         <td>
-          165
+          164
         </td>
         <td>
           651
         </td>
         <td>
-          7162
+          7109
           -
-          7176
+          7123
         </td>
         <td>
           Select
@@ -4464,15 +4464,15 @@
         </td>
       </tr><tr>
         <td>
-          168
+          167
         </td>
         <td>
           665
         </td>
         <td>
-          7184
+          7131
           -
-          7207
+          7154
         </td>
         <td>
           DefDef
@@ -4488,15 +4488,15 @@
         </td>
       </tr><tr>
         <td>
-          168
+          167
         </td>
         <td>
           664
         </td>
         <td>
-          7296
+          7243
           -
-          7555
+          7502
         </td>
         <td>
           Apply
@@ -4521,15 +4521,15 @@
         </td>
       </tr><tr>
         <td>
-          169
+          168
         </td>
         <td>
           656
         </td>
         <td>
-          7327
+          7274
           -
-          7352
+          7299
         </td>
         <td>
           Block
@@ -4545,15 +4545,15 @@
         </td>
       </tr><tr>
         <td>
-          171
+          170
         </td>
         <td>
           655
         </td>
         <td>
-          7425
+          7372
           -
-          7433
+          7380
         </td>
         <td>
           Apply
@@ -4569,15 +4569,15 @@
         </td>
       </tr><tr>
         <td>
-          173
+          172
         </td>
         <td>
           657
         </td>
         <td>
-          7461
+          7408
           -
-          7469
+          7416
         </td>
         <td>
           Apply
@@ -4593,15 +4593,15 @@
         </td>
       </tr><tr>
         <td>
-          173
+          172
         </td>
         <td>
           658
         </td>
         <td>
-          7439
+          7386
           -
-          7457
+          7404
         </td>
         <td>
           Block
@@ -4617,15 +4617,15 @@
         </td>
       </tr><tr>
         <td>
-          175
+          174
         </td>
         <td>
           660
         </td>
         <td>
-          7504
+          7451
           -
-          7529
+          7476
         </td>
         <td>
           Apply
@@ -4641,15 +4641,15 @@
         </td>
       </tr><tr>
         <td>
-          175
+          174
         </td>
         <td>
           663
         </td>
         <td>
-          7475
+          7422
           -
-          7483
+          7430
         </td>
         <td>
           Block
@@ -4665,15 +4665,15 @@
         </td>
       </tr><tr>
         <td>
-          175
+          174
         </td>
         <td>
           659
         </td>
         <td>
-          7487
+          7434
           -
-          7498
+          7445
         </td>
         <td>
           Select
@@ -4689,15 +4689,15 @@
         </td>
       </tr><tr>
         <td>
-          175
+          174
         </td>
         <td>
           661
         </td>
         <td>
-          7487
+          7434
           -
-          7530
+          7477
         </td>
         <td>
           Apply
@@ -4713,15 +4713,15 @@
         </td>
       </tr><tr>
         <td>
-          176
+          175
         </td>
         <td>
           662
         </td>
         <td>
-          7537
+          7484
           -
-          7551
+          7498
         </td>
         <td>
           Select

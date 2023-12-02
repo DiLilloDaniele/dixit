@@ -2,7 +2,7 @@
       <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title id="title">
-          grpcService/client/actors/utils/ManualTesting.scala.html
+          grpcService/client/actors/prioritizedQueueExample/PriorityMailBoxApp.scala.html
         </title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
         $(document).ready(function() {$(".tablesorter").tablesorter();});
@@ -22,42 +22,33 @@
         </ul>
         <div class="tab-content">
           <div class="tab-pane active" id="codegrid">
-            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.client.actors.utils
-</span>2 <span style=''>
-</span>3 <span style=''>import grpcService.client.actors.{ClusterListener}
-</span>4 <span style=''>import grpcService.client.actors.utils.Utils.*
-</span>5 <span style=''>import grpcService.client.actors.behaviors.{ForemanBehavior, InteractionBehavior, PlayerBehavior, PlayersManagerBehavior}
-</span>6 <span style=''>
-</span>7 <span style=''>object ManualTesting {
-</span>8 <span style=''>
-</span>9 <span style=''>  </span><span style='background: #F0ADAD'>def testInteractions</span><span style=''>() =
-</span>10 <span style=''>    import grpcService.client.actors.utils
-</span>11 <span style=''>    val foreman = </span><span style='background: #F0ADAD'>startupWithRole(&quot;foreman&quot;, &quot;2551&quot;, &quot;127.0.0.1&quot;)(ForemanBehavior())</span><span style=''>
-</span>12 <span style=''>    
-</span>13 <span style=''>    </span><span style='background: #F0ADAD'>Thread.sleep(2000)</span><span style=''>
-</span>14 <span style=''>    </span><span style='background: #F0ADAD'>startupWithRole(&quot;player&quot;, &quot;2555&quot;, &quot;127.0.0.2&quot;)(PlayerBehavior())</span><span style=''>
-</span>15 <span style=''>    </span><span style='background: #F0ADAD'>Thread.sleep(2000)</span><span style=''>
-</span>16 <span style=''>    </span><span style='background: #F0ADAD'>startupWithRole(&quot;player&quot;, &quot;2553&quot;, &quot;127.0.0.3&quot;)(PlayerBehavior())</span><span style=''>
-</span>17 <span style=''>    // Thread.sleep(2000)
-</span>18 <span style=''>    // startupWithRole(&quot;player&quot;, &quot;2554&quot;, &quot;127.0.0.4&quot;)(PlayerBehavior())
-</span>19 <span style=''>
-</span>20 <span style=''>
-</span>21 <span style=''>  </span><span style='background: #F0ADAD'>def executeForeman</span><span style=''>() =
-</span>22 <span style=''>    import grpcService.client.actors.utils
-</span>23 <span style=''>    val foreman = </span><span style='background: #F0ADAD'>startupWithRole(&quot;foreman&quot;, &quot;2551&quot;, &quot;127.0.0.1&quot;)(ForemanBehavior())</span><span style=''>
-</span>24 <span style=''>    </span><span style='background: #F0ADAD'>startupWithRole(&quot;player&quot;, &quot;2552&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())</span><span style=''>
-</span>25 <span style=''>
-</span>26 <span style=''>  </span><span style='background: #F0ADAD'>def executePlayer1</span><span style=''>() =
-</span>27 <span style=''>    </span><span style='background: #F0ADAD'>startupWithRole(&quot;player&quot;, &quot;2553&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())</span><span style=''>
-</span>28 <span style=''>
-</span>29 <span style=''>  </span><span style='background: #F0ADAD'>def executePlayer2</span><span style=''>() =
-</span>30 <span style=''>    </span><span style='background: #F0ADAD'>startupWithRole(&quot;player&quot;, &quot;2554&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())</span><span style=''>
-</span>31 <span style=''>
-</span>32 <span style=''>  </span><span style='background: #F0ADAD'>def main</span><span style=''>(args: Array[String]) = {
-</span>33 <span style=''>    </span><span style='background: #F0ADAD'>testInteractions()</span><span style=''>
-</span>34 <span style=''>  }
-</span>35 <span style=''>
-</span>36 <span style=''>}
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.client.actors.prioritizedQueueExample
+</span>2 <span style=''>import akka.actor.*
+</span>3 <span style=''>import com.typesafe.config.ConfigFactory
+</span>4 <span style=''>
+</span>5 <span style=''>object PriorityMailBoxApp { 
+</span>6 <span style=''>    
+</span>7 <span style=''>
+</span>8 <span style=''>    </span><span style='background: #F0ADAD'>def main</span><span style=''>(args: Array[String]) = {
+</span>9 <span style=''>        val config = </span><span style='background: #F0ADAD'>ConfigFactory
+</span>10 <span style=''></span><span style='background: #F0ADAD'>      .parseString(
+</span>11 <span style=''></span><span style='background: #F0ADAD'>        s&quot;&quot;&quot;
+</span>12 <span style=''></span><span style='background: #F0ADAD'>        akka.cluster.roles = [role]
+</span>13 <span style=''></span><span style='background: #F0ADAD'>        &quot;&quot;&quot;)
+</span>14 <span style=''></span><span style='background: #F0ADAD'>      .withFallback(ConfigFactory.load(&quot;base-cluster&quot;))</span><span style=''>
+</span>15 <span style=''>        //DispatcherSelector.fromConfig(&quot;your-dispatcher&quot;)
+</span>16 <span style=''>        val actorSystem = </span><span style='background: #F0ADAD'>ActorSystem(&quot;HelloAkka&quot;, config)</span><span style=''> 
+</span>17 <span style=''>        val myPriorityActor = </span><span style='background: #F0ADAD'>actorSystem.actorOf(Props[MyPriorityActor]().withDispatcher(&quot;akka.prio-dispatcher&quot;))</span><span style=''>
+</span>18 <span style=''>        </span><span style='background: #F0ADAD'>myPriorityActor ! 6.0</span><span style=''> 
+</span>19 <span style=''>        </span><span style='background: #F0ADAD'>myPriorityActor ! 1</span><span style=''> 
+</span>20 <span style=''>        </span><span style='background: #F0ADAD'>myPriorityActor ! 5.0</span><span style=''> 
+</span>21 <span style=''>        </span><span style='background: #F0ADAD'>myPriorityActor ! 3</span><span style=''> 
+</span>22 <span style=''>        </span><span style='background: #F0ADAD'>myPriorityActor ! &quot;Hello&quot;</span><span style=''> 
+</span>23 <span style=''>        </span><span style='background: #F0ADAD'>myPriorityActor ! 5</span><span style=''> 
+</span>24 <span style=''>        </span><span style='background: #F0ADAD'>myPriorityActor ! &quot;I am priority actor&quot;</span><span style=''> 
+</span>25 <span style=''>        </span><span style='background: #F0ADAD'>myPriorityActor ! &quot;I process string messages first,then integer, long and others&quot;</span><span style=''>
+</span>26 <span style=''>    }
+</span>27 <span style=''>} 
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -72,495 +63,15 @@
         <th>Code</th>
       </tr><tr>
         <td>
-          8
+          7
         </td>
         <td>
-          821
+          810
         </td>
         <td>
-          288
+          159
           -
-          308
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          testInteractions
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          def testInteractions
-        </td>
-      </tr><tr>
-        <td>
-          10
-        </td>
-        <td>
-          813
-        </td>
-        <td>
-          374
-          -
-          389
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          startupWithRole$default$4
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          startupWithRole
-        </td>
-      </tr><tr>
-        <td>
-          10
-        </td>
-        <td>
-          814
-        </td>
-        <td>
-          374
-          -
-          440
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          startupWithRole
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          startupWithRole(&quot;foreman&quot;, &quot;2551&quot;, &quot;127.0.0.1&quot;)(ForemanBehavior())
-        </td>
-      </tr><tr>
-        <td>
-          12
-        </td>
-        <td>
-          815
-        </td>
-        <td>
-          450
-          -
-          468
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          sleep
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          Thread.sleep(2000)
-        </td>
-      </tr><tr>
-        <td>
-          13
-        </td>
-        <td>
-          817
-        </td>
-        <td>
-          473
-          -
-          537
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          startupWithRole
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          startupWithRole(&quot;player&quot;, &quot;2555&quot;, &quot;127.0.0.2&quot;)(PlayerBehavior())
-        </td>
-      </tr><tr>
-        <td>
-          13
-        </td>
-        <td>
-          816
-        </td>
-        <td>
-          473
-          -
-          488
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          startupWithRole$default$4
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          startupWithRole
-        </td>
-      </tr><tr>
-        <td>
-          14
-        </td>
-        <td>
-          818
-        </td>
-        <td>
-          542
-          -
-          560
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          sleep
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          Thread.sleep(2000)
-        </td>
-      </tr><tr>
-        <td>
-          15
-        </td>
-        <td>
-          819
-        </td>
-        <td>
-          565
-          -
-          580
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          startupWithRole$default$4
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          startupWithRole
-        </td>
-      </tr><tr>
-        <td>
-          15
-        </td>
-        <td>
-          820
-        </td>
-        <td>
-          565
-          -
-          629
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          startupWithRole
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          startupWithRole(&quot;player&quot;, &quot;2553&quot;, &quot;127.0.0.3&quot;)(PlayerBehavior())
-        </td>
-      </tr><tr>
-        <td>
-          20
-        </td>
-        <td>
-          826
-        </td>
-        <td>
-          732
-          -
-          750
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          executeForeman
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          def executeForeman
-        </td>
-      </tr><tr>
-        <td>
-          22
-        </td>
-        <td>
-          822
-        </td>
-        <td>
-          816
-          -
-          831
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          startupWithRole$default$4
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          startupWithRole
-        </td>
-      </tr><tr>
-        <td>
-          22
-        </td>
-        <td>
-          823
-        </td>
-        <td>
-          816
-          -
-          882
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          startupWithRole
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          startupWithRole(&quot;foreman&quot;, &quot;2551&quot;, &quot;127.0.0.1&quot;)(ForemanBehavior())
-        </td>
-      </tr><tr>
-        <td>
-          23
-        </td>
-        <td>
-          824
-        </td>
-        <td>
-          887
-          -
-          902
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          startupWithRole$default$4
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          startupWithRole
-        </td>
-      </tr><tr>
-        <td>
-          23
-        </td>
-        <td>
-          825
-        </td>
-        <td>
-          887
-          -
-          951
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          startupWithRole
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          startupWithRole(&quot;player&quot;, &quot;2552&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())
-        </td>
-      </tr><tr>
-        <td>
-          25
-        </td>
-        <td>
-          829
-        </td>
-        <td>
-          955
-          -
-          973
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          executePlayer1
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          def executePlayer1
-        </td>
-      </tr><tr>
-        <td>
-          26
-        </td>
-        <td>
-          828
-        </td>
-        <td>
-          982
-          -
-          1046
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          startupWithRole
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          startupWithRole(&quot;player&quot;, &quot;2553&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())
-        </td>
-      </tr><tr>
-        <td>
-          26
-        </td>
-        <td>
-          827
-        </td>
-        <td>
-          982
-          -
-          997
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          startupWithRole$default$4
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          startupWithRole
-        </td>
-      </tr><tr>
-        <td>
-          28
-        </td>
-        <td>
-          832
-        </td>
-        <td>
-          1050
-          -
-          1068
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          executePlayer2
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          def executePlayer2
-        </td>
-      </tr><tr>
-        <td>
-          29
-        </td>
-        <td>
-          831
-        </td>
-        <td>
-          1077
-          -
-          1141
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          startupWithRole
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          startupWithRole(&quot;player&quot;, &quot;2554&quot;, &quot;127.0.0.1&quot;)(PlayerBehavior())
-        </td>
-      </tr><tr>
-        <td>
-          29
-        </td>
-        <td>
-          830
-        </td>
-        <td>
-          1077
-          -
-          1092
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          startupWithRole$default$4
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          startupWithRole
-        </td>
-      </tr><tr>
-        <td>
-          31
-        </td>
-        <td>
-          834
-        </td>
-        <td>
-          1145
-          -
-          1153
+          167
         </td>
         <td>
           DefDef
@@ -576,27 +87,590 @@
         </td>
       </tr><tr>
         <td>
-          32
+          9
         </td>
         <td>
-          833
+          787
         </td>
         <td>
-          1183
+          214
           -
-          1201
+          309
         </td>
         <td>
           Apply
         </td>
         <td>
-          testInteractions
+          parseString
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          testInteractions()
+          ConfigFactory
+      .parseString(
+        s&quot;&quot;&quot;
+        akka.cluster.roles = [role]
+        &quot;&quot;&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          10
+        </td>
+        <td>
+          786
+        </td>
+        <td>
+          256
+          -
+          308
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;&quot;&quot;
+        akka.cluster.roles = [role]
+        &quot;&quot;&quot;
+        </td>
+      </tr><tr>
+        <td>
+          13
+        </td>
+        <td>
+          788
+        </td>
+        <td>
+          330
+          -
+          364
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          load
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ConfigFactory.load(&quot;base-cluster&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          13
+        </td>
+        <td>
+          789
+        </td>
+        <td>
+          214
+          -
+          365
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          withFallback
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ConfigFactory
+      .parseString(
+        s&quot;&quot;&quot;
+        akka.cluster.roles = [role]
+        &quot;&quot;&quot;)
+      .withFallback(ConfigFactory.load(&quot;base-cluster&quot;))
+        </td>
+      </tr><tr>
+        <td>
+          15
+        </td>
+        <td>
+          790
+        </td>
+        <td>
+          451
+          -
+          483
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ActorSystem(&quot;HelloAkka&quot;, config)
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          792
+        </td>
+        <td>
+          535
+          -
+          598
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          withDispatcher
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Props[MyPriorityActor]().withDispatcher(&quot;akka.prio-dispatcher&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          791
+        </td>
+        <td>
+          535
+          -
+          559
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Props[MyPriorityActor]()
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          793
+        </td>
+        <td>
+          515
+          -
+          599
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          actorOf
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          actorSystem.actorOf(Props[MyPriorityActor]().withDispatcher(&quot;akka.prio-dispatcher&quot;))
+        </td>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          795
+        </td>
+        <td>
+          608
+          -
+          629
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myPriorityActor ! 6.0
+        </td>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          794
+        </td>
+        <td>
+          608
+          -
+          629
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myPriorityActor ! 6.0
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          797
+        </td>
+        <td>
+          639
+          -
+          658
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myPriorityActor ! 1
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          796
+        </td>
+        <td>
+          639
+          -
+          658
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myPriorityActor ! 1
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          799
+        </td>
+        <td>
+          668
+          -
+          689
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myPriorityActor ! 5.0
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          798
+        </td>
+        <td>
+          668
+          -
+          689
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myPriorityActor ! 5.0
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          801
+        </td>
+        <td>
+          699
+          -
+          718
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myPriorityActor ! 3
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          800
+        </td>
+        <td>
+          699
+          -
+          718
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myPriorityActor ! 3
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          803
+        </td>
+        <td>
+          728
+          -
+          753
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myPriorityActor ! &quot;Hello&quot;
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          802
+        </td>
+        <td>
+          728
+          -
+          753
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myPriorityActor ! &quot;Hello&quot;
+        </td>
+      </tr><tr>
+        <td>
+          22
+        </td>
+        <td>
+          804
+        </td>
+        <td>
+          763
+          -
+          782
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myPriorityActor ! 5
+        </td>
+      </tr><tr>
+        <td>
+          22
+        </td>
+        <td>
+          805
+        </td>
+        <td>
+          763
+          -
+          782
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myPriorityActor ! 5
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          806
+        </td>
+        <td>
+          792
+          -
+          831
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myPriorityActor ! &quot;I am priority actor&quot;
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          807
+        </td>
+        <td>
+          792
+          -
+          831
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myPriorityActor ! &quot;I am priority actor&quot;
+        </td>
+      </tr><tr>
+        <td>
+          24
+        </td>
+        <td>
+          809
+        </td>
+        <td>
+          841
+          -
+          922
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myPriorityActor ! &quot;I process string messages first,then integer, long and others&quot;
+        </td>
+      </tr><tr>
+        <td>
+          24
+        </td>
+        <td>
+          808
+        </td>
+        <td>
+          841
+          -
+          922
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          myPriorityActor ! &quot;I process string messages first,then integer, long and others&quot;
         </td>
       </tr>
     </table>

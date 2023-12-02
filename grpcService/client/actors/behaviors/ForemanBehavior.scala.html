@@ -237,7 +237,7 @@
 </span>213 <span style=''>    if(</span><span style='background: #AEF1AE'>totalVotes.size</span><span style=''> == (</span><span style='background: #AEF1AE'>playersList.size</span><span style=''> - 1) || </span><span style='background: #AEF1AE'>totalVotes.isEmpty</span><span style=''>)
 </span>214 <span style=''>      </span><span style='background: #AEF1AE'>playersList = playersList.filterMap { i =&gt;
 </span>215 <span style=''></span><span style='background: #AEF1AE'>        i._1.path.address != foremanPlayer.path.address
-</span>216 <span style=''></span><span style='background: #AEF1AE'>      } { i =&gt; Tuple2(</span><span style='background: #F0ADAD'>i._1</span><span style='background: #AEF1AE'>, </span><span style='background: #F0ADAD'>i._2</span><span style='background: #AEF1AE'> + 2) }</span><span style=''>
+</span>216 <span style=''></span><span style='background: #AEF1AE'>      } { i =&gt; Tuple2(i._1, i._2 + 2) }</span><span style=''>
 </span>217 <span style=''>    else
 </span>218 <span style=''>      </span><span style='background: #AEF1AE'>playersList = playersList.filterMap { i =&gt;
 </span>219 <span style=''></span><span style='background: #AEF1AE'>        i._1.path.address == foremanPlayer.path.address || totalVotes.exists { c =&gt; c.player == i._1 }
@@ -5970,7 +5970,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           i._1
         </td>
       </tr><tr>
@@ -6020,7 +6020,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           i._2
         </td>
       </tr><tr>

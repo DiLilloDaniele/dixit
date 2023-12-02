@@ -1,0 +1,296 @@
+<html>
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title id="title">
+          grpcService/client/actors/prioritizedQueueExample/MyPriorityActorMailbox.scala.html
+        </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
+        $(document).ready(function() {$(".tablesorter").tablesorter();});
+      </script>
+        <style>
+          table.codegrid { font-family: monospace; font-size: 12px; width: auto!important; }table.statementlist { width: auto!important; font-size: 13px; } table.codegrid td { padding: 0!important; border: 0!important } table td.linenumber { width: 40px!important; } 
+        </style>
+      </head>
+      <body style="font-family: monospace;">
+        <ul class="nav nav-tabs">
+          <li>
+            <a href="#codegrid" data-toggle="tab">Codegrid</a>
+          </li>
+          <li>
+            <a href="#statementlist" data-toggle="tab">Statement List</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="codegrid">
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.client.actors.prioritizedQueueExample
+</span>2 <span style=''>import akka.actor.*
+</span>3 <span style=''>import akka.dispatch.*
+</span>4 <span style=''>import com.typesafe.config.Config
+</span>5 <span style=''>import grpcService.client.actors.prioritizedQueueExample.MyPriorityActor.Hello
+</span>6 <span style=''>import grpcService.client.actors.prioritizedQueueExample.MyPriorityActor.Exit
+</span>7 <span style=''>
+</span>8 <span style=''>class MyPriorityActorMailbox(settings:
+</span>9 <span style=''>    ActorSystem.Settings, config: Config) extends 
+</span>10 <span style=''>    </span><span style='background: #F0ADAD'>UnboundedPriorityMailbox ( 
+</span>11 <span style=''></span><span style='background: #F0ADAD'>    // Create a new PriorityGenerator, lower prio means more important 
+</span>12 <span style=''></span><span style='background: #F0ADAD'>    PriorityGenerator { 
+</span>13 <span style=''></span><span style='background: #F0ADAD'>        case Hello(addr) =&gt;
+</span>14 <span style=''></span><span style='background: #F0ADAD'>            0
+</span>15 <span style=''></span><span style='background: #F0ADAD'>        case Exit(addr) =&gt;
+</span>16 <span style=''></span><span style='background: #F0ADAD'>            1
+</span>17 <span style=''></span><span style='background: #F0ADAD'>        // Int Messages 
+</span>18 <span style=''></span><span style='background: #F0ADAD'>        case x: Int =&gt;
+</span>19 <span style=''></span><span style='background: #F0ADAD'>            1 
+</span>20 <span style=''></span><span style='background: #F0ADAD'>        // String Messages 
+</span>21 <span style=''></span><span style='background: #F0ADAD'>        case x: String =&gt;
+</span>22 <span style=''></span><span style='background: #F0ADAD'>            0 
+</span>23 <span style=''></span><span style='background: #F0ADAD'>        // Long messages 
+</span>24 <span style=''></span><span style='background: #F0ADAD'>        case x: Long =&gt;
+</span>25 <span style=''></span><span style='background: #F0ADAD'>            2 
+</span>26 <span style=''></span><span style='background: #F0ADAD'>        // other messages 
+</span>27 <span style=''></span><span style='background: #F0ADAD'>        case _ =&gt; 3 
+</span>28 <span style=''></span><span style='background: #F0ADAD'>})</span><span style=''>
+</span></pre>
+          </div>
+          <div class="tab-pane" id="statementlist">
+            <table cellspacing="0" cellpadding="0" class="table statementlist">
+      <tr>
+        <th>Line</th>
+        <th>Stmt Id</th>
+        <th>Pos</th>
+        <th>Tree</th>
+        <th>Symbol</th>
+        <th>Tests</th>
+        <th>Code</th>
+      </tr><tr>
+        <td>
+          9
+        </td>
+        <td>
+          785
+        </td>
+        <td>
+          387
+          -
+          842
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          UnboundedPriorityMailbox ( 
+    // Create a new PriorityGenerator, lower prio means more important 
+    PriorityGenerator { 
+        case Hello(addr) =&gt;
+            0
+        case Exit(addr) =&gt;
+            1
+        // Int Messages 
+        case x: Int =&gt;
+            1 
+        // String Messages 
+        case x: String =&gt;
+            0 
+        // Long messages 
+        case x: Long =&gt;
+            2 
+        // other messages 
+        case _ =&gt; 3 
+})
+        </td>
+      </tr><tr>
+        <td>
+          11
+        </td>
+        <td>
+          784
+        </td>
+        <td>
+          491
+          -
+          841
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          PriorityGenerator { 
+        case Hello(addr) =&gt;
+            0
+        case Exit(addr) =&gt;
+            1
+        // Int Messages 
+        case x: Int =&gt;
+            1 
+        // String Messages 
+        case x: String =&gt;
+            0 
+        // Long messages 
+        case x: Long =&gt;
+            2 
+        // other messages 
+        case _ =&gt; 3 
+}
+        </td>
+      </tr><tr>
+        <td>
+          12
+        </td>
+        <td>
+          778
+        </td>
+        <td>
+          520
+          -
+          536
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Hello(addr)
+        </td>
+      </tr><tr>
+        <td>
+          14
+        </td>
+        <td>
+          779
+        </td>
+        <td>
+          562
+          -
+          577
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Exit(addr)
+        </td>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          780
+        </td>
+        <td>
+          628
+          -
+          639
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case x: Int
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          781
+        </td>
+        <td>
+          694
+          -
+          708
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case x: String
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          782
+        </td>
+        <td>
+          761
+          -
+          773
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case x: Long
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          783
+        </td>
+        <td>
+          827
+          -
+          833
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr>
+    </table>
+          </div>
+        </div>
+      </body>
+    </html>

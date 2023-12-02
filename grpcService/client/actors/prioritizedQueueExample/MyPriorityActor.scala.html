@@ -2,7 +2,7 @@
       <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title id="title">
-          grpcService/client/actors/utils/StartNewPlayer.scala.html
+          grpcService/client/actors/prioritizedQueueExample/MyPriorityActor.scala.html
         </title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
         $(document).ready(function() {$(".tablesorter").tablesorter();});
@@ -22,20 +22,25 @@
         </ul>
         <div class="tab-content">
           <div class="tab-pane active" id="codegrid">
-            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.client.actors.utils
-</span>2 <span style=''>
-</span>3 <span style=''>import grpcService.client.actors.behaviors.PlayerBehavior
-</span>4 <span style=''>
-</span>5 <span style=''>object StartNewPlayer {
+            <pre style='font-size: 12pt; font-family: courier, monospace;'>1 <span style=''>package grpcService.client.actors.prioritizedQueueExample
+</span>2 <span style=''>import akka.actor.*
+</span>3 <span style=''>object MyPriorityActor:
+</span>4 <span style=''>    case class Hello(addr: String)
+</span>5 <span style=''>    case class Exit(addr: String)
 </span>6 <span style=''>
-</span>7 <span style=''>    </span><span style='background: #F0ADAD'>def executePlayer</span><span style=''>(role: String, port: String, ip: String) =
-</span>8 <span style=''>        </span><span style='background: #F0ADAD'>Utils.startupWithRole(role, port, ip)(PlayerBehavior())</span><span style=''>
-</span>9 <span style=''>
-</span>10 <span style=''>    </span><span style='background: #F0ADAD'>def main</span><span style=''>(args: Array[String]) = {
-</span>11 <span style=''>        </span><span style='background: #F0ADAD'>println(args)</span><span style=''>
-</span>12 <span style=''>        </span><span style='background: #F0ADAD'>executePlayer(&quot;player&quot;, &quot;2554&quot;, &quot;127.0.0.10&quot;)</span><span style=''>
-</span>13 <span style=''>  }
-</span>14 <span style=''>}
+</span>7 <span style=''>class MyPriorityActor extends Actor {
+</span>8 <span style=''>    import MyPriorityActor.* 
+</span>9 <span style=''>    </span><span style='background: #F0ADAD'>def receive</span><span style=''>: PartialFunction[Any, Unit] = { 
+</span>10 <span style=''>    // Int Messages 
+</span>11 <span style=''>    </span><span style='background: #F0ADAD'>case x: Int</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>println(x)</span><span style=''> 
+</span>12 <span style=''>    // String Messages 
+</span>13 <span style=''>    </span><span style='background: #F0ADAD'>case x: String</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>println(x)</span><span style=''> 
+</span>14 <span style=''>    // Long messages 
+</span>15 <span style=''>    </span><span style='background: #F0ADAD'>case x: Long</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>println(x)</span><span style=''> 
+</span>16 <span style=''>    // other messages 
+</span>17 <span style=''>    </span><span style='background: #F0ADAD'>case x</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>println(x)</span><span style=''> 
+</span>18 <span style=''>    } 
+</span>19 <span style=''>}
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -50,111 +55,63 @@
         <th>Code</th>
       </tr><tr>
         <td>
-          6
+          8
         </td>
         <td>
-          837
+          777
         </td>
         <td>
-          129
+          244
           -
-          146
+          255
         </td>
         <td>
           DefDef
         </td>
         <td>
-          executePlayer
+          receive
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          def executePlayer
-        </td>
-      </tr><tr>
-        <td>
-          7
-        </td>
-        <td>
-          836
-        </td>
-        <td>
-          197
-          -
-          252
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          startupWithRole
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          Utils.startupWithRole(role, port, ip)(PlayerBehavior())
-        </td>
-      </tr><tr>
-        <td>
-          7
-        </td>
-        <td>
-          835
-        </td>
-        <td>
-          197
-          -
-          218
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          startupWithRole$default$4
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          Utils.startupWithRole
-        </td>
-      </tr><tr>
-        <td>
-          9
-        </td>
-        <td>
-          840
-        </td>
-        <td>
-          258
-          -
-          266
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          main
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          def main
+          def receive
         </td>
       </tr><tr>
         <td>
           10
         </td>
         <td>
-          838
+          770
         </td>
         <td>
-          300
+          314
           -
-          313
+          325
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case x: Int
+        </td>
+      </tr><tr>
+        <td>
+          10
+        </td>
+        <td>
+          769
+        </td>
+        <td>
+          329
+          -
+          339
         </td>
         <td>
           Apply
@@ -166,31 +123,151 @@
           
         </td>
         <td style="background: #F0ADAD">
-          println(args)
+          println(x)
         </td>
       </tr><tr>
         <td>
-          11
+          12
         </td>
         <td>
-          839
+          771
         </td>
         <td>
-          322
+          387
           -
-          367
+          397
         </td>
         <td>
           Apply
         </td>
         <td>
-          executePlayer
+          println
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          executePlayer(&quot;player&quot;, &quot;2554&quot;, &quot;127.0.0.10&quot;)
+          println(x)
+        </td>
+      </tr><tr>
+        <td>
+          12
+        </td>
+        <td>
+          772
+        </td>
+        <td>
+          369
+          -
+          383
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case x: String
+        </td>
+      </tr><tr>
+        <td>
+          14
+        </td>
+        <td>
+          774
+        </td>
+        <td>
+          425
+          -
+          437
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case x: Long
+        </td>
+      </tr><tr>
+        <td>
+          14
+        </td>
+        <td>
+          773
+        </td>
+        <td>
+          441
+          -
+          451
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(x)
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          776
+        </td>
+        <td>
+          480
+          -
+          486
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case x
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          775
+        </td>
+        <td>
+          490
+          -
+          500
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(x)
         </td>
       </tr>
     </table>
