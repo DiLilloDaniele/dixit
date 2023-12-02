@@ -23,7 +23,6 @@ object PlayerBehavior:
   case object MemberOK extends Command
   case object MemberKO extends Command
   case object Start extends Command
-  case class TurnOf(val player: String) extends Command
   case class GameInfo(msg: String) extends Command
 
   //turn messages
@@ -34,7 +33,6 @@ object PlayerBehavior:
   case class CardsSubmittedByOthers(val cards: List[String]) extends Command
   case class CardRevealed(val cardId: String) extends Command
   case class CardChoosenForTurn(val cardId: String, val title: String) extends Command
-  case object EndTurn extends Command
   case class CardsAssigned(cardsId: List[String]) extends Command
   case class SingleCardSubmitted(cardId: String) extends Command
   case class GuessedCardbyUser(cardId: String) extends Command
@@ -124,6 +122,7 @@ class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], 
       interactionActor ! InteractionBehavior.ChooseTheCard(context.self)
       choose(replyTo)
     case CardChoosenByOther(title, replyTo) =>
+    //TODO rename to TitleChoosenByOther
       interactionActor ! InteractionBehavior.GuessCard(rootActor, title)
       guess(title, replyTo)
     case NewCard(card) =>
