@@ -21,3 +21,10 @@ To execute a single specific test class, use the following command:
 ```bash
 sbt "testOnly akka.AsyncTestingExampleSpec"
 ```
+
+To start/stop all necessary services execute the following code:
+```bash
+docker compose up
+
+docker compose down
+```
