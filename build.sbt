@@ -49,6 +49,15 @@ runApp := {
   )
 }
 
+val runPrioExample = taskKey[Unit]("running prio queue mailbox example")
+runPrioExample := {
+  (runner in Compile).value.run(
+    mainClass = "grpcService.client.actors.prioritizedQueueExample.PriorityMailBoxApp",
+    classpath = (fullClasspath in Runtime).value.files,
+    options = Array(""),
+    log = streams.value.log
+  )
+}
 val runNewPlayer = taskKey[Unit]("sbt equivalent of gradle's JavaExec")
 runNewPlayer := {
   (runner in Compile).value.run(

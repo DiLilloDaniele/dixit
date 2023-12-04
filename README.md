@@ -28,3 +28,16 @@ docker compose up
 
 docker compose down
 ```
+If you want to access the PhpMyAdmin web-page, after the docker containers deployment, you can use the following browser link:
+```bash
+localhost:8081
+```
+and use the following credentials:
+- Server: empty
+- User: user_name
+- Password: root_password
+
+To create the server docker image, use:
+```bash
+docker build -t sbt_dixit/container -f .\docker_server\Dockerfile .
+```
