@@ -64,7 +64,7 @@ object ClusterListener:
               if(member.roles.contains("player"))
                 ctx.log.info("OUT: {}", member.roles)
                 ctx.log.info("Member is Removed: {} after {}", member.address, previousStatus)
-                manager ! PlayersManagerBehavior.PlayerExited
+                manager ! PlayersManagerBehavior.PlayerExited(member.address)
             case _: MemberEvent => // ignore
           }
         case _ => Behaviors.same

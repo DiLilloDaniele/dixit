@@ -3,8 +3,10 @@ package grpcService.client.actors.behaviors
 import akka.actor.typed.receptionist.{Receptionist, ServiceKey}
 import akka.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors, TimerScheduler}
 import akka.actor.typed.{ActorRef, Behavior, Terminated}
+import akka.actor.Address
 import grpcService.client.actors.utils.Message
 import grpcService.client.actors.behaviors.PlayersManagerBehavior.{AskEnter, CheckMembers, Command, PlayerExited, Service, Startup, Stop}
+import grpcService.client.model.PumpMyList.*
 
 import scala.language.postfixOps
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
@@ -17,7 +19,7 @@ object PlayersManagerBehavior {
 
   case class AskEnter(replyTo: ActorRef[PlayerBehavior.Command]) extends Command
   case object Startup extends Command
-  case object PlayerExited extends Command
+  case class PlayerExited(address: Address) extends Command
   case object CheckMembers extends Command
   case object Stop extends Command
 
@@ -67,8 +69,9 @@ class PlayersManagerBehaviorImpl(context: ActorContext[Command],
         replyTo ! PlayerBehavior.MemberKO
         Behaviors.same
       }
-      //TODO non proprio correttissimo, togliere dalla lista replyTo e fare mailbox a priorità
-    case PlayerExited =>
+    case PlayerExited(address) =>
+      playersList = playersList filter { i => i.path.address != address }
+      context.log.info("PLAYER TOLTO: " + playersList)
       waitPlayers(maxPlayers, currentNumPlayers - 1, foreman)
     case _ =>
       Behaviors.same
@@ -85,7 +88,7 @@ class PlayersManagerBehaviorImpl(context: ActorContext[Command],
         // TODO altrimenti invia KO
       val currentPlayers = currentNumPlayers + 1
       gameOn(maxPlayers, currentPlayers, foreman)
-    case PlayerExited =>
+    case PlayerExited(address) =>
       val currentPlayers = currentNumPlayers - 1
       context.log.info("un giocatore ha quittato")
       Behaviors.withTimers { timer =>
