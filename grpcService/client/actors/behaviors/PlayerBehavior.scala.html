@@ -97,9 +97,9 @@
 </span>73 <span style=''></span><span style='background: #AEF1AE'>          }
 </span>74 <span style=''></span><span style='background: #AEF1AE'>          player ! msg
 </span>75 <span style=''></span><span style='background: #AEF1AE'>          Behaviors.same
-</span>76 <span style=''></span><span style='background: #AEF1AE'>      }.receiveSignal { case (ctx, t @ Terminated(_)) =&gt;
-</span>77 <span style=''></span><span style='background: #AEF1AE'>        ctx.log.info(&quot;System terminated [PLAYER]. Shutting down&quot;)
-</span>78 <span style=''></span><span style='background: #AEF1AE'>        Behaviors.stopped
+</span>76 <span style=''></span><span style='background: #AEF1AE'>      }.receiveSignal { </span><span style='background: #F0ADAD'>case (ctx, t @ Terminated(_))</span><span style='background: #AEF1AE'> =&gt;
+</span>77 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>ctx.log.info(&quot;System terminated [PLAYER]. Shutting down&quot;)</span><span style='background: #AEF1AE'>
+</span>78 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>Behaviors.stopped</span><span style='background: #AEF1AE'>
 </span>79 <span style=''></span><span style='background: #AEF1AE'>      }
 </span>80 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
 </span>81 <span style=''>
@@ -196,8 +196,8 @@
 </span>172 <span style=''></span><span style='background: #AEF1AE'>
 </span>173 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case TurnCancelled</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>gameOn()</span><span style='background: #AEF1AE'>
 </span>174 <span style=''></span><span style='background: #AEF1AE'>
-</span>175 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case msg</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>context.log.info(&quot;Unknown message: &quot; + msg)</span><span style='background: #AEF1AE'>
-</span>176 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>175 <span style=''></span><span style='background: #AEF1AE'>    case msg =&gt; context.log.info(&quot;Unknown message: &quot; + msg)
+</span>176 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.same
 </span>177 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
 </span></pre>
           </div>
@@ -1676,7 +1676,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case (ctx, t @ Terminated(_))
         </td>
       </tr><tr>
@@ -1743,7 +1743,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.log
         </td>
       </tr><tr>
@@ -1767,7 +1767,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           ctx.log.info(&quot;System terminated [PLAYER]. Shutting down&quot;)
         </td>
       </tr><tr>
@@ -1791,7 +1791,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Behaviors.stopped
         </td>
       </tr><tr>
@@ -4636,7 +4636,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           &quot;Unknown message: &quot; + msg
         </td>
       </tr><tr>
@@ -4660,7 +4660,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case msg
         </td>
       </tr><tr>
@@ -4684,7 +4684,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.log
         </td>
       </tr><tr>
@@ -4708,7 +4708,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           context.log.info(&quot;Unknown message: &quot; + msg)
         </td>
       </tr><tr>
@@ -4732,7 +4732,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.same
         </td>
       </tr>

@@ -1,13 +1,13 @@
 <scoverage 
-statement-count="2712" statements-invoked="1342" statement-rate="49.48" branch-rate="66.41" version="1.0" timestamp="1701510449342">
+statement-count="2712" statements-invoked="1339" statement-rate="49.37" branch-rate="66.41" version="1.0" timestamp="1701713826635">
     <packages>
-        <package name="actors" statement-count="99" statements-invoked="85" statement-rate="85.86">
+        <package name="actors" statement-count="99" statements-invoked="81" statement-rate="81.82">
             <classes>
                 <class 
-                name="actors.PlayerClusterListener$" filename="grpcService/client/actors/PlayerClusterListener.scala" statement-count="50" statements-invoked="45" statement-rate="90.00" branch-rate="100.00">
+                name="actors.PlayerClusterListener$" filename="grpcService/client/actors/PlayerClusterListener.scala" statement-count="50" statements-invoked="41" statement-rate="82.00" branch-rate="100.00">
                     <methods>
                         <method 
-                        name="actors/PlayerClusterListener$/$anonfun" statement-count="48" statements-invoked="43" statement-rate="89.58" branch-rate="100.00">
+                        name="actors/PlayerClusterListener$/$anonfun" statement-count="48" statements-invoked="39" statement-rate="81.25" branch-rate="100.00">
                             <statements>
                                 <statement 
                                 package="actors" class="PlayerClusterListener$" class-type="Object" full-class-name="actors.PlayerClusterListener$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/PlayerClusterListener.scala" method="$anonfun" start="2090" end="2100" line="44" branch="false" invocation-count="1" ignored="false">
@@ -22,7 +22,7 @@ statement-count="2712" statements-invoked="1342" statement-rate="49.48" branch-r
                                 package="actors" class="PlayerClusterListener$" class-type="Object" full-class-name="actors.PlayerClusterListener$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/PlayerClusterListener.scala" method="$anonfun" start="1142" end="1149" line="23" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="actors" class="PlayerClusterListener$" class-type="Object" full-class-name="actors.PlayerClusterListener$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/PlayerClusterListener.scala" method="$anonfun" start="1726" end="1733" line="36" branch="false" invocation-count="1" ignored="false">
+                                package="actors" class="PlayerClusterListener$" class-type="Object" full-class-name="actors.PlayerClusterListener$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/PlayerClusterListener.scala" method="$anonfun" start="1726" end="1733" line="36" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="actors" class="PlayerClusterListener$" class-type="Object" full-class-name="actors.PlayerClusterListener$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/PlayerClusterListener.scala" method="$anonfun" start="1843" end="1850" line="38" branch="false" invocation-count="0" ignored="false">
@@ -40,7 +40,7 @@ statement-count="2712" statements-invoked="1342" statement-rate="49.48" branch-r
                                 package="actors" class="PlayerClusterListener$" class-type="Object" full-class-name="actors.PlayerClusterListener$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/PlayerClusterListener.scala" method="$anonfun" start="2407" end="2414" line="49" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="actors" class="PlayerClusterListener$" class-type="Object" full-class-name="actors.PlayerClusterListener$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/PlayerClusterListener.scala" method="$anonfun" start="1584" end="1626" line="33" branch="false" invocation-count="1" ignored="false">
+                                package="actors" class="PlayerClusterListener$" class-type="Object" full-class-name="actors.PlayerClusterListener$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/PlayerClusterListener.scala" method="$anonfun" start="1584" end="1626" line="33" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="actors" class="PlayerClusterListener$" class-type="Object" full-class-name="actors.PlayerClusterListener$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/PlayerClusterListener.scala" method="$anonfun" start="1330" end="1363" line="27" branch="false" invocation-count="1" ignored="false">
@@ -85,7 +85,7 @@ statement-count="2712" statements-invoked="1342" statement-rate="49.48" branch-r
                                 package="actors" class="PlayerClusterListener$" class-type="Object" full-class-name="actors.PlayerClusterListener$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/PlayerClusterListener.scala" method="$anonfun" start="2032" end="2114" line="44" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="actors" class="PlayerClusterListener$" class-type="Object" full-class-name="actors.PlayerClusterListener$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/PlayerClusterListener.scala" method="$anonfun" start="1678" end="1708" line="35" branch="false" invocation-count="1" ignored="false">
+                                package="actors" class="PlayerClusterListener$" class-type="Object" full-class-name="actors.PlayerClusterListener$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/PlayerClusterListener.scala" method="$anonfun" start="1678" end="1708" line="35" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="actors" class="PlayerClusterListener$" class-type="Object" full-class-name="actors.PlayerClusterListener$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/PlayerClusterListener.scala" method="$anonfun" start="2353" end="2390" line="48" branch="false" invocation-count="1" ignored="false">
@@ -103,7 +103,7 @@ statement-count="2712" statements-invoked="1342" statement-rate="49.48" branch-r
                                 package="actors" class="PlayerClusterListener$" class-type="Object" full-class-name="actors.PlayerClusterListener$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/PlayerClusterListener.scala" method="$anonfun" start="2596" end="2615" line="51" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="actors" class="PlayerClusterListener$" class-type="Object" full-class-name="actors.PlayerClusterListener$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/PlayerClusterListener.scala" method="$anonfun" start="1726" end="1784" line="36" branch="false" invocation-count="1" ignored="false">
+                                package="actors" class="PlayerClusterListener$" class-type="Object" full-class-name="actors.PlayerClusterListener$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/PlayerClusterListener.scala" method="$anonfun" start="1726" end="1784" line="36" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="actors" class="PlayerClusterListener$" class-type="Object" full-class-name="actors.PlayerClusterListener$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/PlayerClusterListener.scala" method="$anonfun" start="2090" end="2108" line="44" branch="false" invocation-count="1" ignored="false">
@@ -1560,10 +1560,10 @@ statement-count="2712" statements-invoked="1342" statement-rate="49.48" branch-r
 </class>
             </classes>
         </package>
-        <package name="behaviors" statement-count="605" statements-invoked="416" statement-rate="68.76">
+        <package name="behaviors" statement-count="605" statements-invoked="417" statement-rate="68.93">
             <classes>
                 <class 
-                name="behaviors.PlayerBehavior$" filename="grpcService/client/actors/behaviors/PlayerBehavior.scala" statement-count="63" statements-invoked="53" statement-rate="84.13" branch-rate="100.00">
+                name="behaviors.PlayerBehavior$" filename="grpcService/client/actors/behaviors/PlayerBehavior.scala" statement-count="63" statements-invoked="49" statement-rate="77.78" branch-rate="100.00">
                     <methods>
                         <method 
                         name="behaviors/PlayerBehavior$/apply$default$2" statement-count="2" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
@@ -1577,7 +1577,7 @@ statement-count="2712" statements-invoked="1342" statement-rate="49.48" branch-r
                             </statements>
 </method>
                         <method 
-                        name="behaviors/PlayerBehavior$/$anonfun" statement-count="55" statements-invoked="47" statement-rate="85.45" branch-rate="100.00">
+                        name="behaviors/PlayerBehavior$/$anonfun" statement-count="55" statements-invoked="43" statement-rate="78.18" branch-rate="100.00">
                             <statements>
                                 <statement 
                                 package="behaviors" class="PlayerBehavior$" class-type="Object" full-class-name="behaviors.PlayerBehavior$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="2900" end="2911" line="61" branch="false" invocation-count="1" ignored="false">
@@ -1616,7 +1616,7 @@ statement-count="2712" statements-invoked="1342" statement-rate="49.48" branch-r
                                 package="behaviors" class="PlayerBehavior$" class-type="Object" full-class-name="behaviors.PlayerBehavior$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="3223" end="3226" line="70" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="PlayerBehavior$" class-type="Object" full-class-name="behaviors.PlayerBehavior$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="3380" end="3387" line="76" branch="false" invocation-count="1" ignored="false">
+                                package="behaviors" class="PlayerBehavior$" class-type="Object" full-class-name="behaviors.PlayerBehavior$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="3380" end="3387" line="76" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="PlayerBehavior$" class-type="Object" full-class-name="behaviors.PlayerBehavior$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="2340" end="2349" line="52" branch="false" invocation-count="0" ignored="false">
@@ -1631,7 +1631,7 @@ statement-count="2712" statements-invoked="1342" statement-rate="49.48" branch-r
                                 package="behaviors" class="PlayerBehavior$" class-type="Object" full-class-name="behaviors.PlayerBehavior$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="2188" end="2202" line="47" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="PlayerBehavior$" class-type="Object" full-class-name="behaviors.PlayerBehavior$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="3339" end="3368" line="75" branch="false" invocation-count="1" ignored="false">
+                                package="behaviors" class="PlayerBehavior$" class-type="Object" full-class-name="behaviors.PlayerBehavior$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="3339" end="3368" line="75" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="PlayerBehavior$" class-type="Object" full-class-name="behaviors.PlayerBehavior$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="3039" end="3045" line="64" branch="false" invocation-count="1" ignored="false">
@@ -1706,7 +1706,7 @@ statement-count="2712" statements-invoked="1342" statement-rate="49.48" branch-r
                                 package="behaviors" class="PlayerBehavior$" class-type="Object" full-class-name="behaviors.PlayerBehavior$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="3205" end="3219" line="70" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="PlayerBehavior$" class-type="Object" full-class-name="behaviors.PlayerBehavior$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="3446" end="3463" line="77" branch="false" invocation-count="1" ignored="false">
+                                package="behaviors" class="PlayerBehavior$" class-type="Object" full-class-name="behaviors.PlayerBehavior$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="3446" end="3463" line="77" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="PlayerBehavior$" class-type="Object" full-class-name="behaviors.PlayerBehavior$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="2216" end="2251" line="48" branch="false" invocation-count="1" ignored="false">
@@ -1718,7 +1718,7 @@ statement-count="2712" statements-invoked="1342" statement-rate="49.48" branch-r
                                 package="behaviors" class="PlayerBehavior$" class-type="Object" full-class-name="behaviors.PlayerBehavior$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="2294" end="2329" line="51" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="PlayerBehavior$" class-type="Object" full-class-name="behaviors.PlayerBehavior$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="3380" end="3437" line="76" branch="false" invocation-count="1" ignored="false">
+                                package="behaviors" class="PlayerBehavior$" class-type="Object" full-class-name="behaviors.PlayerBehavior$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="3380" end="3437" line="76" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="PlayerBehavior$" class-type="Object" full-class-name="behaviors.PlayerBehavior$" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="3223" end="3232" line="70" branch="false" invocation-count="1" ignored="false">
@@ -3144,7 +3144,7 @@ statement-count="2712" statements-invoked="1342" statement-rate="49.48" branch-r
                     </methods>
 </class>
                 <class 
-                name="behaviors.PlayerBehaviorImpl" filename="grpcService/client/actors/behaviors/PlayerBehavior.scala" statement-count="120" statements-invoked="85" statement-rate="70.83" branch-rate="100.00">
+                name="behaviors.PlayerBehaviorImpl" filename="grpcService/client/actors/behaviors/PlayerBehavior.scala" statement-count="120" statements-invoked="90" statement-rate="75.00" branch-rate="100.00">
                     <methods>
                         <method 
                         name="behaviors/PlayerBehaviorImpl/guess" statement-count="2" statements-invoked="2" statement-rate="100.00" branch-rate="100.00">
@@ -3277,10 +3277,10 @@ statement-count="2712" statements-invoked="1342" statement-rate="49.48" branch-r
                             </statements>
 </method>
                         <method 
-                        name="behaviors/PlayerBehaviorImpl/$anonfun" statement-count="71" statements-invoked="45" statement-rate="63.38" branch-rate="100.00">
+                        name="behaviors/PlayerBehaviorImpl/$anonfun" statement-count="71" statements-invoked="50" statement-rate="70.42" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7451" end="7476" line="174" branch="false" invocation-count="0" ignored="false">
+                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7451" end="7476" line="174" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="5491" end="5506" line="122" branch="false" invocation-count="1" ignored="false">
@@ -3298,7 +3298,7 @@ statement-count="2712" statements-invoked="1342" statement-rate="49.48" branch-r
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6726" end="6733" line="154" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7422" end="7430" line="174" branch="false" invocation-count="0" ignored="false">
+                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7422" end="7430" line="174" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6037" end="6051" line="137" branch="false" invocation-count="1" ignored="false">
@@ -3364,7 +3364,7 @@ statement-count="2712" statements-invoked="1342" statement-rate="49.48" branch-r
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7059" end="7102" line="163" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7434" end="7445" line="174" branch="false" invocation-count="0" ignored="false">
+                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7434" end="7445" line="174" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6372" end="6388" line="145" branch="false" invocation-count="1" ignored="false">
@@ -3382,7 +3382,7 @@ statement-count="2712" statements-invoked="1342" statement-rate="49.48" branch-r
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="5418" end="5484" line="121" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7484" end="7498" line="175" branch="false" invocation-count="0" ignored="false">
+                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7484" end="7498" line="175" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="5848" end="5868" line="132" branch="false" invocation-count="0" ignored="false">
@@ -3460,7 +3460,7 @@ statement-count="2712" statements-invoked="1342" statement-rate="49.48" branch-r
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="5022" end="5030" line="112" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7434" end="7477" line="174" branch="false" invocation-count="0" ignored="false">
+                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7434" end="7477" line="174" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6911" end="6970" line="158" branch="false" invocation-count="1" ignored="false">
