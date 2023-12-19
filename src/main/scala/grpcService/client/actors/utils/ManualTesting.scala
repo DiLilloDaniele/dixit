@@ -14,8 +14,8 @@ object ManualTesting {
     startupWithRole("player", "2555", "127.0.0.2")(PlayerBehavior())
     Thread.sleep(2000)
     startupWithRole("player", "2553", "127.0.0.3")(PlayerBehavior())
-    // Thread.sleep(2000)
-    // startupWithRole("player", "2554", "127.0.0.4")(PlayerBehavior())
+    Thread.sleep(2000)
+    startupWithRole("player", "2554", "127.0.0.4")(PlayerBehavior())
 
 
   def executeForeman() =
