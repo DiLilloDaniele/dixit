@@ -41,3 +41,17 @@ To create the server docker image, use:
 ```bash
 docker build -t sbt_dixit/container -f .\docker_server\Dockerfile .
 ```
+
+## Usage example
+First, you need to run the server (once run the MySql container via docker-compose):
+```bash
+sbt runServer
+```
+Later, we can run all the other 4 local clients (specifying also the port to discriminate them):
+```bash
+sbt "run 127.0.0.1 2553"
+
+sbt "run 127.0.0.1 2554"
+
+sbt "run 127.0.0.1 2555"
+```
