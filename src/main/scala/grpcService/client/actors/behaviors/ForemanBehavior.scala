@@ -1,12 +1,12 @@
 package grpcService.client.actors.behaviors
 
-import akka.actor.typed.{ActorRef, Behavior, Terminated}
+import akka.actor.typed.{ActorRef, Behavior, Terminated, MailboxSelector, PostStop }
 import akka.actor.typed.receptionist.Receptionist
 import akka.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors}
 import grpcService.client.actors.ClusterListener.Event
 import grpcService.client.actors.{ClusterListener}
 import grpcService.client.actors.utils.Message
-import grpcService.client.actors.behaviors.ForemanBehavior.{Stop, CardToGuess, Command, GuessSelection, NewTurn, PlayerRejoined, SelectionToApply, Start, list}
+import grpcService.client.actors.behaviors.ForemanBehavior.*
 import grpcService.client.actors.behaviors.PlayerBehavior
 import grpcService.client.actors.behaviors.PlayerBehavior.{CardChoosenByOther, CardRevealed, CardsSubmittedByOthers, YourTurn}
 import grpcService.client.model.PlayerSelection
@@ -30,6 +30,7 @@ object ForemanBehavior:
   case class NewTurn(turnIndex: Int) extends Command
   case class PlayerRejoined(address: String) extends Command
   case object Stop extends Command
+  case object RestartTurn extends Command
 
   val list = LazyList.iterate(1) { i => i + 1}.take(100).map { i => s"$i"}.toList
 
@@ -41,17 +42,21 @@ object ForemanBehavior:
       println(myNewList)
       println("----")
     }
-  // inconsistenza MAXTURNS e maxPlayers???
   def apply(logger: Option[ActorRef[Command]] = Option.empty,
-            maxPlayers: Int = 3): Behavior[Command] =
+            maxPlayers: Int = 3, closeHandler: () => Unit = () => ()): Behavior[Command] =
     Behaviors.setup[Command] { ctx =>
       val rootActorRef = ctx.self
+      val props = MailboxSelector.fromConfig("akka.prio-dispatcher")
       val master = ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](ctx => new ForemanBehaviorImpl(ctx, rootActorRef, MAX_TURNS)), "root")
-      val listener = ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx => PlayersManagerBehavior(maxPlayers, rootActorRef)), "event-listener")
+      val listener = ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx => PlayersManagerBehavior(maxPlayers, rootActorRef)), "event-listener", props)
       val clusterManager = ctx.spawn(Behaviors.setup[ClusterListener.Command | Event | Receptionist.Listing](ctx => ClusterListener(listener)), "cluster-listener")
       ctx.watch(listener)
 
       Behaviors.receiveMessage[Command] {
+        case start: Start => 
+          closeHandler()
+          master ! start
+          Behaviors.same
         case msg =>
           logger match {
             case Some(ref) => ref ! msg
@@ -59,14 +64,19 @@ object ForemanBehavior:
           }
           master ! msg
           Behaviors.same
-      }.receiveSignal { case (ctx, t @ Terminated(_)) =>
-        ctx.log.info("System terminated (FOREMAN). Shutting down")
-        // master e event-listener ! close
-        logger match {
-            case Some(ref) => ref ! Stop
-            case _ =>
-          }
-        Behaviors.stopped
+      }.receiveSignal { 
+        case (ctx, t @ Terminated(_)) =>
+          ctx.log.info("System terminated (FOREMAN). Shutting down")
+          closeHandler()
+          // master e event-listener ! close
+          logger match {
+              case Some(ref) => ref ! Stop
+              case _ =>
+            }
+          Behaviors.stopped
+        case (ctx, PostStop) =>
+          ctx.log.info("Master Control Program stopped")
+          Behaviors.stopped
       }
     }
 
@@ -99,7 +109,7 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
       context.log.info("Unknown message: " + m.toString)
       Behaviors.same
   }
-  // TODO fine gioco
+
   def manageTurnOf(actor: ActorRef[PlayerBehavior.Command], turn: Int): Behavior[Command | Receptionist.Listing] = Behaviors.receiveMessage {
     case CardToGuess(card, title, replyTo) if replyTo.path == actor.path =>
       playersSelection = List()
@@ -115,6 +125,10 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
     case PlayerRejoined(address) =>
       playerRejoinedProcedure(address, maxTurns - turnsFinished)
       actor ! YourTurn(root)
+      Behaviors.same
+
+    case RestartTurn =>
+      restartTurnProcedure(actor)
       Behaviors.same
 
     case Stop => Behaviors.stopped
@@ -139,7 +153,10 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
 
     case PlayerRejoined(address) =>
       playerRejoinedProcedure(address, maxTurns - turnsFinished)
-      actor ! YourTurn(root)
+      Behaviors.same
+    
+    case RestartTurn =>
+      restartTurnProcedure(actor)
       manageTurnOf(actor, turn)
 
     case Stop => Behaviors.stopped
@@ -161,20 +178,22 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
           case m if m == (playersList.size - 1) => 0
           case _ => turn + 1
 
-        if(turnsFinished < (maxTurns - 1) || !playersList.map { i => i._2 }.contains(30))
-          Behaviors.withTimers { timers =>
-            timers.startSingleTimer(NewTurn(newTurn), 5000 milliseconds)
-            Behaviors.same
-          }
-        else
+        if(turnsFinished >= (maxTurns - 1) || playersList.map { i => i._2 }.contains(30))
           context.log.info("FINE GIOCO")
           playersList foreach { i =>
             i._1 ! PlayerBehavior.EndGame(i._2)
           }
           Behaviors.stopped
+        else
+          Behaviors.withTimers { timers =>
+            timers.startSingleTimer(NewTurn(newTurn), 5000 milliseconds)
+            Behaviors.same
+          }
 
     case NewTurn(turnIndex) =>
       turnsFinished = turnsFinished + 1
+      // clean playersGuessing choices
+      playersGuessing = List()
       playersList foreach { i =>
         i._1 ! PlayerBehavior.NewCard(pickCards(1).head)
       }
@@ -183,7 +202,10 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
 
     case PlayerRejoined(address) =>
       playerRejoinedProcedure(address, maxTurns - turnsFinished)
-      actor ! YourTurn(root)
+      Behaviors.same
+    
+    case RestartTurn =>
+      restartTurnProcedure(actor)
       manageTurnOf(actor, turn)
 
     case Stop => Behaviors.stopped
@@ -192,12 +214,20 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
   }
   
   def playerRejoinedProcedure(address: String, numCarte: Int): Unit =
+    context.log.info("REINVIO LE CARTE A " + address)
     playersList.foreach { p =>
-      context.log.info("REINVIO LE CARTE A " + address)
       if(p._1.path.address.toString == address)
-
         p._1 ! PlayerBehavior.CardsAssigned(pickCards(numCarte))
+      else
+        p._1 ! PlayerBehavior.TurnCancelled
     }
+
+  def restartTurnProcedure(actor: ActorRef[PlayerBehavior.Command]): Unit = 
+    context.log.info("RESTART DEL TURNO")
+    playersList.foreach { p =>
+      p._1 ! PlayerBehavior.TurnCancelled
+    }
+    actor ! YourTurn(root)
 
   def pickCards(numCarte: Int): List[String] =
     val myNewList = myList.take(numCarte)

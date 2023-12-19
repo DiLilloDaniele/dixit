@@ -102,6 +102,7 @@ class InteractionGuiImpl(context: ActorContext[Command], replyTo: ActorRef[Playe
       Behaviors.same
 
     case Stop =>
+      gui.changeWarnText("Gioco terminato. Chiudere la finestra.")
       Behaviors.stopped
 
     case m =>

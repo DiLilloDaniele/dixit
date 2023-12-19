@@ -5,7 +5,7 @@ import akka.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors, Tim
 import akka.actor.typed.{ActorRef, Behavior, Terminated}
 import akka.actor.Address
 import grpcService.client.actors.utils.Message
-import grpcService.client.actors.behaviors.PlayersManagerBehavior.{AskEnter, CheckMembers, Command, PlayerExited, Service, Startup, Stop}
+import grpcService.client.actors.behaviors.PlayersManagerBehavior.*
 import grpcService.client.model.PumpMyList.*
 
 import scala.language.postfixOps
@@ -48,13 +48,14 @@ class PlayersManagerBehaviorImpl(context: ActorContext[Command],
                                  foreman: ActorRef[ForemanBehavior.Command]) extends AbstractBehavior[Command](context):
 
   var playersList: List[ActorRef[PlayerBehavior.Command]] = List()
+  var currentNumPlayers: Int = maxPlayers
 
   override def onMessage(msg: Command): Behavior[Command] = msg match {
-    case Startup => waitPlayers(maxPlayers, 0, foreman)
+    case Startup => waitPlayers(0, foreman)
     case _ => Behaviors.same
   }
 
-  def waitPlayers(maxPlayers: Int, currentNumPlayers: Int, foreman: ActorRef[ForemanBehavior.Command]): Behavior[Command] = Behaviors.receiveMessage[Command] {
+  def waitPlayers(currentNumPlayers: Int, foreman: ActorRef[ForemanBehavior.Command]): Behavior[Command] = Behaviors.receiveMessage[Command] {
     case AskEnter(replyTo) =>
       val currentPlayers = currentNumPlayers + 1
       if (currentPlayers <= maxPlayers) {
@@ -62,9 +63,9 @@ class PlayersManagerBehaviorImpl(context: ActorContext[Command],
         replyTo ! PlayerBehavior.MemberOK
         if(currentPlayers == maxPlayers)
           foreman ! ForemanBehavior.Start(playersList.toSet)
-          gameOn(maxPlayers, currentPlayers, foreman)
+          gameOn(foreman)
         else
-          waitPlayers(maxPlayers, currentPlayers, foreman)
+          waitPlayers(currentPlayers, foreman)
       } else {
         replyTo ! PlayerBehavior.MemberKO
         Behaviors.same
@@ -72,28 +73,31 @@ class PlayersManagerBehaviorImpl(context: ActorContext[Command],
     case PlayerExited(address) =>
       playersList = playersList filter { i => i.path.address != address }
       context.log.info("PLAYER TOLTO: " + playersList)
-      waitPlayers(maxPlayers, currentNumPlayers - 1, foreman)
+      waitPlayers(currentNumPlayers - 1, foreman)
     case _ =>
       Behaviors.same
   }
 
-  def gameOn(maxPlayers: Int, currentNumPlayers: Int, foreman: ActorRef[ForemanBehavior.Command]): Behavior[Command] = Behaviors.receiveMessage[Command] {
+  def gameOn(foreman: ActorRef[ForemanBehavior.Command]): Behavior[Command] = Behaviors.receiveMessage[Command] {
     case AskEnter(replyTo) =>
       val playersAddresses = playersList.map { i => i.path.address.toString}
-      if(playersAddresses.contains(replyTo.path.address.toString))
+      if(playersAddresses.contains(replyTo.path.address.toString) && currentNumPlayers < maxPlayers)
         context.log.info("un giocatore è rientrato")
         replyTo ! PlayerBehavior.MemberOK
         foreman ! ForemanBehavior.PlayerRejoined(replyTo.path.address.toString)
+        currentNumPlayers = currentNumPlayers + 1
+        if(currentNumPlayers == maxPlayers)
+          foreman ! ForemanBehavior.RestartTurn
+        gameOn(foreman)
+      else
+        replyTo ! PlayerBehavior.MemberKO
         Behaviors.same
-        // TODO altrimenti invia KO
-      val currentPlayers = currentNumPlayers + 1
-      gameOn(maxPlayers, currentPlayers, foreman)
     case PlayerExited(address) =>
-      val currentPlayers = currentNumPlayers - 1
+      currentNumPlayers = currentNumPlayers - 1
       context.log.info("un giocatore ha quittato")
       Behaviors.withTimers { timer =>
-        timer.startSingleTimer(CheckMembers, 15000 milliseconds)
-        gameOn(maxPlayers, currentPlayers - 1, foreman)
+        timer.startSingleTimer(CheckMembers, 300000 milliseconds)
+        gameOn(foreman)
       }
 
     case CheckMembers =>

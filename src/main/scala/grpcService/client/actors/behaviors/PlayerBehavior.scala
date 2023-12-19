@@ -73,9 +73,10 @@ object PlayerBehavior:
           }
           player ! msg
           Behaviors.same
-      }.receiveSignal { case (ctx, t @ Terminated(_)) =>
-        ctx.log.info("System terminated [PLAYER]. Shutting down")
-        Behaviors.stopped
+      }.receiveSignal { 
+        case (ctx, t @ Terminated(_)) =>
+          ctx.log.info("System terminated [PLAYER]. Shutting down")
+          Behaviors.stopped
       }
     }
 
