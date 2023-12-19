@@ -1,5 +1,7 @@
 package grpcService.client.controller
 
+import akka.actor.typed.{ActorSystem}
+
 import grpcService.OpenedGames
 import grpcService.client.ClientImpl
 import grpcService.client.actors.behaviors.{ForemanBehavior, PlayerBehavior}
@@ -12,9 +14,14 @@ import grpcService.client.actors.utils.Utils
 object GameControllerObj:
   type SuccessFun[A] = (A) => Unit
 
-class GameController(val client: ClientImpl) {
+given Conversion [Int , String ] with
+  def apply (t: Int): String =
+    t.toString
+
+class GameController(val client: ClientImpl, val address: String = "127.0.0.1", val connectionPort: Int = 2551) {
   
   var username = ""
+  var foreman: Option[ActorSystem[ForemanBehavior.Command]] = Option.empty
 
   def getGames(success: SuccessFun[List[String]]): Unit = client.getAvailableGames(success)
 
@@ -30,22 +37,34 @@ class GameController(val client: ClientImpl) {
       case v => val fut = client.updateUsersPoints(List(v), List(points), (bool) => ())
   }
 
-  def joinGame(address: String) = 
-    val future = Utils.startupWithRole("player", "2552", "127.0.0.1", address)(PlayerBehavior(onStop = updateUserPoints)).getWhenTerminated
+  def joinGame(clusterAddress: String) = 
+    val future = Utils.startupWithRole("player", connectionPort, address, clusterAddress)(PlayerBehavior(onStop = updateUserPoints)).getWhenTerminated
     future.whenComplete((done, reject) => {
       println("SISTEMA TERMINATO")
     })
 
-  def createGame(port: String = "2551", address: String = "127.0.0.1") =
+  def closeAlreadyOpenedGame() = 
+    foreman match
+      case Some(value) => 
+        println("ORA TERMINO IL SISTEMA")
+        value.terminate()
+      case _ => ()
+    foreman = Option.empty
+    client.closeGame(s"$address", username, (_) => ())
+
+  def closeGameFun(address: String, port: String): () => Unit = () => client.closeGame(s"$address:$port", username, (_) => ())
+ 
+  def createGame() =
     if(username != "")
       println("CREO IL GIOCO.....")
-      client.createGame(s"$address:$port", username, (_) => {
+      client.createGame(s"$address", username, (_) => {
         println("GIOCO CREATO")
-        val foreman = Utils.startupWithRole("foreman", "2551", "127.0.0.1")(ForemanBehavior())
-        
-        val future = Utils.startupWithRole("player", "2552", "127.0.0.1")(PlayerBehavior(onStop = updateUserPoints)).getWhenTerminated
+        foreman = Option(
+          Utils.startupWithRole("foreman", 2551, address, username)(ForemanBehavior(closeHandler = closeGameFun(address, connectionPort)))
+        )
+        val future = Utils.startupWithRole("player", 2552, address, username)(PlayerBehavior(onStop = updateUserPoints)).getWhenTerminated
         future.whenComplete((done, reject) => {
-          foreman.terminate()
+          closeAlreadyOpenedGame()
           println("SISTEMA TERMINATO")
         })
       })
