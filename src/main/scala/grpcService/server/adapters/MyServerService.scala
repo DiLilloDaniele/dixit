@@ -35,8 +35,10 @@ class MyServerService(using mat: Materializer, inboundPorts: InboundPorts) exten
     Future.successful(ClosingResponse())
 
   override def newGame(in: GameMessage): Future[NewGameResponse] =
-    inboundPorts.gamesManagementPort.openNewGame(in.address, in.forename)
-    Future.successful(NewGameResponse())
+    val result = inboundPorts.gamesManagementPort.openNewGame(in.address, in.forename)
+    result match
+      case true => Future.successful(NewGameResponse())
+      case false => Future.failed(new IllegalStateException("Game already created"))
 
   override def updateUserPoints(in: UserPoints): Future[UpdateResponse] =
     val result: Boolean = inboundPorts.gamesManagementPort.updateUsers(in.userName.toList, in.points.toList)
