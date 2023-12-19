@@ -13,6 +13,7 @@ import javax.swing.*
 import javax.swing.event.{ListSelectionEvent, ListSelectionListener}
 import scala.util.{Failure, Success}
 import grpcService.client.ClientImpl
+import grpcService.client.controller.given_Conversion_Int_String
 
 import java.util
 
@@ -24,11 +25,15 @@ object HomepageView:
     })
 
   def main(args: Array[String]): Unit =
-    createAndShowGui()
+    val listArgs = args.toList
+    if(listArgs.size > 0)
+      createAndShowGui(listArgs(0), listArgs(1))
+    else
+      createAndShowGui(listArgs(0), listArgs(1))
 
-  def createAndShowGui() =
+  def createAndShowGui(address: String = "127.0.0.1", port: String = "2551") =
     val clientImpl = ClientImpl()
-    val controller = GameController(clientImpl)
+    val controller = GameController(clientImpl, address, port.toInt)
     val frame = JFrame("Test")
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
     frame.setContentPane (HomepageView(controller))
@@ -41,6 +46,7 @@ class HomepageView(val gameController : GameController) extends JPanel() {
   val resourceFolder = (System.getProperty("user.dir").toString() + "\\src\\main\\resources\\")
   var listPane = JPanel()
   var cl: CardLayout = CardLayout()
+  var addressSelected: String = ""
 
   setLayout(cl)
 
@@ -56,6 +62,7 @@ class HomepageView(val gameController : GameController) extends JPanel() {
   myList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION)
   myList.addListSelectionListener((e) => {
     println("ELEMENTO CLICCATO: " + myList.getSelectedValue)
+    addressSelected = myList.getSelectedValue
   })
   myList.setLayoutOrientation(JList.VERTICAL_WRAP)
   myList.setVisibleRowCount(-1)
@@ -68,6 +75,14 @@ class HomepageView(val gameController : GameController) extends JPanel() {
   val butCreate = JButton("Create game")
   val butSubmit = JButton("Join")
   val butRefresh = JButton("Refresh...")
+  val butClear = JButton("Clear")
+  butSubmit.addActionListener((e) => {
+    addressSelected match
+      case v if v != "" => gameController.joinGame(addressSelected)
+  })
+  butClear.addActionListener((e) => {
+    gameController.closeAlreadyOpenedGame()
+  })
   butCreate.addActionListener((e) => {
     gameController.createGame()
   })
@@ -89,6 +104,7 @@ class HomepageView(val gameController : GameController) extends JPanel() {
 
   butPanelSouth.add(redVal)
   butPanelSouth.add(butCreate)
+  butPanelSouth.add(butClear)
 
   butPanelNorth.add(butRefresh)
   butPanelNorth.add(butSubmit)
@@ -106,14 +122,15 @@ class HomepageView(val gameController : GameController) extends JPanel() {
   loginButton.addActionListener((ev) => {
     val username = usernameTextField.getText
     val password = passwordTextField.getText
-    gameController.login(username, password, (res) => {
-      res match {
-        case true =>
-          gameController.username = username
-          changeView()
-        case _ => JOptionPane.showMessageDialog(null, "Utente non registrato")
-      }
-    })
+    if(!username.contains(" "))
+      gameController.login(username, password, (res) => {
+        res match {
+          case true =>
+            gameController.username = username
+            changeView()
+          case _ => JOptionPane.showMessageDialog(null, "Utente non registrato")
+        }
+      })
   })
   registerButton.addActionListener((ev) => {
     val username = usernameTextField.getText

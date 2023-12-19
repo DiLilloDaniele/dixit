@@ -1,10 +1,10 @@
 package grpcService.client.view
 
 import java.awt.event.{MouseEvent, MouseListener, WindowAdapter, WindowEvent}
-import java.awt.{BorderLayout, Color, Component, GridBagConstraints, GridBagLayout, Insets}
+import java.awt.{BorderLayout, Color, Component, GridBagConstraints, GridBagLayout, Insets, Dimension, Dialog}
 import java.io.File
 import javax.imageio.ImageIO
-import javax.swing.{BoxLayout, ImageIcon, JButton, JFrame, JLabel, JPanel, JTextField, SwingConstants, SwingUtilities, WindowConstants}
+import javax.swing.{BoxLayout, ImageIcon, JButton, JFrame, JLabel, JPanel, JDialog, JTextField, SwingConstants, SwingUtilities, WindowConstants}
 
 object MainGui:
 
@@ -53,7 +53,6 @@ class MainGui(val sendImage: (cardId: Int, title: String) => Unit,
   c.insets = new Insets(5, 0, 0, 0)
   labsPanel.add(errorMsg, c)
 
-  val butSubmit = new JButton("Submit")
   val butReset = new JButton("Reset")
 
   val redVal = new JTextField(20)
@@ -62,7 +61,6 @@ class MainGui(val sendImage: (cardId: Int, title: String) => Unit,
   val butPanelNorth = new JPanel
 
   butPanelSouth.add(redVal)
-  butPanelSouth.add(butSubmit)
 
   butPanelNorth.add(butReset)
 
@@ -101,7 +99,7 @@ class MainGui(val sendImage: (cardId: Int, title: String) => Unit,
 
   def getImageToChoose(cards: List[String]) =
     resetListPane()
-    changeWarnText("Scegli la carta e il titolo per il tuo turno")
+    changeWarnText("Scegli la carta e scrivi il titolo per il tuo turno, poi clicca la carta scelta")
     cards foreach { i =>
       val image = images(i.toInt - 1)
       val picLabel = new JLabel(new ImageIcon(image._2))
@@ -113,8 +111,11 @@ class MainGui(val sendImage: (cardId: Int, title: String) => Unit,
     listPane.repaint();
 
   def changeWarnText(text: String) =
+    resetListPane()
     SwingUtilities.invokeLater(() => {
       errorMsg.setText(text)
+      this.revalidate();
+      this.repaint();
     })
 
   def getListenerForChoose(index: Int): MouseListener =
@@ -174,9 +175,14 @@ class MainGui(val sendImage: (cardId: Int, title: String) => Unit,
         closeEvent()
       }
     })
+    
     frame.setContentPane (this)
     frame.pack ()
     frame.setLocationRelativeTo (null)
     frame.setVisible (true)
+    /*val dialog: JDialog = new JDialog(JFrame("Test"),"theTitle", Dialog.ModalityType.APPLICATION_MODAL)
+    dialog.setContentPane (this)
+    dialog.pack()
+    dialog.setVisible(true)*/
 
 }
