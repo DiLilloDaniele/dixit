@@ -18,6 +18,10 @@ object Utils:
         akka.remote.artery.canonical.hostname=$ip
         akka.remote.artery.canonical.port=$port
         akka.cluster.roles = [$role]
+        akka.cluster.seed-nodes = [
+          "akka://$clusterName@127.0.0.1:2551",
+          "akka://$clusterName@127.0.0.1:2552"
+        ]
         """)
       .withFallback(ConfigFactory.load("base-cluster"))
 
