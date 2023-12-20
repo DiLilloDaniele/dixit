@@ -43,12 +43,12 @@ object Client {
   
 }
 */
-class ClientImpl() {
+class ClientImpl(serverAddress: String) {
  
   implicit val sys: ActorSystem = ActorSystem("HelloWorldClient")
   implicit val ec: ExecutionContextExecutor = sys.dispatcher
 
-  val clientSettings = GrpcClientSettings.connectToServiceAt("127.0.0.1", 8083).withTls(false)
+  val clientSettings = GrpcClientSettings.connectToServiceAt(serverAddress, 8083).withTls(false)
 
   val client: Server = ServerClient(clientSettings)
 

@@ -26,13 +26,13 @@ object HomepageView:
 
   def main(args: Array[String]): Unit =
     val listArgs = args.toList
-    if(listArgs.size > 0)
-      createAndShowGui(listArgs(0), listArgs(1))
-    else
-      createAndShowGui(listArgs(0), listArgs(1))
+    listArgs.size match
+      case m if m == 3 => createAndShowGui(listArgs(0), listArgs(1), listArgs(2))
+      case m if m > 0 => createAndShowGui(listArgs(0), listArgs(1))
+      case m => createAndShowGui()      
 
-  def createAndShowGui(address: String = "127.0.0.1", port: String = "2551") =
-    val clientImpl = ClientImpl()
+  def createAndShowGui(address: String = "127.0.0.1", port: String = "2551", serverAddress: String = "127.0.0.1") =
+    val clientImpl = ClientImpl(serverAddress)
     val controller = GameController(clientImpl, address, port.toInt)
     val frame = JFrame("Test")
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)

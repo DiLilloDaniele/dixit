@@ -55,3 +55,8 @@ sbt "run 127.0.0.1 2554"
 
 sbt "run 127.0.0.1 2555"
 ```
+
+Note that if you want to execute the server with a different ip address than the localhost, you can use the following start command:
+```bash
+sbt "runMain grpcService.server.applicationService.Service 192.168.1.10"
+```

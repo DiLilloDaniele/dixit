@@ -17,17 +17,21 @@ import scala.concurrent.{ExecutionContext, Future}
 object Service {
 
   def main(args: Array[String]): Unit = {
-    createService()
+    val listArgs = args.toList
+    if(listArgs.size > 0)
+      createService(ipAddress = listArgs(0))
+    else
+      createService()
   }
 
-  def createService(accessAdapter: AccessAdapter = ServiceLocator.getDataAdapter()): Service = 
+  def createService(accessAdapter: AccessAdapter = ServiceLocator.getDataAdapter(), ipAddress: String = "127.0.0.1"): Service = 
     // Important: enable HTTP/2 in ActorSystem's config
     // We do it here programmatically, but you can also set it in the application.conf
     val conf = ConfigFactory
       .parseString("akka.http.server.preview.enable-http2 = on")
       .withFallback(ConfigFactory.defaultApplication())
     val system = ActorSystem("HelloWorld", conf)
-    val service = new Service(system, accessAdapter)
+    val service = new Service(system, accessAdapter, ipAddress)
     service.run()
     return service
     // ActorSystem threads will keep the app alive until `system.terminate()` is called
@@ -41,7 +45,7 @@ object Service {
  * nelle porte voglio come contesto la logica di dominio
  * @param system
  */
-class Service(system: ActorSystem, repository: AccessAdapter) {
+class Service(system: ActorSystem, repository: AccessAdapter, ipAddress: String) {
   given serverLogic: ServerLogic = ServerLogic {
     AccessPort {
       repository
@@ -63,7 +67,7 @@ class Service(system: ActorSystem, repository: AccessAdapter) {
       ServerHandler(new MyServerService())
 
     // Bind service handler servers to localhost:8080/8081
-    val binding = Http().newServerAt("127.0.0.1", 8083).bind(service)
+    val binding = Http().newServerAt(ipAddress, 8083).bind(service)
 
     // report successful binding
     binding.foreach { binding => println(s"gRPC server bound to: ${binding.localAddress}") }
