@@ -72,6 +72,8 @@ class HomepageView(val gameController : GameController) extends JPanel() {
 
   labsPanel.add(listScroller)
 
+  val pointsLabel = JLabel("")
+
   val butCreate = JButton("Create game")
   val butSubmit = JButton("Join")
   val butRefresh = JButton("Refresh...")
@@ -87,6 +89,8 @@ class HomepageView(val gameController : GameController) extends JPanel() {
     gameController.createGame()
   })
   butRefresh.addActionListener((e) => {
+    updateCurrentPoints()
+
     gameController.getGames((list) => {
       println("LISTA GAMES:")
       println(list)
@@ -106,6 +110,7 @@ class HomepageView(val gameController : GameController) extends JPanel() {
   butPanelSouth.add(butCreate)
   butPanelSouth.add(butClear)
 
+  butPanelNorth.add(pointsLabel)
   butPanelNorth.add(butRefresh)
   butPanelNorth.add(butSubmit)
 
@@ -128,6 +133,7 @@ class HomepageView(val gameController : GameController) extends JPanel() {
           case true =>
             gameController.username = username
             changeView()
+            updateCurrentPoints()
           case _ => JOptionPane.showMessageDialog(null, "Utente non registrato")
         }
       })
@@ -140,6 +146,7 @@ class HomepageView(val gameController : GameController) extends JPanel() {
         case true =>
           gameController.username = username
           changeView()
+          updateCurrentPoints()
         case _ => JOptionPane.showMessageDialog(null, "Utente non registrato")
       }
     })
@@ -151,6 +158,8 @@ class HomepageView(val gameController : GameController) extends JPanel() {
 
   add(loginPanel, "empty")
   add(borderLayout, "listpane")
+
+  def updateCurrentPoints() = gameController.updateUserPoints((points) => pointsLabel.setText(s"I tuoi punti sono: $points"))
   
   def createAndShowGui() =
     SwingUtilities.invokeLater(() => {

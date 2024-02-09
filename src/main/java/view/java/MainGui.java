@@ -30,9 +30,6 @@ public class MainGui {
         frame.setVisible (true);
     }
 
-    /*
-    idee: liste di oggetti carte
-     */
     static class MainPanel extends JPanel
     {
         private static final String resourceFolder = (System.getProperty("user.dir").toString() + "\\src\\main\\resources\\");
@@ -84,7 +81,6 @@ public class MainGui {
             add (labsPanel, BorderLayout.CENTER);
             add (butPanelNorth, BorderLayout.NORTH);
             add (butPanelSouth, BorderLayout.SOUTH);
-            //listPane.add(picLabel);
         }
 
         public void addCard() {
