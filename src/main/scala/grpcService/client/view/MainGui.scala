@@ -53,7 +53,12 @@ class MainGui(val sendImage: (cardId: Int, title: String) => Unit,
   c.insets = new Insets(5, 0, 0, 0)
   labsPanel.add(errorMsg, c)
 
-  val butReset = new JButton("Reset")
+  val butGoHome = new JButton("Torna alla home")
+  butGoHome.setVisible(false)
+  butGoHome.addActionListener((e) => {
+    closeEvent()
+    SwingUtilities.getWindowAncestor(this).dispose()
+  })
 
   val redVal = new JTextField(20)
 
@@ -62,11 +67,14 @@ class MainGui(val sendImage: (cardId: Int, title: String) => Unit,
 
   butPanelSouth.add(redVal)
 
-  butPanelNorth.add(butReset)
+  butPanelNorth.add(butGoHome)
 
   add(labsPanel, BorderLayout.CENTER)
   add(butPanelNorth, BorderLayout.NORTH)
   add(butPanelSouth, BorderLayout.SOUTH)
+
+  def setCloseButtonVisible() =
+    butGoHome.setVisible(true)
 
   def resetListPane() =
     listPane.removeAll()

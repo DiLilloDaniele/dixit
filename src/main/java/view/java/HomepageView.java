@@ -27,9 +27,6 @@ public class HomepageView {
         frame.setVisible (true);
     }
 
-    /*
-    idee: liste di oggetti carte
-     */
     static class MainPanel extends JPanel {
         private static final String resourceFolder = (System.getProperty("user.dir").toString() + "\\src\\main\\resources\\");
         private JPanel listPane;
@@ -99,7 +96,6 @@ public class HomepageView {
 
             add(loginPanel, "empty");
             add(borderLayout, "listpane");
-            //listPane.add(picLabel);
         }
 
         private void changeView() {
