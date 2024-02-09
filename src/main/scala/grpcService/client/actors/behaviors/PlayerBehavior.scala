@@ -132,7 +132,7 @@ class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], 
     case TurnCancelled => Behaviors.same
 
     case EndGame(points) =>
-      interactionActor ! InteractionBehavior.MessageError(s"Gioco terminato, punti guadagnati: $points")
+      interactionActor ! InteractionBehavior.EndGame(s"Gioco terminato, punti guadagnati: $points")
       onStop(points)
       Behaviors.stopped
 

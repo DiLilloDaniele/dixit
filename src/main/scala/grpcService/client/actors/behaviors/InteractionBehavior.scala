@@ -3,7 +3,7 @@ package grpcService.client.actors.behaviors
 import akka.actor.typed.{ActorRef, Behavior, Terminated}
 import akka.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors}
 import grpcService.client.actors.utils.Message
-import grpcService.client.actors.behaviors.InteractionBehavior.{ResetInteraction, CardsAssigned, ChooseTheCard, Command, GuessCard, MessageError, NewCard, ShowCardsProposed, Stop}
+import grpcService.client.actors.behaviors.InteractionBehavior.*
 import grpcService.client.controller.GameController
 import grpcService.client.ClientImpl
 import grpcService.client.view.MainGui
@@ -23,6 +23,7 @@ object InteractionBehavior:
   case class ShowCardsProposed(val replyTo: ActorRef[PlayerBehavior.Command], val cards: List[String], title: String) extends Command
   case class GuessCard(val replyTo: ActorRef[PlayerBehavior.Command], title: String) extends Command
   case class MessageError(message: String) extends Command
+  case class EndGame(message: String) extends Command
   case object Stop extends Command
   case class NewCard(card: String) extends Command
   case object ResetInteraction extends Command
@@ -91,6 +92,11 @@ class InteractionGuiImpl(context: ActorContext[Command], replyTo: ActorRef[Playe
 
     case MessageError(msg) => 
       gui.changeWarnText(msg)
+      Behaviors.same
+
+    case EndGame(msg) => 
+      gui.changeWarnText(msg)
+      gui.setCloseButtonVisible()
       Behaviors.same
 
     case NewCard(card) =>
