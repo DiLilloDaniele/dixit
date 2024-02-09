@@ -44,4 +44,8 @@ class MyServerService(using mat: Materializer, inboundPorts: InboundPorts) exten
     val result: Boolean = inboundPorts.gamesManagementPort.updateUsers(in.userName.toList, in.points.toList)
     Future.successful(UpdateResponse(result))
 
+  override def getUserPoints(in: UserInfo): Future[SingleUserPoints] =
+    val username = in.userName
+    Future.successful(SingleUserPoints(inboundPorts.gamesManagementPort.getSingleUserPoints(username)))
+
 }

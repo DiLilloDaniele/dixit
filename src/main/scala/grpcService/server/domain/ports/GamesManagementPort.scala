@@ -11,6 +11,10 @@ class GamesManagementPort(implicit val serverLogic: ServerLogic):
 
   def closeGame(address: String, name: String) = serverLogic.removeGame(Game(address, name))
 
+  def getSingleUserPoints(username: String): Int = serverLogic.retrieveUser(username) match
+    case Some(user) => user.points
+    case _ => 0
+
   def updateUsers(userNames: List[String], points: List[Int]): Boolean = 
     try {
       (userNames.size == points.size) match

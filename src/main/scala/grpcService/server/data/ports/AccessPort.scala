@@ -30,7 +30,7 @@ class AccessPort(accessAdapter: AccessAdapter) extends AccessRepository {
 
   override def addPointsToUser(userId: String, points: Int): Boolean =
     val updateQuery = UpdateBuilder()
-    val query = updateQuery update "User" set "Points" equalTo s"Points + $points" where s"UserId = $userId"
+    val query = updateQuery update "User" set "Points" equalTo s"Points + $points" where s"Name = '$userId'"
     println(query.query)
     accessAdapter.update(query)
     

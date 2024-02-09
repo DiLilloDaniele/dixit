@@ -160,9 +160,9 @@ class AccessAdapter(val url: String = "",
 
   def update(query: UpdateBuilder): Boolean = try {
     if(connectionStringExt == "")
-        connect()
-      else
-        connection = DriverManager.getConnection(connectionStringExt, username, password)
+      connect()
+    else
+      connection = DriverManager.getConnection(connectionStringExt, username, password)
     val statement: Statement = connection.createStatement()
     statement.executeUpdate(query.query)
     return true
