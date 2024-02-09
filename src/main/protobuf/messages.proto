@@ -15,11 +15,20 @@ service Server {
   rpc CloseGame(GameMessage) returns (ClosingResponse) { }
   rpc NewGame(GameMessage) returns (NewGameResponse) { }
   rpc UpdateUserPoints(UserPoints) returns (UpdateResponse) { }
+  rpc GetUserPoints(UserInfo) returns (SingleUserPoints) { }
 }
 
 message UserPoints {
   repeated string userName = 1;
   repeated int32 points = 2;
+}
+
+message UserInfo {
+  string userName = 1;
+}
+
+message SingleUserPoints {
+  int32 points = 1;
 }
 
 message UpdateResponse {
