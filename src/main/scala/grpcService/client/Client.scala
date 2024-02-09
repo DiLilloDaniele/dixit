@@ -2,7 +2,7 @@ package grpcService.client
 
 import akka.actor.ActorSystem
 import akka.grpc.GrpcClientSettings
-import grpcService.{GameMessage, HelloMessage, UserPoints, UpdateResponse, LoginRequest, ClosingResponse, OpenedGamesRequest, Server, ServerClient, NewGameResponse, LoginResult, OpenedGames}
+import grpcService.*
 
 import scala.concurrent.ExecutionContextExecutor
 import scala.util.{Failure, Success}
@@ -11,39 +11,8 @@ import grpcService.client.controller.GameControllerObj.SuccessFun
 import grpcService.client.view.HomepageView
 
 import scala.concurrent.Future
-/*
-object Client {
-  @main def startClient() = {
-    // Boot akka
-    implicit val sys = ActorSystem("HelloWorldClient")
-    implicit val ec = sys.dispatcher
 
-    // Configure the client by code:
-    val clientSettings = GrpcClientSettings.connectToServiceAt("127.0.0.1", 8083).withTls(false)
-
-    // Or via application.conf:
-    // val clientSettings = GrpcClientSettings.fromConfig(GreeterService.name)
-
-    // Create a client-side stub for the service
-    val client: Server = ServerClient(clientSettings)
-/*
-    val reply = client.hello(HelloMessage("Daniele"))
-    reply.onComplete {
-      case Success(msg) =>
-        println(s"got single reply: $msg")
-      case Failure(e) =>
-        println(s"Error sayHello: $e")
-    }
-*/
-  }
-  
-  def main(args: Array[String]): Unit =
-    val client = ClientImpl()
-    
-  
-}
-*/
-class ClientImpl(serverAddress: String) {
+class ClientImpl(serverAddress: String = "127.0.0.1") {
  
   implicit val sys: ActorSystem = ActorSystem("HelloWorldClient")
   implicit val ec: ExecutionContextExecutor = sys.dispatcher
@@ -61,6 +30,16 @@ class ClientImpl(serverAddress: String) {
         success(msg.clusterName.toList)
       case Failure(e) =>
         println(s"Error sayHello: $e")
+    }
+    reply
+
+  def getUserPoints(username: String, success: SuccessFun[Int]): Future[SingleUserPoints] =
+    val reply = client.getUserPoints(UserInfo(username))
+    reply.onComplete {
+      case Success(msg) =>
+        success(msg.points)
+      case Failure(e) =>
+        println(s"Error while getting the current points: $e")
     }
     reply
     

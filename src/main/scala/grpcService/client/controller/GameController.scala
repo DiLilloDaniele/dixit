@@ -31,6 +31,11 @@ class GameController(val client: ClientImpl, val address: String = "127.0.0.1", 
   
   def register(username: String, password: String, success: SuccessFun[Boolean]): Unit = client.register(username, password, success)
 
+  def updateUserPoints(success: SuccessFun[Int]) =
+    username match
+      case "" => ()
+      case v if v != "" => client.getUserPoints(username, success)
+
   val updateUserPoints = (points: Int) => {
     username match
       case "" => ()
