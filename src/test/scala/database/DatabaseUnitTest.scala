@@ -49,7 +49,7 @@ class DatabaseUnitTest extends AnyFunSpec with Matchers {
                 val userRetrieved: Option[User] = accessPort.selectUser("test")
                 assert(userRetrieved.nonEmpty)
                 assert(userRetrieved.get.name equals "test")
-                accessPort.addPointsToUser(userRetrieved.get.id, 5)
+                accessPort.addPointsToUser(userRetrieved.get.name, 5)
                 val newUserRetrieved: Option[User] = accessPort.selectUser("test")
                 assert(newUserRetrieved.get.points == 5)
                 mysql.stop()
