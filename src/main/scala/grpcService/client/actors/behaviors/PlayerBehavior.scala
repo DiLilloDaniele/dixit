@@ -129,7 +129,10 @@ class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], 
     case NewCard(card) =>
       interactionActor ! InteractionBehavior.NewCard(card)
       Behaviors.same
-    case TurnCancelled => Behaviors.same
+    case TurnCancelled => 
+      interactionActor ! InteractionBehavior.MessageError("Turno cancellato, attendere...")
+      interactionActor ! InteractionBehavior.ResetInteraction
+      Behaviors.same
 
     case EndGame(points) =>
       interactionActor ! InteractionBehavior.EndGame(s"Gioco terminato, punti guadagnati: $points")
@@ -146,7 +149,10 @@ class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], 
     case CardsSubmittedByOthers(cards) =>
       interactionActor ! InteractionBehavior.ShowCardsProposed(rootActor, cards, title)
       choose(replyTo)
-    case TurnCancelled => gameOn()
+    case TurnCancelled => 
+      interactionActor ! InteractionBehavior.MessageError("Turno cancellato, attendere...")
+      interactionActor ! InteractionBehavior.ResetInteraction
+      gameOn()
 
     case _ => Behaviors.same
   }
@@ -160,7 +166,10 @@ class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], 
       replyTo ! ForemanBehavior.GuessSelection(cardId, rootActor)
       waitForCardRevealed(replyTo)
 
-    case TurnCancelled => gameOn()
+    case TurnCancelled => 
+      interactionActor ! InteractionBehavior.MessageError("Turno cancellato, attendere...")
+      interactionActor ! InteractionBehavior.ResetInteraction
+      gameOn()
 
     case msg => context.log.info("Unknown message: " + msg)
       Behaviors.same
@@ -171,7 +180,10 @@ class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], 
       // TODO reset interaction with image revealed (optional)
       gameOn()
 
-    case TurnCancelled => gameOn()
+    case TurnCancelled => 
+      interactionActor ! InteractionBehavior.MessageError("Turno cancellato, attendere...")
+      interactionActor ! InteractionBehavior.ResetInteraction
+      gameOn()
 
     case msg => context.log.info("Unknown message: " + msg)
       Behaviors.same

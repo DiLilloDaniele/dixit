@@ -8,10 +8,11 @@ import grpcService.client.actors.{ClusterListener}
 import grpcService.client.actors.utils.Message
 import grpcService.client.actors.behaviors.ForemanBehavior.*
 import grpcService.client.actors.behaviors.PlayerBehavior
-import grpcService.client.actors.behaviors.PlayerBehavior.{CardChoosenByOther, CardRevealed, CardsSubmittedByOthers, YourTurn}
+import grpcService.client.actors.behaviors.PlayerBehavior.{TurnCancelled, CardChoosenByOther, CardRevealed, CardsSubmittedByOthers, YourTurn}
 import grpcService.client.model.PlayerSelection
-import grpcService.client.model.PumpMyList.filterMap
+import grpcService.client.model.PumpMyList.*
 import grpcService.client.model.GameSettings.{MAX_CARDS, MAX_TURNS}
+import scala.collection.mutable.ListBuffer
 
 import concurrent.duration.DurationInt
 import scala.language.postfixOps
@@ -31,6 +32,9 @@ object ForemanBehavior:
   case class PlayerRejoined(address: String) extends Command
   case object Stop extends Command
   case object RestartTurn extends Command
+  case object InterruptTurn extends Command
+
+  case class PlayerItem(player: ActorRef[PlayerBehavior.Command], score: Int, cards: ListBuffer[String])
 
   val list = LazyList.iterate(1) { i => i + 1}.take(100).map { i => s"$i"}.toList
 
@@ -82,7 +86,7 @@ object ForemanBehavior:
 
 class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], root: ActorRef[Command], maxTurns: Int) extends AbstractBehavior[Command | Receptionist.Listing](context):
 
-  var playersList: List[(ActorRef[PlayerBehavior.Command], Int)] = List()
+  var playersList: List[PlayerItem] = List()
   var playersSelection: List[PlayerSelection[PlayerBehavior.Command]] = List()
   var playersGuessing: List[PlayerSelection[PlayerBehavior.Command]] = List()
   var myList = Random.shuffle(list)
@@ -91,10 +95,12 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
   override def onMessage(msg: Command | Receptionist.Listing): Behavior[Command | Receptionist.Listing] = msg match {
     case Start(players) =>
       context.log.info("START: " + players.toString)
-      playersList = players.map { i => Tuple2(i, 0)}.toList
+      playersList = players.map { 
+        i => PlayerItem(i, 0, ListBuffer.empty ++= pickCards(MAX_CARDS))
+      }.toList
       playersList.foreach { p =>
         context.log.info("INVIO LE CARTE AI PLAYER")
-        p._1 ! PlayerBehavior.CardsAssigned(pickCards(MAX_CARDS))
+        p.player ! PlayerBehavior.CardsAssigned(p.cards.toList)
       }
       players.head ! YourTurn(root)
       manageTurnOf(players.head, 0)
@@ -115,15 +121,25 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
       playersSelection = List()
       println("INVIO LE CARTEEEE")
       context.log.info(playersList.toString())
-      playersList.map { i => i._1 }.foreach { i =>
-        if(i.path != actor.path)
+
+      playersList.foreach { i =>
+        if(i.player.path != actor.path)
           println("INVIATOOO")
-          i ! CardChoosenByOther(title, root)
+          i.player ! CardChoosenByOther(title, root)
+        else
+          i.cards -= card
       }
       waitForSelections(actor, turn, card)
+    
+    // avviso che il turno va interrotto
+    case InterruptTurn =>
+      playersList foreach { i =>
+        i.player ! TurnCancelled
+      }
+      Behaviors.same
 
     case PlayerRejoined(address) =>
-      playerRejoinedProcedure(address, maxTurns - turnsFinished)
+      playerRejoinedProcedure(address, MAX_CARDS)
       actor ! YourTurn(root)
       Behaviors.same
 
@@ -140,19 +156,31 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
     case SelectionToApply(cardId, replyTo) =>
       context.log.info("UNA SCELTA RICEVUTA")
       playersSelection = playersSelection :+ PlayerSelection(cardId, replyTo)
+      // rimuovo la carta scelta dal mazzo del giocatore che l'ha scelta
+      playersList foreach { i =>
+        if(i.player.path == replyTo.path)
+          i.cards -= cardId
+      }
+
       if(playersSelection.size < (playersList.size - 1))
         Behaviors.same
       else
         context.log.info("RICEVUTO LE CARTE DA TUTTI")
         val playersSubmissions = playersSelection.map { i => i.card }.toList :+ cardSelected
         playersList foreach { i =>
-          if(i._1.path != actor.path)
-            i._1 ! CardsSubmittedByOthers(playersSubmissions)
+          if(i.player.path != actor.path)
+            i.player ! CardsSubmittedByOthers(playersSubmissions)
         }
         waitForGuessing(actor, turn, cardSelected)
 
+    case InterruptTurn =>
+      playersList foreach { i =>
+        i.player ! TurnCancelled
+      }
+      Behaviors.same
+
     case PlayerRejoined(address) =>
-      playerRejoinedProcedure(address, maxTurns - turnsFinished)
+      playerRejoinedProcedure(address, MAX_CARDS)
       Behaviors.same
     
     case RestartTurn =>
@@ -178,10 +206,10 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
           case m if m == (playersList.size - 1) => 0
           case _ => turn + 1
 
-        if(turnsFinished >= (maxTurns - 1) || playersList.map { i => i._2 }.contains(30))
+        if(turnsFinished >= (maxTurns - 1) || playersList.map { i => i.score }.contains(30))
           context.log.info("FINE GIOCO")
           playersList foreach { i =>
-            i._1 ! PlayerBehavior.EndGame(i._2)
+            i.player ! PlayerBehavior.EndGame(i.score)
           }
           Behaviors.stopped
         else
@@ -195,13 +223,21 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
       // clean playersGuessing choices
       playersGuessing = List()
       playersList foreach { i =>
-        i._1 ! PlayerBehavior.NewCard(pickCards(1).head)
+        val newCard: String = pickCards(1).head.toString
+        i.cards += newCard
+        i.player ! PlayerBehavior.NewCard(newCard)
       }
-      playersList(turnIndex)._1 ! YourTurn(root)
-      manageTurnOf(playersList(turnIndex)._1, turnIndex)
+      playersList(turnIndex).player ! YourTurn(root)
+      manageTurnOf(playersList(turnIndex).player, turnIndex)
+
+    case InterruptTurn =>
+      playersList.foreach { i =>
+        i.player ! TurnCancelled
+      }
+      Behaviors.same
 
     case PlayerRejoined(address) =>
-      playerRejoinedProcedure(address, maxTurns - turnsFinished)
+      playerRejoinedProcedure(address, MAX_CARDS)
       Behaviors.same
     
     case RestartTurn =>
@@ -216,16 +252,18 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
   def playerRejoinedProcedure(address: String, numCarte: Int): Unit =
     context.log.info("REINVIO LE CARTE A " + address)
     playersList.foreach { p =>
-      if(p._1.path.address.toString == address)
-        p._1 ! PlayerBehavior.CardsAssigned(pickCards(numCarte))
-      else
-        p._1 ! PlayerBehavior.TurnCancelled
+      if(p.player.path.address.toString == address)
+        p.player ! PlayerBehavior.CardsAssigned(p.cards.toList) // PlayerBehavior.CardsAssigned(pickCards(numCarte))
     }
 
   def restartTurnProcedure(actor: ActorRef[PlayerBehavior.Command]): Unit = 
     context.log.info("RESTART DEL TURNO")
+    // restart del turno e pescaggio carta in più per il narratore (causa turno interrotto)
     playersList.foreach { p =>
-      p._1 ! PlayerBehavior.TurnCancelled
+      if(p.player.path.address.toString == actor.path.address.toString)
+        val newCard: String = pickCards(1).head.toString
+        p.cards += newCard
+        p.player ! PlayerBehavior.NewCard(newCard)
     }
     actor ! YourTurn(root)
 
@@ -242,12 +280,12 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
     // gives points to users
     if(totalVotes.size == (playersList.size - 1) || totalVotes.isEmpty)
       playersList = playersList.filterMap { i =>
-        i._1.path.address != foremanPlayer.path.address
-      } { i => Tuple2(i._1, i._2 + 2) }
+        i.player.path.address != foremanPlayer.path.address
+      } { i => PlayerItem(i.player, i.score + 2, i.cards) }
     else
       playersList = playersList.filterMap { i =>
-        i._1.path.address == foremanPlayer.path.address || totalVotes.exists { c => c.player == i._1 }
-      } { i => Tuple2(i._1, i._2 + 3) }
+        i.player.path.address == foremanPlayer.path.address || totalVotes.exists { c => c.player == i.player }
+      } { i => PlayerItem(i.player, i.score + 3, i.cards) }
 
     playersList foreach { i =>
       i._1 ! CardRevealed(cardChosen)
