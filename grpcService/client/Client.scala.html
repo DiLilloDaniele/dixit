@@ -57,14 +57,14 @@
 </span>33 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
 </span>34 <span style=''>    reply
 </span>35 <span style=''>
-</span>36 <span style=''>  </span><span style='background: #F0ADAD'>def getUserPoints</span><span style=''>(username: String, success: SuccessFun[Int]): Future[SingleUserPoints] =
-</span>37 <span style=''>    val reply = </span><span style='background: #F0ADAD'>client.getUserPoints(UserInfo(username))</span><span style=''>
-</span>38 <span style=''>    </span><span style='background: #F0ADAD'>reply.onComplete {
-</span>39 <span style=''></span><span style='background: #F0ADAD'>      case Success(msg) =&gt;
-</span>40 <span style=''></span><span style='background: #F0ADAD'>        success(msg.points)
-</span>41 <span style=''></span><span style='background: #F0ADAD'>      case Failure(e) =&gt;
-</span>42 <span style=''></span><span style='background: #F0ADAD'>        println(s&quot;Error while getting the current points: $e&quot;)
-</span>43 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
+</span>36 <span style=''>  </span><span style='background: #AEF1AE'>def getUserPoints</span><span style=''>(username: String, success: SuccessFun[Int]): Future[SingleUserPoints] =
+</span>37 <span style=''>    val reply = </span><span style='background: #AEF1AE'>client.getUserPoints(UserInfo(username))</span><span style=''>
+</span>38 <span style=''>    </span><span style='background: #AEF1AE'>reply.onComplete {
+</span>39 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
+</span>40 <span style=''></span><span style='background: #AEF1AE'>        success(msg.points)
+</span>41 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
+</span>42 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error while getting the current points: $e&quot;)</span><span style='background: #AEF1AE'>
+</span>43 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
 </span>44 <span style=''>    reply
 </span>45 <span style=''>    
 </span>46 <span style=''>  </span><span style='background: #AEF1AE'>def login</span><span style=''>(username: String, password: String, success: SuccessFun[Boolean]): Future[LoginResult] =
@@ -612,7 +612,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def getUserPoints
         </td>
       </tr><tr>
@@ -636,7 +636,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           client.getUserPoints(UserInfo(username))
         </td>
       </tr><tr>
@@ -660,7 +660,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           UserInfo
         </td>
       </tr><tr>
@@ -684,7 +684,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           reply.onComplete {
       case Success(msg) =&gt;
         success(msg.points)
@@ -713,7 +713,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case Success(msg)
         </td>
       </tr><tr>
@@ -737,7 +737,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           success(msg.points)
         </td>
       </tr><tr>

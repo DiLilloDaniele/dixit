@@ -97,9 +97,9 @@
 </span>73 <span style=''>      </span><span style='background: #AEF1AE'>new ScalaUnaryRequestBuilder(updateUserPointsDescriptor, channel, options, settings)</span><span style=''>
 </span>74 <span style=''>    
 </span>75 <span style=''>    
-</span>76 <span style=''>    </span><span style='background: #F0ADAD'>private def getUserPointsRequestBuilder</span><span style=''>(channel: akka.grpc.internal.InternalChannel) =
+</span>76 <span style=''>    </span><span style='background: #AEF1AE'>private def getUserPointsRequestBuilder</span><span style=''>(channel: akka.grpc.internal.InternalChannel) =
 </span>77 <span style=''>    
-</span>78 <span style=''>      </span><span style='background: #F0ADAD'>new ScalaUnaryRequestBuilder(getUserPointsDescriptor, channel, options, settings)</span><span style=''>
+</span>78 <span style=''>      </span><span style='background: #AEF1AE'>new ScalaUnaryRequestBuilder(getUserPointsDescriptor, channel, options, settings)</span><span style=''>
 </span>79 <span style=''>    
 </span>80 <span style=''>    
 </span>81 <span style=''>
@@ -214,15 +214,15 @@
 </span>190 <span style=''>     * prefer getUserPoints(grpcService.UserInfo) if possible.
 </span>191 <span style=''>     */
 </span>192 <span style=''>    
-</span>193 <span style=''>    </span><span style='background: #F0ADAD'>override def getUserPoints</span><span style=''>(): SingleResponseRequestBuilder[grpcService.UserInfo, grpcService.SingleUserPoints] =
-</span>194 <span style=''>      </span><span style='background: #F0ADAD'>getUserPointsRequestBuilder(channel.internalChannel)</span><span style=''>
+</span>193 <span style=''>    </span><span style='background: #AEF1AE'>override def getUserPoints</span><span style=''>(): SingleResponseRequestBuilder[grpcService.UserInfo, grpcService.SingleUserPoints] =
+</span>194 <span style=''>      </span><span style='background: #AEF1AE'>getUserPointsRequestBuilder(channel.internalChannel)</span><span style=''>
 </span>195 <span style=''>    
 </span>196 <span style=''>
 </span>197 <span style=''>    /**
 </span>198 <span style=''>     * For access to method metadata use the parameterless version of getUserPoints
 </span>199 <span style=''>     */
-</span>200 <span style=''>    </span><span style='background: #F0ADAD'>def getUserPoints</span><span style=''>(in: grpcService.UserInfo): scala.concurrent.Future[grpcService.SingleUserPoints] =
-</span>201 <span style=''>      </span><span style='background: #F0ADAD'>getUserPoints().invoke(in)</span><span style=''>
+</span>200 <span style=''>    </span><span style='background: #AEF1AE'>def getUserPoints</span><span style=''>(in: grpcService.UserInfo): scala.concurrent.Future[grpcService.SingleUserPoints] =
+</span>201 <span style=''>      </span><span style='background: #AEF1AE'>getUserPoints().invoke(in)</span><span style=''>
 </span>202 <span style=''>    
 </span>203 <span style=''>
 </span>204 <span style=''>    </span><span style='background: #F0ADAD'>override def close</span><span style=''>(): scala.concurrent.Future[akka.Done] =
@@ -863,7 +863,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           private def getUserPointsRequestBuilder
         </td>
       </tr><tr>
@@ -887,7 +887,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           new ScalaUnaryRequestBuilder(getUserPointsDescriptor, channel, options, settings)
         </td>
       </tr><tr>
@@ -1751,7 +1751,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           override def getUserPoints
         </td>
       </tr><tr>
@@ -1775,7 +1775,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           getUserPointsRequestBuilder(channel.internalChannel)
         </td>
       </tr><tr>
@@ -1799,7 +1799,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def getUserPoints
         </td>
       </tr><tr>
@@ -1823,7 +1823,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           getUserPoints()
         </td>
       </tr><tr>
@@ -1847,7 +1847,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           getUserPoints().invoke(in)
         </td>
       </tr><tr>

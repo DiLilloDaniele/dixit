@@ -173,12 +173,12 @@
 </span>149 <span style=''></span><span style='background: #AEF1AE'>    case CardsSubmittedByOthers(cards) =&gt;
 </span>150 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.ShowCardsProposed(rootActor, cards, title)
 </span>151 <span style=''></span><span style='background: #AEF1AE'>      choose(replyTo)
-</span>152 <span style=''></span><span style='background: #AEF1AE'>    case TurnCancelled =&gt; 
-</span>153 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.MessageError(&quot;Turno cancellato, attendere...&quot;)
-</span>154 <span style=''></span><span style='background: #AEF1AE'>      interactionActor ! InteractionBehavior.ResetInteraction
-</span>155 <span style=''></span><span style='background: #AEF1AE'>      gameOn()
+</span>152 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case TurnCancelled</span><span style='background: #AEF1AE'> =&gt; 
+</span>153 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>interactionActor ! InteractionBehavior.MessageError(&quot;Turno cancellato, attendere...&quot;)</span><span style='background: #AEF1AE'>
+</span>154 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>interactionActor ! InteractionBehavior.ResetInteraction</span><span style='background: #AEF1AE'>
+</span>155 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>gameOn()</span><span style='background: #AEF1AE'>
 </span>156 <span style=''></span><span style='background: #AEF1AE'>
-</span>157 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>157 <span style=''></span><span style='background: #AEF1AE'>    case _ =&gt; Behaviors.same
 </span>158 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
 </span>159 <span style=''>
 </span>160 <span style=''>  </span><span style='background: #AEF1AE'>def choose</span><span style=''>(replyTo: ActorRef[ForemanBehavior.Command]): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
@@ -4035,7 +4035,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case TurnCancelled
         </td>
       </tr><tr>
@@ -4059,7 +4059,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           interactionActor ! InteractionBehavior.MessageError(&quot;Turno cancellato, attendere...&quot;)
         </td>
       </tr><tr>
@@ -4083,7 +4083,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           interactionActor
         </td>
       </tr><tr>
@@ -4107,7 +4107,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           interactionActor
         </td>
       </tr><tr>
@@ -4131,7 +4131,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           interactionActor ! InteractionBehavior.ResetInteraction
         </td>
       </tr><tr>
@@ -4155,7 +4155,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           gameOn()
         </td>
       </tr><tr>
@@ -4179,7 +4179,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case _
         </td>
       </tr><tr>
@@ -4203,7 +4203,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.same
         </td>
       </tr><tr>

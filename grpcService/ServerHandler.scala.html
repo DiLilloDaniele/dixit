@@ -178,11 +178,11 @@
 </span>154 <span style=''></span><span style='background: #AEF1AE'>                  .flatMap(implementation.updateUserPoints(_))
 </span>155 <span style=''></span><span style='background: #AEF1AE'>                  .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(UpdateResponseSerializer, writer, system))
 </span>156 <span style=''></span><span style='background: #AEF1AE'>            
-</span>157 <span style=''></span><span style='background: #AEF1AE'>            </span><span style='background: #F0ADAD'>case &quot;GetUserPoints&quot;</span><span style='background: #AEF1AE'> =&gt;
+</span>157 <span style=''></span><span style='background: #AEF1AE'>            case &quot;GetUserPoints&quot; =&gt;
 </span>158 <span style=''></span><span style='background: #AEF1AE'>                
-</span>159 <span style=''></span><span style='background: #AEF1AE'>                </span><span style='background: #F0ADAD'>GrpcMarshalling.unmarshal(request.entity)(UserInfoSerializer, mat, reader)
-</span>160 <span style=''></span><span style='background: #F0ADAD'>                  .flatMap(implementation.getUserPoints(_))
-</span>161 <span style=''></span><span style='background: #F0ADAD'>                  .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(SingleUserPointsSerializer, writer, system))</span><span style='background: #AEF1AE'>
+</span>159 <span style=''></span><span style='background: #AEF1AE'>                GrpcMarshalling.unmarshal(request.entity)(UserInfoSerializer, mat, reader)
+</span>160 <span style=''></span><span style='background: #AEF1AE'>                  .flatMap(implementation.getUserPoints(_))
+</span>161 <span style=''></span><span style='background: #AEF1AE'>                  .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(SingleUserPointsSerializer, writer, system))
 </span>162 <span style=''></span><span style='background: #AEF1AE'>            
 </span>163 <span style=''></span><span style='background: #AEF1AE'>            </span><span style='background: #F0ADAD'>case m</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>scala.concurrent.Future.failed(new NotImplementedError(s&quot;Not implemented: $m&quot;))</span><span style='background: #AEF1AE'>
 </span>164 <span style=''></span><span style='background: #AEF1AE'>          })
@@ -2471,7 +2471,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case &quot;GetUserPoints&quot;
         </td>
       </tr><tr>
@@ -2495,7 +2495,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           GrpcMarshalling.unmarshal(request.entity)(UserInfoSerializer, mat, reader)
         </td>
       </tr><tr>
@@ -2519,7 +2519,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           GrpcMarshalling.unmarshal(request.entity)(UserInfoSerializer, mat, reader)
                   .flatMap(implementation.getUserPoints(_))
         </td>
@@ -2544,7 +2544,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           GrpcMarshalling.unmarshal(request.entity)(UserInfoSerializer, mat, reader)
                   .flatMap(implementation.getUserPoints(_))
                   .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(SingleUserPointsSerializer, writer, system))
@@ -2570,7 +2570,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           implementation.getUserPoints(_)
         </td>
       </tr><tr>
@@ -2594,7 +2594,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           GrpcMarshalling.marshal(e, eHandler)(SingleUserPointsSerializer, writer, system)
         </td>
       </tr><tr>

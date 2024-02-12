@@ -68,9 +68,9 @@
 </span>44 <span style=''>    val result: Boolean = </span><span style='background: #AEF1AE'>inboundPorts.gamesManagementPort.updateUsers(in.userName.toList, in.points.toList)</span><span style=''>
 </span>45 <span style=''>    </span><span style='background: #AEF1AE'>Future.successful(UpdateResponse(result))</span><span style=''>
 </span>46 <span style=''>
-</span>47 <span style=''>  </span><span style='background: #F0ADAD'>override def getUserPoints</span><span style=''>(in: UserInfo): Future[SingleUserPoints] =
+</span>47 <span style=''>  </span><span style='background: #AEF1AE'>override def getUserPoints</span><span style=''>(in: UserInfo): Future[SingleUserPoints] =
 </span>48 <span style=''>    val username = in.userName
-</span>49 <span style=''>    </span><span style='background: #F0ADAD'>Future.successful(SingleUserPoints(inboundPorts.gamesManagementPort.getSingleUserPoints(username)))</span><span style=''>
+</span>49 <span style=''>    </span><span style='background: #AEF1AE'>Future.successful(SingleUserPoints(inboundPorts.gamesManagementPort.getSingleUserPoints(username)))</span><span style=''>
 </span>50 <span style=''>
 </span>51 <span style=''>}
 </span></pre>
@@ -1092,7 +1092,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           override def getUserPoints
         </td>
       </tr><tr>
@@ -1116,7 +1116,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Future.successful(SingleUserPoints(inboundPorts.gamesManagementPort.getSingleUserPoints(username)))
         </td>
       </tr><tr>
@@ -1140,7 +1140,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           SingleUserPoints
         </td>
       </tr><tr>
@@ -1164,7 +1164,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           inboundPorts.gamesManagementPort.getSingleUserPoints(username)
         </td>
       </tr>

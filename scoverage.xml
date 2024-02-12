@@ -1,5 +1,5 @@
 <scoverage 
-statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-rate="57.05" version="1.0" timestamp="1707754583857">
+statement-count="3067" statements-invoked="1433" statement-rate="46.72" branch-rate="60.90" version="1.0" timestamp="1707755888018">
     <packages>
         <package name="actors" statement-count="100" statements-invoked="86" statement-rate="86.00">
             <classes>
@@ -335,7 +335,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
 </class>
             </classes>
         </package>
-        <package name="adapters" statement-count="280" statements-invoked="229" statement-rate="81.79">
+        <package name="adapters" statement-count="280" statements-invoked="233" statement-rate="83.21">
             <classes>
                 <class 
                 name="adapters.QueryBuilder" filename="grpcService/server/data/adapters/QueryBuilder.scala" statement-count="49" statements-invoked="49" statement-rate="100.00" branch-rate="100.00">
@@ -525,7 +525,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                     </methods>
 </class>
                 <class 
-                name="adapters.MyServerService" filename="grpcService/server/adapters/MyServerService.scala" statement-count="45" statements-invoked="41" statement-rate="91.11" branch-rate="100.00">
+                name="adapters.MyServerService" filename="grpcService/server/adapters/MyServerService.scala" statement-count="45" statements-invoked="45" statement-rate="100.00" branch-rate="100.00">
                     <methods>
                         <method 
                         name="adapters/MyServerService/getOpenedGames" statement-count="4" statements-invoked="4" statement-rate="100.00" branch-rate="100.00">
@@ -574,19 +574,19 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                             </statements>
 </method>
                         <method 
-                        name="adapters/MyServerService/getUserPoints" statement-count="4" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                        name="adapters/MyServerService/getUserPoints" statement-count="4" statements-invoked="4" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="adapters" class="MyServerService" class-type="Class" full-class-name="adapters.MyServerService" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/server/adapters/MyServerService.scala" method="getUserPoints" start="2088" end="2187" line="48" branch="false" invocation-count="0" ignored="false">
+                                package="adapters" class="MyServerService" class-type="Class" full-class-name="adapters.MyServerService" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/server/adapters/MyServerService.scala" method="getUserPoints" start="2088" end="2187" line="48" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="adapters" class="MyServerService" class-type="Class" full-class-name="adapters.MyServerService" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/server/adapters/MyServerService.scala" method="getUserPoints" start="2106" end="2122" line="48" branch="false" invocation-count="0" ignored="false">
+                                package="adapters" class="MyServerService" class-type="Class" full-class-name="adapters.MyServerService" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/server/adapters/MyServerService.scala" method="getUserPoints" start="2106" end="2122" line="48" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="adapters" class="MyServerService" class-type="Class" full-class-name="adapters.MyServerService" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/server/adapters/MyServerService.scala" method="getUserPoints" start="1984" end="2010" line="46" branch="false" invocation-count="0" ignored="false">
+                                package="adapters" class="MyServerService" class-type="Class" full-class-name="adapters.MyServerService" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/server/adapters/MyServerService.scala" method="getUserPoints" start="1984" end="2010" line="46" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="adapters" class="MyServerService" class-type="Class" full-class-name="adapters.MyServerService" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/server/adapters/MyServerService.scala" method="getUserPoints" start="2123" end="2185" line="48" branch="false" invocation-count="0" ignored="false">
+                                package="adapters" class="MyServerService" class-type="Class" full-class-name="adapters.MyServerService" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/server/adapters/MyServerService.scala" method="getUserPoints" start="2123" end="2185" line="48" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -1627,7 +1627,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
 </class>
             </classes>
         </package>
-        <package name="behaviors" statement-count="690" statements-invoked="424" statement-rate="61.45">
+        <package name="behaviors" statement-count="690" statements-invoked="420" statement-rate="60.87">
             <classes>
                 <class 
                 name="behaviors.PlayerBehavior$" filename="grpcService/client/actors/behaviors/PlayerBehavior.scala" statement-count="63" statements-invoked="53" statement-rate="84.13" branch-rate="100.00">
@@ -2503,7 +2503,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="9832" end="9840" line="259" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="9218" end="9236" line="236" branch="false" invocation-count="0" ignored="false">
+                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="9218" end="9236" line="236" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="9595" end="9609" line="252" branch="false" invocation-count="0" ignored="false">
@@ -2533,7 +2533,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="8681" end="8741" line="220" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="7302" end="7320" line="179" branch="false" invocation-count="1" ignored="false">
+                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="7302" end="7320" line="179" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="7673" end="7687" line="195" branch="false" invocation-count="0" ignored="false">
@@ -2545,7 +2545,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="8123" end="8168" line="205" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="9281" end="9305" line="238" branch="false" invocation-count="0" ignored="false">
+                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="9281" end="9305" line="238" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="8530" end="8538" line="215" branch="false" invocation-count="0" ignored="false">
@@ -2599,7 +2599,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="8290" end="8306" line="209" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="7365" end="7389" line="181" branch="false" invocation-count="1" ignored="false">
+                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="7365" end="7389" line="181" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="8595" end="8612" line="217" branch="false" invocation-count="0" ignored="false">
@@ -2680,7 +2680,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="9105" end="9127" line="233" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="9320" end="9334" line="240" branch="false" invocation-count="0" ignored="false">
+                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="9320" end="9334" line="240" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="8491" end="8584" line="214" branch="false" invocation-count="0" ignored="false">
@@ -2713,7 +2713,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="7182" end="7235" line="175" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="7404" end="7418" line="183" branch="false" invocation-count="1" ignored="false">
+                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="7404" end="7418" line="183" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="8393" end="8425" line="212" branch="false" invocation-count="1" ignored="false">
@@ -2743,7 +2743,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="9048" end="9056" line="231" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="9281" end="9289" line="238" branch="false" invocation-count="0" ignored="false">
+                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="9281" end="9289" line="238" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="5433" end="5501" line="123" branch="false" invocation-count="1" ignored="false">
@@ -2785,7 +2785,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="7141" end="7154" line="174" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="7365" end="7373" line="181" branch="false" invocation-count="1" ignored="false">
+                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="7365" end="7373" line="181" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="5734" end="5776" line="131" branch="false" invocation-count="1" ignored="false">
@@ -2833,7 +2833,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="7033" end="7092" line="172" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="9246" end="9313" line="237" branch="false" invocation-count="0" ignored="false">
+                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="9246" end="9313" line="237" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="8123" end="8780" line="205" branch="true" invocation-count="1" ignored="false">
@@ -2878,7 +2878,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="8034" end="8054" line="202" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="7330" end="7397" line="180" branch="false" invocation-count="1" ignored="false">
+                                package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="7330" end="7397" line="180" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="ForemanBehaviorImpl" class-type="Class" full-class-name="behaviors.ForemanBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/ForemanBehavior.scala" method="$anonfun" start="6551" end="6590" line="160" branch="false" invocation-count="1" ignored="false">
@@ -3428,7 +3428,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                     </methods>
 </class>
                 <class 
-                name="behaviors.PlayerBehaviorImpl" filename="grpcService/client/actors/behaviors/PlayerBehavior.scala" statement-count="136" statements-invoked="99" statement-rate="72.79" branch-rate="100.00">
+                name="behaviors.PlayerBehaviorImpl" filename="grpcService/client/actors/behaviors/PlayerBehavior.scala" statement-count="136" statements-invoked="95" statement-rate="69.85" branch-rate="100.00">
                     <methods>
                         <method 
                         name="behaviors/PlayerBehaviorImpl/guess" statement-count="2" statements-invoked="2" statement-rate="100.00" branch-rate="100.00">
@@ -3561,7 +3561,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                             </statements>
 </method>
                         <method 
-                        name="behaviors/PlayerBehaviorImpl/$anonfun" statement-count="87" statements-invoked="55" statement-rate="63.22" branch-rate="100.00">
+                        name="behaviors/PlayerBehaviorImpl/$anonfun" statement-count="87" statements-invoked="51" statement-rate="58.62" branch-rate="100.00">
                             <statements>
                                 <statement 
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7370" end="7386" line="169" branch="false" invocation-count="0" ignored="false">
@@ -3582,7 +3582,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7462" end="7517" line="170" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6649" end="6667" line="151" branch="false" invocation-count="1" ignored="false">
+                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6649" end="6667" line="151" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7188" end="7196" line="163" branch="false" invocation-count="1" ignored="false">
@@ -3624,7 +3624,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7550" end="7561" line="173" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6770" end="6786" line="153" branch="false" invocation-count="1" ignored="false">
+                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6770" end="6786" line="153" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7056" end="7119" line="161" branch="false" invocation-count="1" ignored="false">
@@ -3669,7 +3669,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6412" end="6419" line="146" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6678" end="6763" line="152" branch="false" invocation-count="1" ignored="false">
+                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6678" end="6763" line="152" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7877" end="7895" line="182" branch="false" invocation-count="0" ignored="false">
@@ -3684,7 +3684,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6372" end="6402" line="145" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6832" end="6840" line="154" branch="false" invocation-count="1" ignored="false">
+                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6832" end="6840" line="154" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="5848" end="5933" line="132" branch="false" invocation-count="1" ignored="false">
@@ -3705,7 +3705,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7765" end="7790" line="178" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6846" end="6852" line="156" branch="false" invocation-count="0" ignored="false">
+                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6846" end="6852" line="156" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7241" end="7248" line="165" branch="false" invocation-count="1" ignored="false">
@@ -3750,7 +3750,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6541" end="6622" line="149" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6856" end="6870" line="156" branch="false" invocation-count="0" ignored="false">
+                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6856" end="6870" line="156" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="8074" end="8082" line="187" branch="false" invocation-count="0" ignored="false">
@@ -3765,7 +3765,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7307" end="7335" line="166" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6678" end="6694" line="152" branch="false" invocation-count="1" ignored="false">
+                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6678" end="6694" line="152" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="5741" end="5793" line="129" branch="false" invocation-count="1" ignored="false">
@@ -3780,7 +3780,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="7906" end="7991" line="183" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
-                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6770" end="6825" line="153" branch="false" invocation-count="1" ignored="false">
+                                package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="6770" end="6825" line="153" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
                                 package="behaviors" class="PlayerBehaviorImpl" class-type="Class" full-class-name="behaviors.PlayerBehaviorImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/actors/behaviors/PlayerBehavior.scala" method="$anonfun" start="5848" end="5864" line="132" branch="false" invocation-count="1" ignored="false">
@@ -3986,10 +3986,10 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
 </class>
             </classes>
         </package>
-        <package name="client" statement-count="75" statements-invoked="51" statement-rate="68.00">
+        <package name="client" statement-count="75" statements-invoked="57" statement-rate="76.00">
             <classes>
                 <class 
-                name="client.ClientImpl" filename="grpcService/client/Client.scala" statement-count="74" statements-invoked="50" statement-rate="67.57" branch-rate="100.00">
+                name="client.ClientImpl" filename="grpcService/client/Client.scala" statement-count="74" statements-invoked="56" statement-rate="75.68" branch-rate="100.00">
                     <methods>
                         <method 
                         name="client/ClientImpl/helloMessage" statement-count="3" statements-invoked="3" statement-rate="100.00" branch-rate="100.00">
@@ -4100,7 +4100,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                             </statements>
 </method>
                         <method 
-                        name="client/ClientImpl/$anonfun" statement-count="36" statements-invoked="16" statement-rate="44.44" branch-rate="100.00">
+                        name="client/ClientImpl/$anonfun" statement-count="36" statements-invoked="18" statement-rate="50.00" branch-rate="100.00">
                             <statements>
                                 <statement 
                                 package="client" class="ClientImpl" class-type="Class" full-class-name="client.ClientImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/Client.scala" method="$anonfun" start="1405" end="1459" line="41" branch="false" invocation-count="0" ignored="false">
@@ -4139,7 +4139,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="client" class="ClientImpl" class-type="Class" full-class-name="client.ClientImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/Client.scala" method="$anonfun" start="2363" end="2376" line="69" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="client" class="ClientImpl" class-type="Class" full-class-name="client.ClientImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/Client.scala" method="$anonfun" start="1352" end="1371" line="39" branch="false" invocation-count="0" ignored="false">
+                                package="client" class="ClientImpl" class-type="Class" full-class-name="client.ClientImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/Client.scala" method="$anonfun" start="1352" end="1371" line="39" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="client" class="ClientImpl" class-type="Class" full-class-name="client.ClientImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/Client.scala" method="$anonfun" start="1097" end="1127" line="31" branch="false" invocation-count="0" ignored="false">
@@ -4181,7 +4181,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="client" class="ClientImpl" class-type="Class" full-class-name="client.ClientImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/Client.scala" method="$anonfun" start="2334" end="2351" line="68" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="client" class="ClientImpl" class-type="Class" full-class-name="client.ClientImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/Client.scala" method="$anonfun" start="1323" end="1340" line="38" branch="false" invocation-count="0" ignored="false">
+                                package="client" class="ClientImpl" class-type="Class" full-class-name="client.ClientImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/Client.scala" method="$anonfun" start="1323" end="1340" line="38" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="client" class="ClientImpl" class-type="Class" full-class-name="client.ClientImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/Client.scala" method="$anonfun" start="2652" end="2669" line="78" branch="false" invocation-count="1" ignored="false">
@@ -4230,19 +4230,19 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                             </statements>
 </method>
                         <method 
-                        name="client/ClientImpl/getUserPoints" statement-count="4" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                        name="client/ClientImpl/getUserPoints" statement-count="4" statements-invoked="4" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="client" class="ClientImpl" class-type="Class" full-class-name="client.ClientImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/Client.scala" method="getUserPoints" start="1147" end="1164" line="35" branch="false" invocation-count="0" ignored="false">
+                                package="client" class="ClientImpl" class-type="Class" full-class-name="client.ClientImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/Client.scala" method="getUserPoints" start="1147" end="1164" line="35" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="client" class="ClientImpl" class-type="Class" full-class-name="client.ClientImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/Client.scala" method="getUserPoints" start="1298" end="1465" line="37" branch="false" invocation-count="0" ignored="false">
+                                package="client" class="ClientImpl" class-type="Class" full-class-name="client.ClientImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/Client.scala" method="getUserPoints" start="1298" end="1465" line="37" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="client" class="ClientImpl" class-type="Class" full-class-name="client.ClientImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/Client.scala" method="getUserPoints" start="1253" end="1293" line="36" branch="false" invocation-count="0" ignored="false">
+                                package="client" class="ClientImpl" class-type="Class" full-class-name="client.ClientImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/Client.scala" method="getUserPoints" start="1253" end="1293" line="36" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="client" class="ClientImpl" class-type="Class" full-class-name="client.ClientImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/Client.scala" method="getUserPoints" start="1274" end="1282" line="36" branch="false" invocation-count="0" ignored="false">
+                                package="client" class="ClientImpl" class-type="Class" full-class-name="client.ClientImpl" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/client/Client.scala" method="getUserPoints" start="1274" end="1282" line="36" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -4525,7 +4525,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
 </class>
             </classes>
         </package>
-        <package name="grpcService" statement-count="1358" statements-invoked="467" statement-rate="34.39">
+        <package name="grpcService" statement-count="1358" statements-invoked="512" statement-rate="37.70">
             <classes>
                 <class 
                 name="grpcService.NewGameResponseLens" filename="grpcService/NewGameResponse.scala" statement-count="1" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
@@ -4817,7 +4817,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                     </methods>
 </class>
                 <class 
-                name="grpcService.DefaultServerClient" filename="grpcService/ServerClient.scala" statement-count="67" statements-invoked="52" statement-rate="77.61" branch-rate="0.00">
+                name="grpcService.DefaultServerClient" filename="grpcService/ServerClient.scala" statement-count="67" statements-invoked="59" statement-rate="88.06" branch-rate="0.00">
                     <methods>
                         <method 
                         name="grpcService/DefaultServerClient/register" statement-count="5" statements-invoked="5" statement-rate="100.00" branch-rate="100.00">
@@ -5001,13 +5001,13 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                             </statements>
 </method>
                         <method 
-                        name="grpcService/DefaultServerClient/getUserPointsRequestBuilder" statement-count="2" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                        name="grpcService/DefaultServerClient/getUserPointsRequestBuilder" statement-count="2" statements-invoked="2" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="grpcService" class="DefaultServerClient" class-type="Class" full-class-name="grpcService.DefaultServerClient" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerClient.scala" method="getUserPointsRequestBuilder" start="2796" end="2877" line="77" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="DefaultServerClient" class-type="Class" full-class-name="grpcService.DefaultServerClient" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerClient.scala" method="getUserPointsRequestBuilder" start="2796" end="2877" line="77" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="DefaultServerClient" class-type="Class" full-class-name="grpcService.DefaultServerClient" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerClient.scala" method="getUserPointsRequestBuilder" start="2698" end="2737" line="75" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="DefaultServerClient" class-type="Class" full-class-name="grpcService.DefaultServerClient" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerClient.scala" method="getUserPointsRequestBuilder" start="2698" end="2737" line="75" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -5054,22 +5054,22 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                             </statements>
 </method>
                         <method 
-                        name="grpcService/DefaultServerClient/getUserPoints" statement-count="5" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                        name="grpcService/DefaultServerClient/getUserPoints" statement-count="5" statements-invoked="5" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="grpcService" class="DefaultServerClient" class-type="Class" full-class-name="grpcService.DefaultServerClient" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerClient.scala" method="getUserPoints" start="7536" end="7551" line="200" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="DefaultServerClient" class-type="Class" full-class-name="grpcService.DefaultServerClient" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerClient.scala" method="getUserPoints" start="7536" end="7551" line="200" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="DefaultServerClient" class-type="Class" full-class-name="grpcService.DefaultServerClient" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerClient.scala" method="getUserPoints" start="7147" end="7173" line="192" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="DefaultServerClient" class-type="Class" full-class-name="grpcService.DefaultServerClient" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerClient.scala" method="getUserPoints" start="7147" end="7173" line="192" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="DefaultServerClient" class-type="Class" full-class-name="grpcService.DefaultServerClient" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerClient.scala" method="getUserPoints" start="7429" end="7446" line="199" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="DefaultServerClient" class-type="Class" full-class-name="grpcService.DefaultServerClient" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerClient.scala" method="getUserPoints" start="7429" end="7446" line="199" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="DefaultServerClient" class-type="Class" full-class-name="grpcService.DefaultServerClient" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerClient.scala" method="getUserPoints" start="7266" end="7318" line="193" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="DefaultServerClient" class-type="Class" full-class-name="grpcService.DefaultServerClient" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerClient.scala" method="getUserPoints" start="7266" end="7318" line="193" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="DefaultServerClient" class-type="Class" full-class-name="grpcService.DefaultServerClient" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerClient.scala" method="getUserPoints" start="7536" end="7562" line="200" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="DefaultServerClient" class-type="Class" full-class-name="grpcService.DefaultServerClient" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerClient.scala" method="getUserPoints" start="7536" end="7562" line="200" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -5257,19 +5257,19 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                     </methods>
 </class>
                 <class 
-                name="grpcService.SingleUserPoints" filename="grpcService/SingleUserPoints.scala" statement-count="28" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                name="grpcService.SingleUserPoints" filename="grpcService/SingleUserPoints.scala" statement-count="28" statements-invoked="7" statement-rate="25.00" branch-rate="20.00">
                     <methods>
                         <method 
-                        name="grpcService/SingleUserPoints/writeTo" statement-count="4" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                        name="grpcService/SingleUserPoints/writeTo" statement-count="4" statements-invoked="2" statement-rate="50.00" branch-rate="0.00">
                             <statements>
                                 <statement 
                                 package="grpcService" class="SingleUserPoints" class-type="Class" full-class-name="grpcService.SingleUserPoints" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="writeTo" start="1244" end="1272" line="39" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="SingleUserPoints" class-type="Class" full-class-name="grpcService.SingleUserPoints" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="writeTo" start="1083" end="1094" line="35" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="SingleUserPoints" class-type="Class" full-class-name="grpcService.SingleUserPoints" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="writeTo" start="1083" end="1094" line="35" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="SingleUserPoints" class-type="Class" full-class-name="grpcService.SingleUserPoints" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="writeTo" start="1298" end="1330" line="42" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="SingleUserPoints" class-type="Class" full-class-name="grpcService.SingleUserPoints" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="writeTo" start="1298" end="1330" line="42" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="grpcService" class="SingleUserPoints" class-type="Class" full-class-name="grpcService.SingleUserPoints" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="writeTo" start="1232" end="1282" line="38" branch="true" invocation-count="0" ignored="false">
@@ -5344,7 +5344,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                             </statements>
 </method>
                         <method 
-                        name="grpcService/SingleUserPoints/__computeSerializedSize" statement-count="4" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                        name="grpcService/SingleUserPoints/__computeSerializedSize" statement-count="4" statements-invoked="2" statement-rate="50.00" branch-rate="0.00">
                             <statements>
                                 <statement 
                                 package="grpcService" class="SingleUserPoints" class-type="Class" full-class-name="grpcService.SingleUserPoints" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="__computeSerializedSize" start="650" end="755" line="19" branch="true" invocation-count="0" ignored="false">
@@ -5353,24 +5353,24 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="grpcService" class="SingleUserPoints" class-type="Class" full-class-name="grpcService.SingleUserPoints" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="__computeSerializedSize" start="672" end="745" line="20" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="SingleUserPoints" class-type="Class" full-class-name="grpcService.SingleUserPoints" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="__computeSerializedSize" start="493" end="534" line="14" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="SingleUserPoints" class-type="Class" full-class-name="grpcService.SingleUserPoints" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="__computeSerializedSize" start="493" end="534" line="14" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="SingleUserPoints" class-type="Class" full-class-name="grpcService.SingleUserPoints" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="__computeSerializedSize" start="781" end="809" line="23" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="SingleUserPoints" class-type="Class" full-class-name="grpcService.SingleUserPoints" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="__computeSerializedSize" start="781" end="809" line="23" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
                         <method 
-                        name="grpcService/SingleUserPoints/serializedSize" statement-count="3" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                        name="grpcService/SingleUserPoints/serializedSize" statement-count="3" statements-invoked="3" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="grpcService" class="SingleUserPoints" class-type="Class" full-class-name="grpcService.SingleUserPoints" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="serializedSize" start="969" end="994" line="29" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="SingleUserPoints" class-type="Class" full-class-name="grpcService.SingleUserPoints" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="serializedSize" start="969" end="994" line="29" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="SingleUserPoints" class-type="Class" full-class-name="grpcService.SingleUserPoints" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="serializedSize" start="833" end="860" line="26" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="SingleUserPoints" class-type="Class" full-class-name="grpcService.SingleUserPoints" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="serializedSize" start="833" end="860" line="26" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="SingleUserPoints" class-type="Class" full-class-name="grpcService.SingleUserPoints" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="serializedSize" start="950" end="1048" line="28" branch="true" invocation-count="0" ignored="false">
+                                package="grpcService" class="SingleUserPoints" class-type="Class" full-class-name="grpcService.SingleUserPoints" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="serializedSize" start="950" end="1048" line="28" branch="true" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -5409,7 +5409,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                     </methods>
 </class>
                 <class 
-                name="grpcService.ServerHandler$" filename="grpcService/ServerHandler.scala" statement-count="107" statements-invoked="75" statement-rate="70.09" branch-rate="100.00">
+                name="grpcService.ServerHandler$" filename="grpcService/ServerHandler.scala" statement-count="107" statements-invoked="81" statement-rate="75.70" branch-rate="100.00">
                     <methods>
                         <method 
                         name="grpcService/ServerHandler$/withServerReflection" statement-count="7" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
@@ -5565,13 +5565,13 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                             </statements>
 </method>
                         <method 
-                        name="grpcService/ServerHandler$/$anonfun" statement-count="65" statements-invoked="50" statement-rate="76.92" branch-rate="100.00">
+                        name="grpcService/ServerHandler$/$anonfun" statement-count="65" statements-invoked="56" statement-rate="86.15" branch-rate="100.00">
                             <statements>
                                 <statement 
                                 package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="7848" end="7924" line="152" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="8341" end="8421" line="160" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="8341" end="8421" line="160" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="8574" end="8647" line="164" branch="false" invocation-count="1" ignored="false">
@@ -5604,7 +5604,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="7682" end="7761" line="148" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="8178" end="8252" line="158" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="8178" end="8252" line="158" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="6714" end="6789" line="130" branch="false" invocation-count="1" ignored="false">
@@ -5640,7 +5640,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="7471" end="7485" line="144" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="8178" end="8312" line="158" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="8178" end="8312" line="158" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="8600" end="8630" line="164" branch="false" invocation-count="1" ignored="false">
@@ -5664,7 +5664,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="7848" end="7987" line="152" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="8121" end="8141" line="156" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="8121" end="8141" line="156" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="6874" end="7019" line="134" branch="false" invocation-count="1" ignored="false">
@@ -5727,7 +5727,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="6552" end="6790" line="128" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="8280" end="8311" line="159" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="8280" end="8311" line="159" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="8609" end="8629" line="164" branch="false" invocation-count="1" ignored="false">
@@ -5745,7 +5745,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="1536" end="1542" line="42" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="8178" end="8422" line="158" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="8178" end="8422" line="158" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="grpcService" class="ServerHandler$" class-type="Object" full-class-name="grpcService.ServerHandler$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/ServerHandler.scala" method="$anonfun" start="5838" end="8648" line="112" branch="false" invocation-count="1" ignored="false">
@@ -6088,7 +6088,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                     </methods>
 </class>
                 <class 
-                name="grpcService.SingleUserPoints$" filename="grpcService/SingleUserPoints.scala" statement-count="50" statements-invoked="1" statement-rate="2.00" branch-rate="0.00">
+                name="grpcService.SingleUserPoints$" filename="grpcService/SingleUserPoints.scala" statement-count="50" statements-invoked="6" statement-rate="12.00" branch-rate="33.33">
                     <methods>
                         <method 
                         name="grpcService/SingleUserPoints$/messageCompanionForFieldNumber" statement-count="3" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
@@ -6241,10 +6241,10 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                             </statements>
 </method>
                         <method 
-                        name="grpcService/SingleUserPoints$/$lessinit$greater$default$2" statement-count="1" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                        name="grpcService/SingleUserPoints$/$lessinit$greater$default$2" statement-count="1" statements-invoked="1" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="grpcService" class="SingleUserPoints$" class-type="Object" full-class-name="grpcService.SingleUserPoints$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="$lessinit$greater$default$2" start="279" end="279" line="10" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="SingleUserPoints$" class-type="Object" full-class-name="grpcService.SingleUserPoints$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="$lessinit$greater$default$2" start="279" end="279" line="10" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -6257,10 +6257,10 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                             </statements>
 </method>
                         <method 
-                        name="grpcService/SingleUserPoints$/parseFrom" statement-count="12" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                        name="grpcService/SingleUserPoints$/parseFrom" statement-count="12" statements-invoked="4" statement-rate="33.33" branch-rate="33.33">
                             <statements>
                                 <statement 
-                                package="grpcService" class="SingleUserPoints$" class-type="Object" full-class-name="grpcService.SingleUserPoints$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="parseFrom" start="2930" end="2948" line="73" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="SingleUserPoints$" class-type="Object" full-class-name="grpcService.SingleUserPoints$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="parseFrom" start="2930" end="2948" line="73" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="grpcService" class="SingleUserPoints$" class-type="Object" full-class-name="grpcService.SingleUserPoints$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="parseFrom" start="3437" end="3462" line="87" branch="false" invocation-count="0" ignored="false">
@@ -6269,13 +6269,13 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="grpcService" class="SingleUserPoints$" class-type="Object" full-class-name="grpcService.SingleUserPoints$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="parseFrom" start="3011" end="3017" line="76" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="SingleUserPoints$" class-type="Object" full-class-name="grpcService.SingleUserPoints$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="parseFrom" start="2646" end="2659" line="68" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="SingleUserPoints$" class-type="Object" full-class-name="grpcService.SingleUserPoints$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="parseFrom" start="2646" end="2659" line="68" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="grpcService" class="SingleUserPoints$" class-type="Object" full-class-name="grpcService.SingleUserPoints$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="parseFrom" start="3123" end="3212" line="79" branch="true" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="SingleUserPoints$" class-type="Object" full-class-name="grpcService.SingleUserPoints$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="parseFrom" start="3395" end="3431" line="87" branch="true" invocation-count="0" ignored="false">
+                                package="grpcService" class="SingleUserPoints$" class-type="Object" full-class-name="grpcService.SingleUserPoints$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="parseFrom" start="3395" end="3431" line="87" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="grpcService" class="SingleUserPoints$" class-type="Object" full-class-name="grpcService.SingleUserPoints$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="parseFrom" start="3042" end="3062" line="77" branch="false" invocation-count="0" ignored="false">
@@ -6284,7 +6284,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="grpcService" class="SingleUserPoints$" class-type="Object" full-class-name="grpcService.SingleUserPoints$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="parseFrom" start="3437" end="3462" line="87" branch="true" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="SingleUserPoints$" class-type="Object" full-class-name="grpcService.SingleUserPoints$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="parseFrom" start="2978" end="2984" line="75" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="SingleUserPoints$" class-type="Object" full-class-name="grpcService.SingleUserPoints$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="parseFrom" start="2978" end="2984" line="75" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="grpcService" class="SingleUserPoints$" class-type="Object" full-class-name="grpcService.SingleUserPoints$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/SingleUserPoints.scala" method="parseFrom" start="3156" end="3200" line="80" branch="false" invocation-count="0" ignored="false">
@@ -7038,7 +7038,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                     </methods>
 </class>
                 <class 
-                name="grpcService.UserInfo$" filename="grpcService/UserInfo.scala" statement-count="50" statements-invoked="1" statement-rate="2.00" branch-rate="0.00">
+                name="grpcService.UserInfo$" filename="grpcService/UserInfo.scala" statement-count="50" statements-invoked="8" statement-rate="16.00" branch-rate="33.33">
                     <methods>
                         <method 
                         name="grpcService/UserInfo$/$anonfun" statement-count="17" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
@@ -7105,10 +7105,10 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                             </statements>
 </method>
                         <method 
-                        name="grpcService/UserInfo$/parseFrom" statement-count="12" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                        name="grpcService/UserInfo$/parseFrom" statement-count="12" statements-invoked="6" statement-rate="50.00" branch-rate="33.33">
                             <statements>
                                 <statement 
-                                package="grpcService" class="UserInfo$" class-type="Object" full-class-name="grpcService.UserInfo$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="parseFrom" start="2993" end="3000" line="76" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo$" class-type="Object" full-class-name="grpcService.UserInfo$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="parseFrom" start="2993" end="3000" line="76" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="grpcService" class="UserInfo$" class-type="Object" full-class-name="grpcService.UserInfo$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="parseFrom" start="3220" end="3262" line="82" branch="false" invocation-count="0" ignored="false">
@@ -7117,16 +7117,16 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="grpcService" class="UserInfo$" class-type="Object" full-class-name="grpcService.UserInfo$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="parseFrom" start="3430" end="3455" line="87" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="UserInfo$" class-type="Object" full-class-name="grpcService.UserInfo$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="parseFrom" start="2912" end="2930" line="73" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo$" class-type="Object" full-class-name="grpcService.UserInfo$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="parseFrom" start="2912" end="2930" line="73" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="UserInfo$" class-type="Object" full-class-name="grpcService.UserInfo$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="parseFrom" start="3388" end="3424" line="87" branch="true" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo$" class-type="Object" full-class-name="grpcService.UserInfo$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="parseFrom" start="3388" end="3424" line="87" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="UserInfo$" class-type="Object" full-class-name="grpcService.UserInfo$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="parseFrom" start="2623" end="2636" line="68" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo$" class-type="Object" full-class-name="grpcService.UserInfo$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="parseFrom" start="2623" end="2636" line="68" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="UserInfo$" class-type="Object" full-class-name="grpcService.UserInfo$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="parseFrom" start="3027" end="3059" line="77" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo$" class-type="Object" full-class-name="grpcService.UserInfo$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="parseFrom" start="3027" end="3059" line="77" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="grpcService" class="UserInfo$" class-type="Object" full-class-name="grpcService.UserInfo$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="parseFrom" start="3120" end="3209" line="79" branch="true" invocation-count="0" ignored="false">
@@ -7141,15 +7141,15 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                                 package="grpcService" class="UserInfo$" class-type="Object" full-class-name="grpcService.UserInfo$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="parseFrom" start="3430" end="3455" line="87" branch="true" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="UserInfo$" class-type="Object" full-class-name="grpcService.UserInfo$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="parseFrom" start="2960" end="2966" line="75" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo$" class-type="Object" full-class-name="grpcService.UserInfo$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="parseFrom" start="2960" end="2966" line="75" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
                         <method 
-                        name="grpcService/UserInfo$/$lessinit$greater$default$2" statement-count="1" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                        name="grpcService/UserInfo$/$lessinit$greater$default$2" statement-count="1" statements-invoked="1" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="grpcService" class="UserInfo$" class-type="Object" full-class-name="grpcService.UserInfo$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="$lessinit$greater$default$2" start="284" end="284" line="10" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo$" class-type="Object" full-class-name="grpcService.UserInfo$" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="$lessinit$greater$default$2" start="284" end="284" line="10" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -9082,25 +9082,25 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                     </methods>
 </class>
                 <class 
-                name="grpcService.UserInfo" filename="grpcService/UserInfo.scala" statement-count="30" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                name="grpcService.UserInfo" filename="grpcService/UserInfo.scala" statement-count="30" statements-invoked="13" statement-rate="43.33" branch-rate="60.00">
                     <methods>
                         <method 
-                        name="grpcService/UserInfo/writeTo" statement-count="5" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                        name="grpcService/UserInfo/writeTo" statement-count="5" statements-invoked="5" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="writeTo" start="1254" end="1283" line="39" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="writeTo" start="1254" end="1283" line="39" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="writeTo" start="1087" end="1098" line="35" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="writeTo" start="1087" end="1098" line="35" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="writeTo" start="1229" end="1240" line="38" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="writeTo" start="1229" end="1240" line="38" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="writeTo" start="1309" end="1341" line="42" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="writeTo" start="1309" end="1341" line="42" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="writeTo" start="1242" end="1293" line="38" branch="true" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="writeTo" start="1242" end="1293" line="38" branch="true" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -9156,36 +9156,36 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                             </statements>
 </method>
                         <method 
-                        name="grpcService/UserInfo/__computeSerializedSize" statement-count="5" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                        name="grpcService/UserInfo/__computeSerializedSize" statement-count="5" statements-invoked="5" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="__computeSerializedSize" start="636" end="651" line="19" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="__computeSerializedSize" start="636" end="651" line="19" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="__computeSerializedSize" start="785" end="813" line="23" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="__computeSerializedSize" start="785" end="813" line="23" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="__computeSerializedSize" start="653" end="759" line="19" branch="true" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="__computeSerializedSize" start="653" end="759" line="19" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="__computeSerializedSize" start="490" end="531" line="14" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="__computeSerializedSize" start="490" end="531" line="14" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="__computeSerializedSize" start="675" end="749" line="20" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="__computeSerializedSize" start="675" end="749" line="20" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
                         <method 
-                        name="grpcService/UserInfo/serializedSize" statement-count="3" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                        name="grpcService/UserInfo/serializedSize" statement-count="3" statements-invoked="3" statement-rate="100.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="serializedSize" start="954" end="1052" line="28" branch="true" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="serializedSize" start="954" end="1052" line="28" branch="true" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="serializedSize" start="973" end="998" line="29" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="serializedSize" start="973" end="998" line="29" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="serializedSize" start="837" end="864" line="26" branch="false" invocation-count="0" ignored="false">
+                                package="grpcService" class="UserInfo" class-type="Class" full-class-name="grpcService.UserInfo" source="/home/runner/work/dixit/dixit/target/scala-3.2.0/akka-grpc/main/grpcService/UserInfo.scala" method="serializedSize" start="837" end="864" line="26" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>
@@ -10688,7 +10688,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
 </class>
             </classes>
         </package>
-        <package name="ports" statement-count="62" statements-invoked="56" statement-rate="90.32">
+        <package name="ports" statement-count="62" statements-invoked="59" statement-rate="95.16">
             <classes>
                 <class 
                 name="ports.RegisterPort" filename="grpcService/server/domain/ports/RegisterPort.scala" statement-count="8" statements-invoked="8" statement-rate="100.00" branch-rate="100.00">
@@ -10730,7 +10730,7 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                     </methods>
 </class>
                 <class 
-                name="ports.GamesManagementPort" filename="grpcService/server/domain/ports/GamesManagementPort.scala" statement-count="24" statements-invoked="18" statement-rate="75.00" branch-rate="100.00">
+                name="ports.GamesManagementPort" filename="grpcService/server/domain/ports/GamesManagementPort.scala" statement-count="24" statements-invoked="21" statement-rate="87.50" branch-rate="100.00">
                     <methods>
                         <method 
                         name="ports/GamesManagementPort/openNewGame" statement-count="2" statements-invoked="2" statement-rate="100.00" branch-rate="100.00">
@@ -10744,19 +10744,19 @@ statement-count="3067" statements-invoked="1379" statement-rate="44.96" branch-r
                             </statements>
 </method>
                         <method 
-                        name="ports/GamesManagementPort/getSingleUserPoints" statement-count="4" statements-invoked="0" statement-rate="0.00" branch-rate="0.00">
+                        name="ports/GamesManagementPort/getSingleUserPoints" statement-count="4" statements-invoked="3" statement-rate="75.00" branch-rate="100.00">
                             <statements>
                                 <statement 
-                                package="ports" class="GamesManagementPort" class-type="Class" full-class-name="ports.GamesManagementPort" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/server/domain/ports/GamesManagementPort.scala" method="getSingleUserPoints" start="499" end="533" line="13" branch="false" invocation-count="0" ignored="false">
+                                package="ports" class="GamesManagementPort" class-type="Class" full-class-name="ports.GamesManagementPort" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/server/domain/ports/GamesManagementPort.scala" method="getSingleUserPoints" start="499" end="533" line="13" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
-                                package="ports" class="GamesManagementPort" class-type="Class" full-class-name="ports.GamesManagementPort" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/server/domain/ports/GamesManagementPort.scala" method="getSingleUserPoints" start="450" end="473" line="13" branch="false" invocation-count="0" ignored="false">
+                                package="ports" class="GamesManagementPort" class-type="Class" full-class-name="ports.GamesManagementPort" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/server/domain/ports/GamesManagementPort.scala" method="getSingleUserPoints" start="450" end="473" line="13" branch="false" invocation-count="1" ignored="false">
 </statement>
                                 <statement 
                                 package="ports" class="GamesManagementPort" class-type="Class" full-class-name="ports.GamesManagementPort" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/server/domain/ports/GamesManagementPort.scala" method="getSingleUserPoints" start="579" end="585" line="15" branch="false" invocation-count="0" ignored="false">
 </statement>
                                 <statement 
-                                package="ports" class="GamesManagementPort" class-type="Class" full-class-name="ports.GamesManagementPort" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/server/domain/ports/GamesManagementPort.scala" method="getSingleUserPoints" start="544" end="559" line="14" branch="false" invocation-count="0" ignored="false">
+                                package="ports" class="GamesManagementPort" class-type="Class" full-class-name="ports.GamesManagementPort" source="/home/runner/work/dixit/dixit/src/main/scala/grpcService/server/domain/ports/GamesManagementPort.scala" method="getSingleUserPoints" start="544" end="559" line="14" branch="false" invocation-count="1" ignored="false">
 </statement>
                             </statements>
 </method>

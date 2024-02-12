@@ -35,8 +35,8 @@
 </span>11 <span style=''>
 </span>12 <span style=''>  </span><span style='background: #AEF1AE'>def closeGame</span><span style=''>(address: String, name: String) = </span><span style='background: #AEF1AE'>serverLogic.removeGame(Game(address, name))</span><span style=''>
 </span>13 <span style=''>
-</span>14 <span style=''>  </span><span style='background: #F0ADAD'>def getSingleUserPoints</span><span style=''>(username: String): Int = </span><span style='background: #F0ADAD'>serverLogic.retrieveUser(username)</span><span style=''> match
-</span>15 <span style=''>    </span><span style='background: #F0ADAD'>case Some(user)</span><span style=''> =&gt; user.points
+</span>14 <span style=''>  </span><span style='background: #AEF1AE'>def getSingleUserPoints</span><span style=''>(username: String): Int = </span><span style='background: #AEF1AE'>serverLogic.retrieveUser(username)</span><span style=''> match
+</span>15 <span style=''>    </span><span style='background: #AEF1AE'>case Some(user)</span><span style=''> =&gt; user.points
 </span>16 <span style=''>    </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt; 0
 </span>17 <span style=''>
 </span>18 <span style=''>  </span><span style='background: #AEF1AE'>def updateUsers</span><span style=''>(userNames: List[String], points: List[Int]): Boolean = 
@@ -228,7 +228,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           serverLogic.retrieveUser(username)
         </td>
       </tr><tr>
@@ -252,7 +252,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           def getSingleUserPoints
         </td>
       </tr><tr>
@@ -276,7 +276,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case Some(user)
         </td>
       </tr><tr>
