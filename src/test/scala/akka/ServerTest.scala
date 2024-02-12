@@ -11,7 +11,7 @@ import java.sql.{Connection, DriverManager, ResultSet, SQLException, Statement}
 
 import grpcService.client.ClientImpl
 import grpcService.server.applicationService.*
-import grpcService.{HelloMessage, NewGameResponse, OpenedGames, LoginResult, ClosingResponse, UserPoints, UpdateResponse}
+import grpcService.{HelloMessage, SingleUserPoints, NewGameResponse, OpenedGames, LoginResult, ClosingResponse, UserPoints, UpdateResponse}
 import akka.grpc.GrpcServiceException
 
 import grpcService.server.data.wrapper.MySqlContainerWrapper
@@ -89,6 +89,12 @@ class ServerTest extends AnyFunSpec with BeforeAndAfterAll with Matchers {
                     assert(future.isReadyWithin(5000 millis))
                     whenReady(future) { s =>
                         s shouldBe LoginResult(true)
+                    }
+
+                    var retrieveUser: Future[SingleUserPoints] = client.getUserPoints("user",(bool) => {})
+                    assert(retrieveUser.isReadyWithin(5000 millis))
+                    whenReady(retrieveUser) { s =>
+                        s shouldBe SingleUserPoints(0)
                     }
                     
                     future = client.login("user","pass",(bool) => {})
