@@ -201,11 +201,11 @@
 </span>177 <span style=''></span><span style='background: #AEF1AE'>        }
 </span>178 <span style=''></span><span style='background: #AEF1AE'>        waitForGuessing(actor, turn, cardSelected)
 </span>179 <span style=''></span><span style='background: #AEF1AE'>
-</span>180 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case InterruptTurn</span><span style='background: #AEF1AE'> =&gt;
-</span>181 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>playersList foreach { i =&gt;
-</span>182 <span style=''></span><span style='background: #F0ADAD'>        i.player ! TurnCancelled
-</span>183 <span style=''></span><span style='background: #F0ADAD'>      }</span><span style='background: #AEF1AE'>
-</span>184 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>180 <span style=''></span><span style='background: #AEF1AE'>    case InterruptTurn =&gt;
+</span>181 <span style=''></span><span style='background: #AEF1AE'>      playersList foreach { i =&gt;
+</span>182 <span style=''></span><span style='background: #AEF1AE'>        i.player ! TurnCancelled
+</span>183 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>184 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.same
 </span>185 <span style=''></span><span style='background: #AEF1AE'>
 </span>186 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case PlayerRejoined(address)</span><span style='background: #AEF1AE'> =&gt;
 </span>187 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>playerRejoinedProcedure(address, MAX_CARDS)</span><span style='background: #AEF1AE'>
@@ -258,11 +258,11 @@
 </span>234 <span style=''></span><span style='background: #AEF1AE'>      playersList(turnIndex).player ! YourTurn(root)
 </span>235 <span style=''></span><span style='background: #AEF1AE'>      manageTurnOf(playersList(turnIndex).player, turnIndex)
 </span>236 <span style=''></span><span style='background: #AEF1AE'>
-</span>237 <span style=''></span><span style='background: #AEF1AE'>    case InterruptTurn =&gt;
-</span>238 <span style=''></span><span style='background: #AEF1AE'>      playersList.foreach { i =&gt;
-</span>239 <span style=''></span><span style='background: #AEF1AE'>        i.player ! TurnCancelled
-</span>240 <span style=''></span><span style='background: #AEF1AE'>      }
-</span>241 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.same
+</span>237 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case InterruptTurn</span><span style='background: #AEF1AE'> =&gt;
+</span>238 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>playersList.foreach { i =&gt;
+</span>239 <span style=''></span><span style='background: #F0ADAD'>        i.player ! TurnCancelled
+</span>240 <span style=''></span><span style='background: #F0ADAD'>      }</span><span style='background: #AEF1AE'>
+</span>241 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
 </span>242 <span style=''></span><span style='background: #AEF1AE'>
 </span>243 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case PlayerRejoined(address)</span><span style='background: #AEF1AE'> =&gt;
 </span>244 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>playerRejoinedProcedure(address, MAX_CARDS)</span><span style='background: #AEF1AE'>
@@ -4595,7 +4595,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case InterruptTurn
         </td>
       </tr><tr>
@@ -4619,7 +4619,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           playersList foreach { i =&gt;
         i.player ! TurnCancelled
       }
@@ -4645,7 +4645,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           i.player ! TurnCancelled
         </td>
       </tr><tr>
@@ -4669,7 +4669,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           i.player
         </td>
       </tr><tr>
@@ -4693,7 +4693,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.same
         </td>
       </tr><tr>
@@ -6125,7 +6125,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case InterruptTurn
         </td>
       </tr><tr>
@@ -6149,7 +6149,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           playersList.foreach { i =&gt;
         i.player ! TurnCancelled
       }
@@ -6175,7 +6175,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           i.player ! TurnCancelled
         </td>
       </tr><tr>
@@ -6199,7 +6199,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           i.player
         </td>
       </tr><tr>
@@ -6223,7 +6223,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           Behaviors.same
         </td>
       </tr><tr>

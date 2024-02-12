@@ -62,7 +62,7 @@
 </span>38 <span style=''>    val result = </span><span style='background: #AEF1AE'>inboundPorts.gamesManagementPort.openNewGame(in.address, in.forename)</span><span style=''>
 </span>39 <span style=''>    result match
 </span>40 <span style=''>      </span><span style='background: #AEF1AE'>case true</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>Future.successful(NewGameResponse())</span><span style=''>
-</span>41 <span style=''>      </span><span style='background: #F0ADAD'>case false</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>Future.failed(new IllegalStateException(&quot;Game already created&quot;))</span><span style=''>
+</span>41 <span style=''>      </span><span style='background: #AEF1AE'>case false</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>Future.failed(new IllegalStateException(&quot;Game already created&quot;))</span><span style=''>
 </span>42 <span style=''>
 </span>43 <span style=''>  </span><span style='background: #AEF1AE'>override def updateUserPoints</span><span style=''>(in: UserPoints): Future[UpdateResponse] =
 </span>44 <span style=''>    val result: Boolean = </span><span style='background: #AEF1AE'>inboundPorts.gamesManagementPort.updateUsers(in.userName.toList, in.points.toList)</span><span style=''>
@@ -876,7 +876,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           new IllegalStateException(&quot;Game already created&quot;)
         </td>
       </tr><tr>
@@ -900,7 +900,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case false
         </td>
       </tr><tr>
@@ -924,7 +924,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Future.failed(new IllegalStateException(&quot;Game already created&quot;))
         </td>
       </tr><tr>
