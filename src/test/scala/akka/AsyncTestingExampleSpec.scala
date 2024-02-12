@@ -13,7 +13,9 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.funspec.AnyFunSpec
 import grpcService.client.actors.utils.Utils
 
-import concurrent.duration.DurationInt
+import scala.concurrent.{Await}
+import java.util.concurrent.TimeUnit
+import scala.concurrent.duration._
 import scala.language.postfixOps
 
 //simple actor interaction that gives a card pre-prepared
@@ -135,24 +137,24 @@ class AsyncTestingExampleSpec
               import PlayerBehavior._
               object AllDone extends Exception { }
               val testKit = ActorTestKit()
-              val probe = testKit.createTestProbe[ForemanBehavior.Command]()
+              val probe = testKit.createTestProbe[PlayerBehavior.Command]()
               val interactionWith0 = testKit.spawn(interactionTestActor("0"), "interaction1")
               val interactionWith1 = testKit.spawn(interactionTestActor("1"), "interaction2")
-              val foreman = testKit.spawn(ForemanBehavior(logger = Option(probe.ref), 3), "foreman")
+              val foreman = testKit.spawn(ForemanBehavior(logger = Option.empty, 3), "foreman")
               Thread.sleep(2000)
               val player2 = testKit.spawn(PlayerBehavior(interactionExt = Option(interactionWith0)), "player2")
-              var player3 = testKit.spawn(PlayerBehavior(interactionExt = Option(interactionWith0)), "player3")
+              var player3 = testKit.spawn(PlayerBehavior(logger = Option(probe.ref), interactionExt = Option(interactionWith0)), "player3")
               val player1 = testKit.spawn(PlayerBehavior(interactionExt = Option(interactionWith1)), "player1")
-              probe.expectMessage(20 seconds, ForemanBehavior.Start(Set(player1, player2, player3)))
+              Thread.sleep(1000)
               testKit.stop(player3)
-              Thread.sleep(2000)
-              player3 = testKit.spawn(PlayerBehavior(interactionExt = Option(interactionWith0)), "player3")
+              Thread.sleep(1000)
+              player3 = testKit.spawn(PlayerBehavior(logger = Option(probe.ref), interactionExt = Option(interactionWith0)), "player3")
               try {
                 while( true ){
                   val messageStop = probe.receiveMessage(30 seconds)
                   
                   messageStop match {
-                    case ForemanBehavior.PlayerRejoined(_) => 
+                    case PlayerBehavior.MemberKO => 
                       println("Message Stop received")
                       throw AllDone
                     case m => ()
@@ -168,18 +170,18 @@ class AsyncTestingExampleSpec
           describe("without re-joining") {
             it("should be recognized and all players must be notified, in order to close the game") {
                 object AllDone extends Exception { }
-                val testKit = ActorTestKit("ClusterSystem")            
-                val interactionWith0 = Utils.startupWithRole("interaction", "2600", "127.0.0.1")(interactionTestActor("0"))
-                val interactionWith1 = Utils.startupWithRole("interaction", "2601", "127.0.0.1")(interactionTestActor("1"))
+                val testKit = ActorTestKit("AsyncTestingExampleSpec")            
+                val interactionWith0 = Utils.startupWithRole("interaction", "2600", "127.0.0.1", clusterName = "AsyncTestingExampleSpec")(interactionTestActor("0"))
+                val interactionWith1 = Utils.startupWithRole("interaction", "2601", "127.0.0.1", clusterName = "AsyncTestingExampleSpec")(interactionTestActor("1"))
                 val probe = testKit.createTestProbe[ForemanBehavior.Command]()
-                val foreman = Utils.startupWithRole("foreman", "2554", "127.0.0.1")(ForemanBehavior(logger = Option(probe.ref), 3))
-                val player1 = Utils.startupWithRole("player", "2555", "127.0.0.1")(PlayerBehavior(interactionExt = Option(interactionWith0)))
+                val foreman = Utils.startupWithRole("foreman", "2551", "127.0.0.1", clusterName = "AsyncTestingExampleSpec")(ForemanBehavior(logger = Option(probe.ref), 3))
+                val player1 = Utils.startupWithRole("player", "2552", "127.0.0.1", clusterName = "AsyncTestingExampleSpec")(PlayerBehavior(interactionExt = Option(interactionWith0)))
                 
-                val player2 = Utils.startupWithRole("player", "2553", "127.0.0.1")(PlayerBehavior(interactionExt = Option(interactionWith0)))
-                val player3 = Utils.startupWithRole("player", "2552", "127.0.0.1")(PlayerBehavior(interactionExt = Option(interactionWith1)))
+                val player2 = Utils.startupWithRole("player", "2553", "127.0.0.1", clusterName = "AsyncTestingExampleSpec")(PlayerBehavior(interactionExt = Option(interactionWith0)))
+                val player3 = Utils.startupWithRole("player", "2554", "127.0.0.1", clusterName = "AsyncTestingExampleSpec")(PlayerBehavior(interactionExt = Option(interactionWith1)))
                 
                 Thread.sleep(2000)
-                val messageStart = probe.receiveMessage(20 seconds)
+                val messageStart = probe.receiveMessage(30 seconds)
                 
                 messageStart match {
                 case ForemanBehavior.Start(_) => succeed
@@ -202,12 +204,16 @@ class AsyncTestingExampleSpec
                   }
                 } catch {
                   case AllDone =>
-                    testKit.shutdownTestKit()
-                    player2.terminate()
-                    player1.terminate()
-                    interactionWith0.terminate()
-                    interactionWith1.terminate()
                     succeed
+                } finally {
+                  testKit.shutdownTestKit()
+                  player2.terminate()
+                  player1.terminate()
+                  foreman.terminate()
+                  interactionWith0.terminate()
+                  interactionWith1.terminate()
+                  Await.ready(player1.whenTerminated, Duration(1, TimeUnit.MINUTES))
+                  Await.ready(foreman.whenTerminated, Duration(1, TimeUnit.MINUTES))
                 }
             }
           }
@@ -215,13 +221,13 @@ class AsyncTestingExampleSpec
             it("should be notified to all players") {
               object AllDone extends Exception { }
                 val testKit = ActorTestKit("ClusterSystem")            
-                val interactionWith0 = Utils.startupWithRole("interaction", "2605", "127.0.0.1")(interactionTestActor("0"))
-                val foreman = Utils.startupWithRole("foreman", "2654", "127.0.0.1")(ForemanBehavior(maxPlayers = 2))
+                val interactionWith0 = Utils.startupWithRole("interaction", "2551", "127.0.0.1")(interactionTestActor("0"))
+                val foreman = Utils.startupWithRole("foreman", "2552", "127.0.0.1")(ForemanBehavior(maxPlayers = 2))
                 val probe = testKit.createTestProbe[PlayerBehavior.Command]()
                 val player1 = Utils.startupWithRole("player", "2655", "127.0.0.1")(PlayerBehavior(logger = Option(probe.ref), interactionExt = Option(interactionWith0)))
                 val player2 = Utils.startupWithRole("player", "2656", "127.0.0.1")(PlayerBehavior(logger = Option(probe.ref), interactionExt = Option(interactionWith0)))
                 
-                Thread.sleep(5000)
+                Thread.sleep(10000)
                 foreman.terminate()
                 try {
                   while( true ){

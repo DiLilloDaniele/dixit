@@ -11,6 +11,20 @@ import java.io.{BufferedReader, InputStreamReader}
 
 object Utils:
 
+  def startupWithRoleForTest[X](role: String, port: String, ip: String, clusterName: String = "ClusterSystem")(root: => Behavior[X]): ActorSystem[X] =
+    val config = ConfigFactory
+      .parseString(
+        s"""
+        akka.remote.artery.canonical.hostname=$ip
+        akka.remote.artery.canonical.port=$port
+        akka.cluster.roles = [$role]
+        akka.cluster.seed-nodes = [
+        ]
+        """)
+      .withFallback(ConfigFactory.load("application-test"))
+      // Create an Akka system
+    ActorSystem(root, clusterName, config)
+
   def startupWithRole[X](role: String, port: String, ip: String, clusterName: String = "ClusterSystem")(root: => Behavior[X]): ActorSystem[X] =
     val config = ConfigFactory
       .parseString(

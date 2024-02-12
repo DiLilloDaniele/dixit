@@ -59,6 +59,10 @@ object ForemanBehavior:
       Behaviors.receiveMessage[Command] {
         case start: Start => 
           closeHandler()
+          logger match {
+            case Some(ref) => ref ! start
+            case _ =>
+          }
           master ! start
           Behaviors.same
         case msg =>

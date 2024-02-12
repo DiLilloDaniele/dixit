@@ -97,7 +97,7 @@ class PlayersManagerBehaviorImpl(context: ActorContext[Command],
       context.log.info("un giocatore ha quittato")
       foreman ! ForemanBehavior.InterruptTurn
       Behaviors.withTimers { timer =>
-        timer.startSingleTimer(CheckMembers, 300000 milliseconds)
+        timer.startSingleTimer(CheckMembers, 5000 milliseconds)
         gameOn(foreman)
       }
 
