@@ -12,11 +12,15 @@ import java.sql.{Connection, DriverManager, ResultSet, SQLException, Statement}
 import grpcService.client.ClientImpl
 import grpcService.server.applicationService.*
 import grpcService.{HelloMessage, NewGameResponse, OpenedGames, LoginResult, ClosingResponse, UserPoints, UpdateResponse}
+import akka.grpc.GrpcServiceException
 
 import grpcService.server.data.wrapper.MySqlContainerWrapper
 import grpcService.server.data.adapters.AccessAdapter
 import grpcService.server.data.ports.AccessPort
 
+import scala.concurrent.{Await}
+import java.util.concurrent.TimeUnit
+import scala.concurrent.duration._
 import concurrent.duration.DurationInt
 import scala.language.postfixOps
 // set SCALACTIC_FILL_FILE_PATHNAMES=yes on windows shell
@@ -92,6 +96,10 @@ class ServerTest extends AnyFunSpec with BeforeAndAfterAll with Matchers {
                     whenReady(future) { s =>
                         s shouldBe LoginResult(true)
                     }
+
+                    val failGameResponse: Future[NewGameResponse] = client.createGame("address", "user", (bool) => {})
+                    assert(failGameResponse.failed.futureValue.isInstanceOf[GrpcServiceException])
+                    
 
                     val initialClosingResponse: Future[ClosingResponse] = client.closeGame("address", "user", (bool) => {})
                     assert(initialClosingResponse.isReadyWithin(5000 millis))
