@@ -178,19 +178,25 @@
 </span>154 <span style=''></span><span style='background: #AEF1AE'>                  .flatMap(implementation.updateUserPoints(_))
 </span>155 <span style=''></span><span style='background: #AEF1AE'>                  .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(UpdateResponseSerializer, writer, system))
 </span>156 <span style=''></span><span style='background: #AEF1AE'>            
-</span>157 <span style=''></span><span style='background: #AEF1AE'>            </span><span style='background: #F0ADAD'>case m</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>scala.concurrent.Future.failed(new NotImplementedError(s&quot;Not implemented: $m&quot;))</span><span style='background: #AEF1AE'>
-</span>158 <span style=''></span><span style='background: #AEF1AE'>          })
-</span>159 <span style=''></span><span style='background: #AEF1AE'>          .recoverWith(GrpcExceptionHandler.from(eHandler(system.classicSystem))(system, writer))
-</span>160 <span style=''></span><span style='background: #AEF1AE'>      ).getOrElse(unsupportedMediaType)</span><span style=''>
-</span>161 <span style=''>
-</span>162 <span style=''>      </span><span style='background: #AEF1AE'>Function.unlift((req: model.HttpRequest) =&gt; req.uri.path match {
-</span>163 <span style=''></span><span style='background: #AEF1AE'>        case model.Uri.Path.Slash(model.Uri.Path.Segment(`prefix`, model.Uri.Path.Slash(model.Uri.Path.Segment(method, model.Uri.Path.Empty)))) =&gt;
-</span>164 <span style=''></span><span style='background: #AEF1AE'>          Some(handle(spi.onRequest(prefix, method, req), method))
-</span>165 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt;
-</span>166 <span style=''></span><span style='background: #AEF1AE'>          None
-</span>167 <span style=''></span><span style='background: #AEF1AE'>      })</span><span style=''>
-</span>168 <span style=''>    }
-</span>169 <span style=''>  }
+</span>157 <span style=''></span><span style='background: #AEF1AE'>            </span><span style='background: #F0ADAD'>case &quot;GetUserPoints&quot;</span><span style='background: #AEF1AE'> =&gt;
+</span>158 <span style=''></span><span style='background: #AEF1AE'>                
+</span>159 <span style=''></span><span style='background: #AEF1AE'>                </span><span style='background: #F0ADAD'>GrpcMarshalling.unmarshal(request.entity)(UserInfoSerializer, mat, reader)
+</span>160 <span style=''></span><span style='background: #F0ADAD'>                  .flatMap(implementation.getUserPoints(_))
+</span>161 <span style=''></span><span style='background: #F0ADAD'>                  .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(SingleUserPointsSerializer, writer, system))</span><span style='background: #AEF1AE'>
+</span>162 <span style=''></span><span style='background: #AEF1AE'>            
+</span>163 <span style=''></span><span style='background: #AEF1AE'>            </span><span style='background: #F0ADAD'>case m</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>scala.concurrent.Future.failed(new NotImplementedError(s&quot;Not implemented: $m&quot;))</span><span style='background: #AEF1AE'>
+</span>164 <span style=''></span><span style='background: #AEF1AE'>          })
+</span>165 <span style=''></span><span style='background: #AEF1AE'>          .recoverWith(GrpcExceptionHandler.from(eHandler(system.classicSystem))(system, writer))
+</span>166 <span style=''></span><span style='background: #AEF1AE'>      ).getOrElse(unsupportedMediaType)</span><span style=''>
+</span>167 <span style=''>
+</span>168 <span style=''>      </span><span style='background: #AEF1AE'>Function.unlift((req: model.HttpRequest) =&gt; req.uri.path match {
+</span>169 <span style=''></span><span style='background: #AEF1AE'>        case model.Uri.Path.Slash(model.Uri.Path.Segment(`prefix`, model.Uri.Path.Slash(model.Uri.Path.Segment(method, model.Uri.Path.Empty)))) =&gt;
+</span>170 <span style=''></span><span style='background: #AEF1AE'>          Some(handle(spi.onRequest(prefix, method, req), method))
+</span>171 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt;
+</span>172 <span style=''></span><span style='background: #AEF1AE'>          None
+</span>173 <span style=''></span><span style='background: #AEF1AE'>      })</span><span style=''>
+</span>174 <span style=''>    }
+</span>175 <span style=''>  }
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -208,7 +214,7 @@
           31
         </td>
         <td>
-          2389
+          2565
         </td>
         <td>
           771
@@ -219,7 +225,7 @@
           Select
         </td>
         <td>
-          apply$default$4
+          apply$default$2
         </td>
         <td>
           
@@ -232,55 +238,7 @@
           31
         </td>
         <td>
-          2391
-        </td>
-        <td>
-          736
-          -
-          818
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          successful
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          scala.concurrent.Future.successful(model.HttpResponse(model.StatusCodes.NotFound))
-        </td>
-      </tr><tr>
-        <td>
-          31
-        </td>
-        <td>
-          2388
-        </td>
-        <td>
-          771
-          -
-          789
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          apply$default$3
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          model.HttpResponse
-        </td>
-      </tr><tr>
-        <td>
-          31
-        </td>
-        <td>
-          2390
+          2568
         </td>
         <td>
           771
@@ -304,60 +262,12 @@
           31
         </td>
         <td>
-          2387
+          2567
         </td>
         <td>
           771
           -
           789
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          apply$default$2
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          model.HttpResponse
-        </td>
-      </tr><tr>
-        <td>
-          32
-        </td>
-        <td>
-          2392
-        </td>
-        <td>
-          893
-          -
-          911
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          apply$default$2
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          model.HttpResponse
-        </td>
-      </tr><tr>
-        <td>
-          32
-        </td>
-        <td>
-          2394
-        </td>
-        <td>
-          893
-          -
-          911
         </td>
         <td>
           Select
@@ -373,10 +283,58 @@
         </td>
       </tr><tr>
         <td>
+          31
+        </td>
+        <td>
+          2566
+        </td>
+        <td>
+          771
+          -
+          789
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          apply$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          model.HttpResponse
+        </td>
+      </tr><tr>
+        <td>
+          31
+        </td>
+        <td>
+          2569
+        </td>
+        <td>
+          736
+          -
+          818
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          successful
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          scala.concurrent.Future.successful(model.HttpResponse(model.StatusCodes.NotFound))
+        </td>
+      </tr><tr>
+        <td>
           32
         </td>
         <td>
-          2393
+          2571
         </td>
         <td>
           893
@@ -400,7 +358,7 @@
           32
         </td>
         <td>
-          2396
+          2574
         </td>
         <td>
           858
@@ -424,7 +382,31 @@
           32
         </td>
         <td>
-          2395
+          2570
+        </td>
+        <td>
+          893
+          -
+          911
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          apply$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          model.HttpResponse
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          2573
         </td>
         <td>
           893
@@ -445,10 +427,34 @@
         </td>
       </tr><tr>
         <td>
+          32
+        </td>
+        <td>
+          2572
+        </td>
+        <td>
+          893
+          -
+          911
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          apply$default$4
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          model.HttpResponse
+        </td>
+      </tr><tr>
+        <td>
           41
         </td>
         <td>
-          2402
+          2580
         </td>
         <td>
           1350
@@ -472,31 +478,31 @@
           42
         </td>
         <td>
-          2398
+          2577
         </td>
         <td>
           1503
           -
-          1510
+          1526
         </td>
         <td>
-          Select
+          Apply
         </td>
         <td>
-          partial$default$3
+          partial
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          partial
+          partial(implementation)
         </td>
       </tr><tr>
         <td>
           42
         </td>
         <td>
-          2401
+          2579
         </td>
         <td>
           1503
@@ -520,31 +526,31 @@
           42
         </td>
         <td>
-          2400
+          2576
         </td>
         <td>
-          1536
+          1503
           -
-          1542
+          1510
         </td>
         <td>
-          Block
+          Select
         </td>
         <td>
-          &lt;none&gt;
+          partial$default$3
         </td>
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
-          case _
+        <td style="background: #AEF1AE">
+          partial
         </td>
       </tr><tr>
         <td>
           42
         </td>
         <td>
-          2397
+          2575
         </td>
         <td>
           1503
@@ -568,31 +574,31 @@
           42
         </td>
         <td>
-          2399
+          2578
         </td>
         <td>
-          1503
+          1536
           -
-          1526
+          1542
         </td>
         <td>
-          Apply
+          Block
         </td>
         <td>
-          partial
+          &lt;none&gt;
         </td>
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
-          partial(implementation)
+        <td style="background: #F0ADAD">
+          case _
         </td>
       </tr><tr>
         <td>
           51
         </td>
         <td>
-          2406
+          2584
         </td>
         <td>
           1954
@@ -616,31 +622,7 @@
           52
         </td>
         <td>
-          2403
-        </td>
-        <td>
-          2170
-          -
-          2216
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          partial
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          partial(implementation, Server.name, eHandler)
-        </td>
-      </tr><tr>
-        <td>
-          52
-        </td>
-        <td>
-          2405
+          2583
         </td>
         <td>
           2170
@@ -664,7 +646,7 @@
           52
         </td>
         <td>
-          2404
+          2582
         </td>
         <td>
           2226
@@ -685,10 +667,34 @@
         </td>
       </tr><tr>
         <td>
+          52
+        </td>
+        <td>
+          2581
+        </td>
+        <td>
+          2170
+          -
+          2216
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          partial
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          partial(implementation, Server.name, eHandler)
+        </td>
+      </tr><tr>
+        <td>
           63
         </td>
         <td>
-          2411
+          2589
         </td>
         <td>
           2778
@@ -712,31 +718,31 @@
           64
         </td>
         <td>
-          2407
+          2586
         </td>
         <td>
           2947
           -
-          2954
+          2978
         </td>
         <td>
-          Select
+          Apply
         </td>
         <td>
-          partial$default$3
+          partial
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          partial
+          partial(implementation, prefix)
         </td>
       </tr><tr>
         <td>
           64
         </td>
         <td>
-          2410
+          2588
         </td>
         <td>
           2947
@@ -760,7 +766,31 @@
           64
         </td>
         <td>
-          2409
+          2585
+        </td>
+        <td>
+          2947
+          -
+          2954
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          partial$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          partial
+        </td>
+      </tr><tr>
+        <td>
+          64
+        </td>
+        <td>
+          2587
         </td>
         <td>
           2988
@@ -781,34 +811,10 @@
         </td>
       </tr><tr>
         <td>
-          64
-        </td>
-        <td>
-          2408
-        </td>
-        <td>
-          2947
-          -
-          2978
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          partial
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          partial(implementation, prefix)
-        </td>
-      </tr><tr>
-        <td>
           75
         </td>
         <td>
-          2415
+          2593
         </td>
         <td>
           3540
@@ -832,31 +838,7 @@
           76
         </td>
         <td>
-          2412
-        </td>
-        <td>
-          3772
-          -
-          3813
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          partial
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          partial(implementation, prefix, eHandler)
-        </td>
-      </tr><tr>
-        <td>
-          76
-        </td>
-        <td>
-          2414
+          2592
         </td>
         <td>
           3772
@@ -880,7 +862,7 @@
           76
         </td>
         <td>
-          2413
+          2591
         </td>
         <td>
           3823
@@ -901,10 +883,34 @@
         </td>
       </tr><tr>
         <td>
+          76
+        </td>
+        <td>
+          2590
+        </td>
+        <td>
+          3772
+          -
+          3813
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          partial
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          partial(implementation, prefix, eHandler)
+        </td>
+      </tr><tr>
+        <td>
           88
         </td>
         <td>
-          2422
+          2600
         </td>
         <td>
           4321
@@ -928,7 +934,7 @@
           89
         </td>
         <td>
-          2421
+          2599
         </td>
         <td>
           4491
@@ -954,7 +960,31 @@
           90
         </td>
         <td>
-          2416
+          2595
+        </td>
+        <td>
+          4553
+          -
+          4574
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          partial$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ServerHandler.partial
+        </td>
+      </tr><tr>
+        <td>
+          90
+        </td>
+        <td>
+          2594
         </td>
         <td>
           4553
@@ -978,7 +1008,7 @@
           90
         </td>
         <td>
-          2418
+          2596
         </td>
         <td>
           4553
@@ -999,58 +1029,10 @@
         </td>
       </tr><tr>
         <td>
-          90
-        </td>
-        <td>
-          2417
-        </td>
-        <td>
-          4553
-          -
-          4574
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          partial$default$3
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          ServerHandler.partial
-        </td>
-      </tr><tr>
-        <td>
           91
         </td>
         <td>
-          2419
-        </td>
-        <td>
-          4646
-          -
-          4658
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          apply
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          List(Server)
-        </td>
-      </tr><tr>
-        <td>
-          91
-        </td>
-        <td>
-          2420
+          2598
         </td>
         <td>
           4602
@@ -1071,58 +1053,34 @@
         </td>
       </tr><tr>
         <td>
-          103
+          91
         </td>
         <td>
-          2487
+          2597
         </td>
         <td>
-          5279
+          4646
           -
-          5279
+          4658
         </td>
         <td>
-          DefDef
+          Apply
         </td>
         <td>
-          partial$default$3
+          apply
         </td>
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
-          
+        <td style="background: #F0ADAD">
+          List(Server)
         </td>
       </tr><tr>
         <td>
           103
         </td>
         <td>
-          2484
-        </td>
-        <td>
-          5149
-          -
-          5160
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          partial
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          def partial
-        </td>
-      </tr><tr>
-        <td>
-          103
-        </td>
-        <td>
-          2486
+          2670
         </td>
         <td>
           5279
@@ -1146,7 +1104,7 @@
           103
         </td>
         <td>
-          2485
+          2669
         </td>
         <td>
           5202
@@ -1167,10 +1125,58 @@
         </td>
       </tr><tr>
         <td>
+          103
+        </td>
+        <td>
+          2668
+        </td>
+        <td>
+          5149
+          -
+          5160
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          partial
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def partial
+        </td>
+      </tr><tr>
+        <td>
+          103
+        </td>
+        <td>
+          2671
+        </td>
+        <td>
+          5279
+          -
+          5279
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          partial$default$3
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          
+        </td>
+      </tr><tr>
+        <td>
           104
         </td>
         <td>
-          2423
+          2601
         </td>
         <td>
           5470
@@ -1194,7 +1200,7 @@
           105
         </td>
         <td>
-          2424
+          2602
         </td>
         <td>
           5552
@@ -1218,7 +1224,7 @@
           106
         </td>
         <td>
-          2425
+          2603
         </td>
         <td>
           5589
@@ -1242,7 +1248,7 @@
           110
         </td>
         <td>
-          2478
+          2662
         </td>
         <td>
           5662
@@ -1266,12 +1272,12 @@
           111
         </td>
         <td>
-          2476
+          2660
         </td>
         <td>
           5772
           -
-          8329
+          8656
         </td>
         <td>
           Apply
@@ -1328,6 +1334,12 @@
                   .flatMap(implementation.updateUserPoints(_))
                   .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(UpdateResponseSerializer, writer, system))
             
+            case &quot;GetUserPoints&quot; =&gt;
+                
+                GrpcMarshalling.unmarshal(request.entity)(UserInfoSerializer, mat, reader)
+                  .flatMap(implementation.getUserPoints(_))
+                  .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(SingleUserPointsSerializer, writer, system))
+            
             case m =&gt; scala.concurrent.Future.failed(new NotImplementedError(s&quot;Not implemented: $m&quot;))
           })
           .recoverWith(GrpcExceptionHandler.from(eHandler(system.classicSystem))(system, writer))
@@ -1338,12 +1350,12 @@
           112
         </td>
         <td>
-          2475
+          2659
         </td>
         <td>
           5838
           -
-          8321
+          8648
         </td>
         <td>
           Apply
@@ -1399,6 +1411,12 @@
                   .flatMap(implementation.updateUserPoints(_))
                   .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(UpdateResponseSerializer, writer, system))
             
+            case &quot;GetUserPoints&quot; =&gt;
+                
+                GrpcMarshalling.unmarshal(request.entity)(UserInfoSerializer, mat, reader)
+                  .flatMap(implementation.getUserPoints(_))
+                  .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(SingleUserPointsSerializer, writer, system))
+            
             case m =&gt; scala.concurrent.Future.failed(new NotImplementedError(s&quot;Not implemented: $m&quot;))
           })
           .recoverWith(GrpcExceptionHandler.from(eHandler(system.classicSystem))(system, writer))
@@ -1408,7 +1426,7 @@
           114
         </td>
         <td>
-          2431
+          2609
         </td>
         <td>
           5879
@@ -1432,7 +1450,31 @@
           116
         </td>
         <td>
-          2428
+          2604
+        </td>
+        <td>
+          5928
+          -
+          6006
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          unmarshal
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          GrpcMarshalling.unmarshal(request.entity)(HelloMessageSerializer, mat, reader)
+        </td>
+      </tr><tr>
+        <td>
+          116
+        </td>
+        <td>
+          2606
         </td>
         <td>
           5928
@@ -1457,7 +1499,7 @@
           116
         </td>
         <td>
-          2430
+          2608
         </td>
         <td>
           5928
@@ -1480,34 +1522,10 @@
         </td>
       </tr><tr>
         <td>
-          116
-        </td>
-        <td>
-          2426
-        </td>
-        <td>
-          5928
-          -
-          6006
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          unmarshal
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          GrpcMarshalling.unmarshal(request.entity)(HelloMessageSerializer, mat, reader)
-        </td>
-      </tr><tr>
-        <td>
           117
         </td>
         <td>
-          2427
+          2605
         </td>
         <td>
           6034
@@ -1531,7 +1549,7 @@
           118
         </td>
         <td>
-          2429
+          2607
         </td>
         <td>
           6087
@@ -1555,7 +1573,7 @@
           120
         </td>
         <td>
-          2437
+          2615
         </td>
         <td>
           6190
@@ -1579,7 +1597,31 @@
           122
         </td>
         <td>
-          2434
+          2610
+        </td>
+        <td>
+          6239
+          -
+          6317
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          unmarshal
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          GrpcMarshalling.unmarshal(request.entity)(LoginRequestSerializer, mat, reader)
+        </td>
+      </tr><tr>
+        <td>
+          122
+        </td>
+        <td>
+          2612
         </td>
         <td>
           6239
@@ -1604,7 +1646,7 @@
           122
         </td>
         <td>
-          2436
+          2614
         </td>
         <td>
           6239
@@ -1627,34 +1669,10 @@
         </td>
       </tr><tr>
         <td>
-          122
-        </td>
-        <td>
-          2432
-        </td>
-        <td>
-          6239
-          -
-          6317
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          unmarshal
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          GrpcMarshalling.unmarshal(request.entity)(LoginRequestSerializer, mat, reader)
-        </td>
-      </tr><tr>
-        <td>
           123
         </td>
         <td>
-          2433
+          2611
         </td>
         <td>
           6345
@@ -1678,7 +1696,7 @@
           124
         </td>
         <td>
-          2435
+          2613
         </td>
         <td>
           6398
@@ -1702,7 +1720,7 @@
           126
         </td>
         <td>
-          2443
+          2621
         </td>
         <td>
           6500
@@ -1726,33 +1744,7 @@
           128
         </td>
         <td>
-          2442
-        </td>
-        <td>
-          6552
-          -
-          6790
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          map
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          GrpcMarshalling.unmarshal(request.entity)(LoginRequestSerializer, mat, reader)
-                  .flatMap(implementation.register(_))
-                  .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(LoginResultSerializer, writer, system))
-        </td>
-      </tr><tr>
-        <td>
-          128
-        </td>
-        <td>
-          2438
+          2616
         </td>
         <td>
           6552
@@ -1776,7 +1768,7 @@
           128
         </td>
         <td>
-          2440
+          2618
         </td>
         <td>
           6552
@@ -1798,10 +1790,36 @@
         </td>
       </tr><tr>
         <td>
+          128
+        </td>
+        <td>
+          2620
+        </td>
+        <td>
+          6552
+          -
+          6790
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          GrpcMarshalling.unmarshal(request.entity)(LoginRequestSerializer, mat, reader)
+                  .flatMap(implementation.register(_))
+                  .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(LoginResultSerializer, writer, system))
+        </td>
+      </tr><tr>
+        <td>
           129
         </td>
         <td>
-          2439
+          2617
         </td>
         <td>
           6658
@@ -1825,7 +1843,7 @@
           130
         </td>
         <td>
-          2441
+          2619
         </td>
         <td>
           6714
@@ -1849,7 +1867,7 @@
           132
         </td>
         <td>
-          2449
+          2627
         </td>
         <td>
           6816
@@ -1873,33 +1891,7 @@
           134
         </td>
         <td>
-          2448
-        </td>
-        <td>
-          6874
-          -
-          7124
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          map
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          GrpcMarshalling.unmarshal(request.entity)(OpenedGamesRequestSerializer, mat, reader)
-                  .flatMap(implementation.getOpenedGames(_))
-                  .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(OpenedGamesSerializer, writer, system))
-        </td>
-      </tr><tr>
-        <td>
-          134
-        </td>
-        <td>
-          2444
+          2622
         </td>
         <td>
           6874
@@ -1923,7 +1915,7 @@
           134
         </td>
         <td>
-          2446
+          2624
         </td>
         <td>
           6874
@@ -1945,10 +1937,36 @@
         </td>
       </tr><tr>
         <td>
+          134
+        </td>
+        <td>
+          2626
+        </td>
+        <td>
+          6874
+          -
+          7124
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          GrpcMarshalling.unmarshal(request.entity)(OpenedGamesRequestSerializer, mat, reader)
+                  .flatMap(implementation.getOpenedGames(_))
+                  .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(OpenedGamesSerializer, writer, system))
+        </td>
+      </tr><tr>
+        <td>
           135
         </td>
         <td>
-          2445
+          2623
         </td>
         <td>
           6986
@@ -1972,7 +1990,7 @@
           136
         </td>
         <td>
-          2447
+          2625
         </td>
         <td>
           7048
@@ -1996,7 +2014,7 @@
           138
         </td>
         <td>
-          2455
+          2633
         </td>
         <td>
           7150
@@ -2020,7 +2038,31 @@
           140
         </td>
         <td>
-          2452
+          2628
+        </td>
+        <td>
+          7203
+          -
+          7280
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          unmarshal
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          GrpcMarshalling.unmarshal(request.entity)(GameMessageSerializer, mat, reader)
+        </td>
+      </tr><tr>
+        <td>
+          140
+        </td>
+        <td>
+          2630
         </td>
         <td>
           7203
@@ -2045,7 +2087,7 @@
           140
         </td>
         <td>
-          2454
+          2632
         </td>
         <td>
           7203
@@ -2068,34 +2110,10 @@
         </td>
       </tr><tr>
         <td>
-          140
-        </td>
-        <td>
-          2450
-        </td>
-        <td>
-          7203
-          -
-          7280
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          unmarshal
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          GrpcMarshalling.unmarshal(request.entity)(GameMessageSerializer, mat, reader)
-        </td>
-      </tr><tr>
-        <td>
           141
         </td>
         <td>
-          2451
+          2629
         </td>
         <td>
           7308
@@ -2119,7 +2137,7 @@
           142
         </td>
         <td>
-          2453
+          2631
         </td>
         <td>
           7365
@@ -2143,7 +2161,7 @@
           144
         </td>
         <td>
-          2461
+          2639
         </td>
         <td>
           7471
@@ -2167,33 +2185,7 @@
           146
         </td>
         <td>
-          2460
-        </td>
-        <td>
-          7522
-          -
-          7762
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          map
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          GrpcMarshalling.unmarshal(request.entity)(GameMessageSerializer, mat, reader)
-                  .flatMap(implementation.newGame(_))
-                  .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(NewGameResponseSerializer, writer, system))
-        </td>
-      </tr><tr>
-        <td>
-          146
-        </td>
-        <td>
-          2456
+          2634
         </td>
         <td>
           7522
@@ -2217,7 +2209,7 @@
           146
         </td>
         <td>
-          2458
+          2636
         </td>
         <td>
           7522
@@ -2239,10 +2231,36 @@
         </td>
       </tr><tr>
         <td>
+          146
+        </td>
+        <td>
+          2638
+        </td>
+        <td>
+          7522
+          -
+          7762
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          GrpcMarshalling.unmarshal(request.entity)(GameMessageSerializer, mat, reader)
+                  .flatMap(implementation.newGame(_))
+                  .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(NewGameResponseSerializer, writer, system))
+        </td>
+      </tr><tr>
+        <td>
           147
         </td>
         <td>
-          2457
+          2635
         </td>
         <td>
           7627
@@ -2266,7 +2284,7 @@
           148
         </td>
         <td>
-          2459
+          2637
         </td>
         <td>
           7682
@@ -2290,7 +2308,7 @@
           150
         </td>
         <td>
-          2467
+          2645
         </td>
         <td>
           7788
@@ -2314,33 +2332,7 @@
           152
         </td>
         <td>
-          2466
-        </td>
-        <td>
-          7848
-          -
-          8095
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          map
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          GrpcMarshalling.unmarshal(request.entity)(UserPointsSerializer, mat, reader)
-                  .flatMap(implementation.updateUserPoints(_))
-                  .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(UpdateResponseSerializer, writer, system))
-        </td>
-      </tr><tr>
-        <td>
-          152
-        </td>
-        <td>
-          2462
+          2640
         </td>
         <td>
           7848
@@ -2364,7 +2356,7 @@
           152
         </td>
         <td>
-          2464
+          2642
         </td>
         <td>
           7848
@@ -2386,10 +2378,36 @@
         </td>
       </tr><tr>
         <td>
+          152
+        </td>
+        <td>
+          2644
+        </td>
+        <td>
+          7848
+          -
+          8095
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          GrpcMarshalling.unmarshal(request.entity)(UserPointsSerializer, mat, reader)
+                  .flatMap(implementation.updateUserPoints(_))
+                  .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(UpdateResponseSerializer, writer, system))
+        </td>
+      </tr><tr>
+        <td>
           153
         </td>
         <td>
-          2463
+          2641
         </td>
         <td>
           7952
@@ -2413,7 +2431,7 @@
           154
         </td>
         <td>
-          2465
+          2643
         </td>
         <td>
           8016
@@ -2437,60 +2455,159 @@
           156
         </td>
         <td>
-          2470
+          2651
         </td>
         <td>
-          8131
+          8121
           -
-          8210
+          8141
         </td>
         <td>
-          Apply
+          Block
         </td>
         <td>
-          failed
+          &lt;none&gt;
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          scala.concurrent.Future.failed(new NotImplementedError(s&quot;Not implemented: $m&quot;))
+          case &quot;GetUserPoints&quot;
         </td>
       </tr><tr>
         <td>
-          156
+          158
         </td>
         <td>
-          2469
+          2646
         </td>
         <td>
-          8162
+          8178
           -
-          8209
+          8252
         </td>
         <td>
           Apply
         </td>
         <td>
-          &lt;init&gt;
+          unmarshal
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          new NotImplementedError(s&quot;Not implemented: $m&quot;)
+          GrpcMarshalling.unmarshal(request.entity)(UserInfoSerializer, mat, reader)
         </td>
       </tr><tr>
         <td>
-          156
+          158
         </td>
         <td>
-          2468
+          2648
         </td>
         <td>
-          8186
+          8178
           -
-          8208
+          8312
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          flatMap
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          GrpcMarshalling.unmarshal(request.entity)(UserInfoSerializer, mat, reader)
+                  .flatMap(implementation.getUserPoints(_))
+        </td>
+      </tr><tr>
+        <td>
+          158
+        </td>
+        <td>
+          2650
+        </td>
+        <td>
+          8178
+          -
+          8422
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          GrpcMarshalling.unmarshal(request.entity)(UserInfoSerializer, mat, reader)
+                  .flatMap(implementation.getUserPoints(_))
+                  .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(SingleUserPointsSerializer, writer, system))
+        </td>
+      </tr><tr>
+        <td>
+          159
+        </td>
+        <td>
+          2647
+        </td>
+        <td>
+          8280
+          -
+          8311
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getUserPoints
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          implementation.getUserPoints(_)
+        </td>
+      </tr><tr>
+        <td>
+          160
+        </td>
+        <td>
+          2649
+        </td>
+        <td>
+          8341
+          -
+          8421
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          marshal
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          GrpcMarshalling.marshal(e, eHandler)(SingleUserPointsSerializer, writer, system)
+        </td>
+      </tr><tr>
+        <td>
+          162
+        </td>
+        <td>
+          2652
+        </td>
+        <td>
+          8513
+          -
+          8535
         </td>
         <td>
           Apply
@@ -2506,15 +2623,15 @@
         </td>
       </tr><tr>
         <td>
-          156
+          162
         </td>
         <td>
-          2471
+          2655
         </td>
         <td>
-          8121
+          8448
           -
-          8127
+          8454
         </td>
         <td>
           Block
@@ -2530,39 +2647,63 @@
         </td>
       </tr><tr>
         <td>
-          158
+          162
         </td>
         <td>
-          2472
+          2654
         </td>
         <td>
-          8282
+          8458
           -
-          8302
+          8537
         </td>
         <td>
-          Select
+          Apply
         </td>
         <td>
-          classicSystem
+          failed
         </td>
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
-          system.classicSystem
+        <td style="background: #F0ADAD">
+          scala.concurrent.Future.failed(new NotImplementedError(s&quot;Not implemented: $m&quot;))
         </td>
       </tr><tr>
         <td>
-          158
+          162
         </td>
         <td>
-          2474
+          2653
         </td>
         <td>
-          8247
+          8489
           -
-          8320
+          8536
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new NotImplementedError(s&quot;Not implemented: $m&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          164
+        </td>
+        <td>
+          2658
+        </td>
+        <td>
+          8574
+          -
+          8647
         </td>
         <td>
           Apply
@@ -2578,15 +2719,15 @@
         </td>
       </tr><tr>
         <td>
-          158
+          164
         </td>
         <td>
-          2473
+          2657
         </td>
         <td>
-          8273
+          8600
           -
-          8303
+          8630
         </td>
         <td>
           Apply
@@ -2602,15 +2743,39 @@
         </td>
       </tr><tr>
         <td>
-          159
+          164
         </td>
         <td>
-          2477
+          2656
+        </td>
+        <td>
+          8609
+          -
+          8629
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          classicSystem
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          system.classicSystem
+        </td>
+      </tr><tr>
+        <td>
+          165
+        </td>
+        <td>
+          2661
         </td>
         <td>
           5772
           -
-          8361
+          8688
         </td>
         <td>
           Apply
@@ -2667,6 +2832,12 @@
                   .flatMap(implementation.updateUserPoints(_))
                   .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(UpdateResponseSerializer, writer, system))
             
+            case &quot;GetUserPoints&quot; =&gt;
+                
+                GrpcMarshalling.unmarshal(request.entity)(UserInfoSerializer, mat, reader)
+                  .flatMap(implementation.getUserPoints(_))
+                  .map(e =&gt; GrpcMarshalling.marshal(e, eHandler)(SingleUserPointsSerializer, writer, system))
+            
             case m =&gt; scala.concurrent.Future.failed(new NotImplementedError(s&quot;Not implemented: $m&quot;))
           })
           .recoverWith(GrpcExceptionHandler.from(eHandler(system.classicSystem))(system, writer))
@@ -2674,15 +2845,15 @@
         </td>
       </tr><tr>
         <td>
-          161
+          167
         </td>
         <td>
-          2483
+          2667
         </td>
         <td>
-          8369
+          8696
           -
-          8689
+          9016
         </td>
         <td>
           Apply
@@ -2703,15 +2874,15 @@
         </td>
       </tr><tr>
         <td>
-          162
+          168
         </td>
         <td>
-          2481
+          2665
         </td>
         <td>
-          8442
+          8769
           -
-          8577
+          8904
         </td>
         <td>
           Block
@@ -2727,39 +2898,15 @@
         </td>
       </tr><tr>
         <td>
-          163
+          169
         </td>
         <td>
-          2479
+          2664
         </td>
         <td>
-          8603
+          8923
           -
-          8637
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          onRequest
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          spi.onRequest(prefix, method, req)
-        </td>
-      </tr><tr>
-        <td>
-          163
-        </td>
-        <td>
-          2480
-        </td>
-        <td>
-          8596
-          -
-          8646
+          8973
         </td>
         <td>
           Apply
@@ -2775,15 +2922,39 @@
         </td>
       </tr><tr>
         <td>
-          164
+          169
         </td>
         <td>
-          2482
+          2663
         </td>
         <td>
-          8656
+          8930
           -
-          8662
+          8964
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          onRequest
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          spi.onRequest(prefix, method, req)
+        </td>
+      </tr><tr>
+        <td>
+          170
+        </td>
+        <td>
+          2666
+        </td>
+        <td>
+          8983
+          -
+          8989
         </td>
         <td>
           Block

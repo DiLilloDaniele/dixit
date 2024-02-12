@@ -54,7 +54,7 @@
 </span>30 <span style=''>
 </span>31 <span style=''>  </span><span style='background: #AEF1AE'>override def addPointsToUser</span><span style=''>(userId: String, points: Int): Boolean =
 </span>32 <span style=''>    val updateQuery = </span><span style='background: #AEF1AE'>UpdateBuilder()</span><span style=''>
-</span>33 <span style=''>    val query = </span><span style='background: #AEF1AE'>updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot; where s&quot;UserId = $userId&quot;</span><span style=''>
+</span>33 <span style=''>    val query = </span><span style='background: #AEF1AE'>updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot; where s&quot;Name = '$userId'&quot;</span><span style=''>
 </span>34 <span style=''>    </span><span style='background: #AEF1AE'>println(query.query)</span><span style=''>
 </span>35 <span style=''>    </span><span style='background: #AEF1AE'>accessAdapter.update(query)</span><span style=''>
 </span>36 <span style=''>    
@@ -78,7 +78,7 @@
           14
         </td>
         <td>
-          1477
+          1626
         </td>
         <td>
           542
@@ -102,7 +102,7 @@
           16
         </td>
         <td>
-          1485
+          1634
         </td>
         <td>
           573
@@ -126,7 +126,7 @@
           17
         </td>
         <td>
-          1478
+          1627
         </td>
         <td>
           652
@@ -150,7 +150,31 @@
           18
         </td>
         <td>
-          1479
+          1629
+        </td>
+        <td>
+          683
+          -
+          718
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          from
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          queryWrapper select &quot;*&quot; from &quot;User&quot;
+        </td>
+      </tr><tr>
+        <td>
+          18
+        </td>
+        <td>
+          1628
         </td>
         <td>
           683
@@ -174,7 +198,7 @@
           18
         </td>
         <td>
-          1482
+          1631
         </td>
         <td>
           683
@@ -198,7 +222,7 @@
           18
         </td>
         <td>
-          1481
+          1630
         </td>
         <td>
           683
@@ -219,34 +243,10 @@
         </td>
       </tr><tr>
         <td>
-          18
-        </td>
-        <td>
-          1480
-        </td>
-        <td>
-          683
-          -
-          718
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          from
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          queryWrapper select &quot;*&quot; from &quot;User&quot;
-        </td>
-      </tr><tr>
-        <td>
           19
         </td>
         <td>
-          1483
+          1632
         </td>
         <td>
           749
@@ -270,7 +270,7 @@
           20
         </td>
         <td>
-          1484
+          1633
         </td>
         <td>
           774
@@ -294,7 +294,7 @@
           22
         </td>
         <td>
-          1496
+          1645
         </td>
         <td>
           814
@@ -318,7 +318,7 @@
           23
         </td>
         <td>
-          1486
+          1635
         </td>
         <td>
           909
@@ -342,7 +342,7 @@
           24
         </td>
         <td>
-          1493
+          1642
         </td>
         <td>
           941
@@ -368,7 +368,7 @@
           24
         </td>
         <td>
-          1487
+          1636
         </td>
         <td>
           941
@@ -392,7 +392,31 @@
           25
         </td>
         <td>
-          1492
+          1638
+        </td>
+        <td>
+          1012
+          -
+          1035
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          &quot;'&quot; + userName + &quot;', '&quot;
+        </td>
+      </tr><tr>
+        <td>
+          25
+        </td>
+        <td>
+          1641
         </td>
         <td>
           1012
@@ -416,7 +440,7 @@
           25
         </td>
         <td>
-          1488
+          1637
         </td>
         <td>
           1012
@@ -440,7 +464,7 @@
           25
         </td>
         <td>
-          1491
+          1640
         </td>
         <td>
           1012
@@ -464,7 +488,7 @@
           25
         </td>
         <td>
-          1490
+          1639
         </td>
         <td>
           1012
@@ -485,34 +509,10 @@
         </td>
       </tr><tr>
         <td>
-          25
-        </td>
-        <td>
-          1489
-        </td>
-        <td>
-          1012
-          -
-          1035
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          &quot;'&quot; + userName + &quot;', '&quot;
-        </td>
-      </tr><tr>
-        <td>
           27
         </td>
         <td>
-          1494
+          1643
         </td>
         <td>
           1069
@@ -536,7 +536,7 @@
           28
         </td>
         <td>
-          1495
+          1644
         </td>
         <td>
           1094
@@ -560,7 +560,7 @@
           30
         </td>
         <td>
-          1506
+          1655
         </td>
         <td>
           1130
@@ -584,7 +584,7 @@
           31
         </td>
         <td>
-          1497
+          1646
         </td>
         <td>
           1221
@@ -608,7 +608,31 @@
           32
         </td>
         <td>
-          1501
+          1647
+        </td>
+        <td>
+          1253
+          -
+          1278
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          update
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          updateQuery update &quot;User&quot;
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          1650
         </td>
         <td>
           1253
@@ -632,7 +656,31 @@
           32
         </td>
         <td>
-          1500
+          1652
+        </td>
+        <td>
+          1253
+          -
+          1345
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          where
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot; where s&quot;Name = '$userId'&quot;
+        </td>
+      </tr><tr>
+        <td>
+          32
+        </td>
+        <td>
+          1649
         </td>
         <td>
           1300
@@ -656,10 +704,10 @@
           32
         </td>
         <td>
-          1503
+          1651
         </td>
         <td>
-          1253
+          1326
           -
           1345
         </td>
@@ -667,20 +715,20 @@
           Apply
         </td>
         <td>
-          where
+          s
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          updateQuery update &quot;User&quot; set &quot;Points&quot; equalTo s&quot;Points + $points&quot; where s&quot;UserId = $userId&quot;
+          s&quot;Name = '$userId'&quot;
         </td>
       </tr><tr>
         <td>
           32
         </td>
         <td>
-          1499
+          1648
         </td>
         <td>
           1253
@@ -701,58 +749,10 @@
         </td>
       </tr><tr>
         <td>
-          32
-        </td>
-        <td>
-          1502
-        </td>
-        <td>
-          1326
-          -
-          1345
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          s
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          s&quot;UserId = $userId&quot;
-        </td>
-      </tr><tr>
-        <td>
-          32
-        </td>
-        <td>
-          1498
-        </td>
-        <td>
-          1253
-          -
-          1278
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          update
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          updateQuery update &quot;User&quot;
-        </td>
-      </tr><tr>
-        <td>
           33
         </td>
         <td>
-          1504
+          1653
         </td>
         <td>
           1350
@@ -776,7 +776,7 @@
           34
         </td>
         <td>
-          1505
+          1654
         </td>
         <td>
           1375

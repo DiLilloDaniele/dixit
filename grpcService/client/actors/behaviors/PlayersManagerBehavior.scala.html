@@ -29,7 +29,7 @@
 </span>5 <span style=''>import akka.actor.typed.{ActorRef, Behavior, Terminated}
 </span>6 <span style=''>import akka.actor.Address
 </span>7 <span style=''>import grpcService.client.actors.utils.Message
-</span>8 <span style=''>import grpcService.client.actors.behaviors.PlayersManagerBehavior.{AskEnter, CheckMembers, Command, PlayerExited, Service, Startup, Stop}
+</span>8 <span style=''>import grpcService.client.actors.behaviors.PlayersManagerBehavior.*
 </span>9 <span style=''>import grpcService.client.model.PumpMyList.*
 </span>10 <span style=''>
 </span>11 <span style=''>import scala.language.postfixOps
@@ -72,70 +72,75 @@
 </span>48 <span style=''>                                 foreman: ActorRef[ForemanBehavior.Command]) extends </span><span style='background: #AEF1AE'>AbstractBehavior[Command](context)</span><span style=''>:
 </span>49 <span style=''>
 </span>50 <span style=''>  var playersList: List[ActorRef[PlayerBehavior.Command]] = </span><span style='background: #AEF1AE'>List()</span><span style=''>
-</span>51 <span style=''>
-</span>52 <span style=''>  </span><span style='background: #AEF1AE'>override def onMessage</span><span style=''>(msg: Command): Behavior[Command] = msg match {
-</span>53 <span style=''>    </span><span style='background: #AEF1AE'>case Startup</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>waitPlayers(maxPlayers, 0, foreman)</span><span style=''>
-</span>54 <span style=''>    </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style=''>
-</span>55 <span style=''>  }
-</span>56 <span style=''>
-</span>57 <span style=''>  </span><span style='background: #AEF1AE'>def waitPlayers</span><span style=''>(maxPlayers: Int, currentNumPlayers: Int, foreman: ActorRef[ForemanBehavior.Command]): Behavior[Command] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage[Command] {
-</span>58 <span style=''></span><span style='background: #AEF1AE'>    case AskEnter(replyTo) =&gt;
-</span>59 <span style=''></span><span style='background: #AEF1AE'>      val currentPlayers = currentNumPlayers + 1
-</span>60 <span style=''></span><span style='background: #AEF1AE'>      if (currentPlayers &lt;= maxPlayers) {
-</span>61 <span style=''></span><span style='background: #AEF1AE'>        playersList = playersList :+ replyTo
-</span>62 <span style=''></span><span style='background: #AEF1AE'>        replyTo ! PlayerBehavior.MemberOK
-</span>63 <span style=''></span><span style='background: #AEF1AE'>        if(currentPlayers == maxPlayers)
-</span>64 <span style=''></span><span style='background: #AEF1AE'>          foreman ! ForemanBehavior.Start(playersList.toSet)
-</span>65 <span style=''></span><span style='background: #AEF1AE'>          gameOn(maxPlayers, currentPlayers, foreman)
-</span>66 <span style=''></span><span style='background: #AEF1AE'>        else
-</span>67 <span style=''></span><span style='background: #AEF1AE'>          waitPlayers(maxPlayers, currentPlayers, foreman)
-</span>68 <span style=''></span><span style='background: #AEF1AE'>      } else </span><span style='background: #F0ADAD'>{
-</span>69 <span style=''></span><span style='background: #F0ADAD'>        replyTo ! PlayerBehavior.MemberKO
-</span>70 <span style=''></span><span style='background: #F0ADAD'>        Behaviors.same
-</span>71 <span style=''></span><span style='background: #F0ADAD'>      }</span><span style='background: #AEF1AE'>
-</span>72 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case PlayerExited(address)</span><span style='background: #AEF1AE'> =&gt;
-</span>73 <span style=''></span><span style='background: #AEF1AE'>      playersList = </span><span style='background: #F0ADAD'>playersList filter { i =&gt; i.path.address != address }</span><span style='background: #AEF1AE'>
-</span>74 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>context.log.info(&quot;PLAYER TOLTO: &quot; + playersList)</span><span style='background: #AEF1AE'>
-</span>75 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>waitPlayers(maxPlayers, currentNumPlayers - 1, foreman)</span><span style='background: #AEF1AE'>
-</span>76 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt;
-</span>77 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
-</span>78 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
-</span>79 <span style=''>
-</span>80 <span style=''>  </span><span style='background: #AEF1AE'>def gameOn</span><span style=''>(maxPlayers: Int, currentNumPlayers: Int, foreman: ActorRef[ForemanBehavior.Command]): Behavior[Command] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage[Command] {
-</span>81 <span style=''></span><span style='background: #AEF1AE'>    case AskEnter(replyTo) =&gt;
-</span>82 <span style=''></span><span style='background: #AEF1AE'>      val playersAddresses = playersList.map { i =&gt; i.path.address.toString}
-</span>83 <span style=''></span><span style='background: #AEF1AE'>      if(playersAddresses.contains(replyTo.path.address.toString))
-</span>84 <span style=''></span><span style='background: #AEF1AE'>        context.log.info(&quot;un giocatore è rientrato&quot;)
-</span>85 <span style=''></span><span style='background: #AEF1AE'>        replyTo ! PlayerBehavior.MemberOK
-</span>86 <span style=''></span><span style='background: #AEF1AE'>        foreman ! ForemanBehavior.PlayerRejoined(replyTo.path.address.toString)
-</span>87 <span style=''></span><span style='background: #AEF1AE'>        Behaviors.same
-</span>88 <span style=''></span><span style='background: #AEF1AE'>        // TODO altrimenti invia KO
-</span>89 <span style=''></span><span style='background: #AEF1AE'>      val currentPlayers = currentNumPlayers + 1
-</span>90 <span style=''></span><span style='background: #AEF1AE'>      gameOn(maxPlayers, currentPlayers, foreman)
-</span>91 <span style=''></span><span style='background: #AEF1AE'>    case PlayerExited(address) =&gt;
-</span>92 <span style=''></span><span style='background: #AEF1AE'>      val currentPlayers = currentNumPlayers - 1
-</span>93 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(&quot;un giocatore ha quittato&quot;)
-</span>94 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.withTimers { timer =&gt;
-</span>95 <span style=''></span><span style='background: #AEF1AE'>        timer.startSingleTimer(CheckMembers, 15000 milliseconds)
-</span>96 <span style=''></span><span style='background: #AEF1AE'>        gameOn(maxPlayers, currentPlayers - 1, foreman)
-</span>97 <span style=''></span><span style='background: #AEF1AE'>      }
-</span>98 <span style=''></span><span style='background: #AEF1AE'>
-</span>99 <span style=''></span><span style='background: #AEF1AE'>    case CheckMembers =&gt;
-</span>100 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(&quot;Checcko....&quot;)
-</span>101 <span style=''></span><span style='background: #AEF1AE'>      if(currentNumPlayers &lt; maxPlayers)
-</span>102 <span style=''></span><span style='background: #AEF1AE'>        context.log.info(&quot;Stop game&quot;)
-</span>103 <span style=''></span><span style='background: #AEF1AE'>        context.self ! Stop
-</span>104 <span style=''></span><span style='background: #AEF1AE'>        Behaviors.same
-</span>105 <span style=''></span><span style='background: #AEF1AE'>      else
-</span>106 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>context.log.info(&quot;NO stop game&quot;)
-</span>107 <span style=''></span><span style='background: #F0ADAD'>        Behaviors.same</span><span style='background: #AEF1AE'>
-</span>108 <span style=''></span><span style='background: #AEF1AE'>
-</span>109 <span style=''></span><span style='background: #AEF1AE'>    case Stop =&gt;
-</span>110 <span style=''></span><span style='background: #AEF1AE'>      playersList.foreach { i =&gt;
-</span>111 <span style=''></span><span style='background: #AEF1AE'>        i ! PlayerBehavior.GameInfo(&quot;Uno o più giocatori si sono disconnessi. Partita annullata :(&quot;)
-</span>112 <span style=''></span><span style='background: #AEF1AE'>      }
-</span>113 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.stopped
-</span>114 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>51 <span style=''>  var currentNumPlayers: Int = maxPlayers
+</span>52 <span style=''>
+</span>53 <span style=''>  </span><span style='background: #AEF1AE'>override def onMessage</span><span style=''>(msg: Command): Behavior[Command] = msg match {
+</span>54 <span style=''>    </span><span style='background: #AEF1AE'>case Startup</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>waitPlayers(0, foreman)</span><span style=''>
+</span>55 <span style=''>    </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style=''>
+</span>56 <span style=''>  }
+</span>57 <span style=''>
+</span>58 <span style=''>  </span><span style='background: #AEF1AE'>def waitPlayers</span><span style=''>(currentNumPlayers: Int, foreman: ActorRef[ForemanBehavior.Command]): Behavior[Command] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage[Command] {
+</span>59 <span style=''></span><span style='background: #AEF1AE'>    case AskEnter(replyTo) =&gt;
+</span>60 <span style=''></span><span style='background: #AEF1AE'>      val currentPlayers = currentNumPlayers + 1
+</span>61 <span style=''></span><span style='background: #AEF1AE'>      if (currentPlayers &lt;= maxPlayers) {
+</span>62 <span style=''></span><span style='background: #AEF1AE'>        playersList = playersList :+ replyTo
+</span>63 <span style=''></span><span style='background: #AEF1AE'>        replyTo ! PlayerBehavior.MemberOK
+</span>64 <span style=''></span><span style='background: #AEF1AE'>        if(currentPlayers == maxPlayers)
+</span>65 <span style=''></span><span style='background: #AEF1AE'>          foreman ! ForemanBehavior.Start(playersList.toSet)
+</span>66 <span style=''></span><span style='background: #AEF1AE'>          gameOn(foreman)
+</span>67 <span style=''></span><span style='background: #AEF1AE'>        else
+</span>68 <span style=''></span><span style='background: #AEF1AE'>          waitPlayers(currentPlayers, foreman)
+</span>69 <span style=''></span><span style='background: #AEF1AE'>      } else </span><span style='background: #F0ADAD'>{
+</span>70 <span style=''></span><span style='background: #F0ADAD'>        replyTo ! PlayerBehavior.MemberKO
+</span>71 <span style=''></span><span style='background: #F0ADAD'>        Behaviors.same
+</span>72 <span style=''></span><span style='background: #F0ADAD'>      }</span><span style='background: #AEF1AE'>
+</span>73 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case PlayerExited(address)</span><span style='background: #AEF1AE'> =&gt;
+</span>74 <span style=''></span><span style='background: #AEF1AE'>      playersList = </span><span style='background: #F0ADAD'>playersList filter { i =&gt; i.path.address != address }</span><span style='background: #AEF1AE'>
+</span>75 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>context.log.info(&quot;PLAYER TOLTO: &quot; + playersList)</span><span style='background: #AEF1AE'>
+</span>76 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>waitPlayers(currentNumPlayers - 1, foreman)</span><span style='background: #AEF1AE'>
+</span>77 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt;
+</span>78 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>79 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
+</span>80 <span style=''>
+</span>81 <span style=''>  </span><span style='background: #AEF1AE'>def gameOn</span><span style=''>(foreman: ActorRef[ForemanBehavior.Command]): Behavior[Command] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage[Command] {
+</span>82 <span style=''></span><span style='background: #AEF1AE'>    case AskEnter(replyTo) =&gt;
+</span>83 <span style=''></span><span style='background: #AEF1AE'>      val playersAddresses = playersList.map { i =&gt; i.path.address.toString}
+</span>84 <span style=''></span><span style='background: #AEF1AE'>      if(playersAddresses.contains(replyTo.path.address.toString) &amp;&amp; currentNumPlayers &lt; maxPlayers)
+</span>85 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>context.log.info(&quot;un giocatore è rientrato&quot;)
+</span>86 <span style=''></span><span style='background: #F0ADAD'>        replyTo ! PlayerBehavior.MemberOK
+</span>87 <span style=''></span><span style='background: #F0ADAD'>        foreman ! ForemanBehavior.PlayerRejoined(replyTo.path.address.toString)
+</span>88 <span style=''></span><span style='background: #F0ADAD'>        currentNumPlayers = currentNumPlayers + 1
+</span>89 <span style=''></span><span style='background: #F0ADAD'>        if(currentNumPlayers == maxPlayers)
+</span>90 <span style=''></span><span style='background: #F0ADAD'>          foreman ! ForemanBehavior.RestartTurn
+</span>91 <span style=''></span><span style='background: #F0ADAD'>        gameOn(foreman)</span><span style='background: #AEF1AE'>
+</span>92 <span style=''></span><span style='background: #AEF1AE'>      else
+</span>93 <span style=''></span><span style='background: #AEF1AE'>        replyTo ! PlayerBehavior.MemberKO
+</span>94 <span style=''></span><span style='background: #AEF1AE'>        Behaviors.same
+</span>95 <span style=''></span><span style='background: #AEF1AE'>    case PlayerExited(address) =&gt;
+</span>96 <span style=''></span><span style='background: #AEF1AE'>      currentNumPlayers = currentNumPlayers - 1
+</span>97 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(&quot;un giocatore ha quittato&quot;)
+</span>98 <span style=''></span><span style='background: #AEF1AE'>      foreman ! ForemanBehavior.InterruptTurn
+</span>99 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.withTimers { timer =&gt;
+</span>100 <span style=''></span><span style='background: #AEF1AE'>        timer.startSingleTimer(CheckMembers, 5000 milliseconds)
+</span>101 <span style=''></span><span style='background: #AEF1AE'>        gameOn(foreman)
+</span>102 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>103 <span style=''></span><span style='background: #AEF1AE'>
+</span>104 <span style=''></span><span style='background: #AEF1AE'>    case CheckMembers =&gt;
+</span>105 <span style=''></span><span style='background: #AEF1AE'>      context.log.info(&quot;Checcko....&quot;)
+</span>106 <span style=''></span><span style='background: #AEF1AE'>      if(currentNumPlayers &lt; maxPlayers)
+</span>107 <span style=''></span><span style='background: #AEF1AE'>        context.log.info(&quot;Stop game&quot;)
+</span>108 <span style=''></span><span style='background: #AEF1AE'>        context.self ! Stop
+</span>109 <span style=''></span><span style='background: #AEF1AE'>        Behaviors.same
+</span>110 <span style=''></span><span style='background: #AEF1AE'>      else
+</span>111 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>context.log.info(&quot;NO stop game&quot;)
+</span>112 <span style=''></span><span style='background: #F0ADAD'>        Behaviors.same</span><span style='background: #AEF1AE'>
+</span>113 <span style=''></span><span style='background: #AEF1AE'>
+</span>114 <span style=''></span><span style='background: #AEF1AE'>    case Stop =&gt;
+</span>115 <span style=''></span><span style='background: #AEF1AE'>      playersList.foreach { i =&gt;
+</span>116 <span style=''></span><span style='background: #AEF1AE'>        i ! PlayerBehavior.GameInfo(&quot;Uno o più giocatori si sono disconnessi. Partita annullata :(&quot;)
+</span>117 <span style=''></span><span style='background: #AEF1AE'>      }
+</span>118 <span style=''></span><span style='background: #AEF1AE'>      Behaviors.stopped
+</span>119 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -153,12 +158,12 @@
           15
         </td>
         <td>
-          667
+          748
         </td>
         <td>
-          662
+          592
           -
-          696
+          626
         </td>
         <td>
           Apply
@@ -177,12 +182,12 @@
           25
         </td>
         <td>
-          694
+          775
         </td>
         <td>
-          998
+          928
           -
-          1007
+          937
         </td>
         <td>
           DefDef
@@ -201,12 +206,12 @@
           26
         </td>
         <td>
-          693
+          774
         </td>
         <td>
-          1094
+          1024
           -
-          1708
+          1638
         </td>
         <td>
           Apply
@@ -240,12 +245,12 @@
           27
         </td>
         <td>
-          669
+          750
         </td>
         <td>
-          1134
+          1064
           -
-          1157
+          1087
         </td>
         <td>
           Select
@@ -264,12 +269,12 @@
           27
         </td>
         <td>
-          672
+          753
         </td>
         <td>
-          1160
+          1090
           -
-          1200
+          1130
         </td>
         <td>
           Apply
@@ -288,36 +293,12 @@
           27
         </td>
         <td>
-          668
+          752
         </td>
         <td>
-          1134
+          1121
           -
-          1144
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          system
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ctx.system
-        </td>
-      </tr><tr>
-        <td>
-          27
-        </td>
-        <td>
-          671
-        </td>
-        <td>
-          1191
-          -
-          1199
+          1129
         </td>
         <td>
           Select
@@ -336,36 +317,36 @@
           27
         </td>
         <td>
-          673
+          749
         </td>
         <td>
-          1134
+          1064
           -
-          1200
+          1074
         </td>
         <td>
-          Apply
+          Select
         </td>
         <td>
-          !
+          system
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
+          ctx.system
         </td>
       </tr><tr>
         <td>
           27
         </td>
         <td>
-          670
+          751
         </td>
         <td>
-          1134
+          1064
           -
-          1157
+          1087
         </td>
         <td>
           Apply
@@ -381,15 +362,39 @@
         </td>
       </tr><tr>
         <td>
+          27
+        </td>
+        <td>
+          754
+        </td>
+        <td>
+          1064
+          -
+          1130
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
+        </td>
+      </tr><tr>
+        <td>
           28
         </td>
         <td>
-          675
+          756
         </td>
         <td>
-          1231
+          1161
           -
-          1339
+          1269
         </td>
         <td>
           Apply
@@ -408,36 +413,12 @@
           28
         </td>
         <td>
-          677
+          755
         </td>
         <td>
-          1221
+          1216
           -
-          1351
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          spawn
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx =&gt; PlayersManagerBehaviorImpl(ctx, maxPlayers, foreman)), &quot;manager&quot;)
-        </td>
-      </tr><tr>
-        <td>
-          28
-        </td>
-        <td>
-          674
-        </td>
-        <td>
-          1286
-          -
-          1338
+          1268
         </td>
         <td>
           Apply
@@ -456,12 +437,36 @@
           28
         </td>
         <td>
-          676
+          758
         </td>
         <td>
-          1221
+          1151
           -
-          1230
+          1281
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          spawn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx =&gt; PlayersManagerBehaviorImpl(ctx, maxPlayers, foreman)), &quot;manager&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          28
+        </td>
+        <td>
+          757
+        </td>
+        <td>
+          1151
+          -
+          1160
         </td>
         <td>
           Select
@@ -480,12 +485,12 @@
           29
         </td>
         <td>
-          678
+          759
         </td>
         <td>
-          1358
+          1288
           -
-          1365
+          1295
         </td>
         <td>
           Apply
@@ -504,12 +509,12 @@
           29
         </td>
         <td>
-          679
+          760
         </td>
         <td>
-          1358
+          1288
           -
-          1375
+          1305
         </td>
         <td>
           Apply
@@ -528,12 +533,12 @@
           30
         </td>
         <td>
-          680
+          761
         </td>
         <td>
-          1382
+          1312
           -
-          1400
+          1330
         </td>
         <td>
           Apply
@@ -552,12 +557,12 @@
           31
         </td>
         <td>
-          685
+          766
         </td>
         <td>
-          1407
+          1337
           -
-          1528
+          1458
         </td>
         <td>
           Apply
@@ -580,12 +585,12 @@
           32
         </td>
         <td>
-          684
+          765
         </td>
         <td>
-          1451
+          1381
           -
-          1468
+          1398
         </td>
         <td>
           Block
@@ -604,12 +609,12 @@
           33
         </td>
         <td>
-          681
+          762
         </td>
         <td>
-          1482
+          1412
           -
-          1489
+          1419
         </td>
         <td>
           Apply
@@ -628,12 +633,12 @@
           33
         </td>
         <td>
-          682
+          763
         </td>
         <td>
-          1482
+          1412
           -
-          1495
+          1425
         </td>
         <td>
           Apply
@@ -652,12 +657,12 @@
           34
         </td>
         <td>
-          683
+          764
         </td>
         <td>
-          1506
+          1436
           -
-          1520
+          1450
         </td>
         <td>
           Select
@@ -676,12 +681,12 @@
           35
         </td>
         <td>
-          692
+          773
         </td>
         <td>
-          1407
+          1337
           -
-          1701
+          1631
         </td>
         <td>
           Apply
@@ -708,12 +713,12 @@
           35
         </td>
         <td>
-          691
+          772
         </td>
         <td>
-          1545
+          1475
           -
-          1574
+          1504
         </td>
         <td>
           Block
@@ -732,12 +737,12 @@
           36
         </td>
         <td>
-          687
+          768
         </td>
         <td>
-          1586
+          1516
           -
-          1644
+          1574
         </td>
         <td>
           Apply
@@ -756,12 +761,12 @@
           36
         </td>
         <td>
-          686
+          767
         </td>
         <td>
-          1586
+          1516
           -
-          1593
+          1523
         </td>
         <td>
           Select
@@ -780,12 +785,12 @@
           37
         </td>
         <td>
-          689
+          770
         </td>
         <td>
-          1653
+          1583
           -
-          1667
+          1597
         </td>
         <td>
           Apply
@@ -804,12 +809,12 @@
           37
         </td>
         <td>
-          688
+          769
         </td>
         <td>
-          1653
+          1583
           -
-          1660
+          1590
         </td>
         <td>
           Apply
@@ -828,12 +833,12 @@
           38
         </td>
         <td>
-          690
+          771
         </td>
         <td>
-          1676
+          1606
           -
-          1693
+          1623
         </td>
         <td>
           Select
@@ -852,12 +857,12 @@
           47
         </td>
         <td>
-          695
+          776
         </td>
         <td>
-          1913
+          1843
           -
-          1947
+          1877
         </td>
         <td>
           Apply
@@ -876,12 +881,12 @@
           49
         </td>
         <td>
-          696
+          777
         </td>
         <td>
-          2010
+          1940
           -
-          2016
+          1946
         </td>
         <td>
           Apply
@@ -897,15 +902,15 @@
         </td>
       </tr><tr>
         <td>
-          51
+          52
         </td>
         <td>
-          701
+          782
         </td>
         <td>
-          2020
+          1992
           -
-          2042
+          2014
         </td>
         <td>
           DefDef
@@ -921,15 +926,15 @@
         </td>
       </tr><tr>
         <td>
-          52
+          53
         </td>
         <td>
-          698
+          779
         </td>
         <td>
-          2094
+          2066
           -
-          2106
+          2078
         </td>
         <td>
           Block
@@ -945,15 +950,15 @@
         </td>
       </tr><tr>
         <td>
-          52
+          53
         </td>
         <td>
-          697
+          778
         </td>
         <td>
-          2110
+          2082
           -
-          2145
+          2105
         </td>
         <td>
           Apply
@@ -965,43 +970,19 @@
           
         </td>
         <td style="background: #AEF1AE">
-          waitPlayers(maxPlayers, 0, foreman)
+          waitPlayers(0, foreman)
         </td>
       </tr><tr>
         <td>
-          53
+          54
         </td>
         <td>
-          699
+          781
         </td>
         <td>
-          2160
+          2110
           -
-          2174
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          same
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          Behaviors.same
-        </td>
-      </tr><tr>
-        <td>
-          53
-        </td>
-        <td>
-          700
-        </td>
-        <td>
-          2150
-          -
-          2156
+          2116
         </td>
         <td>
           Block
@@ -1017,15 +998,39 @@
         </td>
       </tr><tr>
         <td>
-          56
+          54
         </td>
         <td>
-          729
+          780
         </td>
         <td>
-          2182
+          2120
           -
-          2197
+          2134
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          same
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Behaviors.same
+        </td>
+      </tr><tr>
+        <td>
+          57
+        </td>
+        <td>
+          810
+        </td>
+        <td>
+          2142
+          -
+          2157
         </td>
         <td>
           DefDef
@@ -1041,15 +1046,15 @@
         </td>
       </tr><tr>
         <td>
-          56
+          57
         </td>
         <td>
-          728
+          809
         </td>
         <td>
-          2304
+          2247
           -
-          3127
+          3018
         </td>
         <td>
           Apply
@@ -1069,9 +1074,9 @@
         replyTo ! PlayerBehavior.MemberOK
         if(currentPlayers == maxPlayers)
           foreman ! ForemanBehavior.Start(playersList.toSet)
-          gameOn(maxPlayers, currentPlayers, foreman)
+          gameOn(foreman)
         else
-          waitPlayers(maxPlayers, currentPlayers, foreman)
+          waitPlayers(currentPlayers, foreman)
       } else {
         replyTo ! PlayerBehavior.MemberKO
         Behaviors.same
@@ -1079,22 +1084,22 @@
     case PlayerExited(address) =&gt;
       playersList = playersList filter { i =&gt; i.path.address != address }
       context.log.info(&quot;PLAYER TOLTO: &quot; + playersList)
-      waitPlayers(maxPlayers, currentNumPlayers - 1, foreman)
+      waitPlayers(currentNumPlayers - 1, foreman)
     case _ =&gt;
       Behaviors.same
   }
         </td>
       </tr><tr>
         <td>
-          57
+          58
         </td>
         <td>
-          717
+          798
         </td>
         <td>
-          2344
+          2287
           -
-          2366
+          2309
         </td>
         <td>
           Block
@@ -1110,15 +1115,15 @@
         </td>
       </tr><tr>
         <td>
-          59
+          60
         </td>
         <td>
-          712
+          793
         </td>
         <td>
-          2459
+          2402
           -
-          2783
+          2686
         </td>
         <td>
           Block
@@ -1135,22 +1140,22 @@
         replyTo ! PlayerBehavior.MemberOK
         if(currentPlayers == maxPlayers)
           foreman ! ForemanBehavior.Start(playersList.toSet)
-          gameOn(maxPlayers, currentPlayers, foreman)
+          gameOn(foreman)
         else
-          waitPlayers(maxPlayers, currentPlayers, foreman)
+          waitPlayers(currentPlayers, foreman)
       }
         </td>
       </tr><tr>
         <td>
-          60
+          61
         </td>
         <td>
-          702
+          783
         </td>
         <td>
-          2483
+          2426
           -
-          2505
+          2448
         </td>
         <td>
           Apply
@@ -1166,15 +1171,15 @@
         </td>
       </tr><tr>
         <td>
-          61
+          62
         </td>
         <td>
-          704
+          785
         </td>
         <td>
-          2514
+          2457
           -
-          2547
+          2490
         </td>
         <td>
           Apply
@@ -1190,15 +1195,15 @@
         </td>
       </tr><tr>
         <td>
-          61
+          62
         </td>
         <td>
-          703
+          784
         </td>
         <td>
-          2514
+          2457
           -
-          2521
+          2464
         </td>
         <td>
           Apply
@@ -1214,15 +1219,15 @@
         </td>
       </tr><tr>
         <td>
-          63
+          64
         </td>
         <td>
-          705
+          786
         </td>
         <td>
-          2599
+          2542
           -
-          2606
+          2549
         </td>
         <td>
           Apply
@@ -1238,15 +1243,15 @@
         </td>
       </tr><tr>
         <td>
-          63
+          64
         </td>
         <td>
-          707
+          788
         </td>
         <td>
-          2599
+          2542
           -
-          2649
+          2592
         </td>
         <td>
           Apply
@@ -1262,15 +1267,15 @@
         </td>
       </tr><tr>
         <td>
-          63
+          64
         </td>
         <td>
-          706
+          787
         </td>
         <td>
-          2631
+          2574
           -
-          2648
+          2591
         </td>
         <td>
           Select
@@ -1286,15 +1291,15 @@
         </td>
       </tr><tr>
         <td>
-          63
+          64
         </td>
         <td>
-          709
+          790
         </td>
         <td>
-          2599
+          2542
           -
-          2703
+          2618
         </td>
         <td>
           Block
@@ -1307,19 +1312,19 @@
         </td>
         <td style="background: #AEF1AE">
           foreman ! ForemanBehavior.Start(playersList.toSet)
-          gameOn(maxPlayers, currentPlayers, foreman)
+          gameOn(foreman)
         </td>
       </tr><tr>
         <td>
-          64
+          65
         </td>
         <td>
-          708
+          789
         </td>
         <td>
-          2660
+          2603
           -
-          2703
+          2618
         </td>
         <td>
           Apply
@@ -1331,19 +1336,19 @@
           
         </td>
         <td style="background: #AEF1AE">
-          gameOn(maxPlayers, currentPlayers, foreman)
+          gameOn(foreman)
         </td>
       </tr><tr>
         <td>
-          66
+          67
         </td>
         <td>
-          711
+          792
         </td>
         <td>
-          2727
+          2642
           -
-          2775
+          2678
         </td>
         <td>
           Block
@@ -1355,19 +1360,19 @@
           
         </td>
         <td style="background: #AEF1AE">
-          waitPlayers(maxPlayers, currentPlayers, foreman)
+          waitPlayers(currentPlayers, foreman)
         </td>
       </tr><tr>
         <td>
-          66
+          67
         </td>
         <td>
-          710
+          791
         </td>
         <td>
-          2727
+          2642
           -
-          2775
+          2678
         </td>
         <td>
           Apply
@@ -1379,19 +1384,19 @@
           
         </td>
         <td style="background: #AEF1AE">
-          waitPlayers(maxPlayers, currentPlayers, foreman)
+          waitPlayers(currentPlayers, foreman)
         </td>
       </tr><tr>
         <td>
-          67
+          68
         </td>
         <td>
-          716
+          797
         </td>
         <td>
-          2789
+          2692
           -
-          2863
+          2766
         </td>
         <td>
           Block
@@ -1410,15 +1415,15 @@
         </td>
       </tr><tr>
         <td>
-          68
+          69
         </td>
         <td>
-          714
+          795
         </td>
         <td>
-          2799
+          2702
           -
-          2832
+          2735
         </td>
         <td>
           Apply
@@ -1434,15 +1439,15 @@
         </td>
       </tr><tr>
         <td>
-          68
+          69
         </td>
         <td>
-          713
+          794
         </td>
         <td>
-          2799
+          2702
           -
-          2806
+          2709
         </td>
         <td>
           Apply
@@ -1458,15 +1463,15 @@
         </td>
       </tr><tr>
         <td>
-          69
+          70
         </td>
         <td>
-          715
+          796
         </td>
         <td>
-          2841
+          2744
           -
-          2855
+          2758
         </td>
         <td>
           Select
@@ -1482,15 +1487,15 @@
         </td>
       </tr><tr>
         <td>
-          71
+          72
         </td>
         <td>
-          725
+          806
         </td>
         <td>
-          2868
+          2771
           -
-          2894
+          2797
         </td>
         <td>
           Block
@@ -1506,15 +1511,15 @@
         </td>
       </tr><tr>
         <td>
-          72
+          73
         </td>
         <td>
-          720
+          801
         </td>
         <td>
-          2918
+          2821
           -
-          2971
+          2874
         </td>
         <td>
           Apply
@@ -1530,15 +1535,15 @@
         </td>
       </tr><tr>
         <td>
-          72
+          73
         </td>
         <td>
-          719
+          800
         </td>
         <td>
-          2944
+          2847
           -
-          2958
+          2861
         </td>
         <td>
           Select
@@ -1554,15 +1559,15 @@
         </td>
       </tr><tr>
         <td>
-          72
+          73
         </td>
         <td>
-          718
+          799
         </td>
         <td>
-          2944
+          2847
           -
-          2950
+          2853
         </td>
         <td>
           Select
@@ -1578,15 +1583,15 @@
         </td>
       </tr><tr>
         <td>
-          73
+          74
         </td>
         <td>
-          723
+          804
         </td>
         <td>
-          2978
+          2881
           -
-          3026
+          2929
         </td>
         <td>
           Apply
@@ -1602,15 +1607,15 @@
         </td>
       </tr><tr>
         <td>
-          73
+          74
         </td>
         <td>
-          722
+          803
         </td>
         <td>
-          2995
+          2898
           -
-          3025
+          2928
         </td>
         <td>
           Apply
@@ -1626,15 +1631,15 @@
         </td>
       </tr><tr>
         <td>
-          73
+          74
         </td>
         <td>
-          721
+          802
         </td>
         <td>
-          2978
+          2881
           -
-          2989
+          2892
         </td>
         <td>
           Select
@@ -1650,15 +1655,15 @@
         </td>
       </tr><tr>
         <td>
-          74
+          75
         </td>
         <td>
-          724
+          805
         </td>
         <td>
-          3033
+          2936
           -
-          3088
+          2979
         </td>
         <td>
           Apply
@@ -1670,19 +1675,19 @@
           
         </td>
         <td style="background: #F0ADAD">
-          waitPlayers(maxPlayers, currentNumPlayers - 1, foreman)
+          waitPlayers(currentNumPlayers - 1, foreman)
         </td>
       </tr><tr>
         <td>
-          75
+          76
         </td>
         <td>
-          727
+          808
         </td>
         <td>
-          3093
+          2984
           -
-          3099
+          2990
         </td>
         <td>
           Block
@@ -1698,15 +1703,15 @@
         </td>
       </tr><tr>
         <td>
-          76
+          77
         </td>
         <td>
-          726
+          807
         </td>
         <td>
-          3109
+          3000
           -
-          3123
+          3014
         </td>
         <td>
           Select
@@ -1722,15 +1727,39 @@
         </td>
       </tr><tr>
         <td>
-          79
+          80
         </td>
         <td>
-          774
+          864
         </td>
         <td>
-          3248
+          3022
           -
-          4548
+          3032
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          gameOn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def gameOn
+        </td>
+      </tr><tr>
+        <td>
+          80
+        </td>
+        <td>
+          863
+        </td>
+        <td>
+          3098
+          -
+          4528
         </td>
         <td>
           Apply
@@ -1745,20 +1774,24 @@
           Behaviors.receiveMessage[Command] {
     case AskEnter(replyTo) =&gt;
       val playersAddresses = playersList.map { i =&gt; i.path.address.toString}
-      if(playersAddresses.contains(replyTo.path.address.toString))
+      if(playersAddresses.contains(replyTo.path.address.toString) &amp;&amp; currentNumPlayers &lt; maxPlayers)
         context.log.info(&quot;un giocatore è rientrato&quot;)
         replyTo ! PlayerBehavior.MemberOK
         foreman ! ForemanBehavior.PlayerRejoined(replyTo.path.address.toString)
+        currentNumPlayers = currentNumPlayers + 1
+        if(currentNumPlayers == maxPlayers)
+          foreman ! ForemanBehavior.RestartTurn
+        gameOn(foreman)
+      else
+        replyTo ! PlayerBehavior.MemberKO
         Behaviors.same
-        // TODO altrimenti invia KO
-      val currentPlayers = currentNumPlayers + 1
-      gameOn(maxPlayers, currentPlayers, foreman)
     case PlayerExited(address) =&gt;
-      val currentPlayers = currentNumPlayers - 1
+      currentNumPlayers = currentNumPlayers - 1
       context.log.info(&quot;un giocatore ha quittato&quot;)
+      foreman ! ForemanBehavior.InterruptTurn
       Behaviors.withTimers { timer =&gt;
-        timer.startSingleTimer(CheckMembers, 15000 milliseconds)
-        gameOn(maxPlayers, currentPlayers - 1, foreman)
+        timer.startSingleTimer(CheckMembers, 5000 milliseconds)
+        gameOn(foreman)
       }
 
     case CheckMembers =&gt;
@@ -1780,39 +1813,15 @@
         </td>
       </tr><tr>
         <td>
-          79
+          81
         </td>
         <td>
-          775
+          834
         </td>
         <td>
-          3131
+          3138
           -
-          3141
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          gameOn
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          def gameOn
-        </td>
-      </tr><tr>
-        <td>
-          80
-        </td>
-        <td>
-          747
-        </td>
-        <td>
-          3288
-          -
-          3310
+          3160
         </td>
         <td>
           Block
@@ -1828,15 +1837,15 @@
         </td>
       </tr><tr>
         <td>
-          81
+          82
         </td>
         <td>
-          732
+          813
         </td>
         <td>
-          3343
+          3193
           -
-          3390
+          3240
         </td>
         <td>
           Apply
@@ -1852,15 +1861,15 @@
         </td>
       </tr><tr>
         <td>
-          81
+          82
         </td>
         <td>
-          731
+          812
         </td>
         <td>
-          3366
+          3216
           -
-          3380
+          3230
         </td>
         <td>
           Select
@@ -1876,15 +1885,15 @@
         </td>
       </tr><tr>
         <td>
-          81
+          82
         </td>
         <td>
-          730
+          811
         </td>
         <td>
-          3366
+          3216
           -
-          3372
+          3222
         </td>
         <td>
           Select
@@ -1900,15 +1909,63 @@
         </td>
       </tr><tr>
         <td>
-          82
+          83
         </td>
         <td>
-          735
+          815
         </td>
         <td>
-          3400
+          3276
           -
-          3456
+          3296
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          address
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          replyTo.path.address
+        </td>
+      </tr><tr>
+        <td>
+          83
+        </td>
+        <td>
+          814
+        </td>
+        <td>
+          3276
+          -
+          3288
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          path
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          replyTo.path
+        </td>
+      </tr><tr>
+        <td>
+          83
+        </td>
+        <td>
+          816
+        </td>
+        <td>
+          3250
+          -
+          3306
         </td>
         <td>
           Apply
@@ -1924,63 +1981,15 @@
         </td>
       </tr><tr>
         <td>
-          82
+          84
         </td>
         <td>
-          734
+          818
         </td>
         <td>
-          3426
+          3350
           -
-          3446
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          address
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          replyTo.path.address
-        </td>
-      </tr><tr>
-        <td>
-          82
-        </td>
-        <td>
-          733
-        </td>
-        <td>
-          3426
-          -
-          3438
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          path
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          replyTo.path
-        </td>
-      </tr><tr>
-        <td>
-          83
-        </td>
-        <td>
-          737
-        </td>
-        <td>
-          3466
-          -
-          3510
+          3394
         </td>
         <td>
           Apply
@@ -1991,47 +2000,20 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           context.log.info(&quot;un giocatore è rientrato&quot;)
         </td>
       </tr><tr>
         <td>
-          83
+          84
         </td>
         <td>
-          745
+          817
         </td>
         <td>
-          3466
+          3350
           -
-          3655
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          context.log.info(&quot;un giocatore è rientrato&quot;)
-        replyTo ! PlayerBehavior.MemberOK
-        foreman ! ForemanBehavior.PlayerRejoined(replyTo.path.address.toString)
-        Behaviors.same
-        </td>
-      </tr><tr>
-        <td>
-          83
-        </td>
-        <td>
-          736
-        </td>
-        <td>
-          3466
-          -
-          3477
+          3361
         </td>
         <td>
           Select
@@ -2042,7 +2024,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           context.log
         </td>
       </tr><tr>
@@ -2050,12 +2032,306 @@
           84
         </td>
         <td>
-          738
+          829
         </td>
         <td>
-          3519
+          3350
           -
-          3526
+          3682
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          context.log.info(&quot;un giocatore è rientrato&quot;)
+        replyTo ! PlayerBehavior.MemberOK
+        foreman ! ForemanBehavior.PlayerRejoined(replyTo.path.address.toString)
+        currentNumPlayers = currentNumPlayers + 1
+        if(currentNumPlayers == maxPlayers)
+          foreman ! ForemanBehavior.RestartTurn
+        gameOn(foreman)
+        </td>
+      </tr><tr>
+        <td>
+          85
+        </td>
+        <td>
+          819
+        </td>
+        <td>
+          3403
+          -
+          3410
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          replyTo
+        </td>
+      </tr><tr>
+        <td>
+          85
+        </td>
+        <td>
+          820
+        </td>
+        <td>
+          3403
+          -
+          3436
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          replyTo ! PlayerBehavior.MemberOK
+        </td>
+      </tr><tr>
+        <td>
+          86
+        </td>
+        <td>
+          822
+        </td>
+        <td>
+          3486
+          -
+          3498
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          path
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          replyTo.path
+        </td>
+      </tr><tr>
+        <td>
+          86
+        </td>
+        <td>
+          821
+        </td>
+        <td>
+          3445
+          -
+          3452
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          foreman
+        </td>
+      </tr><tr>
+        <td>
+          86
+        </td>
+        <td>
+          824
+        </td>
+        <td>
+          3445
+          -
+          3516
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          foreman ! ForemanBehavior.PlayerRejoined(replyTo.path.address.toString)
+        </td>
+      </tr><tr>
+        <td>
+          86
+        </td>
+        <td>
+          823
+        </td>
+        <td>
+          3486
+          -
+          3506
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          address
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          replyTo.path.address
+        </td>
+      </tr><tr>
+        <td>
+          89
+        </td>
+        <td>
+          827
+        </td>
+        <td>
+          3621
+          -
+          3658
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          foreman ! ForemanBehavior.RestartTurn
+        </td>
+      </tr><tr>
+        <td>
+          89
+        </td>
+        <td>
+          826
+        </td>
+        <td>
+          3621
+          -
+          3658
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          foreman ! ForemanBehavior.RestartTurn
+        </td>
+      </tr><tr>
+        <td>
+          89
+        </td>
+        <td>
+          825
+        </td>
+        <td>
+          3621
+          -
+          3628
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          foreman
+        </td>
+      </tr><tr>
+        <td>
+          90
+        </td>
+        <td>
+          828
+        </td>
+        <td>
+          3667
+          -
+          3682
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          gameOn
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          gameOn(foreman)
+        </td>
+      </tr><tr>
+        <td>
+          92
+        </td>
+        <td>
+          831
+        </td>
+        <td>
+          3702
+          -
+          3735
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          replyTo ! PlayerBehavior.MemberKO
+        </td>
+      </tr><tr>
+        <td>
+          92
+        </td>
+        <td>
+          830
+        </td>
+        <td>
+          3702
+          -
+          3709
         </td>
         <td>
           Apply
@@ -2071,135 +2347,40 @@
         </td>
       </tr><tr>
         <td>
-          84
+          92
         </td>
         <td>
-          739
+          833
         </td>
         <td>
-          3519
+          3702
           -
-          3552
+          3758
         </td>
         <td>
-          Apply
+          Block
         </td>
         <td>
-          !
+          &lt;none&gt;
         </td>
         <td>
           
         </td>
         <td style="background: #AEF1AE">
-          replyTo ! PlayerBehavior.MemberOK
+          replyTo ! PlayerBehavior.MemberKO
+        Behaviors.same
         </td>
       </tr><tr>
         <td>
-          85
+          93
         </td>
         <td>
-          741
+          832
         </td>
         <td>
-          3602
+          3744
           -
-          3614
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          path
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          replyTo.path
-        </td>
-      </tr><tr>
-        <td>
-          85
-        </td>
-        <td>
-          743
-        </td>
-        <td>
-          3561
-          -
-          3632
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          !
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          foreman ! ForemanBehavior.PlayerRejoined(replyTo.path.address.toString)
-        </td>
-      </tr><tr>
-        <td>
-          85
-        </td>
-        <td>
-          740
-        </td>
-        <td>
-          3561
-          -
-          3568
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          ActorRefOps
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          foreman
-        </td>
-      </tr><tr>
-        <td>
-          85
-        </td>
-        <td>
-          742
-        </td>
-        <td>
-          3602
-          -
-          3622
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          address
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          replyTo.path.address
-        </td>
-      </tr><tr>
-        <td>
-          86
-        </td>
-        <td>
-          744
-        </td>
-        <td>
-          3641
-          -
-          3655
+          3758
         </td>
         <td>
           Select
@@ -2215,39 +2396,15 @@
         </td>
       </tr><tr>
         <td>
-          89
+          94
         </td>
         <td>
-          746
+          843
         </td>
         <td>
-          3747
+          3763
           -
-          3790
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          gameOn
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          gameOn(maxPlayers, currentPlayers, foreman)
-        </td>
-      </tr><tr>
-        <td>
-          90
-        </td>
-        <td>
-          754
-        </td>
-        <td>
-          3795
-          -
-          3821
+          3789
         </td>
         <td>
           Block
@@ -2263,15 +2420,15 @@
         </td>
       </tr><tr>
         <td>
-          92
+          96
         </td>
         <td>
-          749
+          836
         </td>
         <td>
-          3880
+          3847
           -
-          3924
+          3891
         </td>
         <td>
           Apply
@@ -2287,15 +2444,15 @@
         </td>
       </tr><tr>
         <td>
-          92
+          96
         </td>
         <td>
-          748
+          835
         </td>
         <td>
-          3880
+          3847
           -
-          3891
+          3858
         </td>
         <td>
           Select
@@ -2311,15 +2468,63 @@
         </td>
       </tr><tr>
         <td>
-          93
+          97
         </td>
         <td>
-          753
+          837
         </td>
         <td>
-          3931
+          3898
           -
-          4091
+          3905
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          ActorRefOps
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          foreman
+        </td>
+      </tr><tr>
+        <td>
+          97
+        </td>
+        <td>
+          838
+        </td>
+        <td>
+          3898
+          -
+          3937
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          !
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          foreman ! ForemanBehavior.InterruptTurn
+        </td>
+      </tr><tr>
+        <td>
+          98
+        </td>
+        <td>
+          842
+        </td>
+        <td>
+          3944
+          -
+          4071
         </td>
         <td>
           Apply
@@ -2332,21 +2537,21 @@
         </td>
         <td style="background: #AEF1AE">
           Behaviors.withTimers { timer =&gt;
-        timer.startSingleTimer(CheckMembers, 15000 milliseconds)
-        gameOn(maxPlayers, currentPlayers - 1, foreman)
+        timer.startSingleTimer(CheckMembers, 5000 milliseconds)
+        gameOn(foreman)
       }
         </td>
       </tr><tr>
         <td>
-          94
+          99
         </td>
         <td>
-          750
+          839
         </td>
         <td>
-          4008
+          4021
           -
-          4026
+          4038
         </td>
         <td>
           Select
@@ -2358,19 +2563,19 @@
           
         </td>
         <td style="background: #AEF1AE">
-          15000 milliseconds
+          5000 milliseconds
         </td>
       </tr><tr>
         <td>
-          94
+          99
         </td>
         <td>
-          751
+          840
         </td>
         <td>
-          3971
+          3984
           -
-          4027
+          4039
         </td>
         <td>
           Apply
@@ -2382,19 +2587,19 @@
           
         </td>
         <td style="background: #AEF1AE">
-          timer.startSingleTimer(CheckMembers, 15000 milliseconds)
+          timer.startSingleTimer(CheckMembers, 5000 milliseconds)
         </td>
       </tr><tr>
         <td>
-          95
+          100
         </td>
         <td>
-          752
+          841
         </td>
         <td>
-          4036
+          4048
           -
-          4083
+          4063
         </td>
         <td>
           Apply
@@ -2406,19 +2611,19 @@
           
         </td>
         <td style="background: #AEF1AE">
-          gameOn(maxPlayers, currentPlayers - 1, foreman)
+          gameOn(foreman)
         </td>
       </tr><tr>
         <td>
-          98
+          103
         </td>
         <td>
-          768
+          857
         </td>
         <td>
-          4097
+          4077
           -
-          4114
+          4094
         </td>
         <td>
           Block
@@ -2434,15 +2639,15 @@
         </td>
       </tr><tr>
         <td>
-          99
+          104
         </td>
         <td>
-          756
+          845
         </td>
         <td>
-          4124
+          4104
           -
-          4155
+          4135
         </td>
         <td>
           Apply
@@ -2458,15 +2663,15 @@
         </td>
       </tr><tr>
         <td>
-          99
+          104
         </td>
         <td>
-          755
+          844
         </td>
         <td>
-          4124
+          4104
           -
-          4135
+          4115
         </td>
         <td>
           Select
@@ -2482,15 +2687,39 @@
         </td>
       </tr><tr>
         <td>
-          101
+          106
         </td>
         <td>
-          758
+          846
         </td>
         <td>
-          4205
+          4185
           -
-          4234
+          4196
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          log
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          context.log
+        </td>
+      </tr><tr>
+        <td>
+          106
+        </td>
+        <td>
+          847
+        </td>
+        <td>
+          4185
+          -
+          4214
         </td>
         <td>
           Apply
@@ -2506,39 +2735,15 @@
         </td>
       </tr><tr>
         <td>
-          101
+          106
         </td>
         <td>
-          757
+          852
         </td>
         <td>
-          4205
+          4185
           -
-          4216
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          log
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          context.log
-        </td>
-      </tr><tr>
-        <td>
-          101
-        </td>
-        <td>
-          763
-        </td>
-        <td>
-          4205
-          -
-          4285
+          4265
         </td>
         <td>
           Block
@@ -2556,15 +2761,15 @@
         </td>
       </tr><tr>
         <td>
-          102
+          107
         </td>
         <td>
-          759
+          848
         </td>
         <td>
-          4243
+          4223
           -
-          4255
+          4235
         </td>
         <td>
           Select
@@ -2580,15 +2785,15 @@
         </td>
       </tr><tr>
         <td>
-          102
+          107
         </td>
         <td>
-          761
+          850
         </td>
         <td>
-          4243
+          4223
           -
-          4262
+          4242
         </td>
         <td>
           Apply
@@ -2604,15 +2809,15 @@
         </td>
       </tr><tr>
         <td>
-          102
+          107
         </td>
         <td>
-          760
+          849
         </td>
         <td>
-          4243
+          4223
           -
-          4255
+          4235
         </td>
         <td>
           Apply
@@ -2628,15 +2833,15 @@
         </td>
       </tr><tr>
         <td>
-          103
+          108
         </td>
         <td>
-          762
+          851
         </td>
         <td>
-          4271
+          4251
           -
-          4285
+          4265
         </td>
         <td>
           Select
@@ -2652,15 +2857,15 @@
         </td>
       </tr><tr>
         <td>
-          105
+          110
         </td>
         <td>
-          765
+          854
         </td>
         <td>
-          4305
+          4285
           -
-          4337
+          4317
         </td>
         <td>
           Apply
@@ -2676,15 +2881,15 @@
         </td>
       </tr><tr>
         <td>
-          105
+          110
         </td>
         <td>
-          764
+          853
         </td>
         <td>
-          4305
+          4285
           -
-          4316
+          4296
         </td>
         <td>
           Select
@@ -2700,15 +2905,15 @@
         </td>
       </tr><tr>
         <td>
-          105
+          110
         </td>
         <td>
-          767
+          856
         </td>
         <td>
-          4305
+          4285
           -
-          4360
+          4340
         </td>
         <td>
           Block
@@ -2725,15 +2930,15 @@
         </td>
       </tr><tr>
         <td>
-          106
+          111
         </td>
         <td>
-          766
+          855
         </td>
         <td>
-          4346
+          4326
           -
-          4360
+          4340
         </td>
         <td>
           Select
@@ -2749,15 +2954,15 @@
         </td>
       </tr><tr>
         <td>
-          108
+          113
         </td>
         <td>
-          773
+          862
         </td>
         <td>
-          4366
+          4346
           -
-          4375
+          4355
         </td>
         <td>
           Block
@@ -2773,15 +2978,15 @@
         </td>
       </tr><tr>
         <td>
-          109
+          114
         </td>
         <td>
-          771
+          860
         </td>
         <td>
-          4385
+          4365
           -
-          4520
+          4500
         </td>
         <td>
           Apply
@@ -2799,15 +3004,15 @@
         </td>
       </tr><tr>
         <td>
-          110
+          115
         </td>
         <td>
-          770
+          859
         </td>
         <td>
-          4420
+          4400
           -
-          4512
+          4492
         </td>
         <td>
           Apply
@@ -2823,15 +3028,15 @@
         </td>
       </tr><tr>
         <td>
-          110
+          115
         </td>
         <td>
-          769
+          858
         </td>
         <td>
-          4420
+          4400
           -
-          4421
+          4401
         </td>
         <td>
           Apply
@@ -2847,15 +3052,15 @@
         </td>
       </tr><tr>
         <td>
-          112
+          117
         </td>
         <td>
-          772
+          861
         </td>
         <td>
-          4527
+          4507
           -
-          4544
+          4524
         </td>
         <td>
           Select

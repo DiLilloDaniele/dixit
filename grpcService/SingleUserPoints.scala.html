@@ -2,7 +2,7 @@
       <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title id="title">
-          grpcService/HelloMessage.scala.html
+          grpcService/SingleUserPoints.scala.html
         </title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/css/theme.default.min.css" type="text/css"/><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.20.1/js/jquery.tablesorter.min.js"></script><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" type="text/css"/><script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script><script type="text/javascript">
         $(document).ready(function() {$(".tablesorter").tablesorter();});
@@ -30,76 +30,76 @@
 </span>6 <span style=''>package grpcService
 </span>7 <span style=''>
 </span>8 <span style=''>@SerialVersionUID(0L)
-</span>9 <span style=''>final case class HelloMessage(
-</span>10 <span style=''>    message: _root_.scala.Predef.String = &quot;&quot;,
+</span>9 <span style=''>final case class SingleUserPoints(
+</span>10 <span style=''>    points: _root_.scala.Int = 0,
 </span>11 <span style=''>    unknownFields: _root_.scalapb.UnknownFieldSet = _root_.scalapb.UnknownFieldSet.empty
-</span>12 <span style=''>    ) extends scalapb.GeneratedMessage with scalapb.lenses.Updatable[HelloMessage] {
+</span>12 <span style=''>    ) extends scalapb.GeneratedMessage with scalapb.lenses.Updatable[SingleUserPoints] {
 </span>13 <span style=''>    @transient
 </span>14 <span style=''>    private[this] var __serializedSizeMemoized: _root_.scala.Int = 0
-</span>15 <span style=''>    </span><span style='background: #AEF1AE'>private[this] def __computeSerializedSize</span><span style=''>(): _root_.scala.Int = {
+</span>15 <span style=''>    </span><span style='background: #F0ADAD'>private[this] def __computeSerializedSize</span><span style=''>(): _root_.scala.Int = {
 </span>16 <span style=''>      var __size = 0
 </span>17 <span style=''>      
 </span>18 <span style=''>      {
-</span>19 <span style=''>        val __value = message
-</span>20 <span style=''>        if (!</span><span style='background: #AEF1AE'>__value.isEmpty</span><span style=''>) </span><span style='background: #AEF1AE'>{
-</span>21 <span style=''></span><span style='background: #AEF1AE'>          __size += _root_.com.google.protobuf.CodedOutputStream.computeStringSize(1, __value)
-</span>22 <span style=''></span><span style='background: #AEF1AE'>        }</span><span style=''>
+</span>19 <span style=''>        val __value = points
+</span>20 <span style=''>        if (__value != 0) </span><span style='background: #F0ADAD'>{
+</span>21 <span style=''></span><span style='background: #F0ADAD'>          __size += _root_.com.google.protobuf.CodedOutputStream.computeInt32Size(1, __value)
+</span>22 <span style=''></span><span style='background: #F0ADAD'>        }</span><span style=''>
 </span>23 <span style=''>      };
-</span>24 <span style=''>      __size += </span><span style='background: #AEF1AE'>unknownFields.serializedSize</span><span style=''>
+</span>24 <span style=''>      __size += </span><span style='background: #F0ADAD'>unknownFields.serializedSize</span><span style=''>
 </span>25 <span style=''>      __size
 </span>26 <span style=''>    }
-</span>27 <span style=''>    </span><span style='background: #AEF1AE'>override def serializedSize</span><span style=''>: _root_.scala.Int = {
+</span>27 <span style=''>    </span><span style='background: #F0ADAD'>override def serializedSize</span><span style=''>: _root_.scala.Int = {
 </span>28 <span style=''>      var __size = __serializedSizeMemoized
-</span>29 <span style=''>      if (__size == 0) </span><span style='background: #AEF1AE'>{
-</span>30 <span style=''></span><span style='background: #AEF1AE'>        __size = __computeSerializedSize() + 1
-</span>31 <span style=''></span><span style='background: #AEF1AE'>        __serializedSizeMemoized = __size
-</span>32 <span style=''></span><span style='background: #AEF1AE'>      }</span><span style=''>
+</span>29 <span style=''>      if (__size == 0) </span><span style='background: #F0ADAD'>{
+</span>30 <span style=''></span><span style='background: #F0ADAD'>        __size = __computeSerializedSize() + 1
+</span>31 <span style=''></span><span style='background: #F0ADAD'>        __serializedSizeMemoized = __size
+</span>32 <span style=''></span><span style='background: #F0ADAD'>      }</span><span style=''>
 </span>33 <span style=''>      __size - 1
 </span>34 <span style=''>      
 </span>35 <span style=''>    }
-</span>36 <span style=''>    </span><span style='background: #AEF1AE'>def writeTo</span><span style=''>(`_output__`: _root_.com.google.protobuf.CodedOutputStream): _root_.scala.Unit = {
+</span>36 <span style=''>    </span><span style='background: #F0ADAD'>def writeTo</span><span style=''>(`_output__`: _root_.com.google.protobuf.CodedOutputStream): _root_.scala.Unit = {
 </span>37 <span style=''>      {
-</span>38 <span style=''>        val __v = message
-</span>39 <span style=''>        if (!</span><span style='background: #AEF1AE'>__v.isEmpty</span><span style=''>) </span><span style='background: #AEF1AE'>{
-</span>40 <span style=''></span><span style='background: #AEF1AE'>          _output__.writeString(1, __v)
-</span>41 <span style=''></span><span style='background: #AEF1AE'>        }</span><span style=''>
+</span>38 <span style=''>        val __v = points
+</span>39 <span style=''>        if (__v != 0) </span><span style='background: #F0ADAD'>{
+</span>40 <span style=''></span><span style='background: #F0ADAD'>          _output__.writeInt32(1, __v)
+</span>41 <span style=''></span><span style='background: #F0ADAD'>        }</span><span style=''>
 </span>42 <span style=''>      };
-</span>43 <span style=''>      </span><span style='background: #AEF1AE'>unknownFields.writeTo(_output__)</span><span style=''>
+</span>43 <span style=''>      </span><span style='background: #F0ADAD'>unknownFields.writeTo(_output__)</span><span style=''>
 </span>44 <span style=''>    }
-</span>45 <span style=''>    </span><span style='background: #F0ADAD'>def withMessage</span><span style=''>(__v: _root_.scala.Predef.String): HelloMessage = copy(message = __v)
+</span>45 <span style=''>    </span><span style='background: #F0ADAD'>def withPoints</span><span style=''>(__v: _root_.scala.Int): SingleUserPoints = copy(points = __v)
 </span>46 <span style=''>    </span><span style='background: #F0ADAD'>def withUnknownFields</span><span style=''>(__v: _root_.scalapb.UnknownFieldSet) = copy(unknownFields = __v)
 </span>47 <span style=''>    </span><span style='background: #F0ADAD'>def discardUnknownFields</span><span style=''> = copy(unknownFields = _root_.scalapb.UnknownFieldSet.empty)
 </span>48 <span style=''>    </span><span style='background: #F0ADAD'>def getFieldByNumber</span><span style=''>(__fieldNumber: _root_.scala.Int): _root_.scala.Any = {
 </span>49 <span style=''>      (__fieldNumber: @_root_.scala.unchecked) match {
 </span>50 <span style=''>        </span><span style='background: #F0ADAD'>case 1</span><span style=''> =&gt; {
-</span>51 <span style=''>          val __t = message
-</span>52 <span style=''>          if (__t != &quot;&quot;) </span><span style='background: #F0ADAD'>__t</span><span style=''> else </span><span style='background: #F0ADAD'>null</span><span style=''>
+</span>51 <span style=''>          val __t = points
+</span>52 <span style=''>          if (__t != 0) </span><span style='background: #F0ADAD'>__t</span><span style=''> else </span><span style='background: #F0ADAD'>null</span><span style=''>
 </span>53 <span style=''>        }
 </span>54 <span style=''>      }
 </span>55 <span style=''>    }
 </span>56 <span style=''>    </span><span style='background: #F0ADAD'>def getField</span><span style=''>(__field: _root_.scalapb.descriptors.FieldDescriptor): _root_.scalapb.descriptors.PValue = {
 </span>57 <span style=''>      </span><span style='background: #F0ADAD'>_root_.scala.Predef.require(__field.containingMessage eq companion.scalaDescriptor)</span><span style=''>
 </span>58 <span style=''>      (</span><span style='background: #F0ADAD'>__field.number</span><span style=''>: @_root_.scala.unchecked) match {
-</span>59 <span style=''>        </span><span style='background: #F0ADAD'>case 1</span><span style=''> =&gt; _root_.scalapb.descriptors.PString(message)
+</span>59 <span style=''>        </span><span style='background: #F0ADAD'>case 1</span><span style=''> =&gt; _root_.scalapb.descriptors.PInt(points)
 </span>60 <span style=''>      }
 </span>61 <span style=''>    }
 </span>62 <span style=''>    </span><span style='background: #F0ADAD'>def toProtoString</span><span style=''>: _root_.scala.Predef.String = </span><span style='background: #F0ADAD'>_root_.scalapb.TextFormat.printToUnicodeString(this)</span><span style=''>
-</span>63 <span style=''>    </span><span style='background: #F0ADAD'>def companion</span><span style=''>: grpcService.HelloMessage.type = grpcService.HelloMessage
-</span>64 <span style=''>    // @@protoc_insertion_point(GeneratedMessage[grpcService.HelloMessage])
+</span>63 <span style=''>    </span><span style='background: #F0ADAD'>def companion</span><span style=''>: grpcService.SingleUserPoints.type = grpcService.SingleUserPoints
+</span>64 <span style=''>    // @@protoc_insertion_point(GeneratedMessage[grpcService.SingleUserPoints])
 </span>65 <span style=''>}
 </span>66 <span style=''>
-</span>67 <span style=''>object HelloMessage extends scalapb.GeneratedMessageCompanion[grpcService.HelloMessage] {
-</span>68 <span style=''>  </span><span style='background: #AEF1AE'>implicit def messageCompanion</span><span style=''>: scalapb.GeneratedMessageCompanion[grpcService.HelloMessage] = this
-</span>69 <span style=''>  </span><span style='background: #AEF1AE'>def parseFrom</span><span style=''>(`_input__`: _root_.com.google.protobuf.CodedInputStream): grpcService.HelloMessage = {
-</span>70 <span style=''>    var __message: _root_.scala.Predef.String = &quot;&quot;
+</span>67 <span style=''>object SingleUserPoints extends scalapb.GeneratedMessageCompanion[grpcService.SingleUserPoints] {
+</span>68 <span style=''>  </span><span style='background: #AEF1AE'>implicit def messageCompanion</span><span style=''>: scalapb.GeneratedMessageCompanion[grpcService.SingleUserPoints] = this
+</span>69 <span style=''>  </span><span style='background: #F0ADAD'>def parseFrom</span><span style=''>(`_input__`: _root_.com.google.protobuf.CodedInputStream): grpcService.SingleUserPoints = {
+</span>70 <span style=''>    var __points: _root_.scala.Int = 0
 </span>71 <span style=''>    var `_unknownFields__`: _root_.scalapb.UnknownFieldSet.Builder = null
 </span>72 <span style=''>    var _done__ = false
 </span>73 <span style=''>    while (!_done__) {
-</span>74 <span style=''>      val _tag__ = </span><span style='background: #AEF1AE'>_input__.readTag()</span><span style=''>
+</span>74 <span style=''>      val _tag__ = </span><span style='background: #F0ADAD'>_input__.readTag()</span><span style=''>
 </span>75 <span style=''>      _tag__ match {
-</span>76 <span style=''>        </span><span style='background: #AEF1AE'>case 0</span><span style=''> =&gt; _done__ = true
-</span>77 <span style=''>        </span><span style='background: #AEF1AE'>case 10</span><span style=''> =&gt;
-</span>78 <span style=''>          __message = </span><span style='background: #AEF1AE'>_input__.readStringRequireUtf8()</span><span style=''>
+</span>76 <span style=''>        </span><span style='background: #F0ADAD'>case 0</span><span style=''> =&gt; _done__ = true
+</span>77 <span style=''>        </span><span style='background: #F0ADAD'>case 8</span><span style=''> =&gt;
+</span>78 <span style=''>          __points = </span><span style='background: #F0ADAD'>_input__.readInt32()</span><span style=''>
 </span>79 <span style=''>        </span><span style='background: #F0ADAD'>case tag</span><span style=''> =&gt;
 </span>80 <span style=''>          if (_unknownFields__ == null) </span><span style='background: #F0ADAD'>{
 </span>81 <span style=''></span><span style='background: #F0ADAD'>            _unknownFields__ = new _root_.scalapb.UnknownFieldSet.Builder()
@@ -107,37 +107,37 @@
 </span>83 <span style=''>          </span><span style='background: #F0ADAD'>_unknownFields__.parseField(tag, _input__)</span><span style=''>
 </span>84 <span style=''>      }
 </span>85 <span style=''>    }
-</span>86 <span style=''>    grpcService.HelloMessage(
-</span>87 <span style=''>        message = __message,
-</span>88 <span style=''>        unknownFields = if (_unknownFields__ == null) </span><span style='background: #AEF1AE'>_root_.scalapb.UnknownFieldSet.empty</span><span style=''> else </span><span style='background: #F0ADAD'>_unknownFields__.result()</span><span style=''>
+</span>86 <span style=''>    grpcService.SingleUserPoints(
+</span>87 <span style=''>        points = __points,
+</span>88 <span style=''>        unknownFields = if (_unknownFields__ == null) </span><span style='background: #F0ADAD'>_root_.scalapb.UnknownFieldSet.empty</span><span style=''> else </span><span style='background: #F0ADAD'>_unknownFields__.result()</span><span style=''>
 </span>89 <span style=''>    )
 </span>90 <span style=''>  }
-</span>91 <span style=''>  </span><span style='background: #F0ADAD'>implicit def messageReads</span><span style=''>: _root_.scalapb.descriptors.Reads[grpcService.HelloMessage] = _root_.scalapb.descriptors.Reads{
+</span>91 <span style=''>  </span><span style='background: #F0ADAD'>implicit def messageReads</span><span style=''>: _root_.scalapb.descriptors.Reads[grpcService.SingleUserPoints] = _root_.scalapb.descriptors.Reads{
 </span>92 <span style=''>    </span><span style='background: #F0ADAD'>case _root_.scalapb.descriptors.PMessage(__fieldsMap)</span><span style=''> =&gt;
 </span>93 <span style=''>      </span><span style='background: #F0ADAD'>_root_.scala.Predef.require(__fieldsMap.keys.forall(_.containingMessage eq scalaDescriptor), &quot;FieldDescriptor does not match message type.&quot;)</span><span style=''>
-</span>94 <span style=''>      </span><span style='background: #F0ADAD'>grpcService.HelloMessage</span><span style=''>(
-</span>95 <span style=''>        message = </span><span style='background: #F0ADAD'>__fieldsMap.get(scalaDescriptor.findFieldByNumber(1).get).map(_.as[_root_.scala.Predef.String]).getOrElse(&quot;&quot;)</span><span style=''>
+</span>94 <span style=''>      </span><span style='background: #F0ADAD'>grpcService.SingleUserPoints</span><span style=''>(
+</span>95 <span style=''>        points = </span><span style='background: #F0ADAD'>__fieldsMap.get(scalaDescriptor.findFieldByNumber(1).get).map(_.as[_root_.scala.Int]).getOrElse(0)</span><span style=''>
 </span>96 <span style=''>      )
 </span>97 <span style=''>    </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>throw new RuntimeException(&quot;Expected PMessage&quot;)</span><span style=''>
 </span>98 <span style=''>  }
-</span>99 <span style=''>  </span><span style='background: #F0ADAD'>def javaDescriptor</span><span style=''>: _root_.com.google.protobuf.Descriptors.Descriptor = </span><span style='background: #F0ADAD'>MessagesProto.javaDescriptor.getMessageTypes().get(4)</span><span style=''>
-</span>100 <span style=''>  </span><span style='background: #F0ADAD'>def scalaDescriptor</span><span style=''>: _root_.scalapb.descriptors.Descriptor = </span><span style='background: #F0ADAD'>MessagesProto.scalaDescriptor.messages(4)</span><span style=''>
+</span>99 <span style=''>  </span><span style='background: #F0ADAD'>def javaDescriptor</span><span style=''>: _root_.com.google.protobuf.Descriptors.Descriptor = </span><span style='background: #F0ADAD'>MessagesProto.javaDescriptor.getMessageTypes().get(2)</span><span style=''>
+</span>100 <span style=''>  </span><span style='background: #F0ADAD'>def scalaDescriptor</span><span style=''>: _root_.scalapb.descriptors.Descriptor = </span><span style='background: #F0ADAD'>MessagesProto.scalaDescriptor.messages(2)</span><span style=''>
 </span>101 <span style=''>  </span><span style='background: #F0ADAD'>def messageCompanionForFieldNumber</span><span style=''>(__number: _root_.scala.Int): _root_.scalapb.GeneratedMessageCompanion[_] = </span><span style='background: #F0ADAD'>throw new MatchError(__number)</span><span style=''>
 </span>102 <span style=''>  lazy val nestedMessagesCompanions: Seq[_root_.scalapb.GeneratedMessageCompanion[_ &lt;: _root_.scalapb.GeneratedMessage]] = </span><span style='background: #F0ADAD'>Seq.empty</span><span style=''>
 </span>103 <span style=''>  </span><span style='background: #F0ADAD'>def enumCompanionForFieldNumber</span><span style=''>(__fieldNumber: _root_.scala.Int): _root_.scalapb.GeneratedEnumCompanion[_] = </span><span style='background: #F0ADAD'>throw new MatchError(__fieldNumber)</span><span style=''>
-</span>104 <span style=''>  lazy val defaultInstance = </span><span style='background: #F0ADAD'>grpcService.HelloMessage</span><span style=''>(
-</span>105 <span style=''>    message = &quot;&quot;
+</span>104 <span style=''>  lazy val defaultInstance = </span><span style='background: #F0ADAD'>grpcService.SingleUserPoints</span><span style=''>(
+</span>105 <span style=''>    points = 0
 </span>106 <span style=''>  )
-</span>107 <span style=''>  </span><span style='background: #F0ADAD'>implicit class HelloMessageLens</span><span style=''>[UpperPB](_l: _root_.scalapb.lenses.Lens[UpperPB, grpcService.HelloMessage]) extends </span><span style='background: #F0ADAD'>_root_.scalapb.lenses.ObjectLens[UpperPB, grpcService.HelloMessage](_l)</span><span style=''> {
-</span>108 <span style=''>    </span><span style='background: #F0ADAD'>def message</span><span style=''>: _root_.scalapb.lenses.Lens[UpperPB, _root_.scala.Predef.String] = </span><span style='background: #F0ADAD'>field(_.message)((c_, f_) =&gt; c_.copy(message = f_))</span><span style=''>
+</span>107 <span style=''>  </span><span style='background: #F0ADAD'>implicit class SingleUserPointsLens</span><span style=''>[UpperPB](_l: _root_.scalapb.lenses.Lens[UpperPB, grpcService.SingleUserPoints]) extends </span><span style='background: #F0ADAD'>_root_.scalapb.lenses.ObjectLens[UpperPB, grpcService.SingleUserPoints](_l)</span><span style=''> {
+</span>108 <span style=''>    </span><span style='background: #F0ADAD'>def points</span><span style=''>: _root_.scalapb.lenses.Lens[UpperPB, _root_.scala.Int] = </span><span style='background: #F0ADAD'>field(_.points)((c_, f_) =&gt; c_.copy(points = f_))</span><span style=''>
 </span>109 <span style=''>  }
-</span>110 <span style=''>  final val MESSAGE_FIELD_NUMBER = 1
+</span>110 <span style=''>  final val POINTS_FIELD_NUMBER = 1
 </span>111 <span style=''>  </span><span style='background: #F0ADAD'>def of</span><span style=''>(
-</span>112 <span style=''>    message: _root_.scala.Predef.String
-</span>113 <span style=''>  ): _root_.grpcService.HelloMessage = </span><span style='background: #F0ADAD'>_root_.grpcService.HelloMessage</span><span style=''>(
-</span>114 <span style=''>    message
+</span>112 <span style=''>    points: _root_.scala.Int
+</span>113 <span style=''>  ): _root_.grpcService.SingleUserPoints = </span><span style='background: #F0ADAD'>_root_.grpcService.SingleUserPoints</span><span style=''>(
+</span>114 <span style=''>    points
 </span>115 <span style=''>  )
-</span>116 <span style=''>  // @@protoc_insertion_point(GeneratedMessageCompanion[grpcService.HelloMessage])
+</span>116 <span style=''>  // @@protoc_insertion_point(GeneratedMessageCompanion[grpcService.SingleUserPoints])
 </span>117 <span style=''>}
 </span></pre>
           </div>
@@ -156,12 +156,12 @@
           9
         </td>
         <td>
-          1904
+          2700
         </td>
         <td>
-          231
+          224
           -
-          231
+          224
         </td>
         <td>
           DefDef
@@ -180,12 +180,12 @@
           10
         </td>
         <td>
-          1905
+          2701
         </td>
         <td>
-          287
+          279
           -
-          287
+          279
         </td>
         <td>
           DefDef
@@ -196,7 +196,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           
         </td>
       </tr><tr>
@@ -204,12 +204,12 @@
           14
         </td>
         <td>
-          1878
+          2675
         </td>
         <td>
-          497
+          493
           -
-          538
+          534
         </td>
         <td>
           DefDef
@@ -220,7 +220,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           private[this] def __computeSerializedSize
         </td>
       </tr><tr>
@@ -228,36 +228,12 @@
           19
         </td>
         <td>
-          1874
+          2673
         </td>
         <td>
-          642
+          650
           -
-          657
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          isEmpty
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          __value.isEmpty
-        </td>
-      </tr><tr>
-        <td>
-          19
-        </td>
-        <td>
-          1876
-        </td>
-        <td>
-          659
-          -
-          765
+          755
         </td>
         <td>
           Block
@@ -268,9 +244,9 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           {
-          __size += _root_.com.google.protobuf.CodedOutputStream.computeStringSize(1, __value)
+          __size += _root_.com.google.protobuf.CodedOutputStream.computeInt32Size(1, __value)
         }
         </td>
       </tr><tr>
@@ -278,36 +254,36 @@
           20
         </td>
         <td>
-          1875
+          2672
         </td>
         <td>
-          681
+          672
           -
-          755
+          745
         </td>
         <td>
           Apply
         </td>
         <td>
-          computeStringSize
+          computeInt32Size
         </td>
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
-          _root_.com.google.protobuf.CodedOutputStream.computeStringSize(1, __value)
+        <td style="background: #F0ADAD">
+          _root_.com.google.protobuf.CodedOutputStream.computeInt32Size(1, __value)
         </td>
       </tr><tr>
         <td>
           23
         </td>
         <td>
-          1877
+          2674
         </td>
         <td>
-          791
+          781
           -
-          819
+          809
         </td>
         <td>
           Select
@@ -318,7 +294,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           unknownFields.serializedSize
         </td>
       </tr><tr>
@@ -326,12 +302,12 @@
           26
         </td>
         <td>
-          1881
+          2678
         </td>
         <td>
-          843
+          833
           -
-          870
+          860
         </td>
         <td>
           DefDef
@@ -342,7 +318,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           override def serializedSize
         </td>
       </tr><tr>
@@ -350,12 +326,12 @@
           28
         </td>
         <td>
-          1880
+          2677
         </td>
         <td>
-          960
+          950
           -
-          1058
+          1048
         </td>
         <td>
           Block
@@ -366,7 +342,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           {
         __size = __computeSerializedSize() + 1
         __serializedSizeMemoized = __size
@@ -377,12 +353,12 @@
           29
         </td>
         <td>
-          1879
+          2676
         </td>
         <td>
-          979
+          969
           -
-          1004
+          994
         </td>
         <td>
           Apply
@@ -393,7 +369,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           __computeSerializedSize()
         </td>
       </tr><tr>
@@ -401,12 +377,12 @@
           35
         </td>
         <td>
-          1886
+          2682
         </td>
         <td>
-          1093
+          1083
           -
-          1104
+          1094
         </td>
         <td>
           DefDef
@@ -417,7 +393,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           def writeTo
         </td>
       </tr><tr>
@@ -425,36 +401,12 @@
           38
         </td>
         <td>
-          1882
+          2680
         </td>
         <td>
-          1234
+          1232
           -
-          1245
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          isEmpty
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          __v.isEmpty
-        </td>
-      </tr><tr>
-        <td>
-          38
-        </td>
-        <td>
-          1884
-        </td>
-        <td>
-          1247
-          -
-          1298
+          1282
         </td>
         <td>
           Block
@@ -465,9 +417,9 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           {
-          _output__.writeString(1, __v)
+          _output__.writeInt32(1, __v)
         }
         </td>
       </tr><tr>
@@ -475,36 +427,36 @@
           39
         </td>
         <td>
-          1883
+          2679
         </td>
         <td>
-          1259
+          1244
           -
-          1288
+          1272
         </td>
         <td>
           Apply
         </td>
         <td>
-          writeString
+          writeInt32
         </td>
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
-          _output__.writeString(1, __v)
+        <td style="background: #F0ADAD">
+          _output__.writeInt32(1, __v)
         </td>
       </tr><tr>
         <td>
           42
         </td>
         <td>
-          1885
+          2681
         </td>
         <td>
-          1314
+          1298
           -
-          1346
+          1330
         </td>
         <td>
           Apply
@@ -515,7 +467,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           unknownFields.writeTo(_output__)
         </td>
       </tr><tr>
@@ -523,36 +475,36 @@
           44
         </td>
         <td>
-          1887
+          2683
         </td>
         <td>
-          1357
+          1341
           -
-          1372
+          1355
         </td>
         <td>
           DefDef
         </td>
         <td>
-          withMessage
+          withPoints
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          def withMessage
+          def withPoints
         </td>
       </tr><tr>
         <td>
           45
         </td>
         <td>
-          1888
+          2684
         </td>
         <td>
-          1446
+          1422
           -
-          1467
+          1443
         </td>
         <td>
           DefDef
@@ -571,12 +523,12 @@
           46
         </td>
         <td>
-          1889
+          2685
         </td>
         <td>
-          1537
+          1513
           -
-          1561
+          1537
         </td>
         <td>
           DefDef
@@ -595,12 +547,12 @@
           47
         </td>
         <td>
-          1893
+          2689
         </td>
         <td>
-          1627
+          1603
           -
-          1647
+          1623
         </td>
         <td>
           DefDef
@@ -619,12 +571,12 @@
           49
         </td>
         <td>
-          1892
+          2688
         </td>
         <td>
-          1766
+          1742
           -
-          1772
+          1748
         </td>
         <td>
           Block
@@ -643,12 +595,12 @@
           51
         </td>
         <td>
-          1891
+          2687
         </td>
         <td>
-          1840
+          1814
           -
-          1844
+          1818
         </td>
         <td>
           Literal
@@ -667,12 +619,12 @@
           51
         </td>
         <td>
-          1890
+          2686
         </td>
         <td>
-          1831
+          1805
           -
-          1834
+          1808
         </td>
         <td>
           Ident
@@ -691,12 +643,12 @@
           55
         </td>
         <td>
-          1900
+          2696
         </td>
         <td>
-          1873
+          1847
           -
-          1885
+          1859
         </td>
         <td>
           DefDef
@@ -715,36 +667,36 @@
           56
         </td>
         <td>
-          1895
+          2690
         </td>
         <td>
-          2041
+          2015
           -
-          2066
+          2024
         </td>
         <td>
           Select
         </td>
         <td>
-          scalaDescriptor
+          companion
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          companion.scalaDescriptor
+          companion
         </td>
       </tr><tr>
         <td>
           56
         </td>
         <td>
-          1897
+          2693
         </td>
         <td>
-          1984
+          1958
           -
-          2067
+          2041
         </td>
         <td>
           Apply
@@ -763,36 +715,12 @@
           56
         </td>
         <td>
-          1894
+          2692
         </td>
         <td>
-          2041
+          1986
           -
-          2050
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          companion
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          companion
-        </td>
-      </tr><tr>
-        <td>
-          56
-        </td>
-        <td>
-          1896
-        </td>
-        <td>
-          2012
-          -
-          2066
+          2040
         </td>
         <td>
           Apply
@@ -808,15 +736,39 @@
         </td>
       </tr><tr>
         <td>
+          56
+        </td>
+        <td>
+          2691
+        </td>
+        <td>
+          2015
+          -
+          2040
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          scalaDescriptor
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          companion.scalaDescriptor
+        </td>
+      </tr><tr>
+        <td>
           57
         </td>
         <td>
-          1898
+          2694
         </td>
         <td>
-          2075
+          2049
           -
-          2089
+          2063
         </td>
         <td>
           Select
@@ -835,12 +787,12 @@
           58
         </td>
         <td>
-          1899
+          2695
         </td>
         <td>
-          2132
+          2106
           -
-          2138
+          2112
         </td>
         <td>
           Block
@@ -859,12 +811,12 @@
           61
         </td>
         <td>
-          1901
+          2697
         </td>
         <td>
-          2252
+          2222
           -
-          2304
+          2274
         </td>
         <td>
           Apply
@@ -883,12 +835,12 @@
           61
         </td>
         <td>
-          1902
+          2698
         </td>
         <td>
-          2204
+          2174
           -
-          2221
+          2191
         </td>
         <td>
           DefDef
@@ -907,12 +859,12 @@
           62
         </td>
         <td>
-          1903
+          2699
         </td>
         <td>
-          2309
+          2279
           -
-          2322
+          2292
         </td>
         <td>
           DefDef
@@ -931,12 +883,12 @@
           67
         </td>
         <td>
-          1906
+          2702
         </td>
         <td>
-          2552
+          2542
           -
-          2581
+          2571
         </td>
         <td>
           DefDef
@@ -955,12 +907,12 @@
           68
         </td>
         <td>
-          1918
+          2714
         </td>
         <td>
-          2652
+          2646
           -
-          2665
+          2659
         </td>
         <td>
           DefDef
@@ -971,7 +923,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           def parseFrom
         </td>
       </tr><tr>
@@ -979,12 +931,12 @@
           73
         </td>
         <td>
-          1907
+          2703
         </td>
         <td>
-          2944
+          2930
           -
-          2962
+          2948
         </td>
         <td>
           Apply
@@ -995,7 +947,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           _input__.readTag()
         </td>
       </tr><tr>
@@ -1003,12 +955,12 @@
           75
         </td>
         <td>
-          1908
+          2704
         </td>
         <td>
-          2992
+          2978
           -
-          2998
+          2984
         </td>
         <td>
           Block
@@ -1019,7 +971,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case 0
         </td>
       </tr><tr>
@@ -1027,12 +979,12 @@
           76
         </td>
         <td>
-          1910
+          2706
         </td>
         <td>
-          3025
+          3011
           -
-          3032
+          3017
         </td>
         <td>
           Block
@@ -1043,44 +995,44 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
-          case 10
+        <td style="background: #F0ADAD">
+          case 8
         </td>
       </tr><tr>
         <td>
           77
         </td>
         <td>
-          1909
+          2705
         </td>
         <td>
-          3058
+          3042
           -
-          3090
+          3062
         </td>
         <td>
           Apply
         </td>
         <td>
-          readStringRequireUtf8
+          readInt32
         </td>
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
-          _input__.readStringRequireUtf8()
+        <td style="background: #F0ADAD">
+          _input__.readInt32()
         </td>
       </tr><tr>
         <td>
           78
         </td>
         <td>
-          1914
+          2710
         </td>
         <td>
-          3099
+          3071
           -
-          3107
+          3079
         </td>
         <td>
           Block
@@ -1099,12 +1051,12 @@
           79
         </td>
         <td>
-          1912
+          2708
         </td>
         <td>
-          3151
+          3123
           -
-          3240
+          3212
         </td>
         <td>
           Block
@@ -1125,12 +1077,12 @@
           80
         </td>
         <td>
-          1911
+          2707
         </td>
         <td>
-          3184
+          3156
           -
-          3228
+          3200
         </td>
         <td>
           Apply
@@ -1149,12 +1101,12 @@
           82
         </td>
         <td>
-          1913
+          2709
         </td>
         <td>
-          3251
+          3223
           -
-          3293
+          3265
         </td>
         <td>
           Apply
@@ -1173,12 +1125,12 @@
           87
         </td>
         <td>
-          1916
+          2712
         </td>
         <td>
-          3463
+          3437
           -
-          3488
+          3462
         </td>
         <td>
           Apply
@@ -1197,12 +1149,12 @@
           87
         </td>
         <td>
-          1915
+          2711
         </td>
         <td>
-          3421
+          3395
           -
-          3457
+          3431
         </td>
         <td>
           Select
@@ -1213,7 +1165,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           _root_.scalapb.UnknownFieldSet.empty
         </td>
       </tr><tr>
@@ -1221,12 +1173,12 @@
           87
         </td>
         <td>
-          1917
+          2713
         </td>
         <td>
-          3463
+          3437
           -
-          3488
+          3462
         </td>
         <td>
           Block
@@ -1245,12 +1197,12 @@
           90
         </td>
         <td>
-          1936
+          2732
         </td>
         <td>
-          3501
+          3475
           -
-          3526
+          3500
         </td>
         <td>
           DefDef
@@ -1269,12 +1221,12 @@
           91
         </td>
         <td>
-          1932
+          2728
         </td>
         <td>
-          3627
+          3605
           -
-          3680
+          3658
         </td>
         <td>
           Block
@@ -1293,12 +1245,12 @@
           92
         </td>
         <td>
-          1919
+          2715
         </td>
         <td>
-          3718
+          3696
           -
-          3734
+          3712
         </td>
         <td>
           Select
@@ -1317,36 +1269,12 @@
           92
         </td>
         <td>
-          1922
+          2717
         </td>
         <td>
-          3718
+          3720
           -
-          3781
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          forall
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          __fieldsMap.keys.forall(_.containingMessage eq scalaDescriptor)
-        </td>
-      </tr><tr>
-        <td>
-          92
-        </td>
-        <td>
-          1921
-        </td>
-        <td>
-          3742
-          -
-          3780
+          3758
         </td>
         <td>
           Apply
@@ -1365,12 +1293,12 @@
           92
         </td>
         <td>
-          1920
+          2716
         </td>
         <td>
-          3765
+          3743
           -
-          3780
+          3758
         </td>
         <td>
           Ident
@@ -1389,12 +1317,12 @@
           92
         </td>
         <td>
-          1923
+          2719
         </td>
         <td>
-          3690
+          3668
           -
-          3830
+          3808
         </td>
         <td>
           Apply
@@ -1410,15 +1338,39 @@
         </td>
       </tr><tr>
         <td>
+          92
+        </td>
+        <td>
+          2718
+        </td>
+        <td>
+          3696
+          -
+          3759
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          forall
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          __fieldsMap.keys.forall(_.containingMessage eq scalaDescriptor)
+        </td>
+      </tr><tr>
+        <td>
           93
         </td>
         <td>
-          1931
+          2727
         </td>
         <td>
-          3837
+          3815
           -
-          3861
+          3843
         </td>
         <td>
           Select
@@ -1430,43 +1382,19 @@
           
         </td>
         <td style="background: #F0ADAD">
-          grpcService.HelloMessage
+          grpcService.SingleUserPoints
         </td>
       </tr><tr>
         <td>
           94
         </td>
         <td>
-          1928
+          2721
         </td>
         <td>
-          3943
+          3878
           -
-          3975
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          as
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          _.as[_root_.scala.Predef.String]
-        </td>
-      </tr><tr>
-        <td>
-          94
-        </td>
-        <td>
-          1925
-        </td>
-        <td>
-          3897
-          -
-          3933
+          3914
         </td>
         <td>
           Apply
@@ -1485,36 +1413,36 @@
           94
         </td>
         <td>
-          1924
+          2724
         </td>
         <td>
-          3897
+          3924
           -
-          3912
+          3946
         </td>
         <td>
-          Ident
+          Apply
         </td>
         <td>
-          scalaDescriptor
+          as
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          scalaDescriptor
+          _.as[_root_.scala.Int]
         </td>
       </tr><tr>
         <td>
           94
         </td>
         <td>
-          1927
+          2723
         </td>
         <td>
-          3881
+          3862
           -
-          3938
+          3919
         </td>
         <td>
           Apply
@@ -1533,12 +1461,12 @@
           94
         </td>
         <td>
-          1930
+          2726
         </td>
         <td>
-          3881
+          3862
           -
-          3990
+          3960
         </td>
         <td>
           Apply
@@ -1550,43 +1478,43 @@
           
         </td>
         <td style="background: #F0ADAD">
-          __fieldsMap.get(scalaDescriptor.findFieldByNumber(1).get).map(_.as[_root_.scala.Predef.String]).getOrElse(&quot;&quot;)
+          __fieldsMap.get(scalaDescriptor.findFieldByNumber(1).get).map(_.as[_root_.scala.Int]).getOrElse(0)
         </td>
       </tr><tr>
         <td>
           94
         </td>
         <td>
-          1929
+          2720
         </td>
         <td>
-          3881
+          3878
           -
-          3976
+          3893
         </td>
         <td>
-          Apply
+          Ident
         </td>
         <td>
-          map
+          scalaDescriptor
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          __fieldsMap.get(scalaDescriptor.findFieldByNumber(1).get).map(_.as[_root_.scala.Predef.String])
+          scalaDescriptor
         </td>
       </tr><tr>
         <td>
           94
         </td>
         <td>
-          1926
+          2722
         </td>
         <td>
-          3897
+          3878
           -
-          3937
+          3918
         </td>
         <td>
           Select
@@ -1602,15 +1530,39 @@
         </td>
       </tr><tr>
         <td>
+          94
+        </td>
+        <td>
+          2725
+        </td>
+        <td>
+          3862
+          -
+          3947
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          map
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          __fieldsMap.get(scalaDescriptor.findFieldByNumber(1).get).map(_.as[_root_.scala.Int])
+        </td>
+      </tr><tr>
+        <td>
           96
         </td>
         <td>
-          1934
+          2730
         </td>
         <td>
-          4013
+          3983
           -
-          4060
+          4030
         </td>
         <td>
           Apply
@@ -1629,12 +1581,12 @@
           96
         </td>
         <td>
-          1933
+          2729
         </td>
         <td>
-          4019
+          3989
           -
-          4060
+          4030
         </td>
         <td>
           Apply
@@ -1653,12 +1605,12 @@
           96
         </td>
         <td>
-          1935
+          2731
         </td>
         <td>
-          4003
+          3973
           -
-          4009
+          3979
         </td>
         <td>
           Block
@@ -1677,12 +1629,12 @@
           98
         </td>
         <td>
-          1937
+          2733
         </td>
         <td>
-          4139
+          4109
           -
-          4185
+          4155
         </td>
         <td>
           Apply
@@ -1701,12 +1653,12 @@
           98
         </td>
         <td>
-          1939
+          2735
         </td>
         <td>
-          4067
+          4037
           -
-          4085
+          4055
         </td>
         <td>
           DefDef
@@ -1725,12 +1677,12 @@
           98
         </td>
         <td>
-          1938
+          2734
         </td>
         <td>
-          4139
+          4109
           -
-          4192
+          4162
         </td>
         <td>
           Apply
@@ -1742,43 +1694,19 @@
           
         </td>
         <td style="background: #F0ADAD">
-          MessagesProto.javaDescriptor.getMessageTypes().get(4)
+          MessagesProto.javaDescriptor.getMessageTypes().get(2)
         </td>
       </tr><tr>
         <td>
           99
         </td>
         <td>
-          1940
+          2737
         </td>
         <td>
-          4256
+          4165
           -
-          4297
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          apply
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          MessagesProto.scalaDescriptor.messages(4)
-        </td>
-      </tr><tr>
-        <td>
-          99
-        </td>
-        <td>
-          1941
-        </td>
-        <td>
-          4195
-          -
-          4214
+          4184
         </td>
         <td>
           DefDef
@@ -1794,15 +1722,39 @@
         </td>
       </tr><tr>
         <td>
+          99
+        </td>
+        <td>
+          2736
+        </td>
+        <td>
+          4226
+          -
+          4267
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          MessagesProto.scalaDescriptor.messages(2)
+        </td>
+      </tr><tr>
+        <td>
           100
         </td>
         <td>
-          1943
+          2739
         </td>
         <td>
-          4410
+          4380
           -
-          4440
+          4410
         </td>
         <td>
           Apply
@@ -1821,12 +1773,12 @@
           100
         </td>
         <td>
-          1942
+          2738
         </td>
         <td>
-          4416
+          4386
           -
-          4440
+          4410
         </td>
         <td>
           Apply
@@ -1845,12 +1797,12 @@
           100
         </td>
         <td>
-          1944
+          2740
         </td>
         <td>
-          4300
+          4270
           -
-          4334
+          4304
         </td>
         <td>
           DefDef
@@ -1869,12 +1821,12 @@
           101
         </td>
         <td>
-          1946
+          2742
         </td>
         <td>
-          4564
+          4534
           -
-          4573
+          4543
         </td>
         <td>
           Select
@@ -1893,12 +1845,12 @@
           101
         </td>
         <td>
-          1945
+          2741
         </td>
         <td>
-          4564
+          4534
           -
-          4567
+          4537
         </td>
         <td>
           Ident
@@ -1917,36 +1869,12 @@
           102
         </td>
         <td>
-          1949
+          2744
         </td>
         <td>
-          4576
+          4655
           -
-          4607
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          enumCompanionForFieldNumber
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          def enumCompanionForFieldNumber
-        </td>
-      </tr><tr>
-        <td>
-          102
-        </td>
-        <td>
-          1948
-        </td>
-        <td>
-          4685
-          -
-          4720
+          4690
         </td>
         <td>
           Apply
@@ -1965,12 +1893,12 @@
           102
         </td>
         <td>
-          1947
+          2743
         </td>
         <td>
-          4691
+          4661
           -
-          4720
+          4690
         </td>
         <td>
           Apply
@@ -1986,15 +1914,39 @@
         </td>
       </tr><tr>
         <td>
+          102
+        </td>
+        <td>
+          2745
+        </td>
+        <td>
+          4546
+          -
+          4577
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          enumCompanionForFieldNumber
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def enumCompanionForFieldNumber
+        </td>
+      </tr><tr>
+        <td>
           103
         </td>
         <td>
-          1950
+          2746
         </td>
         <td>
-          4750
+          4720
           -
-          4774
+          4748
         </td>
         <td>
           Select
@@ -2006,19 +1958,43 @@
           
         </td>
         <td style="background: #F0ADAD">
-          grpcService.HelloMessage
+          grpcService.SingleUserPoints
         </td>
       </tr><tr>
         <td>
           106
         </td>
         <td>
-          1951
+          2750
         </td>
         <td>
-          4915
+          4771
           -
-          4986
+          4806
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          SingleUserPointsLens
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          implicit class SingleUserPointsLens
+        </td>
+      </tr><tr>
+        <td>
+          106
+        </td>
+        <td>
+          2747
+        </td>
+        <td>
+          4895
+          -
+          4970
         </td>
         <td>
           Apply
@@ -2030,43 +2006,19 @@
           
         </td>
         <td style="background: #F0ADAD">
-          _root_.scalapb.lenses.ObjectLens[UpperPB, grpcService.HelloMessage](_l)
-        </td>
-      </tr><tr>
-        <td>
-          106
-        </td>
-        <td>
-          1954
-        </td>
-        <td>
-          4799
-          -
-          4830
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          HelloMessageLens
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          implicit class HelloMessageLens
+          _root_.scalapb.lenses.ObjectLens[UpperPB, grpcService.SingleUserPoints](_l)
         </td>
       </tr><tr>
         <td>
           107
         </td>
         <td>
-          1952
+          2748
         </td>
         <td>
-          5072
+          5045
           -
-          5123
+          5094
         </td>
         <td>
           Apply
@@ -2078,43 +2030,43 @@
           
         </td>
         <td style="background: #F0ADAD">
-          field(_.message)((c_, f_) =&gt; c_.copy(message = f_))
+          field(_.points)((c_, f_) =&gt; c_.copy(points = f_))
         </td>
       </tr><tr>
         <td>
           107
         </td>
         <td>
-          1953
+          2749
         </td>
         <td>
-          4993
+          4977
           -
-          5004
+          4987
         </td>
         <td>
           DefDef
         </td>
         <td>
-          message
+          points
         </td>
         <td>
           
         </td>
         <td style="background: #F0ADAD">
-          def message
+          def points
         </td>
       </tr><tr>
         <td>
           110
         </td>
         <td>
-          1956
+          2752
         </td>
         <td>
-          5167
+          5137
           -
-          5173
+          5143
         </td>
         <td>
           DefDef
@@ -2133,12 +2085,12 @@
           112
         </td>
         <td>
-          1955
+          2751
         </td>
         <td>
-          5254
+          5217
           -
-          5285
+          5252
         </td>
         <td>
           Select
@@ -2150,7 +2102,7 @@
           
         </td>
         <td style="background: #F0ADAD">
-          _root_.grpcService.HelloMessage
+          _root_.grpcService.SingleUserPoints
         </td>
       </tr>
     </table>

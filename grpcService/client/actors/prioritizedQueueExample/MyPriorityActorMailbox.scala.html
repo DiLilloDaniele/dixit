@@ -26,30 +26,18 @@
 </span>2 <span style=''>import akka.actor.*
 </span>3 <span style=''>import akka.dispatch.*
 </span>4 <span style=''>import com.typesafe.config.Config
-</span>5 <span style=''>import grpcService.client.actors.prioritizedQueueExample.MyPriorityActor.Hello
-</span>6 <span style=''>import grpcService.client.actors.prioritizedQueueExample.MyPriorityActor.Exit
-</span>7 <span style=''>
-</span>8 <span style=''>class MyPriorityActorMailbox(settings:
-</span>9 <span style=''>    ActorSystem.Settings, config: Config) extends 
-</span>10 <span style=''>    </span><span style='background: #F0ADAD'>UnboundedPriorityMailbox ( 
-</span>11 <span style=''></span><span style='background: #F0ADAD'>    // Create a new PriorityGenerator, lower prio means more important 
-</span>12 <span style=''></span><span style='background: #F0ADAD'>    PriorityGenerator { 
-</span>13 <span style=''></span><span style='background: #F0ADAD'>        case Hello(addr) =&gt;
-</span>14 <span style=''></span><span style='background: #F0ADAD'>            0
-</span>15 <span style=''></span><span style='background: #F0ADAD'>        case Exit(addr) =&gt;
-</span>16 <span style=''></span><span style='background: #F0ADAD'>            1
-</span>17 <span style=''></span><span style='background: #F0ADAD'>        // Int Messages 
-</span>18 <span style=''></span><span style='background: #F0ADAD'>        case x: Int =&gt;
-</span>19 <span style=''></span><span style='background: #F0ADAD'>            1 
-</span>20 <span style=''></span><span style='background: #F0ADAD'>        // String Messages 
-</span>21 <span style=''></span><span style='background: #F0ADAD'>        case x: String =&gt;
-</span>22 <span style=''></span><span style='background: #F0ADAD'>            0 
-</span>23 <span style=''></span><span style='background: #F0ADAD'>        // Long messages 
-</span>24 <span style=''></span><span style='background: #F0ADAD'>        case x: Long =&gt;
-</span>25 <span style=''></span><span style='background: #F0ADAD'>            2 
-</span>26 <span style=''></span><span style='background: #F0ADAD'>        // other messages 
-</span>27 <span style=''></span><span style='background: #F0ADAD'>        case _ =&gt; 3 
-</span>28 <span style=''></span><span style='background: #F0ADAD'>})</span><span style=''>
+</span>5 <span style=''>import grpcService.client.actors.behaviors.PlayersManagerBehavior.*
+</span>6 <span style=''>
+</span>7 <span style=''>class MyPriorityActorMailbox(settings:
+</span>8 <span style=''>    ActorSystem.Settings, config: Config) extends 
+</span>9 <span style=''>    </span><span style='background: #AEF1AE'>UnboundedPriorityMailbox ( 
+</span>10 <span style=''></span><span style='background: #AEF1AE'>    // Create a new PriorityGenerator, lower prio means more important 
+</span>11 <span style=''></span><span style='background: #AEF1AE'>    PriorityGenerator { 
+</span>12 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case Stop</span><span style='background: #AEF1AE'> =&gt;
+</span>13 <span style=''></span><span style='background: #AEF1AE'>            0
+</span>14 <span style=''></span><span style='background: #AEF1AE'>        // other messages 
+</span>15 <span style=''></span><span style='background: #AEF1AE'>        case _ =&gt; 1
+</span>16 <span style=''></span><span style='background: #AEF1AE'>})</span><span style=''>
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -64,15 +52,15 @@
         <th>Code</th>
       </tr><tr>
         <td>
-          9
+          8
         </td>
         <td>
-          792
+          868
         </td>
         <td>
-          387
+          298
           -
-          842
+          507
         </td>
         <td>
           Apply
@@ -83,38 +71,27 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           UnboundedPriorityMailbox ( 
     // Create a new PriorityGenerator, lower prio means more important 
     PriorityGenerator { 
-        case Hello(addr) =&gt;
+        case Stop =&gt;
             0
-        case Exit(addr) =&gt;
-            1
-        // Int Messages 
-        case x: Int =&gt;
-            1 
-        // String Messages 
-        case x: String =&gt;
-            0 
-        // Long messages 
-        case x: Long =&gt;
-            2 
         // other messages 
-        case _ =&gt; 3 
+        case _ =&gt; 1
 })
         </td>
       </tr><tr>
         <td>
-          11
+          10
         </td>
         <td>
-          791
+          867
         </td>
         <td>
-          491
+          402
           -
-          841
+          506
         </td>
         <td>
           Apply
@@ -125,36 +102,25 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           PriorityGenerator { 
-        case Hello(addr) =&gt;
+        case Stop =&gt;
             0
-        case Exit(addr) =&gt;
-            1
-        // Int Messages 
-        case x: Int =&gt;
-            1 
-        // String Messages 
-        case x: String =&gt;
-            0 
-        // Long messages 
-        case x: Long =&gt;
-            2 
         // other messages 
-        case _ =&gt; 3 
+        case _ =&gt; 1
 }
         </td>
       </tr><tr>
         <td>
-          12
+          11
         </td>
         <td>
-          785
+          865
         </td>
         <td>
-          520
+          431
           -
-          536
+          440
         </td>
         <td>
           Block
@@ -166,19 +132,19 @@
           
         </td>
         <td style="background: #F0ADAD">
-          case Hello(addr)
+          case Stop
         </td>
       </tr><tr>
         <td>
           14
         </td>
         <td>
-          786
+          866
         </td>
         <td>
-          562
+          493
           -
-          577
+          499
         </td>
         <td>
           Block
@@ -189,103 +155,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
-          case Exit(addr)
-        </td>
-      </tr><tr>
-        <td>
-          17
-        </td>
-        <td>
-          787
-        </td>
-        <td>
-          628
-          -
-          639
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case x: Int
-        </td>
-      </tr><tr>
-        <td>
-          20
-        </td>
-        <td>
-          788
-        </td>
-        <td>
-          694
-          -
-          708
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case x: String
-        </td>
-      </tr><tr>
-        <td>
-          23
-        </td>
-        <td>
-          789
-        </td>
-        <td>
-          761
-          -
-          773
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          case x: Long
-        </td>
-      </tr><tr>
-        <td>
-          26
-        </td>
-        <td>
-          790
-        </td>
-        <td>
-          827
-          -
-          833
-        </td>
-        <td>
-          Block
-        </td>
-        <td>
-          &lt;none&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case _
         </td>
       </tr>

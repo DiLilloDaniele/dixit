@@ -26,7 +26,7 @@
 </span>2 <span style=''>
 </span>3 <span style=''>import akka.actor.ActorSystem
 </span>4 <span style=''>import akka.grpc.GrpcClientSettings
-</span>5 <span style=''>import grpcService.{GameMessage, HelloMessage, UserPoints, UpdateResponse, LoginRequest, ClosingResponse, OpenedGamesRequest, Server, ServerClient, NewGameResponse, LoginResult, OpenedGames}
+</span>5 <span style=''>import grpcService.*
 </span>6 <span style=''>
 </span>7 <span style=''>import scala.concurrent.ExecutionContextExecutor
 </span>8 <span style=''>import scala.util.{Failure, Success}
@@ -35,110 +35,89 @@
 </span>11 <span style=''>import grpcService.client.view.HomepageView
 </span>12 <span style=''>
 </span>13 <span style=''>import scala.concurrent.Future
-</span>14 <span style=''>/*
-</span>15 <span style=''>object Client {
-</span>16 <span style=''>  @main def startClient() = {
-</span>17 <span style=''>    // Boot akka
-</span>18 <span style=''>    implicit val sys = ActorSystem(&quot;HelloWorldClient&quot;)
-</span>19 <span style=''>    implicit val ec = sys.dispatcher
-</span>20 <span style=''>
-</span>21 <span style=''>    // Configure the client by code:
-</span>22 <span style=''>    val clientSettings = GrpcClientSettings.connectToServiceAt(&quot;127.0.0.1&quot;, 8083).withTls(false)
+</span>14 <span style=''>
+</span>15 <span style=''>class ClientImpl(serverAddress: String = &quot;127.0.0.1&quot;) {
+</span>16 <span style=''> 
+</span>17 <span style=''>  implicit val sys: ActorSystem = </span><span style='background: #AEF1AE'>ActorSystem(&quot;HelloWorldClient&quot;)</span><span style=''>
+</span>18 <span style=''>  implicit val ec: ExecutionContextExecutor = </span><span style='background: #AEF1AE'>sys.dispatcher</span><span style=''>
+</span>19 <span style=''>
+</span>20 <span style=''>  val clientSettings = </span><span style='background: #AEF1AE'>GrpcClientSettings.connectToServiceAt(serverAddress, 8083).withTls(false)</span><span style=''>
+</span>21 <span style=''>
+</span>22 <span style=''>  val client: Server = </span><span style='background: #AEF1AE'>ServerClient(clientSettings)</span><span style=''>
 </span>23 <span style=''>
-</span>24 <span style=''>    // Or via application.conf:
-</span>25 <span style=''>    // val clientSettings = GrpcClientSettings.fromConfig(GreeterService.name)
-</span>26 <span style=''>
-</span>27 <span style=''>    // Create a client-side stub for the service
-</span>28 <span style=''>    val client: Server = ServerClient(clientSettings)
-</span>29 <span style=''>/*
-</span>30 <span style=''>    val reply = client.hello(HelloMessage(&quot;Daniele&quot;))
-</span>31 <span style=''>    reply.onComplete {
-</span>32 <span style=''>      case Success(msg) =&gt;
-</span>33 <span style=''>        println(s&quot;got single reply: $msg&quot;)
-</span>34 <span style=''>      case Failure(e) =&gt;
-</span>35 <span style=''>        println(s&quot;Error sayHello: $e&quot;)
-</span>36 <span style=''>    }
-</span>37 <span style=''>*/
-</span>38 <span style=''>  }
-</span>39 <span style=''>  
-</span>40 <span style=''>  def main(args: Array[String]): Unit =
-</span>41 <span style=''>    val client = ClientImpl()
-</span>42 <span style=''>    
-</span>43 <span style=''>  
-</span>44 <span style=''>}
-</span>45 <span style=''>*/
-</span>46 <span style=''>class ClientImpl() {
-</span>47 <span style=''> 
-</span>48 <span style=''>  implicit val sys: ActorSystem = </span><span style='background: #AEF1AE'>ActorSystem(&quot;HelloWorldClient&quot;)</span><span style=''>
-</span>49 <span style=''>  implicit val ec: ExecutionContextExecutor = </span><span style='background: #AEF1AE'>sys.dispatcher</span><span style=''>
-</span>50 <span style=''>
-</span>51 <span style=''>  val clientSettings = </span><span style='background: #AEF1AE'>GrpcClientSettings.connectToServiceAt(&quot;127.0.0.1&quot;, 8083).withTls(false)</span><span style=''>
-</span>52 <span style=''>
-</span>53 <span style=''>  val client: Server = </span><span style='background: #AEF1AE'>ServerClient(clientSettings)</span><span style=''>
-</span>54 <span style=''>
-</span>55 <span style=''>  </span><span style='background: #AEF1AE'>def helloMessage</span><span style=''>(string: String): Future[HelloMessage] = </span><span style='background: #AEF1AE'>client.hello(HelloMessage(string))</span><span style=''>
-</span>56 <span style=''>
-</span>57 <span style=''>  </span><span style='background: #AEF1AE'>def getAvailableGames</span><span style=''>(success: SuccessFun[List[String]]): Future[OpenedGames] =
-</span>58 <span style=''>    val reply = </span><span style='background: #AEF1AE'>client.getOpenedGames(OpenedGamesRequest())</span><span style=''>
-</span>59 <span style=''>    </span><span style='background: #AEF1AE'>reply.onComplete {
-</span>60 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
-</span>61 <span style=''></span><span style='background: #AEF1AE'>        success(msg.clusterName.toList)
-</span>62 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
-</span>63 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error sayHello: $e&quot;)</span><span style='background: #AEF1AE'>
-</span>64 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
-</span>65 <span style=''>    reply
-</span>66 <span style=''>    
-</span>67 <span style=''>  </span><span style='background: #AEF1AE'>def login</span><span style=''>(username: String, password: String, success: SuccessFun[Boolean]): Future[LoginResult] =
-</span>68 <span style=''>    val reply = </span><span style='background: #AEF1AE'>client.login(LoginRequest(username, password))</span><span style=''>
-</span>69 <span style=''>    </span><span style='background: #AEF1AE'>reply.onComplete {
-</span>70 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
-</span>71 <span style=''></span><span style='background: #AEF1AE'>        success(msg.response)
-</span>72 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
-</span>73 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error sayHello: $e&quot;)</span><span style='background: #AEF1AE'>
-</span>74 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
-</span>75 <span style=''>    reply
-</span>76 <span style=''>    
-</span>77 <span style=''>  </span><span style='background: #AEF1AE'>def register</span><span style=''>(username: String, password: String, success: SuccessFun[Boolean]): Future[LoginResult] =
-</span>78 <span style=''>    val reply = </span><span style='background: #AEF1AE'>client.register(LoginRequest(username, password))</span><span style=''>
-</span>79 <span style=''>    </span><span style='background: #AEF1AE'>reply.onComplete {
-</span>80 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
-</span>81 <span style=''></span><span style='background: #AEF1AE'>        success(msg.response)
-</span>82 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
-</span>83 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error sayHello: $e&quot;)</span><span style='background: #AEF1AE'>
-</span>84 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
-</span>85 <span style=''>    reply
-</span>86 <span style=''>
-</span>87 <span style=''>  </span><span style='background: #AEF1AE'>def createGame</span><span style=''>(address: String, user: String, success: SuccessFun[Boolean]): Future[NewGameResponse] =
-</span>88 <span style=''>    val reply = </span><span style='background: #AEF1AE'>client.newGame(GameMessage(address, user))</span><span style=''>
-</span>89 <span style=''>    </span><span style='background: #AEF1AE'>reply.onComplete {
-</span>90 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
-</span>91 <span style=''></span><span style='background: #AEF1AE'>        success(true)
-</span>92 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
-</span>93 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error sayHello: $e&quot;)</span><span style='background: #AEF1AE'>
-</span>94 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
-</span>95 <span style=''>    reply
-</span>96 <span style=''>
-</span>97 <span style=''>  </span><span style='background: #AEF1AE'>def closeGame</span><span style=''>(address: String, user: String, success: SuccessFun[Boolean]): Future[ClosingResponse] =
-</span>98 <span style=''>    val reply = </span><span style='background: #AEF1AE'>client.closeGame(GameMessage(address, user))</span><span style=''>
-</span>99 <span style=''>    </span><span style='background: #AEF1AE'>reply.onComplete {
-</span>100 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
-</span>101 <span style=''></span><span style='background: #AEF1AE'>        success(true)
-</span>102 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
-</span>103 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error sayHello: $e&quot;)</span><span style='background: #AEF1AE'>
-</span>104 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
-</span>105 <span style=''>    reply
-</span>106 <span style=''>
-</span>107 <span style=''>  </span><span style='background: #AEF1AE'>def updateUsersPoints</span><span style=''>(usernames: List[String], points: List[Int], success: SuccessFun[Boolean]): Future[UpdateResponse] =
-</span>108 <span style=''>    val reply = </span><span style='background: #AEF1AE'>client.updateUserPoints(UserPoints(usernames.toSeq, points.toSeq))</span><span style=''>
-</span>109 <span style=''>    </span><span style='background: #AEF1AE'>reply.onComplete {
-</span>110 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
-</span>111 <span style=''></span><span style='background: #AEF1AE'>        success(true)
-</span>112 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
-</span>113 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error sayHello: $e&quot;)</span><span style='background: #AEF1AE'>
-</span>114 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
-</span>115 <span style=''>    reply
-</span>116 <span style=''>
-</span>117 <span style=''>}
+</span>24 <span style=''>  </span><span style='background: #AEF1AE'>def helloMessage</span><span style=''>(string: String): Future[HelloMessage] = </span><span style='background: #AEF1AE'>client.hello(HelloMessage(string))</span><span style=''>
+</span>25 <span style=''>
+</span>26 <span style=''>  </span><span style='background: #AEF1AE'>def getAvailableGames</span><span style=''>(success: SuccessFun[List[String]]): Future[OpenedGames] =
+</span>27 <span style=''>    val reply = </span><span style='background: #AEF1AE'>client.getOpenedGames(OpenedGamesRequest())</span><span style=''>
+</span>28 <span style=''>    </span><span style='background: #AEF1AE'>reply.onComplete {
+</span>29 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
+</span>30 <span style=''></span><span style='background: #AEF1AE'>        success(msg.clusterName.toList)
+</span>31 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
+</span>32 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error sayHello: $e&quot;)</span><span style='background: #AEF1AE'>
+</span>33 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>34 <span style=''>    reply
+</span>35 <span style=''>
+</span>36 <span style=''>  </span><span style='background: #F0ADAD'>def getUserPoints</span><span style=''>(username: String, success: SuccessFun[Int]): Future[SingleUserPoints] =
+</span>37 <span style=''>    val reply = </span><span style='background: #F0ADAD'>client.getUserPoints(UserInfo(username))</span><span style=''>
+</span>38 <span style=''>    </span><span style='background: #F0ADAD'>reply.onComplete {
+</span>39 <span style=''></span><span style='background: #F0ADAD'>      case Success(msg) =&gt;
+</span>40 <span style=''></span><span style='background: #F0ADAD'>        success(msg.points)
+</span>41 <span style=''></span><span style='background: #F0ADAD'>      case Failure(e) =&gt;
+</span>42 <span style=''></span><span style='background: #F0ADAD'>        println(s&quot;Error while getting the current points: $e&quot;)
+</span>43 <span style=''></span><span style='background: #F0ADAD'>    }</span><span style=''>
+</span>44 <span style=''>    reply
+</span>45 <span style=''>    
+</span>46 <span style=''>  </span><span style='background: #AEF1AE'>def login</span><span style=''>(username: String, password: String, success: SuccessFun[Boolean]): Future[LoginResult] =
+</span>47 <span style=''>    val reply = </span><span style='background: #AEF1AE'>client.login(LoginRequest(username, password))</span><span style=''>
+</span>48 <span style=''>    </span><span style='background: #AEF1AE'>reply.onComplete {
+</span>49 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
+</span>50 <span style=''></span><span style='background: #AEF1AE'>        success(msg.response)
+</span>51 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
+</span>52 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error sayHello: $e&quot;)</span><span style='background: #AEF1AE'>
+</span>53 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>54 <span style=''>    reply
+</span>55 <span style=''>    
+</span>56 <span style=''>  </span><span style='background: #AEF1AE'>def register</span><span style=''>(username: String, password: String, success: SuccessFun[Boolean]): Future[LoginResult] =
+</span>57 <span style=''>    val reply = </span><span style='background: #AEF1AE'>client.register(LoginRequest(username, password))</span><span style=''>
+</span>58 <span style=''>    </span><span style='background: #AEF1AE'>reply.onComplete {
+</span>59 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
+</span>60 <span style=''></span><span style='background: #AEF1AE'>        success(msg.response)
+</span>61 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
+</span>62 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error sayHello: $e&quot;)</span><span style='background: #AEF1AE'>
+</span>63 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>64 <span style=''>    reply
+</span>65 <span style=''>
+</span>66 <span style=''>  </span><span style='background: #AEF1AE'>def createGame</span><span style=''>(address: String, user: String, success: SuccessFun[Boolean]): Future[NewGameResponse] =
+</span>67 <span style=''>    val reply = </span><span style='background: #AEF1AE'>client.newGame(GameMessage(address, user))</span><span style=''>
+</span>68 <span style=''>    </span><span style='background: #AEF1AE'>reply.onComplete {
+</span>69 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
+</span>70 <span style=''></span><span style='background: #AEF1AE'>        success(true)
+</span>71 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
+</span>72 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error sayHello: $e&quot;)</span><span style='background: #AEF1AE'>
+</span>73 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>74 <span style=''>    reply
+</span>75 <span style=''>
+</span>76 <span style=''>  </span><span style='background: #AEF1AE'>def closeGame</span><span style=''>(address: String, user: String, success: SuccessFun[Boolean]): Future[ClosingResponse] =
+</span>77 <span style=''>    val reply = </span><span style='background: #AEF1AE'>client.closeGame(GameMessage(address, user))</span><span style=''>
+</span>78 <span style=''>    </span><span style='background: #AEF1AE'>reply.onComplete {
+</span>79 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
+</span>80 <span style=''></span><span style='background: #AEF1AE'>        success(true)
+</span>81 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
+</span>82 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error sayHello: $e&quot;)</span><span style='background: #AEF1AE'>
+</span>83 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>84 <span style=''>    reply
+</span>85 <span style=''>
+</span>86 <span style=''>  </span><span style='background: #AEF1AE'>def updateUsersPoints</span><span style=''>(usernames: List[String], points: List[Int], success: SuccessFun[Boolean]): Future[UpdateResponse] =
+</span>87 <span style=''>    val reply = </span><span style='background: #AEF1AE'>client.updateUserPoints(UserPoints(usernames.toSeq, points.toSeq))</span><span style=''>
+</span>88 <span style=''>    </span><span style='background: #AEF1AE'>reply.onComplete {
+</span>89 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
+</span>90 <span style=''></span><span style='background: #AEF1AE'>        success(true)
+</span>91 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
+</span>92 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error sayHello: $e&quot;)</span><span style='background: #AEF1AE'>
+</span>93 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>94 <span style=''>    reply
+</span>95 <span style=''>
+</span>96 <span style=''>}
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -153,15 +132,39 @@
         <th>Code</th>
       </tr><tr>
         <td>
-          47
+          14
+        </td>
+        <td>
+          74
+        </td>
+        <td>
+          441
+          -
+          441
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          $lessinit$greater$default$1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          
+        </td>
+      </tr><tr>
+        <td>
+          16
         </td>
         <td>
           0
         </td>
         <td>
-          1448
+          492
           -
-          1479
+          523
         </td>
         <td>
           Apply
@@ -177,15 +180,15 @@
         </td>
       </tr><tr>
         <td>
-          48
+          17
         </td>
         <td>
           1
         </td>
         <td>
-          1526
+          570
           -
-          1540
+          584
         </td>
         <td>
           Select
@@ -201,15 +204,15 @@
         </td>
       </tr><tr>
         <td>
-          50
+          19
         </td>
         <td>
           2
         </td>
         <td>
-          1565
+          609
           -
-          1621
+          667
         </td>
         <td>
           Apply
@@ -221,19 +224,19 @@
           
         </td>
         <td style="background: #AEF1AE">
-          GrpcClientSettings.connectToServiceAt(&quot;127.0.0.1&quot;, 8083)
+          GrpcClientSettings.connectToServiceAt(serverAddress, 8083)
         </td>
       </tr><tr>
         <td>
-          50
+          19
         </td>
         <td>
           3
         </td>
         <td>
-          1565
+          609
           -
-          1636
+          682
         </td>
         <td>
           Apply
@@ -245,19 +248,19 @@
           
         </td>
         <td style="background: #AEF1AE">
-          GrpcClientSettings.connectToServiceAt(&quot;127.0.0.1&quot;, 8083).withTls(false)
+          GrpcClientSettings.connectToServiceAt(serverAddress, 8083).withTls(false)
         </td>
       </tr><tr>
         <td>
-          52
+          21
         </td>
         <td>
           4
         </td>
         <td>
-          1661
+          707
           -
-          1689
+          735
         </td>
         <td>
           Apply
@@ -273,15 +276,15 @@
         </td>
       </tr><tr>
         <td>
-          54
+          23
         </td>
         <td>
           5
         </td>
         <td>
-          1763
+          809
           -
-          1775
+          821
         </td>
         <td>
           Select
@@ -297,15 +300,15 @@
         </td>
       </tr><tr>
         <td>
-          54
+          23
         </td>
         <td>
           7
         </td>
         <td>
-          1693
+          739
           -
-          1709
+          755
         </td>
         <td>
           DefDef
@@ -321,15 +324,15 @@
         </td>
       </tr><tr>
         <td>
-          54
+          23
         </td>
         <td>
           6
         </td>
         <td>
-          1750
+          796
           -
-          1784
+          830
         </td>
         <td>
           Apply
@@ -345,15 +348,15 @@
         </td>
       </tr><tr>
         <td>
-          56
+          25
         </td>
         <td>
           17
         </td>
         <td>
-          1788
+          834
           -
-          1809
+          855
         </td>
         <td>
           DefDef
@@ -369,15 +372,15 @@
         </td>
       </tr><tr>
         <td>
-          57
+          26
         </td>
         <td>
           8
         </td>
         <td>
-          1906
+          952
           -
-          1924
+          970
         </td>
         <td>
           Select
@@ -393,15 +396,15 @@
         </td>
       </tr><tr>
         <td>
-          57
+          26
         </td>
         <td>
           9
         </td>
         <td>
-          1884
+          930
           -
-          1927
+          973
         </td>
         <td>
           Apply
@@ -417,15 +420,15 @@
         </td>
       </tr><tr>
         <td>
-          58
+          27
         </td>
         <td>
           16
         </td>
         <td>
-          1932
+          978
           -
-          2087
+          1133
         </td>
         <td>
           Apply
@@ -446,15 +449,15 @@
         </td>
       </tr><tr>
         <td>
-          59
+          28
         </td>
         <td>
           12
         </td>
         <td>
-          1957
+          1003
           -
-          1974
+          1020
         </td>
         <td>
           Block
@@ -470,15 +473,15 @@
         </td>
       </tr><tr>
         <td>
-          60
+          29
         </td>
         <td>
           11
         </td>
         <td>
-          1986
+          1032
           -
-          2017
+          1063
         </td>
         <td>
           Apply
@@ -494,15 +497,15 @@
         </td>
       </tr><tr>
         <td>
-          60
+          29
         </td>
         <td>
           10
         </td>
         <td>
-          1994
+          1040
           -
-          2016
+          1062
         </td>
         <td>
           Select
@@ -518,15 +521,15 @@
         </td>
       </tr><tr>
         <td>
-          61
+          30
         </td>
         <td>
           15
         </td>
         <td>
-          2024
+          1070
           -
-          2039
+          1085
         </td>
         <td>
           Block
@@ -542,15 +545,15 @@
         </td>
       </tr><tr>
         <td>
-          62
+          31
         </td>
         <td>
           14
         </td>
         <td>
-          2051
+          1097
           -
-          2081
+          1127
         </td>
         <td>
           Apply
@@ -566,15 +569,15 @@
         </td>
       </tr><tr>
         <td>
-          62
+          31
         </td>
         <td>
           13
         </td>
         <td>
-          2059
+          1105
           -
-          2080
+          1126
         </td>
         <td>
           Apply
@@ -590,15 +593,236 @@
         </td>
       </tr><tr>
         <td>
-          66
+          35
         </td>
         <td>
           26
         </td>
         <td>
-          2105
+          1147
           -
-          2114
+          1164
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getUserPoints
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def getUserPoints
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          19
+        </td>
+        <td>
+          1253
+          -
+          1293
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getUserPoints
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          client.getUserPoints(UserInfo(username))
+        </td>
+      </tr><tr>
+        <td>
+          36
+        </td>
+        <td>
+          18
+        </td>
+        <td>
+          1274
+          -
+          1282
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          $lessinit$greater$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          UserInfo
+        </td>
+      </tr><tr>
+        <td>
+          37
+        </td>
+        <td>
+          25
+        </td>
+        <td>
+          1298
+          -
+          1465
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          onComplete
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          reply.onComplete {
+      case Success(msg) =&gt;
+        success(msg.points)
+      case Failure(e) =&gt;
+        println(s&quot;Error while getting the current points: $e&quot;)
+    }
+        </td>
+      </tr><tr>
+        <td>
+          38
+        </td>
+        <td>
+          21
+        </td>
+        <td>
+          1323
+          -
+          1340
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Success(msg)
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          20
+        </td>
+        <td>
+          1352
+          -
+          1371
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          success(msg.points)
+        </td>
+      </tr><tr>
+        <td>
+          40
+        </td>
+        <td>
+          24
+        </td>
+        <td>
+          1378
+          -
+          1393
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Failure(e)
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          23
+        </td>
+        <td>
+          1405
+          -
+          1459
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          println
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          println(s&quot;Error while getting the current points: $e&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          41
+        </td>
+        <td>
+          22
+        </td>
+        <td>
+          1413
+          -
+          1458
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;Error while getting the current points: $e&quot;
+        </td>
+      </tr><tr>
+        <td>
+          45
+        </td>
+        <td>
+          35
+        </td>
+        <td>
+          1483
+          -
+          1492
         </td>
         <td>
           DefDef
@@ -614,15 +838,15 @@
         </td>
       </tr><tr>
         <td>
-          67
+          46
         </td>
         <td>
-          19
+          28
         </td>
         <td>
-          2220
+          1598
           -
-          2266
+          1644
         </td>
         <td>
           Apply
@@ -638,15 +862,15 @@
         </td>
       </tr><tr>
         <td>
-          67
+          46
         </td>
         <td>
-          18
+          27
         </td>
         <td>
-          2233
+          1611
           -
-          2245
+          1623
         </td>
         <td>
           Select
@@ -662,15 +886,15 @@
         </td>
       </tr><tr>
         <td>
-          68
+          47
         </td>
         <td>
-          25
+          34
         </td>
         <td>
-          2271
+          1649
           -
-          2416
+          1794
         </td>
         <td>
           Apply
@@ -691,15 +915,15 @@
         </td>
       </tr><tr>
         <td>
-          69
+          48
         </td>
         <td>
-          21
+          30
         </td>
         <td>
-          2296
+          1674
           -
-          2313
+          1691
         </td>
         <td>
           Block
@@ -715,15 +939,15 @@
         </td>
       </tr><tr>
         <td>
-          70
+          49
         </td>
         <td>
-          20
+          29
         </td>
         <td>
-          2325
+          1703
           -
-          2346
+          1724
         </td>
         <td>
           Apply
@@ -739,15 +963,15 @@
         </td>
       </tr><tr>
         <td>
-          71
+          50
         </td>
         <td>
-          24
+          33
         </td>
         <td>
-          2353
+          1731
           -
-          2368
+          1746
         </td>
         <td>
           Block
@@ -763,15 +987,15 @@
         </td>
       </tr><tr>
         <td>
-          72
+          51
         </td>
         <td>
-          23
+          32
         </td>
         <td>
-          2380
+          1758
           -
-          2410
+          1788
         </td>
         <td>
           Apply
@@ -787,15 +1011,15 @@
         </td>
       </tr><tr>
         <td>
-          72
+          51
         </td>
         <td>
-          22
+          31
         </td>
         <td>
-          2388
+          1766
           -
-          2409
+          1787
         </td>
         <td>
           Apply
@@ -811,15 +1035,15 @@
         </td>
       </tr><tr>
         <td>
-          76
+          55
         </td>
         <td>
-          35
+          44
         </td>
         <td>
-          2434
+          1812
           -
-          2446
+          1824
         </td>
         <td>
           DefDef
@@ -835,15 +1059,15 @@
         </td>
       </tr><tr>
         <td>
-          77
+          56
         </td>
         <td>
-          28
+          37
         </td>
         <td>
-          2552
+          1930
           -
-          2601
+          1979
         </td>
         <td>
           Apply
@@ -859,15 +1083,15 @@
         </td>
       </tr><tr>
         <td>
-          77
+          56
         </td>
         <td>
-          27
+          36
         </td>
         <td>
-          2568
+          1946
           -
-          2580
+          1958
         </td>
         <td>
           Select
@@ -883,15 +1107,15 @@
         </td>
       </tr><tr>
         <td>
-          78
+          57
         </td>
         <td>
-          34
+          43
         </td>
         <td>
-          2606
+          1984
           -
-          2751
+          2129
         </td>
         <td>
           Apply
@@ -912,15 +1136,15 @@
         </td>
       </tr><tr>
         <td>
-          79
+          58
         </td>
         <td>
-          30
+          39
         </td>
         <td>
-          2631
+          2009
           -
-          2648
+          2026
         </td>
         <td>
           Block
@@ -936,15 +1160,15 @@
         </td>
       </tr><tr>
         <td>
-          80
+          59
         </td>
         <td>
-          29
+          38
         </td>
         <td>
-          2660
+          2038
           -
-          2681
+          2059
         </td>
         <td>
           Apply
@@ -960,15 +1184,15 @@
         </td>
       </tr><tr>
         <td>
-          81
+          60
         </td>
         <td>
-          33
+          42
         </td>
         <td>
-          2688
+          2066
           -
-          2703
+          2081
         </td>
         <td>
           Block
@@ -984,15 +1208,15 @@
         </td>
       </tr><tr>
         <td>
-          82
+          61
         </td>
         <td>
-          32
+          41
         </td>
         <td>
-          2715
+          2093
           -
-          2745
+          2123
         </td>
         <td>
           Apply
@@ -1008,15 +1232,15 @@
         </td>
       </tr><tr>
         <td>
-          82
+          61
         </td>
         <td>
-          31
+          40
         </td>
         <td>
-          2723
+          2101
           -
-          2744
+          2122
         </td>
         <td>
           Apply
@@ -1032,15 +1256,15 @@
         </td>
       </tr><tr>
         <td>
-          86
+          65
         </td>
         <td>
-          44
+          53
         </td>
         <td>
-          2765
+          2143
           -
-          2779
+          2157
         </td>
         <td>
           DefDef
@@ -1056,15 +1280,15 @@
         </td>
       </tr><tr>
         <td>
-          87
+          66
         </td>
         <td>
-          37
+          46
         </td>
         <td>
-          2884
+          2262
           -
-          2926
+          2304
         </td>
         <td>
           Apply
@@ -1080,15 +1304,15 @@
         </td>
       </tr><tr>
         <td>
-          87
+          66
         </td>
         <td>
-          36
+          45
         </td>
         <td>
-          2899
+          2277
           -
-          2910
+          2288
         </td>
         <td>
           Select
@@ -1104,15 +1328,15 @@
         </td>
       </tr><tr>
         <td>
-          88
+          67
         </td>
         <td>
-          43
+          52
         </td>
         <td>
-          2931
+          2309
           -
-          3068
+          2446
         </td>
         <td>
           Apply
@@ -1133,15 +1357,15 @@
         </td>
       </tr><tr>
         <td>
-          89
+          68
         </td>
         <td>
-          39
+          48
         </td>
         <td>
-          2956
+          2334
           -
-          2973
+          2351
         </td>
         <td>
           Block
@@ -1157,15 +1381,15 @@
         </td>
       </tr><tr>
         <td>
-          90
+          69
         </td>
         <td>
-          38
+          47
         </td>
         <td>
-          2985
+          2363
           -
-          2998
+          2376
         </td>
         <td>
           Apply
@@ -1181,15 +1405,15 @@
         </td>
       </tr><tr>
         <td>
-          91
+          70
         </td>
         <td>
-          42
+          51
         </td>
         <td>
-          3005
+          2383
           -
-          3020
+          2398
         </td>
         <td>
           Block
@@ -1205,15 +1429,15 @@
         </td>
       </tr><tr>
         <td>
-          92
+          71
         </td>
         <td>
-          41
+          50
         </td>
         <td>
-          3032
+          2410
           -
-          3062
+          2440
         </td>
         <td>
           Apply
@@ -1229,15 +1453,15 @@
         </td>
       </tr><tr>
         <td>
-          92
+          71
         </td>
         <td>
-          40
+          49
         </td>
         <td>
-          3040
+          2418
           -
-          3061
+          2439
         </td>
         <td>
           Apply
@@ -1253,15 +1477,15 @@
         </td>
       </tr><tr>
         <td>
-          96
+          75
         </td>
         <td>
-          53
+          62
         </td>
         <td>
-          3082
+          2460
           -
-          3095
+          2473
         </td>
         <td>
           DefDef
@@ -1277,15 +1501,15 @@
         </td>
       </tr><tr>
         <td>
-          97
+          76
         </td>
         <td>
-          46
+          55
         </td>
         <td>
-          3200
+          2578
           -
-          3244
+          2622
         </td>
         <td>
           Apply
@@ -1301,15 +1525,15 @@
         </td>
       </tr><tr>
         <td>
-          97
+          76
         </td>
         <td>
-          45
+          54
         </td>
         <td>
-          3217
+          2595
           -
-          3228
+          2606
         </td>
         <td>
           Select
@@ -1325,15 +1549,15 @@
         </td>
       </tr><tr>
         <td>
-          98
+          77
         </td>
         <td>
-          52
+          61
         </td>
         <td>
-          3249
+          2627
           -
-          3386
+          2764
         </td>
         <td>
           Apply
@@ -1354,15 +1578,15 @@
         </td>
       </tr><tr>
         <td>
-          99
+          78
         </td>
         <td>
-          48
+          57
         </td>
         <td>
-          3274
+          2652
           -
-          3291
+          2669
         </td>
         <td>
           Block
@@ -1378,15 +1602,15 @@
         </td>
       </tr><tr>
         <td>
-          100
+          79
         </td>
         <td>
-          47
+          56
         </td>
         <td>
-          3303
+          2681
           -
-          3316
+          2694
         </td>
         <td>
           Apply
@@ -1402,15 +1626,15 @@
         </td>
       </tr><tr>
         <td>
-          101
+          80
         </td>
         <td>
-          51
+          60
         </td>
         <td>
-          3323
+          2701
           -
-          3338
+          2716
         </td>
         <td>
           Block
@@ -1426,15 +1650,15 @@
         </td>
       </tr><tr>
         <td>
-          102
+          81
         </td>
         <td>
-          50
+          59
         </td>
         <td>
-          3350
+          2728
           -
-          3380
+          2758
         </td>
         <td>
           Apply
@@ -1450,15 +1674,15 @@
         </td>
       </tr><tr>
         <td>
-          102
+          81
         </td>
         <td>
-          49
+          58
         </td>
         <td>
-          3358
+          2736
           -
-          3379
+          2757
         </td>
         <td>
           Apply
@@ -1474,15 +1698,15 @@
         </td>
       </tr><tr>
         <td>
-          106
+          85
         </td>
         <td>
-          64
+          73
         </td>
         <td>
-          3400
+          2778
           -
-          3421
+          2799
         </td>
         <td>
           DefDef
@@ -1498,15 +1722,15 @@
         </td>
       </tr><tr>
         <td>
-          107
+          86
         </td>
         <td>
-          56
+          65
         </td>
         <td>
-          3562
+          2940
           -
-          3572
+          2950
         </td>
         <td>
           Select
@@ -1522,15 +1746,15 @@
         </td>
       </tr><tr>
         <td>
-          107
+          86
         </td>
         <td>
-          55
+          64
         </td>
         <td>
-          3590
+          2968
           -
-          3602
+          2980
         </td>
         <td>
           Select
@@ -1546,15 +1770,15 @@
         </td>
       </tr><tr>
         <td>
-          107
+          86
         </td>
         <td>
-          54
+          63
         </td>
         <td>
-          3573
+          2951
           -
-          3588
+          2966
         </td>
         <td>
           Select
@@ -1570,15 +1794,15 @@
         </td>
       </tr><tr>
         <td>
-          107
+          86
         </td>
         <td>
-          57
+          66
         </td>
         <td>
-          3538
+          2916
           -
-          3604
+          2982
         </td>
         <td>
           Apply
@@ -1594,15 +1818,15 @@
         </td>
       </tr><tr>
         <td>
-          108
+          87
         </td>
         <td>
-          63
+          72
         </td>
         <td>
-          3609
+          2987
           -
-          3746
+          3124
         </td>
         <td>
           Apply
@@ -1623,15 +1847,15 @@
         </td>
       </tr><tr>
         <td>
-          109
+          88
         </td>
         <td>
-          59
+          68
         </td>
         <td>
-          3634
+          3012
           -
-          3651
+          3029
         </td>
         <td>
           Block
@@ -1647,15 +1871,15 @@
         </td>
       </tr><tr>
         <td>
-          110
+          89
         </td>
         <td>
-          58
+          67
         </td>
         <td>
-          3663
+          3041
           -
-          3676
+          3054
         </td>
         <td>
           Apply
@@ -1671,15 +1895,15 @@
         </td>
       </tr><tr>
         <td>
-          111
+          90
         </td>
         <td>
-          62
+          71
         </td>
         <td>
-          3683
+          3061
           -
-          3698
+          3076
         </td>
         <td>
           Block
@@ -1695,15 +1919,15 @@
         </td>
       </tr><tr>
         <td>
-          112
+          91
         </td>
         <td>
-          61
+          70
         </td>
         <td>
-          3710
+          3088
           -
-          3740
+          3118
         </td>
         <td>
           Apply
@@ -1719,15 +1943,15 @@
         </td>
       </tr><tr>
         <td>
-          112
+          91
         </td>
         <td>
-          60
+          69
         </td>
         <td>
-          3718
+          3096
           -
-          3739
+          3117
         </td>
         <td>
           Apply

@@ -34,47 +34,51 @@
 </span>10 <span style=''>  lazy val messagesCompanions: Seq[_root_.scalapb.GeneratedMessageCompanion[_ &lt;: _root_.scalapb.GeneratedMessage]] =
 </span>11 <span style=''>    </span><span style='background: #F0ADAD'>Seq[_root_.scalapb.GeneratedMessageCompanion[_ &lt;: _root_.scalapb.GeneratedMessage]](
 </span>12 <span style=''></span><span style='background: #F0ADAD'>      grpcService.UserPoints,
-</span>13 <span style=''></span><span style='background: #F0ADAD'>      grpcService.UpdateResponse,
-</span>14 <span style=''></span><span style='background: #F0ADAD'>      grpcService.HelloMessage,
-</span>15 <span style=''></span><span style='background: #F0ADAD'>      grpcService.GameMessage,
-</span>16 <span style=''></span><span style='background: #F0ADAD'>      grpcService.ClosingResponse,
-</span>17 <span style=''></span><span style='background: #F0ADAD'>      grpcService.OpenedGamesRequest,
-</span>18 <span style=''></span><span style='background: #F0ADAD'>      grpcService.NewGameResponse,
-</span>19 <span style=''></span><span style='background: #F0ADAD'>      grpcService.OpenedGames,
-</span>20 <span style=''></span><span style='background: #F0ADAD'>      grpcService.LoginRequest,
-</span>21 <span style=''></span><span style='background: #F0ADAD'>      grpcService.LoginResult
-</span>22 <span style=''></span><span style='background: #F0ADAD'>    )</span><span style=''>
-</span>23 <span style=''>  private lazy val ProtoBytes: _root_.scala.Array[Byte] =
-</span>24 <span style=''>      </span><span style='background: #AEF1AE'>scalapb.Encoding.fromBase64(scala.collection.immutable.Seq(
-</span>25 <span style=''></span><span style='background: #AEF1AE'>  &quot;&quot;&quot;Cg5tZXNzYWdlcy5wcm90bxILZ3JwY1NlcnZpY2UiXAoKVXNlclBvaW50cxIpCgh1c2VyTmFtZRgBIAMoCUIN4j8KEgh1c2VyT
-</span>26 <span style=''></span><span style='background: #AEF1AE'>  mFtZVIIdXNlck5hbWUSIwoGcG9pbnRzGAIgAygFQgviPwgSBnBvaW50c1IGcG9pbnRzIjsKDlVwZGF0ZVJlc3BvbnNlEikKCHJlc
-</span>27 <span style=''></span><span style='background: #AEF1AE'>  3BvbnNlGAEgASgIQg3iPwoSCHJlc3BvbnNlUghyZXNwb25zZSI2CgxIZWxsb01lc3NhZ2USJgoHbWVzc2FnZRgBIAEoCUIM4j8JE
-</span>28 <span style=''></span><span style='background: #AEF1AE'>  gdtZXNzYWdlUgdtZXNzYWdlImAKC0dhbWVNZXNzYWdlEiYKB2FkZHJlc3MYASABKAlCDOI/CRIHYWRkcmVzc1IHYWRkcmVzcxIpC
-</span>29 <span style=''></span><span style='background: #AEF1AE'>  ghmb3JlbmFtZRgCIAEoCUIN4j8KEghmb3JlbmFtZVIIZm9yZW5hbWUiEQoPQ2xvc2luZ1Jlc3BvbnNlIhQKEk9wZW5lZEdhbWVzU
-</span>30 <span style=''></span><span style='background: #AEF1AE'>  mVxdWVzdCIRCg9OZXdHYW1lUmVzcG9uc2UiQgoLT3BlbmVkR2FtZXMSMwoMY2x1c3Rlcl9uYW1lGAEgAygJQhDiPw0SC2NsdXN0Z
-</span>31 <span style=''></span><span style='background: #AEF1AE'>  XJOYW1lUgtjbHVzdGVyTmFtZSJYCgxMb2dpblJlcXVlc3QSHQoEbmFtZRgBIAEoCUIJ4j8GEgRuYW1lUgRuYW1lEikKCHBhc3N3b
-</span>32 <span style=''></span><span style='background: #AEF1AE'>  3JkGAIgASgJQg3iPwoSCHBhc3N3b3JkUghwYXNzd29yZCI4CgtMb2dpblJlc3VsdBIpCghyZXNwb25zZRgBIAEoCEIN4j8KEghyZ
-</span>33 <span style=''></span><span style='background: #AEF1AE'>  XNwb25zZVIIcmVzcG9uc2Uy8wMKBlNlcnZlchI/CgVIZWxsbxIZLmdycGNTZXJ2aWNlLkhlbGxvTWVzc2FnZRoZLmdycGNTZXJ2a
-</span>34 <span style=''></span><span style='background: #AEF1AE'>  WNlLkhlbGxvTWVzc2FnZSIAEj4KBUxvZ2luEhkuZ3JwY1NlcnZpY2UuTG9naW5SZXF1ZXN0GhguZ3JwY1NlcnZpY2UuTG9naW5SZ
-</span>35 <span style=''></span><span style='background: #AEF1AE'>  XN1bHQiABJBCghSZWdpc3RlchIZLmdycGNTZXJ2aWNlLkxvZ2luUmVxdWVzdBoYLmdycGNTZXJ2aWNlLkxvZ2luUmVzdWx0IgAST
-</span>36 <span style=''></span><span style='background: #AEF1AE'>  QoOR2V0T3BlbmVkR2FtZXMSHy5ncnBjU2VydmljZS5PcGVuZWRHYW1lc1JlcXVlc3QaGC5ncnBjU2VydmljZS5PcGVuZWRHYW1lc
-</span>37 <span style=''></span><span style='background: #AEF1AE'>  yIAEkUKCUNsb3NlR2FtZRIYLmdycGNTZXJ2aWNlLkdhbWVNZXNzYWdlGhwuZ3JwY1NlcnZpY2UuQ2xvc2luZ1Jlc3BvbnNlIgASQ
-</span>38 <span style=''></span><span style='background: #AEF1AE'>  woHTmV3R2FtZRIYLmdycGNTZXJ2aWNlLkdhbWVNZXNzYWdlGhwuZ3JwY1NlcnZpY2UuTmV3R2FtZVJlc3BvbnNlIgASSgoQVXBkY
-</span>39 <span style=''></span><span style='background: #AEF1AE'>  XRlVXNlclBvaW50cxIXLmdycGNTZXJ2aWNlLlVzZXJQb2ludHMaGy5ncnBjU2VydmljZS5VcGRhdGVSZXNwb25zZSIAQiAKC2dyc
-</span>40 <span style=''></span><span style='background: #AEF1AE'>  GNTZXJ2aWNlQg9IZWxsb1dvcmxkUHJvdG9QAWIGcHJvdG8z&quot;&quot;&quot;
-</span>41 <span style=''></span><span style='background: #AEF1AE'>      ).mkString)</span><span style=''>
-</span>42 <span style=''>  lazy val scalaDescriptor: _root_.scalapb.descriptors.FileDescriptor = {
-</span>43 <span style=''>    val scalaProto = </span><span style='background: #F0ADAD'>com.google.protobuf.descriptor.FileDescriptorProto.parseFrom(ProtoBytes)</span><span style=''>
-</span>44 <span style=''>    </span><span style='background: #F0ADAD'>_root_.scalapb.descriptors.FileDescriptor.buildFrom(scalaProto, dependencies.map(_.scalaDescriptor))</span><span style=''>
-</span>45 <span style=''>  }
-</span>46 <span style=''>  lazy val javaDescriptor: com.google.protobuf.Descriptors.FileDescriptor = {
-</span>47 <span style=''>    val javaProto = </span><span style='background: #AEF1AE'>com.google.protobuf.DescriptorProtos.FileDescriptorProto.parseFrom(ProtoBytes)</span><span style=''>
-</span>48 <span style=''>    </span><span style='background: #AEF1AE'>com.google.protobuf.Descriptors.FileDescriptor.buildFrom(javaProto, _root_.scala.Array(
-</span>49 <span style=''></span><span style='background: #AEF1AE'>    ))</span><span style=''>
-</span>50 <span style=''>  }
-</span>51 <span style=''>  </span><span style='background: #F0ADAD'>@deprecated(&quot;Use javaDescriptor instead. In a future version this will refer to scalaDescriptor.&quot;, &quot;ScalaPB 0.5.47&quot;)
-</span>52 <span style=''></span><span style='background: #F0ADAD'>  def descriptor</span><span style=''>: com.google.protobuf.Descriptors.FileDescriptor = javaDescriptor
-</span>53 <span style=''>}
+</span>13 <span style=''></span><span style='background: #F0ADAD'>      grpcService.UserInfo,
+</span>14 <span style=''></span><span style='background: #F0ADAD'>      grpcService.SingleUserPoints,
+</span>15 <span style=''></span><span style='background: #F0ADAD'>      grpcService.UpdateResponse,
+</span>16 <span style=''></span><span style='background: #F0ADAD'>      grpcService.HelloMessage,
+</span>17 <span style=''></span><span style='background: #F0ADAD'>      grpcService.GameMessage,
+</span>18 <span style=''></span><span style='background: #F0ADAD'>      grpcService.ClosingResponse,
+</span>19 <span style=''></span><span style='background: #F0ADAD'>      grpcService.OpenedGamesRequest,
+</span>20 <span style=''></span><span style='background: #F0ADAD'>      grpcService.NewGameResponse,
+</span>21 <span style=''></span><span style='background: #F0ADAD'>      grpcService.OpenedGames,
+</span>22 <span style=''></span><span style='background: #F0ADAD'>      grpcService.LoginRequest,
+</span>23 <span style=''></span><span style='background: #F0ADAD'>      grpcService.LoginResult
+</span>24 <span style=''></span><span style='background: #F0ADAD'>    )</span><span style=''>
+</span>25 <span style=''>  private lazy val ProtoBytes: _root_.scala.Array[Byte] =
+</span>26 <span style=''>      </span><span style='background: #AEF1AE'>scalapb.Encoding.fromBase64(scala.collection.immutable.Seq(
+</span>27 <span style=''></span><span style='background: #AEF1AE'>  &quot;&quot;&quot;Cg5tZXNzYWdlcy5wcm90bxILZ3JwY1NlcnZpY2UiXAoKVXNlclBvaW50cxIpCgh1c2VyTmFtZRgBIAMoCUIN4j8KEgh1c2VyT
+</span>28 <span style=''></span><span style='background: #AEF1AE'>  mFtZVIIdXNlck5hbWUSIwoGcG9pbnRzGAIgAygFQgviPwgSBnBvaW50c1IGcG9pbnRzIjUKCFVzZXJJbmZvEikKCHVzZXJOYW1lG
+</span>29 <span style=''></span><span style='background: #AEF1AE'>  AEgASgJQg3iPwoSCHVzZXJOYW1lUgh1c2VyTmFtZSI3ChBTaW5nbGVVc2VyUG9pbnRzEiMKBnBvaW50cxgBIAEoBUIL4j8IEgZwb
+</span>30 <span style=''></span><span style='background: #AEF1AE'>  2ludHNSBnBvaW50cyI7Cg5VcGRhdGVSZXNwb25zZRIpCghyZXNwb25zZRgBIAEoCEIN4j8KEghyZXNwb25zZVIIcmVzcG9uc2UiN
+</span>31 <span style=''></span><span style='background: #AEF1AE'>  goMSGVsbG9NZXNzYWdlEiYKB21lc3NhZ2UYASABKAlCDOI/CRIHbWVzc2FnZVIHbWVzc2FnZSJgCgtHYW1lTWVzc2FnZRImCgdhZ
+</span>32 <span style=''></span><span style='background: #AEF1AE'>  GRyZXNzGAEgASgJQgziPwkSB2FkZHJlc3NSB2FkZHJlc3MSKQoIZm9yZW5hbWUYAiABKAlCDeI/ChIIZm9yZW5hbWVSCGZvcmVuY
+</span>33 <span style=''></span><span style='background: #AEF1AE'>  W1lIhEKD0Nsb3NpbmdSZXNwb25zZSIUChJPcGVuZWRHYW1lc1JlcXVlc3QiEQoPTmV3R2FtZVJlc3BvbnNlIkIKC09wZW5lZEdhb
+</span>34 <span style=''></span><span style='background: #AEF1AE'>  WVzEjMKDGNsdXN0ZXJfbmFtZRgBIAMoCUIQ4j8NEgtjbHVzdGVyTmFtZVILY2x1c3Rlck5hbWUiWAoMTG9naW5SZXF1ZXN0Eh0KB
+</span>35 <span style=''></span><span style='background: #AEF1AE'>  G5hbWUYASABKAlCCeI/BhIEbmFtZVIEbmFtZRIpCghwYXNzd29yZBgCIAEoCUIN4j8KEghwYXNzd29yZFIIcGFzc3dvcmQiOAoLT
+</span>36 <span style=''></span><span style='background: #AEF1AE'>  G9naW5SZXN1bHQSKQoIcmVzcG9uc2UYASABKAhCDeI/ChIIcmVzcG9uc2VSCHJlc3BvbnNlMrwECgZTZXJ2ZXISPwoFSGVsbG8SG
+</span>37 <span style=''></span><span style='background: #AEF1AE'>  S5ncnBjU2VydmljZS5IZWxsb01lc3NhZ2UaGS5ncnBjU2VydmljZS5IZWxsb01lc3NhZ2UiABI+CgVMb2dpbhIZLmdycGNTZXJ2a
+</span>38 <span style=''></span><span style='background: #AEF1AE'>  WNlLkxvZ2luUmVxdWVzdBoYLmdycGNTZXJ2aWNlLkxvZ2luUmVzdWx0IgASQQoIUmVnaXN0ZXISGS5ncnBjU2VydmljZS5Mb2dpb
+</span>39 <span style=''></span><span style='background: #AEF1AE'>  lJlcXVlc3QaGC5ncnBjU2VydmljZS5Mb2dpblJlc3VsdCIAEk0KDkdldE9wZW5lZEdhbWVzEh8uZ3JwY1NlcnZpY2UuT3BlbmVkR
+</span>40 <span style=''></span><span style='background: #AEF1AE'>  2FtZXNSZXF1ZXN0GhguZ3JwY1NlcnZpY2UuT3BlbmVkR2FtZXMiABJFCglDbG9zZUdhbWUSGC5ncnBjU2VydmljZS5HYW1lTWVzc
+</span>41 <span style=''></span><span style='background: #AEF1AE'>  2FnZRocLmdycGNTZXJ2aWNlLkNsb3NpbmdSZXNwb25zZSIAEkMKB05ld0dhbWUSGC5ncnBjU2VydmljZS5HYW1lTWVzc2FnZRocL
+</span>42 <span style=''></span><span style='background: #AEF1AE'>  mdycGNTZXJ2aWNlLk5ld0dhbWVSZXNwb25zZSIAEkoKEFVwZGF0ZVVzZXJQb2ludHMSFy5ncnBjU2VydmljZS5Vc2VyUG9pbnRzG
+</span>43 <span style=''></span><span style='background: #AEF1AE'>  hsuZ3JwY1NlcnZpY2UuVXBkYXRlUmVzcG9uc2UiABJHCg1HZXRVc2VyUG9pbnRzEhUuZ3JwY1NlcnZpY2UuVXNlckluZm8aHS5nc
+</span>44 <span style=''></span><span style='background: #AEF1AE'>  nBjU2VydmljZS5TaW5nbGVVc2VyUG9pbnRzIgBCIAoLZ3JwY1NlcnZpY2VCD0hlbGxvV29ybGRQcm90b1ABYgZwcm90bzM=&quot;&quot;&quot;
+</span>45 <span style=''></span><span style='background: #AEF1AE'>      ).mkString)</span><span style=''>
+</span>46 <span style=''>  lazy val scalaDescriptor: _root_.scalapb.descriptors.FileDescriptor = {
+</span>47 <span style=''>    val scalaProto = </span><span style='background: #F0ADAD'>com.google.protobuf.descriptor.FileDescriptorProto.parseFrom(ProtoBytes)</span><span style=''>
+</span>48 <span style=''>    </span><span style='background: #F0ADAD'>_root_.scalapb.descriptors.FileDescriptor.buildFrom(scalaProto, dependencies.map(_.scalaDescriptor))</span><span style=''>
+</span>49 <span style=''>  }
+</span>50 <span style=''>  lazy val javaDescriptor: com.google.protobuf.Descriptors.FileDescriptor = {
+</span>51 <span style=''>    val javaProto = </span><span style='background: #AEF1AE'>com.google.protobuf.DescriptorProtos.FileDescriptorProto.parseFrom(ProtoBytes)</span><span style=''>
+</span>52 <span style=''>    </span><span style='background: #AEF1AE'>com.google.protobuf.Descriptors.FileDescriptor.buildFrom(javaProto, _root_.scala.Array(
+</span>53 <span style=''></span><span style='background: #AEF1AE'>    ))</span><span style=''>
+</span>54 <span style=''>  }
+</span>55 <span style=''>  </span><span style='background: #F0ADAD'>@deprecated(&quot;Use javaDescriptor instead. In a future version this will refer to scalaDescriptor.&quot;, &quot;ScalaPB 0.5.47&quot;)
+</span>56 <span style=''></span><span style='background: #F0ADAD'>  def descriptor</span><span style=''>: com.google.protobuf.Descriptors.FileDescriptor = javaDescriptor
+</span>57 <span style=''>}
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -92,7 +96,7 @@
           7
         </td>
         <td>
-          1989
+          2144
         </td>
         <td>
           165
@@ -116,7 +120,7 @@
           8
         </td>
         <td>
-          1991
+          2146
         </td>
         <td>
           269
@@ -140,7 +144,7 @@
           8
         </td>
         <td>
-          1990
+          2145
         </td>
         <td>
           269
@@ -164,12 +168,12 @@
           10
         </td>
         <td>
-          1992
+          2147
         </td>
         <td>
           400
           -
-          818
+          882
         </td>
         <td>
           Apply
@@ -183,6 +187,8 @@
         <td style="background: #F0ADAD">
           Seq[_root_.scalapb.GeneratedMessageCompanion[_ &lt;: _root_.scalapb.GeneratedMessage]](
       grpcService.UserPoints,
+      grpcService.UserInfo,
+      grpcService.SingleUserPoints,
       grpcService.UpdateResponse,
       grpcService.HelloMessage,
       grpcService.GameMessage,
@@ -196,15 +202,15 @@
         </td>
       </tr><tr>
         <td>
-          23
+          25
         </td>
         <td>
-          1993
+          2148
         </td>
         <td>
-          911
+          975
           -
-          2548
+          2866
         </td>
         <td>
           Apply
@@ -218,34 +224,36 @@
         <td style="background: #AEF1AE">
           scala.collection.immutable.Seq(
   &quot;&quot;&quot;Cg5tZXNzYWdlcy5wcm90bxILZ3JwY1NlcnZpY2UiXAoKVXNlclBvaW50cxIpCgh1c2VyTmFtZRgBIAMoCUIN4j8KEgh1c2VyT
-  mFtZVIIdXNlck5hbWUSIwoGcG9pbnRzGAIgAygFQgviPwgSBnBvaW50c1IGcG9pbnRzIjsKDlVwZGF0ZVJlc3BvbnNlEikKCHJlc
-  3BvbnNlGAEgASgIQg3iPwoSCHJlc3BvbnNlUghyZXNwb25zZSI2CgxIZWxsb01lc3NhZ2USJgoHbWVzc2FnZRgBIAEoCUIM4j8JE
-  gdtZXNzYWdlUgdtZXNzYWdlImAKC0dhbWVNZXNzYWdlEiYKB2FkZHJlc3MYASABKAlCDOI/CRIHYWRkcmVzc1IHYWRkcmVzcxIpC
-  ghmb3JlbmFtZRgCIAEoCUIN4j8KEghmb3JlbmFtZVIIZm9yZW5hbWUiEQoPQ2xvc2luZ1Jlc3BvbnNlIhQKEk9wZW5lZEdhbWVzU
-  mVxdWVzdCIRCg9OZXdHYW1lUmVzcG9uc2UiQgoLT3BlbmVkR2FtZXMSMwoMY2x1c3Rlcl9uYW1lGAEgAygJQhDiPw0SC2NsdXN0Z
-  XJOYW1lUgtjbHVzdGVyTmFtZSJYCgxMb2dpblJlcXVlc3QSHQoEbmFtZRgBIAEoCUIJ4j8GEgRuYW1lUgRuYW1lEikKCHBhc3N3b
-  3JkGAIgASgJQg3iPwoSCHBhc3N3b3JkUghwYXNzd29yZCI4CgtMb2dpblJlc3VsdBIpCghyZXNwb25zZRgBIAEoCEIN4j8KEghyZ
-  XNwb25zZVIIcmVzcG9uc2Uy8wMKBlNlcnZlchI/CgVIZWxsbxIZLmdycGNTZXJ2aWNlLkhlbGxvTWVzc2FnZRoZLmdycGNTZXJ2a
-  WNlLkhlbGxvTWVzc2FnZSIAEj4KBUxvZ2luEhkuZ3JwY1NlcnZpY2UuTG9naW5SZXF1ZXN0GhguZ3JwY1NlcnZpY2UuTG9naW5SZ
-  XN1bHQiABJBCghSZWdpc3RlchIZLmdycGNTZXJ2aWNlLkxvZ2luUmVxdWVzdBoYLmdycGNTZXJ2aWNlLkxvZ2luUmVzdWx0IgAST
-  QoOR2V0T3BlbmVkR2FtZXMSHy5ncnBjU2VydmljZS5PcGVuZWRHYW1lc1JlcXVlc3QaGC5ncnBjU2VydmljZS5PcGVuZWRHYW1lc
-  yIAEkUKCUNsb3NlR2FtZRIYLmdycGNTZXJ2aWNlLkdhbWVNZXNzYWdlGhwuZ3JwY1NlcnZpY2UuQ2xvc2luZ1Jlc3BvbnNlIgASQ
-  woHTmV3R2FtZRIYLmdycGNTZXJ2aWNlLkdhbWVNZXNzYWdlGhwuZ3JwY1NlcnZpY2UuTmV3R2FtZVJlc3BvbnNlIgASSgoQVXBkY
-  XRlVXNlclBvaW50cxIXLmdycGNTZXJ2aWNlLlVzZXJQb2ludHMaGy5ncnBjU2VydmljZS5VcGRhdGVSZXNwb25zZSIAQiAKC2dyc
-  GNTZXJ2aWNlQg9IZWxsb1dvcmxkUHJvdG9QAWIGcHJvdG8z&quot;&quot;&quot;
+  mFtZVIIdXNlck5hbWUSIwoGcG9pbnRzGAIgAygFQgviPwgSBnBvaW50c1IGcG9pbnRzIjUKCFVzZXJJbmZvEikKCHVzZXJOYW1lG
+  AEgASgJQg3iPwoSCHVzZXJOYW1lUgh1c2VyTmFtZSI3ChBTaW5nbGVVc2VyUG9pbnRzEiMKBnBvaW50cxgBIAEoBUIL4j8IEgZwb
+  2ludHNSBnBvaW50cyI7Cg5VcGRhdGVSZXNwb25zZRIpCghyZXNwb25zZRgBIAEoCEIN4j8KEghyZXNwb25zZVIIcmVzcG9uc2UiN
+  goMSGVsbG9NZXNzYWdlEiYKB21lc3NhZ2UYASABKAlCDOI/CRIHbWVzc2FnZVIHbWVzc2FnZSJgCgtHYW1lTWVzc2FnZRImCgdhZ
+  GRyZXNzGAEgASgJQgziPwkSB2FkZHJlc3NSB2FkZHJlc3MSKQoIZm9yZW5hbWUYAiABKAlCDeI/ChIIZm9yZW5hbWVSCGZvcmVuY
+  W1lIhEKD0Nsb3NpbmdSZXNwb25zZSIUChJPcGVuZWRHYW1lc1JlcXVlc3QiEQoPTmV3R2FtZVJlc3BvbnNlIkIKC09wZW5lZEdhb
+  WVzEjMKDGNsdXN0ZXJfbmFtZRgBIAMoCUIQ4j8NEgtjbHVzdGVyTmFtZVILY2x1c3Rlck5hbWUiWAoMTG9naW5SZXF1ZXN0Eh0KB
+  G5hbWUYASABKAlCCeI/BhIEbmFtZVIEbmFtZRIpCghwYXNzd29yZBgCIAEoCUIN4j8KEghwYXNzd29yZFIIcGFzc3dvcmQiOAoLT
+  G9naW5SZXN1bHQSKQoIcmVzcG9uc2UYASABKAhCDeI/ChIIcmVzcG9uc2VSCHJlc3BvbnNlMrwECgZTZXJ2ZXISPwoFSGVsbG8SG
+  S5ncnBjU2VydmljZS5IZWxsb01lc3NhZ2UaGS5ncnBjU2VydmljZS5IZWxsb01lc3NhZ2UiABI+CgVMb2dpbhIZLmdycGNTZXJ2a
+  WNlLkxvZ2luUmVxdWVzdBoYLmdycGNTZXJ2aWNlLkxvZ2luUmVzdWx0IgASQQoIUmVnaXN0ZXISGS5ncnBjU2VydmljZS5Mb2dpb
+  lJlcXVlc3QaGC5ncnBjU2VydmljZS5Mb2dpblJlc3VsdCIAEk0KDkdldE9wZW5lZEdhbWVzEh8uZ3JwY1NlcnZpY2UuT3BlbmVkR
+  2FtZXNSZXF1ZXN0GhguZ3JwY1NlcnZpY2UuT3BlbmVkR2FtZXMiABJFCglDbG9zZUdhbWUSGC5ncnBjU2VydmljZS5HYW1lTWVzc
+  2FnZRocLmdycGNTZXJ2aWNlLkNsb3NpbmdSZXNwb25zZSIAEkMKB05ld0dhbWUSGC5ncnBjU2VydmljZS5HYW1lTWVzc2FnZRocL
+  mdycGNTZXJ2aWNlLk5ld0dhbWVSZXNwb25zZSIAEkoKEFVwZGF0ZVVzZXJQb2ludHMSFy5ncnBjU2VydmljZS5Vc2VyUG9pbnRzG
+  hsuZ3JwY1NlcnZpY2UuVXBkYXRlUmVzcG9uc2UiABJHCg1HZXRVc2VyUG9pbnRzEhUuZ3JwY1NlcnZpY2UuVXNlckluZm8aHS5nc
+  nBjU2VydmljZS5TaW5nbGVVc2VyUG9pbnRzIgBCIAoLZ3JwY1NlcnZpY2VCD0hlbGxvV29ybGRQcm90b1ABYgZwcm90bzM=&quot;&quot;&quot;
       )
         </td>
       </tr><tr>
         <td>
-          23
+          25
         </td>
         <td>
-          1995
+          2150
         </td>
         <td>
-          883
+          947
           -
-          2558
+          2876
         </td>
         <td>
           Apply
@@ -259,34 +267,36 @@
         <td style="background: #AEF1AE">
           scalapb.Encoding.fromBase64(scala.collection.immutable.Seq(
   &quot;&quot;&quot;Cg5tZXNzYWdlcy5wcm90bxILZ3JwY1NlcnZpY2UiXAoKVXNlclBvaW50cxIpCgh1c2VyTmFtZRgBIAMoCUIN4j8KEgh1c2VyT
-  mFtZVIIdXNlck5hbWUSIwoGcG9pbnRzGAIgAygFQgviPwgSBnBvaW50c1IGcG9pbnRzIjsKDlVwZGF0ZVJlc3BvbnNlEikKCHJlc
-  3BvbnNlGAEgASgIQg3iPwoSCHJlc3BvbnNlUghyZXNwb25zZSI2CgxIZWxsb01lc3NhZ2USJgoHbWVzc2FnZRgBIAEoCUIM4j8JE
-  gdtZXNzYWdlUgdtZXNzYWdlImAKC0dhbWVNZXNzYWdlEiYKB2FkZHJlc3MYASABKAlCDOI/CRIHYWRkcmVzc1IHYWRkcmVzcxIpC
-  ghmb3JlbmFtZRgCIAEoCUIN4j8KEghmb3JlbmFtZVIIZm9yZW5hbWUiEQoPQ2xvc2luZ1Jlc3BvbnNlIhQKEk9wZW5lZEdhbWVzU
-  mVxdWVzdCIRCg9OZXdHYW1lUmVzcG9uc2UiQgoLT3BlbmVkR2FtZXMSMwoMY2x1c3Rlcl9uYW1lGAEgAygJQhDiPw0SC2NsdXN0Z
-  XJOYW1lUgtjbHVzdGVyTmFtZSJYCgxMb2dpblJlcXVlc3QSHQoEbmFtZRgBIAEoCUIJ4j8GEgRuYW1lUgRuYW1lEikKCHBhc3N3b
-  3JkGAIgASgJQg3iPwoSCHBhc3N3b3JkUghwYXNzd29yZCI4CgtMb2dpblJlc3VsdBIpCghyZXNwb25zZRgBIAEoCEIN4j8KEghyZ
-  XNwb25zZVIIcmVzcG9uc2Uy8wMKBlNlcnZlchI/CgVIZWxsbxIZLmdycGNTZXJ2aWNlLkhlbGxvTWVzc2FnZRoZLmdycGNTZXJ2a
-  WNlLkhlbGxvTWVzc2FnZSIAEj4KBUxvZ2luEhkuZ3JwY1NlcnZpY2UuTG9naW5SZXF1ZXN0GhguZ3JwY1NlcnZpY2UuTG9naW5SZ
-  XN1bHQiABJBCghSZWdpc3RlchIZLmdycGNTZXJ2aWNlLkxvZ2luUmVxdWVzdBoYLmdycGNTZXJ2aWNlLkxvZ2luUmVzdWx0IgAST
-  QoOR2V0T3BlbmVkR2FtZXMSHy5ncnBjU2VydmljZS5PcGVuZWRHYW1lc1JlcXVlc3QaGC5ncnBjU2VydmljZS5PcGVuZWRHYW1lc
-  yIAEkUKCUNsb3NlR2FtZRIYLmdycGNTZXJ2aWNlLkdhbWVNZXNzYWdlGhwuZ3JwY1NlcnZpY2UuQ2xvc2luZ1Jlc3BvbnNlIgASQ
-  woHTmV3R2FtZRIYLmdycGNTZXJ2aWNlLkdhbWVNZXNzYWdlGhwuZ3JwY1NlcnZpY2UuTmV3R2FtZVJlc3BvbnNlIgASSgoQVXBkY
-  XRlVXNlclBvaW50cxIXLmdycGNTZXJ2aWNlLlVzZXJQb2ludHMaGy5ncnBjU2VydmljZS5VcGRhdGVSZXNwb25zZSIAQiAKC2dyc
-  GNTZXJ2aWNlQg9IZWxsb1dvcmxkUHJvdG9QAWIGcHJvdG8z&quot;&quot;&quot;
+  mFtZVIIdXNlck5hbWUSIwoGcG9pbnRzGAIgAygFQgviPwgSBnBvaW50c1IGcG9pbnRzIjUKCFVzZXJJbmZvEikKCHVzZXJOYW1lG
+  AEgASgJQg3iPwoSCHVzZXJOYW1lUgh1c2VyTmFtZSI3ChBTaW5nbGVVc2VyUG9pbnRzEiMKBnBvaW50cxgBIAEoBUIL4j8IEgZwb
+  2ludHNSBnBvaW50cyI7Cg5VcGRhdGVSZXNwb25zZRIpCghyZXNwb25zZRgBIAEoCEIN4j8KEghyZXNwb25zZVIIcmVzcG9uc2UiN
+  goMSGVsbG9NZXNzYWdlEiYKB21lc3NhZ2UYASABKAlCDOI/CRIHbWVzc2FnZVIHbWVzc2FnZSJgCgtHYW1lTWVzc2FnZRImCgdhZ
+  GRyZXNzGAEgASgJQgziPwkSB2FkZHJlc3NSB2FkZHJlc3MSKQoIZm9yZW5hbWUYAiABKAlCDeI/ChIIZm9yZW5hbWVSCGZvcmVuY
+  W1lIhEKD0Nsb3NpbmdSZXNwb25zZSIUChJPcGVuZWRHYW1lc1JlcXVlc3QiEQoPTmV3R2FtZVJlc3BvbnNlIkIKC09wZW5lZEdhb
+  WVzEjMKDGNsdXN0ZXJfbmFtZRgBIAMoCUIQ4j8NEgtjbHVzdGVyTmFtZVILY2x1c3Rlck5hbWUiWAoMTG9naW5SZXF1ZXN0Eh0KB
+  G5hbWUYASABKAlCCeI/BhIEbmFtZVIEbmFtZRIpCghwYXNzd29yZBgCIAEoCUIN4j8KEghwYXNzd29yZFIIcGFzc3dvcmQiOAoLT
+  G9naW5SZXN1bHQSKQoIcmVzcG9uc2UYASABKAhCDeI/ChIIcmVzcG9uc2VSCHJlc3BvbnNlMrwECgZTZXJ2ZXISPwoFSGVsbG8SG
+  S5ncnBjU2VydmljZS5IZWxsb01lc3NhZ2UaGS5ncnBjU2VydmljZS5IZWxsb01lc3NhZ2UiABI+CgVMb2dpbhIZLmdycGNTZXJ2a
+  WNlLkxvZ2luUmVxdWVzdBoYLmdycGNTZXJ2aWNlLkxvZ2luUmVzdWx0IgASQQoIUmVnaXN0ZXISGS5ncnBjU2VydmljZS5Mb2dpb
+  lJlcXVlc3QaGC5ncnBjU2VydmljZS5Mb2dpblJlc3VsdCIAEk0KDkdldE9wZW5lZEdhbWVzEh8uZ3JwY1NlcnZpY2UuT3BlbmVkR
+  2FtZXNSZXF1ZXN0GhguZ3JwY1NlcnZpY2UuT3BlbmVkR2FtZXMiABJFCglDbG9zZUdhbWUSGC5ncnBjU2VydmljZS5HYW1lTWVzc
+  2FnZRocLmdycGNTZXJ2aWNlLkNsb3NpbmdSZXNwb25zZSIAEkMKB05ld0dhbWUSGC5ncnBjU2VydmljZS5HYW1lTWVzc2FnZRocL
+  mdycGNTZXJ2aWNlLk5ld0dhbWVSZXNwb25zZSIAEkoKEFVwZGF0ZVVzZXJQb2ludHMSFy5ncnBjU2VydmljZS5Vc2VyUG9pbnRzG
+  hsuZ3JwY1NlcnZpY2UuVXBkYXRlUmVzcG9uc2UiABJHCg1HZXRVc2VyUG9pbnRzEhUuZ3JwY1NlcnZpY2UuVXNlckluZm8aHS5nc
+  nBjU2VydmljZS5TaW5nbGVVc2VyUG9pbnRzIgBCIAoLZ3JwY1NlcnZpY2VCD0hlbGxvV29ybGRQcm90b1ABYgZwcm90bzM=&quot;&quot;&quot;
       ).mkString)
         </td>
       </tr><tr>
         <td>
-          40
+          44
         </td>
         <td>
-          1994
+          2149
         </td>
         <td>
-          911
+          975
           -
-          2557
+          2875
         </td>
         <td>
           Select
@@ -300,34 +310,36 @@
         <td style="background: #AEF1AE">
           scala.collection.immutable.Seq(
   &quot;&quot;&quot;Cg5tZXNzYWdlcy5wcm90bxILZ3JwY1NlcnZpY2UiXAoKVXNlclBvaW50cxIpCgh1c2VyTmFtZRgBIAMoCUIN4j8KEgh1c2VyT
-  mFtZVIIdXNlck5hbWUSIwoGcG9pbnRzGAIgAygFQgviPwgSBnBvaW50c1IGcG9pbnRzIjsKDlVwZGF0ZVJlc3BvbnNlEikKCHJlc
-  3BvbnNlGAEgASgIQg3iPwoSCHJlc3BvbnNlUghyZXNwb25zZSI2CgxIZWxsb01lc3NhZ2USJgoHbWVzc2FnZRgBIAEoCUIM4j8JE
-  gdtZXNzYWdlUgdtZXNzYWdlImAKC0dhbWVNZXNzYWdlEiYKB2FkZHJlc3MYASABKAlCDOI/CRIHYWRkcmVzc1IHYWRkcmVzcxIpC
-  ghmb3JlbmFtZRgCIAEoCUIN4j8KEghmb3JlbmFtZVIIZm9yZW5hbWUiEQoPQ2xvc2luZ1Jlc3BvbnNlIhQKEk9wZW5lZEdhbWVzU
-  mVxdWVzdCIRCg9OZXdHYW1lUmVzcG9uc2UiQgoLT3BlbmVkR2FtZXMSMwoMY2x1c3Rlcl9uYW1lGAEgAygJQhDiPw0SC2NsdXN0Z
-  XJOYW1lUgtjbHVzdGVyTmFtZSJYCgxMb2dpblJlcXVlc3QSHQoEbmFtZRgBIAEoCUIJ4j8GEgRuYW1lUgRuYW1lEikKCHBhc3N3b
-  3JkGAIgASgJQg3iPwoSCHBhc3N3b3JkUghwYXNzd29yZCI4CgtMb2dpblJlc3VsdBIpCghyZXNwb25zZRgBIAEoCEIN4j8KEghyZ
-  XNwb25zZVIIcmVzcG9uc2Uy8wMKBlNlcnZlchI/CgVIZWxsbxIZLmdycGNTZXJ2aWNlLkhlbGxvTWVzc2FnZRoZLmdycGNTZXJ2a
-  WNlLkhlbGxvTWVzc2FnZSIAEj4KBUxvZ2luEhkuZ3JwY1NlcnZpY2UuTG9naW5SZXF1ZXN0GhguZ3JwY1NlcnZpY2UuTG9naW5SZ
-  XN1bHQiABJBCghSZWdpc3RlchIZLmdycGNTZXJ2aWNlLkxvZ2luUmVxdWVzdBoYLmdycGNTZXJ2aWNlLkxvZ2luUmVzdWx0IgAST
-  QoOR2V0T3BlbmVkR2FtZXMSHy5ncnBjU2VydmljZS5PcGVuZWRHYW1lc1JlcXVlc3QaGC5ncnBjU2VydmljZS5PcGVuZWRHYW1lc
-  yIAEkUKCUNsb3NlR2FtZRIYLmdycGNTZXJ2aWNlLkdhbWVNZXNzYWdlGhwuZ3JwY1NlcnZpY2UuQ2xvc2luZ1Jlc3BvbnNlIgASQ
-  woHTmV3R2FtZRIYLmdycGNTZXJ2aWNlLkdhbWVNZXNzYWdlGhwuZ3JwY1NlcnZpY2UuTmV3R2FtZVJlc3BvbnNlIgASSgoQVXBkY
-  XRlVXNlclBvaW50cxIXLmdycGNTZXJ2aWNlLlVzZXJQb2ludHMaGy5ncnBjU2VydmljZS5VcGRhdGVSZXNwb25zZSIAQiAKC2dyc
-  GNTZXJ2aWNlQg9IZWxsb1dvcmxkUHJvdG9QAWIGcHJvdG8z&quot;&quot;&quot;
+  mFtZVIIdXNlck5hbWUSIwoGcG9pbnRzGAIgAygFQgviPwgSBnBvaW50c1IGcG9pbnRzIjUKCFVzZXJJbmZvEikKCHVzZXJOYW1lG
+  AEgASgJQg3iPwoSCHVzZXJOYW1lUgh1c2VyTmFtZSI3ChBTaW5nbGVVc2VyUG9pbnRzEiMKBnBvaW50cxgBIAEoBUIL4j8IEgZwb
+  2ludHNSBnBvaW50cyI7Cg5VcGRhdGVSZXNwb25zZRIpCghyZXNwb25zZRgBIAEoCEIN4j8KEghyZXNwb25zZVIIcmVzcG9uc2UiN
+  goMSGVsbG9NZXNzYWdlEiYKB21lc3NhZ2UYASABKAlCDOI/CRIHbWVzc2FnZVIHbWVzc2FnZSJgCgtHYW1lTWVzc2FnZRImCgdhZ
+  GRyZXNzGAEgASgJQgziPwkSB2FkZHJlc3NSB2FkZHJlc3MSKQoIZm9yZW5hbWUYAiABKAlCDeI/ChIIZm9yZW5hbWVSCGZvcmVuY
+  W1lIhEKD0Nsb3NpbmdSZXNwb25zZSIUChJPcGVuZWRHYW1lc1JlcXVlc3QiEQoPTmV3R2FtZVJlc3BvbnNlIkIKC09wZW5lZEdhb
+  WVzEjMKDGNsdXN0ZXJfbmFtZRgBIAMoCUIQ4j8NEgtjbHVzdGVyTmFtZVILY2x1c3Rlck5hbWUiWAoMTG9naW5SZXF1ZXN0Eh0KB
+  G5hbWUYASABKAlCCeI/BhIEbmFtZVIEbmFtZRIpCghwYXNzd29yZBgCIAEoCUIN4j8KEghwYXNzd29yZFIIcGFzc3dvcmQiOAoLT
+  G9naW5SZXN1bHQSKQoIcmVzcG9uc2UYASABKAhCDeI/ChIIcmVzcG9uc2VSCHJlc3BvbnNlMrwECgZTZXJ2ZXISPwoFSGVsbG8SG
+  S5ncnBjU2VydmljZS5IZWxsb01lc3NhZ2UaGS5ncnBjU2VydmljZS5IZWxsb01lc3NhZ2UiABI+CgVMb2dpbhIZLmdycGNTZXJ2a
+  WNlLkxvZ2luUmVxdWVzdBoYLmdycGNTZXJ2aWNlLkxvZ2luUmVzdWx0IgASQQoIUmVnaXN0ZXISGS5ncnBjU2VydmljZS5Mb2dpb
+  lJlcXVlc3QaGC5ncnBjU2VydmljZS5Mb2dpblJlc3VsdCIAEk0KDkdldE9wZW5lZEdhbWVzEh8uZ3JwY1NlcnZpY2UuT3BlbmVkR
+  2FtZXNSZXF1ZXN0GhguZ3JwY1NlcnZpY2UuT3BlbmVkR2FtZXMiABJFCglDbG9zZUdhbWUSGC5ncnBjU2VydmljZS5HYW1lTWVzc
+  2FnZRocLmdycGNTZXJ2aWNlLkNsb3NpbmdSZXNwb25zZSIAEkMKB05ld0dhbWUSGC5ncnBjU2VydmljZS5HYW1lTWVzc2FnZRocL
+  mdycGNTZXJ2aWNlLk5ld0dhbWVSZXNwb25zZSIAEkoKEFVwZGF0ZVVzZXJQb2ludHMSFy5ncnBjU2VydmljZS5Vc2VyUG9pbnRzG
+  hsuZ3JwY1NlcnZpY2UuVXBkYXRlUmVzcG9uc2UiABJHCg1HZXRVc2VyUG9pbnRzEhUuZ3JwY1NlcnZpY2UuVXNlckluZm8aHS5nc
+  nBjU2VydmljZS5TaW5nbGVVc2VyUG9pbnRzIgBCIAoLZ3JwY1NlcnZpY2VCD0hlbGxvV29ybGRQcm90b1ABYgZwcm90bzM=&quot;&quot;&quot;
       ).mkString
         </td>
       </tr><tr>
         <td>
-          42
+          46
         </td>
         <td>
-          1996
+          2151
         </td>
         <td>
-          2654
+          2972
           -
-          2726
+          3044
         </td>
         <td>
           Apply
@@ -343,15 +355,15 @@
         </td>
       </tr><tr>
         <td>
-          43
+          47
         </td>
         <td>
-          1997
+          2152
         </td>
         <td>
-          2812
+          3130
           -
-          2829
+          3147
         </td>
         <td>
           Select
@@ -367,15 +379,15 @@
         </td>
       </tr><tr>
         <td>
-          43
+          47
         </td>
         <td>
-          1999
+          2154
         </td>
         <td>
-          2731
+          3049
           -
-          2831
+          3149
         </td>
         <td>
           Apply
@@ -391,15 +403,15 @@
         </td>
       </tr><tr>
         <td>
-          43
+          47
         </td>
         <td>
-          1998
+          2153
         </td>
         <td>
-          2795
+          3113
           -
-          2830
+          3148
         </td>
         <td>
           Apply
@@ -415,15 +427,15 @@
         </td>
       </tr><tr>
         <td>
-          46
+          50
         </td>
         <td>
-          2000
+          2155
         </td>
         <td>
-          2934
+          3252
           -
-          3012
+          3330
         </td>
         <td>
           Apply
@@ -439,40 +451,15 @@
         </td>
       </tr><tr>
         <td>
-          47
+          51
         </td>
         <td>
-          2002
+          2156
         </td>
         <td>
-          3017
+          3403
           -
-          3111
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          buildFrom
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          com.google.protobuf.Descriptors.FileDescriptor.buildFrom(javaProto, _root_.scala.Array(
-    ))
-        </td>
-      </tr><tr>
-        <td>
-          47
-        </td>
-        <td>
-          2001
-        </td>
-        <td>
-          3085
-          -
-          3110
+          3428
         </td>
         <td>
           Apply
@@ -492,12 +479,37 @@
           51
         </td>
         <td>
-          2003
+          2157
         </td>
         <td>
-          3118
+          3335
           -
-          3251
+          3429
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          buildFrom
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          com.google.protobuf.Descriptors.FileDescriptor.buildFrom(javaProto, _root_.scala.Array(
+    ))
+        </td>
+      </tr><tr>
+        <td>
+          55
+        </td>
+        <td>
+          2158
+        </td>
+        <td>
+          3436
+          -
+          3569
         </td>
         <td>
           DefDef

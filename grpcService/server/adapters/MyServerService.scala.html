@@ -59,14 +59,20 @@
 </span>35 <span style=''>    </span><span style='background: #AEF1AE'>Future.successful(ClosingResponse())</span><span style=''>
 </span>36 <span style=''>
 </span>37 <span style=''>  </span><span style='background: #AEF1AE'>override def newGame</span><span style=''>(in: GameMessage): Future[NewGameResponse] =
-</span>38 <span style=''>    </span><span style='background: #AEF1AE'>inboundPorts.gamesManagementPort.openNewGame(in.address, in.forename)</span><span style=''>
-</span>39 <span style=''>    </span><span style='background: #AEF1AE'>Future.successful(NewGameResponse())</span><span style=''>
-</span>40 <span style=''>
-</span>41 <span style=''>  </span><span style='background: #AEF1AE'>override def updateUserPoints</span><span style=''>(in: UserPoints): Future[UpdateResponse] =
-</span>42 <span style=''>    val result: Boolean = </span><span style='background: #AEF1AE'>inboundPorts.gamesManagementPort.updateUsers(in.userName.toList, in.points.toList)</span><span style=''>
-</span>43 <span style=''>    </span><span style='background: #AEF1AE'>Future.successful(UpdateResponse(result))</span><span style=''>
-</span>44 <span style=''>
-</span>45 <span style=''>}
+</span>38 <span style=''>    val result = </span><span style='background: #AEF1AE'>inboundPorts.gamesManagementPort.openNewGame(in.address, in.forename)</span><span style=''>
+</span>39 <span style=''>    result match
+</span>40 <span style=''>      </span><span style='background: #AEF1AE'>case true</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>Future.successful(NewGameResponse())</span><span style=''>
+</span>41 <span style=''>      </span><span style='background: #F0ADAD'>case false</span><span style=''> =&gt; </span><span style='background: #F0ADAD'>Future.failed(new IllegalStateException(&quot;Game already created&quot;))</span><span style=''>
+</span>42 <span style=''>
+</span>43 <span style=''>  </span><span style='background: #AEF1AE'>override def updateUserPoints</span><span style=''>(in: UserPoints): Future[UpdateResponse] =
+</span>44 <span style=''>    val result: Boolean = </span><span style='background: #AEF1AE'>inboundPorts.gamesManagementPort.updateUsers(in.userName.toList, in.points.toList)</span><span style=''>
+</span>45 <span style=''>    </span><span style='background: #AEF1AE'>Future.successful(UpdateResponse(result))</span><span style=''>
+</span>46 <span style=''>
+</span>47 <span style=''>  </span><span style='background: #F0ADAD'>override def getUserPoints</span><span style=''>(in: UserInfo): Future[SingleUserPoints] =
+</span>48 <span style=''>    val username = in.userName
+</span>49 <span style=''>    </span><span style='background: #F0ADAD'>Future.successful(SingleUserPoints(inboundPorts.gamesManagementPort.getSingleUserPoints(username)))</span><span style=''>
+</span>50 <span style=''>
+</span>51 <span style=''>}
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -84,7 +90,7 @@
           14
         </td>
         <td>
-          1181
+          1312
         </td>
         <td>
           460
@@ -108,7 +114,7 @@
           16
         </td>
         <td>
-          1178
+          1309
         </td>
         <td>
           582
@@ -132,7 +138,7 @@
           16
         </td>
         <td>
-          1177
+          1308
         </td>
         <td>
           582
@@ -156,7 +162,7 @@
           16
         </td>
         <td>
-          1180
+          1311
         </td>
         <td>
           551
@@ -180,7 +186,7 @@
           16
         </td>
         <td>
-          1179
+          1310
         </td>
         <td>
           569
@@ -204,7 +210,7 @@
           18
         </td>
         <td>
-          1188
+          1319
         </td>
         <td>
           610
@@ -228,7 +234,7 @@
           19
         </td>
         <td>
-          1182
+          1313
         </td>
         <td>
           686
@@ -252,7 +258,7 @@
           20
         </td>
         <td>
-          1187
+          1318
         </td>
         <td>
           738
@@ -278,7 +284,7 @@
           20
         </td>
         <td>
-          1186
+          1317
         </td>
         <td>
           756
@@ -302,7 +308,31 @@
           21
         </td>
         <td>
-          1183
+          1315
+        </td>
+        <td>
+          821
+          -
+          829
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          _2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          tuple._2
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          1314
         </td>
         <td>
           811
@@ -326,7 +356,7 @@
           21
         </td>
         <td>
-          1185
+          1316
         </td>
         <td>
           775
@@ -347,34 +377,10 @@
         </td>
       </tr><tr>
         <td>
-          21
-        </td>
-        <td>
-          1184
-        </td>
-        <td>
-          821
-          -
-          829
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          _2
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          tuple._2
-        </td>
-      </tr><tr>
-        <td>
           24
         </td>
         <td>
-          1192
+          1323
         </td>
         <td>
           841
@@ -398,7 +404,31 @@
           25
         </td>
         <td>
-          1189
+          1321
+        </td>
+        <td>
+          938
+          -
+          1019
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          protoToGames
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ProtoToDomainAdapter.protoToGames(inboundPorts.gamesManagementPort.getAllGames())
+        </td>
+      </tr><tr>
+        <td>
+          25
+        </td>
+        <td>
+          1320
         </td>
         <td>
           972
@@ -422,7 +452,7 @@
           25
         </td>
         <td>
-          1191
+          1322
         </td>
         <td>
           920
@@ -443,34 +473,10 @@
         </td>
       </tr><tr>
         <td>
-          25
-        </td>
-        <td>
-          1190
-        </td>
-        <td>
-          938
-          -
-          1019
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          protoToGames
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ProtoToDomainAdapter.protoToGames(inboundPorts.gamesManagementPort.getAllGames())
-        </td>
-      </tr><tr>
-        <td>
           27
         </td>
         <td>
-          1199
+          1330
         </td>
         <td>
           1024
@@ -494,7 +500,7 @@
           28
         </td>
         <td>
-          1193
+          1324
         </td>
         <td>
           1103
@@ -518,7 +524,7 @@
           29
         </td>
         <td>
-          1196
+          1327
         </td>
         <td>
           1155
@@ -542,7 +548,7 @@
           29
         </td>
         <td>
-          1195
+          1326
         </td>
         <td>
           1204
@@ -566,7 +572,7 @@
           29
         </td>
         <td>
-          1194
+          1325
         </td>
         <td>
           1194
@@ -590,7 +596,7 @@
           30
         </td>
         <td>
-          1198
+          1329
         </td>
         <td>
           1218
@@ -614,7 +620,7 @@
           30
         </td>
         <td>
-          1197
+          1328
         </td>
         <td>
           1236
@@ -638,7 +644,7 @@
           32
         </td>
         <td>
-          1203
+          1334
         </td>
         <td>
           1258
@@ -662,7 +668,7 @@
           33
         </td>
         <td>
-          1200
+          1331
         </td>
         <td>
           1329
@@ -686,31 +692,7 @@
           34
         </td>
         <td>
-          1201
-        </td>
-        <td>
-          1419
-          -
-          1434
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          $lessinit$greater$default$1
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ClosingResponse
-        </td>
-      </tr><tr>
-        <td>
-          34
-        </td>
-        <td>
-          1202
+          1333
         </td>
         <td>
           1401
@@ -731,10 +713,34 @@
         </td>
       </tr><tr>
         <td>
+          34
+        </td>
+        <td>
+          1332
+        </td>
+        <td>
+          1419
+          -
+          1434
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          $lessinit$greater$default$1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ClosingResponse
+        </td>
+      </tr><tr>
+        <td>
           36
         </td>
         <td>
-          1207
+          1342
         </td>
         <td>
           1441
@@ -758,12 +764,12 @@
           37
         </td>
         <td>
-          1204
+          1335
         </td>
         <td>
-          1510
+          1523
           -
-          1579
+          1592
         </td>
         <td>
           Apply
@@ -779,15 +785,15 @@
         </td>
       </tr><tr>
         <td>
-          38
+          39
         </td>
         <td>
-          1205
+          1336
         </td>
         <td>
-          1602
+          1647
           -
-          1617
+          1662
         </td>
         <td>
           Select
@@ -803,15 +809,39 @@
         </td>
       </tr><tr>
         <td>
-          38
+          39
         </td>
         <td>
-          1206
+          1338
         </td>
         <td>
-          1584
+          1616
           -
-          1620
+          1625
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          case true
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          1337
+        </td>
+        <td>
+          1629
+          -
+          1665
         </td>
         <td>
           Apply
@@ -830,12 +860,84 @@
           40
         </td>
         <td>
-          1213
+          1339
         </td>
         <td>
-          1624
+          1700
           -
-          1653
+          1749
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new IllegalStateException(&quot;Game already created&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          40
+        </td>
+        <td>
+          1341
+        </td>
+        <td>
+          1672
+          -
+          1682
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case false
+        </td>
+      </tr><tr>
+        <td>
+          40
+        </td>
+        <td>
+          1340
+        </td>
+        <td>
+          1686
+          -
+          1750
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          failed
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Future.failed(new IllegalStateException(&quot;Game already created&quot;))
+        </td>
+      </tr><tr>
+        <td>
+          42
+        </td>
+        <td>
+          1348
+        </td>
+        <td>
+          1754
+          -
+          1783
         </td>
         <td>
           DefDef
@@ -851,15 +953,15 @@
         </td>
       </tr><tr>
         <td>
-          41
+          43
         </td>
         <td>
-          1210
+          1345
         </td>
         <td>
-          1722
+          1852
           -
-          1804
+          1934
         </td>
         <td>
           Apply
@@ -875,15 +977,15 @@
         </td>
       </tr><tr>
         <td>
-          41
+          43
         </td>
         <td>
-          1209
+          1344
         </td>
         <td>
-          1787
+          1917
           -
-          1803
+          1933
         </td>
         <td>
           Select
@@ -899,15 +1001,15 @@
         </td>
       </tr><tr>
         <td>
-          41
+          43
         </td>
         <td>
-          1208
+          1343
         </td>
         <td>
-          1767
+          1897
           -
-          1785
+          1915
         </td>
         <td>
           Select
@@ -923,15 +1025,15 @@
         </td>
       </tr><tr>
         <td>
-          42
+          44
         </td>
         <td>
-          1212
+          1347
         </td>
         <td>
-          1809
+          1939
           -
-          1850
+          1980
         </td>
         <td>
           Apply
@@ -947,15 +1049,15 @@
         </td>
       </tr><tr>
         <td>
-          42
+          44
         </td>
         <td>
-          1211
+          1346
         </td>
         <td>
-          1827
+          1957
           -
-          1841
+          1971
         </td>
         <td>
           Select
@@ -968,6 +1070,102 @@
         </td>
         <td style="background: #AEF1AE">
           UpdateResponse
+        </td>
+      </tr><tr>
+        <td>
+          46
+        </td>
+        <td>
+          1352
+        </td>
+        <td>
+          1984
+          -
+          2010
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getUserPoints
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          override def getUserPoints
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          1351
+        </td>
+        <td>
+          2088
+          -
+          2187
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          successful
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          Future.successful(SingleUserPoints(inboundPorts.gamesManagementPort.getSingleUserPoints(username)))
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          1350
+        </td>
+        <td>
+          2106
+          -
+          2122
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          $lessinit$greater$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          SingleUserPoints
+        </td>
+      </tr><tr>
+        <td>
+          48
+        </td>
+        <td>
+          1349
+        </td>
+        <td>
+          2123
+          -
+          2185
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          getSingleUserPoints
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          inboundPorts.gamesManagementPort.getSingleUserPoints(username)
         </td>
       </tr>
     </table>

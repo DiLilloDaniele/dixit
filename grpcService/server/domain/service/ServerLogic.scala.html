@@ -35,20 +35,23 @@
 </span>11 <span style=''>
 </span>12 <span style=''>  </span><span style='background: #AEF1AE'>def retrieveUser</span><span style=''>(userId: String) = </span><span style='background: #AEF1AE'>accessRepository.selectUser(userId)</span><span style=''>
 </span>13 <span style=''>
-</span>14 <span style=''>  // TODO da gestire lato server e proto
-</span>15 <span style=''>  </span><span style='background: #AEF1AE'>def updateUser</span><span style=''>(user: String, pointsToAdd: Int) = </span><span style='background: #AEF1AE'>accessRepository.addPointsToUser(user, pointsToAdd)</span><span style=''>
-</span>16 <span style=''>
-</span>17 <span style=''>  </span><span style='background: #AEF1AE'>def removeGame</span><span style=''>(game: Game) = openGames = </span><span style='background: #AEF1AE'>openGames - game</span><span style=''>
-</span>18 <span style=''>
-</span>19 <span style=''>  </span><span style='background: #AEF1AE'>def getGames</span><span style=''>() = openGames
-</span>20 <span style=''>
-</span>21 <span style=''>  </span><span style='background: #AEF1AE'>def newGame</span><span style=''>(game: Game) = openGames = </span><span style='background: #AEF1AE'>openGames + game</span><span style=''>
-</span>22 <span style=''>
-</span>23 <span style=''>  </span><span style='background: #AEF1AE'>def login</span><span style=''>(user: User): Boolean = </span><span style='background: #AEF1AE'>retrieveUser(user.name)</span><span style=''> match
-</span>24 <span style=''>    </span><span style='background: #AEF1AE'>case Some(_user)</span><span style=''> =&gt; _user.password == user.password
-</span>25 <span style=''>    </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt; false
-</span>26 <span style=''>    
-</span>27 <span style=''>}
+</span>14 <span style=''>  </span><span style='background: #AEF1AE'>def updateUser</span><span style=''>(user: String, pointsToAdd: Int) = </span><span style='background: #AEF1AE'>accessRepository.addPointsToUser(user, pointsToAdd)</span><span style=''>
+</span>15 <span style=''>
+</span>16 <span style=''>  </span><span style='background: #AEF1AE'>def removeGame</span><span style=''>(game: Game) = openGames = </span><span style='background: #AEF1AE'>openGames - game</span><span style=''>
+</span>17 <span style=''>
+</span>18 <span style=''>  </span><span style='background: #AEF1AE'>def getGames</span><span style=''>() = openGames
+</span>19 <span style=''>
+</span>20 <span style=''>  </span><span style='background: #AEF1AE'>def newGame</span><span style=''>(game: Game): Boolean = 
+</span>21 <span style=''>    if(</span><span style='background: #AEF1AE'>openGames.contains(game)</span><span style=''>)
+</span>22 <span style=''>      </span><span style='background: #F0ADAD'>return false</span><span style=''>
+</span>23 <span style=''>    openGames = </span><span style='background: #AEF1AE'>openGames + game</span><span style=''>
+</span>24 <span style=''>    true
+</span>25 <span style=''>
+</span>26 <span style=''>  </span><span style='background: #AEF1AE'>def login</span><span style=''>(user: User): Boolean = </span><span style='background: #AEF1AE'>retrieveUser(user.name)</span><span style=''> match
+</span>27 <span style=''>    </span><span style='background: #AEF1AE'>case Some(_user)</span><span style=''> =&gt; _user.password == user.password
+</span>28 <span style=''>    </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt; false
+</span>29 <span style=''>    
+</span>30 <span style=''>}
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -66,7 +69,7 @@
           7
         </td>
         <td>
-          1538
+          1691
         </td>
         <td>
           248
@@ -90,7 +93,7 @@
           9
         </td>
         <td>
-          1539
+          1692
         </td>
         <td>
           309
@@ -114,7 +117,7 @@
           9
         </td>
         <td>
-          1540
+          1693
         </td>
         <td>
           257
@@ -138,7 +141,7 @@
           11
         </td>
         <td>
-          1542
+          1695
         </td>
         <td>
           364
@@ -162,7 +165,7 @@
           11
         </td>
         <td>
-          1541
+          1694
         </td>
         <td>
           399
@@ -183,15 +186,15 @@
         </td>
       </tr><tr>
         <td>
-          14
+          13
         </td>
         <td>
-          1544
+          1697
         </td>
         <td>
-          479
+          438
           -
-          493
+          452
         </td>
         <td>
           DefDef
@@ -207,15 +210,15 @@
         </td>
       </tr><tr>
         <td>
-          14
+          13
         </td>
         <td>
-          1543
+          1696
         </td>
         <td>
-          528
+          487
           -
-          579
+          538
         </td>
         <td>
           Apply
@@ -231,15 +234,15 @@
         </td>
       </tr><tr>
         <td>
-          16
+          15
         </td>
         <td>
-          1545
+          1698
         </td>
         <td>
-          624
+          583
           -
-          640
+          599
         </td>
         <td>
           Apply
@@ -255,15 +258,15 @@
         </td>
       </tr><tr>
         <td>
-          16
+          15
         </td>
         <td>
-          1546
+          1699
         </td>
         <td>
-          583
+          542
           -
-          597
+          556
         </td>
         <td>
           DefDef
@@ -279,15 +282,15 @@
         </td>
       </tr><tr>
         <td>
-          18
+          17
         </td>
         <td>
-          1547
+          1700
         </td>
         <td>
-          644
+          603
           -
-          656
+          615
         </td>
         <td>
           DefDef
@@ -303,39 +306,15 @@
         </td>
       </tr><tr>
         <td>
-          20
+          19
         </td>
         <td>
-          1548
+          1704
         </td>
         <td>
-          712
+          633
           -
-          728
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          openGames + game
-        </td>
-      </tr><tr>
-        <td>
-          20
-        </td>
-        <td>
-          1549
-        </td>
-        <td>
-          674
-          -
-          685
+          644
         </td>
         <td>
           DefDef
@@ -351,15 +330,87 @@
         </td>
       </tr><tr>
         <td>
+          20
+        </td>
+        <td>
+          1701
+        </td>
+        <td>
+          676
+          -
+          700
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          contains
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          openGames.contains(game)
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          1702
+        </td>
+        <td>
+          708
+          -
+          720
+        </td>
+        <td>
+          Return
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          return false
+        </td>
+      </tr><tr>
+        <td>
           22
         </td>
         <td>
-          1550
+          1703
         </td>
         <td>
-          765
+          737
           -
-          788
+          753
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          openGames + game
+        </td>
+      </tr><tr>
+        <td>
+          25
+        </td>
+        <td>
+          1705
+        </td>
+        <td>
+          799
+          -
+          822
         </td>
         <td>
           Apply
@@ -375,15 +426,15 @@
         </td>
       </tr><tr>
         <td>
-          22
+          25
         </td>
         <td>
-          1553
+          1708
         </td>
         <td>
-          732
+          766
           -
-          741
+          775
         </td>
         <td>
           DefDef
@@ -399,15 +450,15 @@
         </td>
       </tr><tr>
         <td>
-          23
+          26
         </td>
         <td>
-          1551
+          1706
         </td>
         <td>
-          799
+          833
           -
-          815
+          849
         </td>
         <td>
           Block
@@ -423,15 +474,15 @@
         </td>
       </tr><tr>
         <td>
-          24
+          27
         </td>
         <td>
-          1552
+          1707
         </td>
         <td>
-          855
+          889
           -
-          861
+          895
         </td>
         <td>
           Block

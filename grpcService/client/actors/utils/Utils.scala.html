@@ -35,29 +35,47 @@
 </span>11 <span style=''>
 </span>12 <span style=''>object Utils:
 </span>13 <span style=''>
-</span>14 <span style=''>  </span><span style='background: #AEF1AE'>def startupWithRole</span><span style=''>[X](role: String, port: String, ip: String, clusterName: String = &quot;ClusterSystem&quot;)(root: =&gt; Behavior[X]): ActorSystem[X] =
-</span>15 <span style=''>    val config = </span><span style='background: #AEF1AE'>ConfigFactory
-</span>16 <span style=''></span><span style='background: #AEF1AE'>      .parseString(
-</span>17 <span style=''></span><span style='background: #AEF1AE'>        s&quot;&quot;&quot;
-</span>18 <span style=''></span><span style='background: #AEF1AE'>        akka.remote.artery.canonical.hostname=$ip
-</span>19 <span style=''></span><span style='background: #AEF1AE'>        akka.remote.artery.canonical.port=$port
-</span>20 <span style=''></span><span style='background: #AEF1AE'>        akka.cluster.roles = [$role]
-</span>21 <span style=''></span><span style='background: #AEF1AE'>        &quot;&quot;&quot;)
-</span>22 <span style=''></span><span style='background: #AEF1AE'>      .withFallback(ConfigFactory.load(&quot;base-cluster&quot;))</span><span style=''>
-</span>23 <span style=''>
-</span>24 <span style=''>    // Create an Akka system
-</span>25 <span style=''>    </span><span style='background: #AEF1AE'>ActorSystem(root, clusterName, config)</span><span style=''>
-</span>26 <span style=''>
-</span>27 <span style=''>  </span><span style='background: #F0ADAD'>@main def main</span><span style=''>() =
-</span>28 <span style=''>
-</span>29 <span style=''>    val reader: BufferedReader = </span><span style='background: #F0ADAD'>new BufferedReader(new InputStreamReader(System.in))</span><span style=''>;
-</span>30 <span style=''>    </span><span style='background: #F0ADAD'>System.out.print(&quot;Inserisci l'ip&quot;)</span><span style=''>
-</span>31 <span style=''>    val ipAddress: String = </span><span style='background: #F0ADAD'>reader.readLine()</span><span style=''>;
-</span>32 <span style=''>
-</span>33 <span style=''>    val port: String = </span><span style='background: #F0ADAD'>reader.readLine()</span><span style=''>;
-</span>34 <span style=''>
-</span>35 <span style=''>    </span><span style='background: #F0ADAD'>System.out.print(ipAddress + &quot;:&quot; + port)</span><span style=''>
-</span>36 <span style=''>    val sender = </span><span style='background: #F0ADAD'>startupWithRole(&quot;sender&quot;, port, ipAddress)(ForemanBehavior())</span><span style=''>;
+</span>14 <span style=''>  </span><span style='background: #F0ADAD'>def startupWithRoleForTest</span><span style=''>[X](role: String, port: String, ip: String, clusterName: String = &quot;ClusterSystem&quot;)(root: =&gt; Behavior[X]): ActorSystem[X] =
+</span>15 <span style=''>    val config = </span><span style='background: #F0ADAD'>ConfigFactory
+</span>16 <span style=''></span><span style='background: #F0ADAD'>      .parseString(
+</span>17 <span style=''></span><span style='background: #F0ADAD'>        s&quot;&quot;&quot;
+</span>18 <span style=''></span><span style='background: #F0ADAD'>        akka.remote.artery.canonical.hostname=$ip
+</span>19 <span style=''></span><span style='background: #F0ADAD'>        akka.remote.artery.canonical.port=$port
+</span>20 <span style=''></span><span style='background: #F0ADAD'>        akka.cluster.roles = [$role]
+</span>21 <span style=''></span><span style='background: #F0ADAD'>        akka.cluster.seed-nodes = [
+</span>22 <span style=''></span><span style='background: #F0ADAD'>        ]
+</span>23 <span style=''></span><span style='background: #F0ADAD'>        &quot;&quot;&quot;)
+</span>24 <span style=''></span><span style='background: #F0ADAD'>      .withFallback(ConfigFactory.load(&quot;application-test&quot;))</span><span style=''>
+</span>25 <span style=''>      // Create an Akka system
+</span>26 <span style=''>    </span><span style='background: #F0ADAD'>ActorSystem(root, clusterName, config)</span><span style=''>
+</span>27 <span style=''>
+</span>28 <span style=''>  </span><span style='background: #AEF1AE'>def startupWithRole</span><span style=''>[X](role: String, port: String, ip: String, clusterName: String = &quot;ClusterSystem&quot;)(root: =&gt; Behavior[X]): ActorSystem[X] =
+</span>29 <span style=''>    val config = </span><span style='background: #AEF1AE'>ConfigFactory
+</span>30 <span style=''></span><span style='background: #AEF1AE'>      .parseString(
+</span>31 <span style=''></span><span style='background: #AEF1AE'>        s&quot;&quot;&quot;
+</span>32 <span style=''></span><span style='background: #AEF1AE'>        akka.remote.artery.canonical.hostname=$ip
+</span>33 <span style=''></span><span style='background: #AEF1AE'>        akka.remote.artery.canonical.port=$port
+</span>34 <span style=''></span><span style='background: #AEF1AE'>        akka.cluster.roles = [$role]
+</span>35 <span style=''></span><span style='background: #AEF1AE'>        akka.cluster.seed-nodes = [
+</span>36 <span style=''></span><span style='background: #AEF1AE'>          &quot;akka://$clusterName@127.0.0.1:2551&quot;,
+</span>37 <span style=''></span><span style='background: #AEF1AE'>          &quot;akka://$clusterName@127.0.0.1:2552&quot;
+</span>38 <span style=''></span><span style='background: #AEF1AE'>        ]
+</span>39 <span style=''></span><span style='background: #AEF1AE'>        &quot;&quot;&quot;)
+</span>40 <span style=''></span><span style='background: #AEF1AE'>      .withFallback(ConfigFactory.load(&quot;base-cluster&quot;))</span><span style=''>
+</span>41 <span style=''>
+</span>42 <span style=''>    // Create an Akka system
+</span>43 <span style=''>    </span><span style='background: #AEF1AE'>ActorSystem(root, clusterName, config)</span><span style=''>
+</span>44 <span style=''>
+</span>45 <span style=''>  </span><span style='background: #F0ADAD'>@main def main</span><span style=''>() =
+</span>46 <span style=''>
+</span>47 <span style=''>    val reader: BufferedReader = </span><span style='background: #F0ADAD'>new BufferedReader(new InputStreamReader(System.in))</span><span style=''>;
+</span>48 <span style=''>    </span><span style='background: #F0ADAD'>System.out.print(&quot;Inserisci l'ip&quot;)</span><span style=''>
+</span>49 <span style=''>    val ipAddress: String = </span><span style='background: #F0ADAD'>reader.readLine()</span><span style=''>;
+</span>50 <span style=''>
+</span>51 <span style=''>    val port: String = </span><span style='background: #F0ADAD'>reader.readLine()</span><span style=''>;
+</span>52 <span style=''>
+</span>53 <span style=''>    </span><span style='background: #F0ADAD'>System.out.print(ipAddress + &quot;:&quot; + port)</span><span style=''>
+</span>54 <span style=''>    val sender = </span><span style='background: #F0ADAD'>startupWithRole(&quot;sender&quot;, port, ipAddress)(ForemanBehavior())</span><span style=''>;
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -75,23 +93,23 @@
           13
         </td>
         <td>
-          854
+          908
         </td>
         <td>
-          495
+          502
           -
-          495
+          502
         </td>
         <td>
           DefDef
         </td>
         <td>
-          startupWithRole$default$4
+          startupWithRoleForTest$default$4
         </td>
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           
         </td>
       </tr><tr>
@@ -99,12 +117,179 @@
           13
         </td>
         <td>
-          853
+          907
         </td>
         <td>
           475
           -
-          494
+          501
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          startupWithRoleForTest
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def startupWithRoleForTest
+        </td>
+      </tr><tr>
+        <td>
+          15
+        </td>
+        <td>
+          903
+        </td>
+        <td>
+          641
+          -
+          881
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          parseString
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ConfigFactory
+      .parseString(
+        s&quot;&quot;&quot;
+        akka.remote.artery.canonical.hostname=$ip
+        akka.remote.artery.canonical.port=$port
+        akka.cluster.roles = [$role]
+        akka.cluster.seed-nodes = [
+        ]
+        &quot;&quot;&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          16
+        </td>
+        <td>
+          902
+        </td>
+        <td>
+          683
+          -
+          880
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          s
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          s&quot;&quot;&quot;
+        akka.remote.artery.canonical.hostname=$ip
+        akka.remote.artery.canonical.port=$port
+        akka.cluster.roles = [$role]
+        akka.cluster.seed-nodes = [
+        ]
+        &quot;&quot;&quot;
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          905
+        </td>
+        <td>
+          641
+          -
+          941
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          withFallback
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ConfigFactory
+      .parseString(
+        s&quot;&quot;&quot;
+        akka.remote.artery.canonical.hostname=$ip
+        akka.remote.artery.canonical.port=$port
+        akka.cluster.roles = [$role]
+        akka.cluster.seed-nodes = [
+        ]
+        &quot;&quot;&quot;)
+      .withFallback(ConfigFactory.load(&quot;application-test&quot;))
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          904
+        </td>
+        <td>
+          902
+          -
+          940
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          load
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ConfigFactory.load(&quot;application-test&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          25
+        </td>
+        <td>
+          906
+        </td>
+        <td>
+          977
+          -
+          1015
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ActorSystem(root, clusterName, config)
+        </td>
+      </tr><tr>
+        <td>
+          27
+        </td>
+        <td>
+          914
+        </td>
+        <td>
+          1019
+          -
+          1038
         </td>
         <td>
           DefDef
@@ -120,15 +305,39 @@
         </td>
       </tr><tr>
         <td>
-          15
+          27
         </td>
         <td>
-          849
+          915
         </td>
         <td>
-          634
+          1039
           -
-          828
+          1039
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          startupWithRole$default$4
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          
+        </td>
+      </tr><tr>
+        <td>
+          29
+        </td>
+        <td>
+          910
+        </td>
+        <td>
+          1178
+          -
+          1513
         </td>
         <td>
           Apply
@@ -146,19 +355,23 @@
         akka.remote.artery.canonical.hostname=$ip
         akka.remote.artery.canonical.port=$port
         akka.cluster.roles = [$role]
+        akka.cluster.seed-nodes = [
+          &quot;akka://$clusterName@127.0.0.1:2551&quot;,
+          &quot;akka://$clusterName@127.0.0.1:2552&quot;
+        ]
         &quot;&quot;&quot;)
         </td>
       </tr><tr>
         <td>
-          16
+          30
         </td>
         <td>
-          848
+          909
         </td>
         <td>
-          676
+          1220
           -
-          827
+          1512
         </td>
         <td>
           Apply
@@ -174,19 +387,47 @@
         akka.remote.artery.canonical.hostname=$ip
         akka.remote.artery.canonical.port=$port
         akka.cluster.roles = [$role]
+        akka.cluster.seed-nodes = [
+          &quot;akka://$clusterName@127.0.0.1:2551&quot;,
+          &quot;akka://$clusterName@127.0.0.1:2552&quot;
+        ]
         &quot;&quot;&quot;
         </td>
       </tr><tr>
         <td>
-          21
+          39
         </td>
         <td>
-          851
+          911
         </td>
         <td>
-          634
+          1534
           -
-          884
+          1568
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          load
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          ConfigFactory.load(&quot;base-cluster&quot;)
+        </td>
+      </tr><tr>
+        <td>
+          39
+        </td>
+        <td>
+          912
+        </td>
+        <td>
+          1178
+          -
+          1569
         </td>
         <td>
           Apply
@@ -204,44 +445,24 @@
         akka.remote.artery.canonical.hostname=$ip
         akka.remote.artery.canonical.port=$port
         akka.cluster.roles = [$role]
+        akka.cluster.seed-nodes = [
+          &quot;akka://$clusterName@127.0.0.1:2551&quot;,
+          &quot;akka://$clusterName@127.0.0.1:2552&quot;
+        ]
         &quot;&quot;&quot;)
       .withFallback(ConfigFactory.load(&quot;base-cluster&quot;))
         </td>
       </tr><tr>
         <td>
-          21
+          42
         </td>
         <td>
-          850
+          913
         </td>
         <td>
-          849
+          1604
           -
-          883
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          load
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          ConfigFactory.load(&quot;base-cluster&quot;)
-        </td>
-      </tr><tr>
-        <td>
-          24
-        </td>
-        <td>
-          852
-        </td>
-        <td>
-          919
-          -
-          957
+          1642
         </td>
         <td>
           Apply
@@ -257,15 +478,15 @@
         </td>
       </tr><tr>
         <td>
-          26
+          44
         </td>
         <td>
-          865
+          926
         </td>
         <td>
-          961
+          1646
           -
-          975
+          1660
         </td>
         <td>
           DefDef
@@ -281,39 +502,15 @@
         </td>
       </tr><tr>
         <td>
-          28
+          46
         </td>
         <td>
-          855
+          917
         </td>
         <td>
-          1033
+          1699
           -
-          1065
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          &lt;init&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          new InputStreamReader(System.in)
-        </td>
-      </tr><tr>
-        <td>
-          28
-        </td>
-        <td>
-          856
-        </td>
-        <td>
-          1014
-          -
-          1066
+          1751
         </td>
         <td>
           Apply
@@ -329,15 +526,39 @@
         </td>
       </tr><tr>
         <td>
-          29
+          46
         </td>
         <td>
-          857
+          916
         </td>
         <td>
-          1072
+          1718
           -
-          1106
+          1750
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          new InputStreamReader(System.in)
+        </td>
+      </tr><tr>
+        <td>
+          47
+        </td>
+        <td>
+          918
+        </td>
+        <td>
+          1757
+          -
+          1791
         </td>
         <td>
           Apply
@@ -353,15 +574,15 @@
         </td>
       </tr><tr>
         <td>
-          30
+          48
         </td>
         <td>
-          858
+          919
         </td>
         <td>
-          1135
+          1820
           -
-          1152
+          1837
         </td>
         <td>
           Apply
@@ -377,15 +598,15 @@
         </td>
       </tr><tr>
         <td>
-          32
+          50
         </td>
         <td>
-          859
+          920
         </td>
         <td>
-          1178
+          1863
           -
-          1195
+          1880
         </td>
         <td>
           Apply
@@ -401,39 +622,15 @@
         </td>
       </tr><tr>
         <td>
-          34
+          52
         </td>
         <td>
-          860
+          923
         </td>
         <td>
-          1219
+          1887
           -
-          1234
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          +
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          ipAddress + &quot;:&quot;
-        </td>
-      </tr><tr>
-        <td>
-          34
-        </td>
-        <td>
-          862
-        </td>
-        <td>
-          1202
-          -
-          1242
+          1927
         </td>
         <td>
           Apply
@@ -449,15 +646,15 @@
         </td>
       </tr><tr>
         <td>
-          34
+          52
         </td>
         <td>
-          861
+          922
         </td>
         <td>
-          1219
+          1904
           -
-          1241
+          1926
         </td>
         <td>
           Apply
@@ -473,15 +670,39 @@
         </td>
       </tr><tr>
         <td>
-          35
+          52
         </td>
         <td>
-          864
+          921
         </td>
         <td>
-          1260
+          1904
           -
-          1321
+          1919
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          +
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          ipAddress + &quot;:&quot;
+        </td>
+      </tr><tr>
+        <td>
+          53
+        </td>
+        <td>
+          925
+        </td>
+        <td>
+          1945
+          -
+          2006
         </td>
         <td>
           Apply
@@ -497,15 +718,15 @@
         </td>
       </tr><tr>
         <td>
-          35
+          53
         </td>
         <td>
-          863
+          924
         </td>
         <td>
-          1260
+          1945
           -
-          1275
+          1960
         </td>
         <td>
           Select

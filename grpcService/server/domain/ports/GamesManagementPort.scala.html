@@ -31,22 +31,26 @@
 </span>7 <span style=''>
 </span>8 <span style=''>  </span><span style='background: #AEF1AE'>def getAllGames</span><span style=''>() = </span><span style='background: #AEF1AE'>serverLogic.getGames()</span><span style=''>
 </span>9 <span style=''>
-</span>10 <span style=''>  </span><span style='background: #AEF1AE'>def openNewGame</span><span style=''>(address: String, name: String) = </span><span style='background: #AEF1AE'>serverLogic.newGame(Game(address, name))</span><span style=''>
+</span>10 <span style=''>  </span><span style='background: #AEF1AE'>def openNewGame</span><span style=''>(address: String, name: String): Boolean = </span><span style='background: #AEF1AE'>serverLogic.newGame(Game(address, name))</span><span style=''>
 </span>11 <span style=''>
 </span>12 <span style=''>  </span><span style='background: #AEF1AE'>def closeGame</span><span style=''>(address: String, name: String) = </span><span style='background: #AEF1AE'>serverLogic.removeGame(Game(address, name))</span><span style=''>
 </span>13 <span style=''>
-</span>14 <span style=''>  </span><span style='background: #AEF1AE'>def updateUsers</span><span style=''>(userNames: List[String], points: List[Int]): Boolean = 
-</span>15 <span style=''>    try </span><span style='background: #AEF1AE'>{
-</span>16 <span style=''></span><span style='background: #AEF1AE'>      (userNames.size == points.size) match
-</span>17 <span style=''></span><span style='background: #AEF1AE'>        case true =&gt; 
-</span>18 <span style=''></span><span style='background: #AEF1AE'>          userNames.zip(0 until userNames.size).foreach { (i, j) =&gt;
-</span>19 <span style=''></span><span style='background: #AEF1AE'>            serverLogic.updateUser(i, points(j))
-</span>20 <span style=''></span><span style='background: #AEF1AE'>          }
-</span>21 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case false</span><span style='background: #AEF1AE'> =&gt; ()
-</span>22 <span style=''></span><span style='background: #AEF1AE'>      true
-</span>23 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''> catch {
-</span>24 <span style=''>        </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; false
-</span>25 <span style=''>    }
+</span>14 <span style=''>  </span><span style='background: #F0ADAD'>def getSingleUserPoints</span><span style=''>(username: String): Int = </span><span style='background: #F0ADAD'>serverLogic.retrieveUser(username)</span><span style=''> match
+</span>15 <span style=''>    </span><span style='background: #F0ADAD'>case Some(user)</span><span style=''> =&gt; user.points
+</span>16 <span style=''>    </span><span style='background: #F0ADAD'>case _</span><span style=''> =&gt; 0
+</span>17 <span style=''>
+</span>18 <span style=''>  </span><span style='background: #AEF1AE'>def updateUsers</span><span style=''>(userNames: List[String], points: List[Int]): Boolean = 
+</span>19 <span style=''>    try </span><span style='background: #AEF1AE'>{
+</span>20 <span style=''></span><span style='background: #AEF1AE'>      (userNames.size == points.size) match
+</span>21 <span style=''></span><span style='background: #AEF1AE'>        case true =&gt; 
+</span>22 <span style=''></span><span style='background: #AEF1AE'>          userNames.zip(0 until userNames.size).foreach { (i, j) =&gt;
+</span>23 <span style=''></span><span style='background: #AEF1AE'>            serverLogic.updateUser(i, points(j))
+</span>24 <span style=''></span><span style='background: #AEF1AE'>          }
+</span>25 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>case false</span><span style='background: #AEF1AE'> =&gt; ()
+</span>26 <span style=''></span><span style='background: #AEF1AE'>      true
+</span>27 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''> catch {
+</span>28 <span style=''>        </span><span style='background: #F0ADAD'>case e: Exception</span><span style=''> =&gt; false
+</span>29 <span style=''>    }
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -64,7 +68,7 @@
           7
         </td>
         <td>
-          1510
+          1659
         </td>
         <td>
           228
@@ -88,7 +92,7 @@
           7
         </td>
         <td>
-          1511
+          1660
         </td>
         <td>
           208
@@ -112,31 +116,7 @@
           9
         </td>
         <td>
-          1512
-        </td>
-        <td>
-          303
-          -
-          343
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          newGame
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          serverLogic.newGame(Game(address, name))
-        </td>
-      </tr><tr>
-        <td>
-          9
-        </td>
-        <td>
-          1513
+          1662
         </td>
         <td>
           254
@@ -157,15 +137,39 @@
         </td>
       </tr><tr>
         <td>
+          9
+        </td>
+        <td>
+          1661
+        </td>
+        <td>
+          312
+          -
+          352
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          newGame
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          serverLogic.newGame(Game(address, name))
+        </td>
+      </tr><tr>
+        <td>
           11
         </td>
         <td>
-          1515
+          1664
         </td>
         <td>
-          347
+          356
           -
-          360
+          369
         </td>
         <td>
           DefDef
@@ -184,12 +188,12 @@
           11
         </td>
         <td>
-          1514
+          1663
         </td>
         <td>
-          394
+          403
           -
-          437
+          446
         </td>
         <td>
           Apply
@@ -208,12 +212,108 @@
           13
         </td>
         <td>
-          1529
+          1665
         </td>
         <td>
-          441
+          499
           -
-          456
+          533
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          retrieveUser
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          serverLogic.retrieveUser(username)
+        </td>
+      </tr><tr>
+        <td>
+          13
+        </td>
+        <td>
+          1668
+        </td>
+        <td>
+          450
+          -
+          473
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          getSingleUserPoints
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          def getSingleUserPoints
+        </td>
+      </tr><tr>
+        <td>
+          14
+        </td>
+        <td>
+          1666
+        </td>
+        <td>
+          544
+          -
+          559
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case Some(user)
+        </td>
+      </tr><tr>
+        <td>
+          15
+        </td>
+        <td>
+          1667
+        </td>
+        <td>
+          579
+          -
+          585
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          case _
+        </td>
+      </tr><tr>
+        <td>
+          17
+        </td>
+        <td>
+          1682
+        </td>
+        <td>
+          594
+          -
+          609
         </td>
         <td>
           DefDef
@@ -229,15 +329,15 @@
         </td>
       </tr><tr>
         <td>
-          14
+          18
         </td>
         <td>
-          1527
+          1680
         </td>
         <td>
-          521
+          674
           -
-          759
+          912
         </td>
         <td>
           Block
@@ -261,15 +361,15 @@
         </td>
       </tr><tr>
         <td>
-          15
+          19
         </td>
         <td>
-          1517
+          1670
         </td>
         <td>
-          548
+          701
           -
-          559
+          712
         </td>
         <td>
           Select
@@ -285,15 +385,15 @@
         </td>
       </tr><tr>
         <td>
-          15
+          19
         </td>
         <td>
-          1516
+          1669
         </td>
         <td>
-          530
+          683
           -
-          544
+          697
         </td>
         <td>
           Select
@@ -309,15 +409,15 @@
         </td>
       </tr><tr>
         <td>
-          16
+          20
         </td>
         <td>
-          1525
+          1678
         </td>
         <td>
-          575
+          728
           -
-          584
+          737
         </td>
         <td>
           Block
@@ -333,63 +433,15 @@
         </td>
       </tr><tr>
         <td>
-          17
+          21
         </td>
         <td>
-          1519
+          1674
         </td>
         <td>
-          621
+          752
           -
-          635
-        </td>
-        <td>
-          Select
-        </td>
-        <td>
-          size
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          userNames.size
-        </td>
-      </tr><tr>
-        <td>
-          17
-        </td>
-        <td>
-          1518
-        </td>
-        <td>
-          613
-          -
-          614
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          intWrapper
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          0
-        </td>
-      </tr><tr>
-        <td>
-          17
-        </td>
-        <td>
-          1521
-        </td>
-        <td>
-          599
-          -
-          636
+          789
         </td>
         <td>
           Apply
@@ -405,15 +457,15 @@
         </td>
       </tr><tr>
         <td>
-          17
+          21
         </td>
         <td>
-          1524
+          1677
         </td>
         <td>
-          599
+          752
           -
-          717
+          870
         </td>
         <td>
           Apply
@@ -431,15 +483,39 @@
         </td>
       </tr><tr>
         <td>
-          17
+          21
         </td>
         <td>
-          1520
+          1671
         </td>
         <td>
-          613
+          766
           -
-          635
+          767
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          intWrapper
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          0
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          1673
+        </td>
+        <td>
+          766
+          -
+          788
         </td>
         <td>
           Apply
@@ -455,15 +531,39 @@
         </td>
       </tr><tr>
         <td>
-          18
+          21
         </td>
         <td>
-          1523
+          1672
         </td>
         <td>
-          669
+          774
           -
-          705
+          788
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          size
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          userNames.size
+        </td>
+      </tr><tr>
+        <td>
+          22
+        </td>
+        <td>
+          1676
+        </td>
+        <td>
+          822
+          -
+          858
         </td>
         <td>
           Apply
@@ -479,15 +579,15 @@
         </td>
       </tr><tr>
         <td>
-          18
+          22
         </td>
         <td>
-          1522
+          1675
         </td>
         <td>
-          695
+          848
           -
-          704
+          857
         </td>
         <td>
           Apply
@@ -503,15 +603,15 @@
         </td>
       </tr><tr>
         <td>
-          20
+          24
         </td>
         <td>
-          1526
+          1679
         </td>
         <td>
-          726
+          879
           -
-          736
+          889
         </td>
         <td>
           Block
@@ -527,15 +627,15 @@
         </td>
       </tr><tr>
         <td>
-          23
+          27
         </td>
         <td>
-          1528
+          1681
         </td>
         <td>
-          776
+          929
           -
-          793
+          946
         </td>
         <td>
           Block

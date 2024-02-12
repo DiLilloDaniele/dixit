@@ -41,60 +41,64 @@
 </span>17 <span style=''>object Service {
 </span>18 <span style=''>
 </span>19 <span style=''>  </span><span style='background: #F0ADAD'>def main</span><span style=''>(args: Array[String]): Unit = {
-</span>20 <span style=''>    </span><span style='background: #F0ADAD'>createService()</span><span style=''>
-</span>21 <span style=''>  }
-</span>22 <span style=''>
-</span>23 <span style=''>  </span><span style='background: #AEF1AE'>def createService</span><span style=''>(accessAdapter: AccessAdapter = </span><span style='background: #F0ADAD'>ServiceLocator.getDataAdapter()</span><span style=''>): Service = 
-</span>24 <span style=''>    // Important: enable HTTP/2 in ActorSystem's config
-</span>25 <span style=''>    // We do it here programmatically, but you can also set it in the application.conf
-</span>26 <span style=''>    val conf = </span><span style='background: #AEF1AE'>ConfigFactory
-</span>27 <span style=''></span><span style='background: #AEF1AE'>      .parseString(&quot;akka.http.server.preview.enable-http2 = on&quot;)
-</span>28 <span style=''></span><span style='background: #AEF1AE'>      .withFallback(ConfigFactory.defaultApplication())</span><span style=''>
-</span>29 <span style=''>    val system = </span><span style='background: #AEF1AE'>ActorSystem(&quot;HelloWorld&quot;, conf)</span><span style=''>
-</span>30 <span style=''>    val service = </span><span style='background: #AEF1AE'>new Service(system, accessAdapter)</span><span style=''>
-</span>31 <span style=''>    </span><span style='background: #AEF1AE'>service.run()</span><span style=''>
-</span>32 <span style=''>    return service
-</span>33 <span style=''>    // ActorSystem threads will keep the app alive until `system.terminate()` is called
-</span>34 <span style=''>
-</span>35 <span style=''>}
-</span>36 <span style=''>
-</span>37 <span style=''>/**
-</span>38 <span style=''> * usare using e given a catena
-</span>39 <span style=''> * qua istanzio porte e logica di dominio
-</span>40 <span style=''> * in MyServerService voglio come contesto le porte da utilizzare
-</span>41 <span style=''> * nelle porte voglio come contesto la logica di dominio
-</span>42 <span style=''> * @param system
-</span>43 <span style=''> */
-</span>44 <span style=''>class Service(system: ActorSystem, repository: AccessAdapter) {
-</span>45 <span style=''>  given serverLogic: ServerLogic = ServerLogic {
-</span>46 <span style=''>    </span><span style='background: #AEF1AE'>AccessPort {
-</span>47 <span style=''></span><span style='background: #AEF1AE'>      repository
-</span>48 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
-</span>49 <span style=''>  }
-</span>50 <span style=''>  val registerPort = </span><span style='background: #AEF1AE'>RegisterPort()</span><span style=''>
-</span>51 <span style=''>  val managementPort = </span><span style='background: #AEF1AE'>GamesManagementPort()</span><span style=''>
-</span>52 <span style=''>
-</span>53 <span style=''>  </span><span style='background: #AEF1AE'>def close</span><span style=''>(): Unit = </span><span style='background: #AEF1AE'>system.terminate()</span><span style=''>
-</span>54 <span style=''>
-</span>55 <span style=''>  </span><span style='background: #AEF1AE'>def run</span><span style=''>(): Future[Http.ServerBinding] = {
-</span>56 <span style=''>    // Akka boot up code
-</span>57 <span style=''>    given sys: ActorSystem = system
-</span>58 <span style=''>    given ec: ExecutionContext = </span><span style='background: #AEF1AE'>sys.dispatcher</span><span style=''>
-</span>59 <span style=''>    given inboundPorts: InboundPorts = InboundPorts(registerPort, managementPort)
-</span>60 <span style=''>
-</span>61 <span style=''>    // Create service handlers
-</span>62 <span style=''>    val service: HttpRequest =&gt; Future[HttpResponse] =
-</span>63 <span style=''>      </span><span style='background: #AEF1AE'>ServerHandler(new MyServerService())</span><span style=''>
+</span>20 <span style=''>    val listArgs = </span><span style='background: #F0ADAD'>args.toList</span><span style=''>
+</span>21 <span style=''>    if(</span><span style='background: #F0ADAD'>listArgs.size</span><span style=''> &gt; 0)
+</span>22 <span style=''>      </span><span style='background: #F0ADAD'>createService(ipAddress = listArgs(0))</span><span style=''>
+</span>23 <span style=''>    else
+</span>24 <span style=''>      </span><span style='background: #F0ADAD'>createService()</span><span style=''>
+</span>25 <span style=''>  }
+</span>26 <span style=''>
+</span>27 <span style=''>  </span><span style='background: #AEF1AE'>def createService</span><span style=''>(accessAdapter: AccessAdapter = </span><span style='background: #F0ADAD'>ServiceLocator.getDataAdapter()</span><span style=''>, ipAddress: String = &quot;127.0.0.1&quot;): Service = 
+</span>28 <span style=''>    // Important: enable HTTP/2 in ActorSystem's config
+</span>29 <span style=''>    // We do it here programmatically, but you can also set it in the application.conf
+</span>30 <span style=''>    val conf = </span><span style='background: #AEF1AE'>ConfigFactory
+</span>31 <span style=''></span><span style='background: #AEF1AE'>      .parseString(&quot;akka.http.server.preview.enable-http2 = on&quot;)
+</span>32 <span style=''></span><span style='background: #AEF1AE'>      .withFallback(ConfigFactory.defaultApplication())</span><span style=''>
+</span>33 <span style=''>    val system = </span><span style='background: #AEF1AE'>ActorSystem(&quot;HelloWorld&quot;, conf)</span><span style=''>
+</span>34 <span style=''>    val service = </span><span style='background: #AEF1AE'>new Service(system, accessAdapter, ipAddress)</span><span style=''>
+</span>35 <span style=''>    </span><span style='background: #AEF1AE'>service.run()</span><span style=''>
+</span>36 <span style=''>    return service
+</span>37 <span style=''>    // ActorSystem threads will keep the app alive until `system.terminate()` is called
+</span>38 <span style=''>
+</span>39 <span style=''>}
+</span>40 <span style=''>
+</span>41 <span style=''>/**
+</span>42 <span style=''> * usare using e given a catena
+</span>43 <span style=''> * qua istanzio porte e logica di dominio
+</span>44 <span style=''> * in MyServerService voglio come contesto le porte da utilizzare
+</span>45 <span style=''> * nelle porte voglio come contesto la logica di dominio
+</span>46 <span style=''> * @param system
+</span>47 <span style=''> */
+</span>48 <span style=''>class Service(system: ActorSystem, repository: AccessAdapter, ipAddress: String) {
+</span>49 <span style=''>  given serverLogic: ServerLogic = ServerLogic {
+</span>50 <span style=''>    </span><span style='background: #AEF1AE'>AccessPort {
+</span>51 <span style=''></span><span style='background: #AEF1AE'>      repository
+</span>52 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>53 <span style=''>  }
+</span>54 <span style=''>  val registerPort = </span><span style='background: #AEF1AE'>RegisterPort()</span><span style=''>
+</span>55 <span style=''>  val managementPort = </span><span style='background: #AEF1AE'>GamesManagementPort()</span><span style=''>
+</span>56 <span style=''>
+</span>57 <span style=''>  </span><span style='background: #AEF1AE'>def close</span><span style=''>(): Unit = </span><span style='background: #AEF1AE'>system.terminate()</span><span style=''>
+</span>58 <span style=''>
+</span>59 <span style=''>  </span><span style='background: #AEF1AE'>def run</span><span style=''>(): Future[Http.ServerBinding] = {
+</span>60 <span style=''>    // Akka boot up code
+</span>61 <span style=''>    given sys: ActorSystem = system
+</span>62 <span style=''>    given ec: ExecutionContext = </span><span style='background: #AEF1AE'>sys.dispatcher</span><span style=''>
+</span>63 <span style=''>    given inboundPorts: InboundPorts = InboundPorts(registerPort, managementPort)
 </span>64 <span style=''>
-</span>65 <span style=''>    // Bind service handler servers to localhost:8080/8081
-</span>66 <span style=''>    val binding = </span><span style='background: #AEF1AE'>Http().newServerAt(&quot;127.0.0.1&quot;, 8083).bind(service)</span><span style=''>
-</span>67 <span style=''>
-</span>68 <span style=''>    // report successful binding
-</span>69 <span style=''>    </span><span style='background: #AEF1AE'>binding.foreach { binding =&gt; println(s&quot;gRPC server bound to: ${binding.localAddress}&quot;) }</span><span style=''>
-</span>70 <span style=''>
-</span>71 <span style=''>    binding
-</span>72 <span style=''>  }
-</span>73 <span style=''>}
+</span>65 <span style=''>    // Create service handlers
+</span>66 <span style=''>    val service: HttpRequest =&gt; Future[HttpResponse] =
+</span>67 <span style=''>      </span><span style='background: #AEF1AE'>ServerHandler(new MyServerService())</span><span style=''>
+</span>68 <span style=''>
+</span>69 <span style=''>    // Bind service handler servers to localhost:8080/8081
+</span>70 <span style=''>    val binding = </span><span style='background: #AEF1AE'>Http().newServerAt(ipAddress, 8083).bind(service)</span><span style=''>
+</span>71 <span style=''>
+</span>72 <span style=''>    // report successful binding
+</span>73 <span style=''>    </span><span style='background: #AEF1AE'>binding.foreach { binding =&gt; println(s&quot;gRPC server bound to: ${binding.localAddress}&quot;) }</span><span style=''>
+</span>74 <span style=''>
+</span>75 <span style=''>    binding
+</span>76 <span style=''>  }
+</span>77 <span style=''>}
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -112,7 +116,7 @@
           18
         </td>
         <td>
-          1221
+          1369
         </td>
         <td>
           663
@@ -136,12 +140,108 @@
           19
         </td>
         <td>
-          1219
+          1359
         </td>
         <td>
-          707
+          722
           -
-          720
+          733
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          toList
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          args.toList
+        </td>
+      </tr><tr>
+        <td>
+          19
+        </td>
+        <td>
+          1358
+        </td>
+        <td>
+          722
+          -
+          726
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          wrapRefArray
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          args
+        </td>
+      </tr><tr>
+        <td>
+          20
+        </td>
+        <td>
+          1360
+        </td>
+        <td>
+          741
+          -
+          754
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          size
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          listArgs.size
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          1363
+        </td>
+        <td>
+          766
+          -
+          804
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          createService
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          createService(ipAddress = listArgs(0))
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          1362
+        </td>
+        <td>
+          766
+          -
+          779
         </td>
         <td>
           Select
@@ -157,15 +257,135 @@
         </td>
       </tr><tr>
         <td>
-          19
+          21
         </td>
         <td>
-          1220
+          1361
         </td>
         <td>
-          707
+          792
           -
-          722
+          803
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          apply
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          listArgs(0)
+        </td>
+      </tr><tr>
+        <td>
+          21
+        </td>
+        <td>
+          1364
+        </td>
+        <td>
+          766
+          -
+          804
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          createService(ipAddress = listArgs(0))
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          1366
+        </td>
+        <td>
+          820
+          -
+          833
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          createService$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          createService
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          1365
+        </td>
+        <td>
+          820
+          -
+          833
+        </td>
+        <td>
+          Select
+        </td>
+        <td>
+          createService$default$1
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          createService
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          1368
+        </td>
+        <td>
+          820
+          -
+          835
+        </td>
+        <td>
+          Block
+        </td>
+        <td>
+          &lt;none&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          createService()
+        </td>
+      </tr><tr>
+        <td>
+          23
+        </td>
+        <td>
+          1367
+        </td>
+        <td>
+          820
+          -
+          835
         </td>
         <td>
           Apply
@@ -181,39 +401,15 @@
         </td>
       </tr><tr>
         <td>
-          22
+          26
         </td>
         <td>
-          1228
+          1378
         </td>
         <td>
-          730
+          892
           -
-          747
-        </td>
-        <td>
-          DefDef
-        </td>
-        <td>
-          createService
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          def createService
-        </td>
-      </tr><tr>
-        <td>
-          22
-        </td>
-        <td>
-          1230
-        </td>
-        <td>
-          779
-          -
-          779
+          892
         </td>
         <td>
           DefDef
@@ -229,15 +425,15 @@
         </td>
       </tr><tr>
         <td>
-          22
+          26
         </td>
         <td>
-          1229
+          1377
         </td>
         <td>
-          779
+          892
           -
-          810
+          923
         </td>
         <td>
           Apply
@@ -256,12 +452,60 @@
           26
         </td>
         <td>
-          1222
+          1379
         </td>
         <td>
-          982
+          945
           -
-          1060
+          945
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          createService$default$2
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          
+        </td>
+      </tr><tr>
+        <td>
+          26
+        </td>
+        <td>
+          1376
+        </td>
+        <td>
+          843
+          -
+          860
+        </td>
+        <td>
+          DefDef
+        </td>
+        <td>
+          createService
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          def createService
+        </td>
+      </tr><tr>
+        <td>
+          30
+        </td>
+        <td>
+          1370
+        </td>
+        <td>
+          1128
+          -
+          1206
         </td>
         <td>
           Apply
@@ -278,15 +522,15 @@
         </td>
       </tr><tr>
         <td>
-          27
+          31
         </td>
         <td>
-          1224
+          1372
         </td>
         <td>
-          982
+          1128
           -
-          1116
+          1262
         </td>
         <td>
           Apply
@@ -304,15 +548,15 @@
         </td>
       </tr><tr>
         <td>
-          27
+          31
         </td>
         <td>
-          1223
+          1371
         </td>
         <td>
-          1081
+          1227
           -
-          1115
+          1261
         </td>
         <td>
           Apply
@@ -328,15 +572,15 @@
         </td>
       </tr><tr>
         <td>
-          28
+          32
         </td>
         <td>
-          1225
+          1373
         </td>
         <td>
-          1134
+          1280
           -
-          1165
+          1311
         </td>
         <td>
           Apply
@@ -352,15 +596,15 @@
         </td>
       </tr><tr>
         <td>
-          29
+          33
         </td>
         <td>
-          1226
+          1374
         </td>
         <td>
-          1184
+          1330
           -
-          1218
+          1375
         </td>
         <td>
           Apply
@@ -372,19 +616,19 @@
           
         </td>
         <td style="background: #AEF1AE">
-          new Service(system, accessAdapter)
+          new Service(system, accessAdapter, ipAddress)
         </td>
       </tr><tr>
         <td>
-          30
+          34
         </td>
         <td>
-          1227
+          1375
         </td>
         <td>
-          1223
+          1380
           -
-          1236
+          1393
         </td>
         <td>
           Apply
@@ -400,15 +644,15 @@
         </td>
       </tr><tr>
         <td>
-          45
+          49
         </td>
         <td>
-          1231
+          1380
         </td>
         <td>
-          1687
+          1863
           -
-          1722
+          1898
         </td>
         <td>
           Apply
@@ -426,15 +670,15 @@
         </td>
       </tr><tr>
         <td>
-          49
+          53
         </td>
         <td>
-          1232
+          1381
         </td>
         <td>
-          1748
+          1924
           -
-          1762
+          1938
         </td>
         <td>
           Apply
@@ -450,15 +694,15 @@
         </td>
       </tr><tr>
         <td>
-          50
+          54
         </td>
         <td>
-          1233
+          1382
         </td>
         <td>
-          1786
+          1962
           -
-          1807
+          1983
         </td>
         <td>
           Apply
@@ -474,39 +718,15 @@
         </td>
       </tr><tr>
         <td>
-          52
+          56
         </td>
         <td>
-          1234
+          1384
         </td>
         <td>
-          1831
+          1987
           -
-          1849
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          terminate
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          system.terminate()
-        </td>
-      </tr><tr>
-        <td>
-          52
-        </td>
-        <td>
-          1235
-        </td>
-        <td>
-          1811
-          -
-          1820
+          1996
         </td>
         <td>
           DefDef
@@ -522,15 +742,39 @@
         </td>
       </tr><tr>
         <td>
-          54
+          56
         </td>
         <td>
-          1243
+          1383
         </td>
         <td>
-          1853
+          2007
           -
-          1860
+          2025
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          terminate
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          system.terminate()
+        </td>
+      </tr><tr>
+        <td>
+          58
+        </td>
+        <td>
+          1392
+        </td>
+        <td>
+          2029
+          -
+          2036
         </td>
         <td>
           DefDef
@@ -546,15 +790,15 @@
         </td>
       </tr><tr>
         <td>
-          57
+          61
         </td>
         <td>
-          1236
+          1385
         </td>
         <td>
-          1989
+          2165
           -
-          2003
+          2179
         </td>
         <td>
           Select
@@ -570,39 +814,15 @@
         </td>
       </tr><tr>
         <td>
-          62
+          66
         </td>
         <td>
-          1237
+          1387
         </td>
         <td>
-          2193
+          2355
           -
-          2214
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          &lt;init&gt;
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          new MyServerService()
-        </td>
-      </tr><tr>
-        <td>
-          62
-        </td>
-        <td>
-          1238
-        </td>
-        <td>
-          2179
-          -
-          2215
+          2391
         </td>
         <td>
           Apply
@@ -618,15 +838,63 @@
         </td>
       </tr><tr>
         <td>
-          65
+          66
         </td>
         <td>
-          1240
+          1386
         </td>
         <td>
-          2294
+          2369
           -
-          2331
+          2390
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          &lt;init&gt;
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          new MyServerService()
+        </td>
+      </tr><tr>
+        <td>
+          69
+        </td>
+        <td>
+          1390
+        </td>
+        <td>
+          2470
+          -
+          2519
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          bind
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #AEF1AE">
+          Http().newServerAt(ipAddress, 8083).bind(service)
+        </td>
+      </tr><tr>
+        <td>
+          69
+        </td>
+        <td>
+          1389
+        </td>
+        <td>
+          2470
+          -
+          2505
         </td>
         <td>
           Apply
@@ -638,19 +906,19 @@
           
         </td>
         <td style="background: #AEF1AE">
-          Http().newServerAt(&quot;127.0.0.1&quot;, 8083)
+          Http().newServerAt(ipAddress, 8083)
         </td>
       </tr><tr>
         <td>
-          65
+          69
         </td>
         <td>
-          1239
+          1388
         </td>
         <td>
-          2294
+          2470
           -
-          2300
+          2476
         </td>
         <td>
           Apply
@@ -666,39 +934,15 @@
         </td>
       </tr><tr>
         <td>
-          65
+          72
         </td>
         <td>
-          1241
+          1391
         </td>
         <td>
-          2294
+          2558
           -
-          2345
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          bind
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #AEF1AE">
-          Http().newServerAt(&quot;127.0.0.1&quot;, 8083).bind(service)
-        </td>
-      </tr><tr>
-        <td>
-          68
-        </td>
-        <td>
-          1242
-        </td>
-        <td>
-          2384
-          -
-          2472
+          2646
         </td>
         <td>
           Apply
