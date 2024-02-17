@@ -116,9 +116,7 @@ class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], 
   }
 
   def gameOn(): Behavior[Command | Receptionist.Listing] = Behaviors.receiveMessage {
-    case YourTurn(replyTo) => 
-      // deve inviare un CardToGuess ad un attore InteractionActor, che può essere 
-      // un attore che sceglie random una carta e la invia qui, o la gui vera e propria
+    case YourTurn(replyTo) =>
       context.log.info("SONO IL PLAYER, E' IL MIO TURNO")
       interactionActor ! InteractionBehavior.ChooseTheCard(context.self)
       choose(replyTo)
