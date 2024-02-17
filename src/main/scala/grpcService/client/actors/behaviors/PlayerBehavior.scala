@@ -25,7 +25,6 @@ object PlayerBehavior:
   case object Start extends Command
   case class GameInfo(msg: String) extends Command
 
-  //turn messages
   case class YourTurn(val replyTo: ActorRef[ForemanBehavior.Command]) extends Command
 
   //guess messages
