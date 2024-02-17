@@ -231,7 +231,7 @@
 </span>207 <span style=''></span><span style='background: #AEF1AE'>        executeResults(playersGuessing, cardSelected, actor)
 </span>208 <span style=''></span><span style='background: #AEF1AE'>
 </span>209 <span style=''></span><span style='background: #AEF1AE'>        val newTurn = turn match
-</span>210 <span style=''></span><span style='background: #AEF1AE'>          case m if m == (playersList.size - 1) =&gt; 0
+</span>210 <span style=''></span><span style='background: #AEF1AE'>          </span><span style='background: #F0ADAD'>case m if m == (playersList.size - 1</span><span style='background: #AEF1AE'>) =&gt; 0
 </span>211 <span style=''></span><span style='background: #AEF1AE'>          case _ =&gt; turn + 1
 </span>212 <span style=''></span><span style='background: #AEF1AE'>
 </span>213 <span style=''></span><span style='background: #AEF1AE'>        if(turnsFinished &gt;= (maxTurns - 1) || playersList.map { i =&gt; i.score }.contains(30))
@@ -5389,7 +5389,7 @@
         <td>
           
         </td>
-        <td style="background: #AEF1AE">
+        <td style="background: #F0ADAD">
           case m if m == (playersList.size - 1
         </td>
       </tr><tr>
