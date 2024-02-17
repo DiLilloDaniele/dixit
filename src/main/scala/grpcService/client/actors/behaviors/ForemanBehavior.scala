@@ -47,12 +47,12 @@ object ForemanBehavior:
       println("----")
     }
   def apply(logger: Option[ActorRef[Command]] = Option.empty,
-            maxPlayers: Int = 3, closeHandler: () => Unit = () => ()): Behavior[Command] =
+            maxPlayers: Int = 3, closeHandler: () => Unit = () => (), timeoutMillis: Int = 300000): Behavior[Command] =
     Behaviors.setup[Command] { ctx =>
       val rootActorRef = ctx.self
       val props = MailboxSelector.fromConfig("akka.prio-dispatcher")
       val master = ctx.spawn(Behaviors.setup[Command | Receptionist.Listing](ctx => new ForemanBehaviorImpl(ctx, rootActorRef, MAX_TURNS)), "root")
-      val listener = ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx => PlayersManagerBehavior(maxPlayers, rootActorRef)), "event-listener", props)
+      val listener = ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx => PlayersManagerBehavior(maxPlayers, rootActorRef, timeoutMillis)), "event-listener", props)
       val clusterManager = ctx.spawn(Behaviors.setup[ClusterListener.Command | Event | Receptionist.Listing](ctx => ClusterListener(listener)), "cluster-listener")
       ctx.watch(listener)
 

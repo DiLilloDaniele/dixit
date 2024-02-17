@@ -23,10 +23,10 @@ object PlayersManagerBehavior {
   case object CheckMembers extends Command
   case object Stop extends Command
 
-  def apply(maxPlayers: Int, foreman: ActorRef[ForemanBehavior.Command]): Behavior[Command] =
+  def apply(maxPlayers: Int, foreman: ActorRef[ForemanBehavior.Command], timeoutMillis: Int = 300000): Behavior[Command] =
     Behaviors.setup[Command] { ctx =>
       ctx.system.receptionist ! Receptionist.Register(Service, ctx.self)
-      val manager = ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx => PlayersManagerBehaviorImpl(ctx, maxPlayers, foreman)), "manager")
+      val manager = ctx.spawn(Behaviors.setup[PlayersManagerBehavior.Command](ctx => PlayersManagerBehaviorImpl(ctx, maxPlayers, foreman, timeoutMillis)), "manager")
       manager ! Startup
       ctx.watch(manager)
       Behaviors.receiveMessage[Command] {
@@ -45,7 +45,8 @@ object PlayersManagerBehavior {
 
 class PlayersManagerBehaviorImpl(context: ActorContext[Command],
                                  maxPlayers: Int,
-                                 foreman: ActorRef[ForemanBehavior.Command]) extends AbstractBehavior[Command](context):
+                                 foreman: ActorRef[ForemanBehavior.Command],
+                                 timeoutMillis: Int) extends AbstractBehavior[Command](context):
 
   var playersList: List[ActorRef[PlayerBehavior.Command]] = List()
   var currentNumPlayers: Int = maxPlayers
@@ -97,7 +98,7 @@ class PlayersManagerBehaviorImpl(context: ActorContext[Command],
       context.log.info("un giocatore ha quittato")
       foreman ! ForemanBehavior.InterruptTurn
       Behaviors.withTimers { timer =>
-        timer.startSingleTimer(CheckMembers, 5000 milliseconds)
+        timer.startSingleTimer(CheckMembers, timeoutMillis milliseconds)
         gameOn(foreman)
       }
 
