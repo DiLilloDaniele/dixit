@@ -140,7 +140,7 @@ class AsyncTestingExampleSpec
               val probe = testKit.createTestProbe[PlayerBehavior.Command]()
               val interactionWith0 = testKit.spawn(interactionTestActor("0"), "interaction1")
               val interactionWith1 = testKit.spawn(interactionTestActor("1"), "interaction2")
-              val foreman = testKit.spawn(ForemanBehavior(logger = Option.empty, 3), "foreman")
+              val foreman = testKit.spawn(ForemanBehavior(logger = Option.empty, 3, timeoutMillis = 5000), "foreman")
               Thread.sleep(2000)
               val player2 = testKit.spawn(PlayerBehavior(interactionExt = Option(interactionWith0)), "player2")
               var player3 = testKit.spawn(PlayerBehavior(logger = Option(probe.ref), interactionExt = Option(interactionWith0)), "player3")
@@ -174,7 +174,7 @@ class AsyncTestingExampleSpec
                 val interactionWith0 = Utils.startupWithRole("interaction", "2600", "127.0.0.1", clusterName = "AsyncTestingExampleSpec")(interactionTestActor("0"))
                 val interactionWith1 = Utils.startupWithRole("interaction", "2601", "127.0.0.1", clusterName = "AsyncTestingExampleSpec")(interactionTestActor("1"))
                 val probe = testKit.createTestProbe[ForemanBehavior.Command]()
-                val foreman = Utils.startupWithRole("foreman", "2551", "127.0.0.1", clusterName = "AsyncTestingExampleSpec")(ForemanBehavior(logger = Option(probe.ref), 3))
+                val foreman = Utils.startupWithRole("foreman", "2551", "127.0.0.1", clusterName = "AsyncTestingExampleSpec")(ForemanBehavior(logger = Option(probe.ref), 3, timeoutMillis = 5000))
                 val player1 = Utils.startupWithRole("player", "2552", "127.0.0.1", clusterName = "AsyncTestingExampleSpec")(PlayerBehavior(interactionExt = Option(interactionWith0)))
                 
                 val player2 = Utils.startupWithRole("player", "2553", "127.0.0.1", clusterName = "AsyncTestingExampleSpec")(PlayerBehavior(interactionExt = Option(interactionWith0)))
