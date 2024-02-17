@@ -121,7 +121,6 @@ class PlayerBehaviorImpl(context: ActorContext[Command | Receptionist.Listing], 
       interactionActor ! InteractionBehavior.ChooseTheCard(context.self)
       choose(replyTo)
     case CardChoosenByOther(title, replyTo) =>
-    //TODO rename to TitleChoosenByOther
       interactionActor ! InteractionBehavior.GuessCard(rootActor, title)
       guess(title, replyTo)
     case NewCard(card) =>
