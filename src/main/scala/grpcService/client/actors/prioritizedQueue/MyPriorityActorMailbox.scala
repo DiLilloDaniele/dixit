@@ -1,4 +1,4 @@
-package grpcService.client.actors.prioritizedQueueExample
+package grpcService.client.actors.prioritizedQueue
 import akka.actor.*
 import akka.dispatch.*
 import com.typesafe.config.Config
