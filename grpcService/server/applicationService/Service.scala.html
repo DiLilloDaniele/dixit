@@ -63,42 +63,40 @@
 </span>39 <span style=''>}
 </span>40 <span style=''>
 </span>41 <span style=''>/**
-</span>42 <span style=''> * usare using e given a catena
-</span>43 <span style=''> * qua istanzio porte e logica di dominio
-</span>44 <span style=''> * in MyServerService voglio come contesto le porte da utilizzare
-</span>45 <span style=''> * nelle porte voglio come contesto la logica di dominio
-</span>46 <span style=''> * @param system
-</span>47 <span style=''> */
-</span>48 <span style=''>class Service(system: ActorSystem, repository: AccessAdapter, ipAddress: String) {
-</span>49 <span style=''>  given serverLogic: ServerLogic = ServerLogic {
-</span>50 <span style=''>    </span><span style='background: #AEF1AE'>AccessPort {
-</span>51 <span style=''></span><span style='background: #AEF1AE'>      repository
-</span>52 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
-</span>53 <span style=''>  }
-</span>54 <span style=''>  val registerPort = </span><span style='background: #AEF1AE'>RegisterPort()</span><span style=''>
-</span>55 <span style=''>  val managementPort = </span><span style='background: #AEF1AE'>GamesManagementPort()</span><span style=''>
+</span>42 <span style=''> * effective instantiation of the server using the implementation of the message requests provided by MyServerService
+</span>43 <span style=''> * this creates the context of the server
+</span>44 <span style=''> * @param system
+</span>45 <span style=''> */
+</span>46 <span style=''>class Service(system: ActorSystem, repository: AccessAdapter, ipAddress: String) {
+</span>47 <span style=''>  given serverLogic: ServerLogic = ServerLogic {
+</span>48 <span style=''>    </span><span style='background: #AEF1AE'>AccessPort {
+</span>49 <span style=''></span><span style='background: #AEF1AE'>      repository
+</span>50 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
+</span>51 <span style=''>  }
+</span>52 <span style=''>  val registerPort = </span><span style='background: #AEF1AE'>RegisterPort()</span><span style=''>
+</span>53 <span style=''>  val managementPort = </span><span style='background: #AEF1AE'>GamesManagementPort()</span><span style=''>
+</span>54 <span style=''>
+</span>55 <span style=''>  </span><span style='background: #AEF1AE'>def close</span><span style=''>(): Unit = </span><span style='background: #AEF1AE'>system.terminate()</span><span style=''>
 </span>56 <span style=''>
-</span>57 <span style=''>  </span><span style='background: #AEF1AE'>def close</span><span style=''>(): Unit = </span><span style='background: #AEF1AE'>system.terminate()</span><span style=''>
-</span>58 <span style=''>
-</span>59 <span style=''>  </span><span style='background: #AEF1AE'>def run</span><span style=''>(): Future[Http.ServerBinding] = {
-</span>60 <span style=''>    // Akka boot up code
-</span>61 <span style=''>    given sys: ActorSystem = system
-</span>62 <span style=''>    given ec: ExecutionContext = </span><span style='background: #AEF1AE'>sys.dispatcher</span><span style=''>
-</span>63 <span style=''>    given inboundPorts: InboundPorts = InboundPorts(registerPort, managementPort)
-</span>64 <span style=''>
-</span>65 <span style=''>    // Create service handlers
-</span>66 <span style=''>    val service: HttpRequest =&gt; Future[HttpResponse] =
-</span>67 <span style=''>      </span><span style='background: #AEF1AE'>ServerHandler(new MyServerService())</span><span style=''>
-</span>68 <span style=''>
-</span>69 <span style=''>    // Bind service handler servers to localhost:8080/8081
-</span>70 <span style=''>    val binding = </span><span style='background: #AEF1AE'>Http().newServerAt(ipAddress, 8083).bind(service)</span><span style=''>
-</span>71 <span style=''>
-</span>72 <span style=''>    // report successful binding
-</span>73 <span style=''>    </span><span style='background: #AEF1AE'>binding.foreach { binding =&gt; println(s&quot;gRPC server bound to: ${binding.localAddress}&quot;) }</span><span style=''>
-</span>74 <span style=''>
-</span>75 <span style=''>    binding
-</span>76 <span style=''>  }
-</span>77 <span style=''>}
+</span>57 <span style=''>  </span><span style='background: #AEF1AE'>def run</span><span style=''>(): Future[Http.ServerBinding] = {
+</span>58 <span style=''>    // Akka boot up code
+</span>59 <span style=''>    given sys: ActorSystem = system
+</span>60 <span style=''>    given ec: ExecutionContext = </span><span style='background: #AEF1AE'>sys.dispatcher</span><span style=''>
+</span>61 <span style=''>    given inboundPorts: InboundPorts = InboundPorts(registerPort, managementPort)
+</span>62 <span style=''>
+</span>63 <span style=''>    // Create service handlers
+</span>64 <span style=''>    val service: HttpRequest =&gt; Future[HttpResponse] =
+</span>65 <span style=''>      </span><span style='background: #AEF1AE'>ServerHandler(new MyServerService())</span><span style=''>
+</span>66 <span style=''>
+</span>67 <span style=''>    // Bind service handler servers to localhost:8080/8081
+</span>68 <span style=''>    val binding = </span><span style='background: #AEF1AE'>Http().newServerAt(ipAddress, 8083).bind(service)</span><span style=''>
+</span>69 <span style=''>
+</span>70 <span style=''>    // report successful binding
+</span>71 <span style=''>    </span><span style='background: #AEF1AE'>binding.foreach { binding =&gt; println(s&quot;gRPC server bound to: ${binding.localAddress}&quot;) }</span><span style=''>
+</span>72 <span style=''>
+</span>73 <span style=''>    binding
+</span>74 <span style=''>  }
+</span>75 <span style=''>}
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -644,15 +642,15 @@
         </td>
       </tr><tr>
         <td>
-          49
+          47
         </td>
         <td>
           1380
         </td>
         <td>
-          1863
+          1826
           -
-          1898
+          1861
         </td>
         <td>
           Apply
@@ -670,15 +668,15 @@
         </td>
       </tr><tr>
         <td>
-          53
+          51
         </td>
         <td>
           1381
         </td>
         <td>
-          1924
+          1887
           -
-          1938
+          1901
         </td>
         <td>
           Apply
@@ -694,15 +692,15 @@
         </td>
       </tr><tr>
         <td>
-          54
+          52
         </td>
         <td>
           1382
         </td>
         <td>
-          1962
+          1925
           -
-          1983
+          1946
         </td>
         <td>
           Apply
@@ -718,15 +716,15 @@
         </td>
       </tr><tr>
         <td>
-          56
+          54
         </td>
         <td>
           1384
         </td>
         <td>
-          1987
+          1950
           -
-          1996
+          1959
         </td>
         <td>
           DefDef
@@ -742,15 +740,15 @@
         </td>
       </tr><tr>
         <td>
-          56
+          54
         </td>
         <td>
           1383
         </td>
         <td>
-          2007
+          1970
           -
-          2025
+          1988
         </td>
         <td>
           Apply
@@ -766,15 +764,15 @@
         </td>
       </tr><tr>
         <td>
-          58
+          56
         </td>
         <td>
           1392
         </td>
         <td>
-          2029
+          1992
           -
-          2036
+          1999
         </td>
         <td>
           DefDef
@@ -790,15 +788,15 @@
         </td>
       </tr><tr>
         <td>
-          61
+          59
         </td>
         <td>
           1385
         </td>
         <td>
-          2165
+          2128
           -
-          2179
+          2142
         </td>
         <td>
           Select
@@ -814,15 +812,15 @@
         </td>
       </tr><tr>
         <td>
-          66
+          64
         </td>
         <td>
           1387
         </td>
         <td>
-          2355
+          2318
           -
-          2391
+          2354
         </td>
         <td>
           Apply
@@ -838,15 +836,15 @@
         </td>
       </tr><tr>
         <td>
-          66
+          64
         </td>
         <td>
           1386
         </td>
         <td>
-          2369
+          2332
           -
-          2390
+          2353
         </td>
         <td>
           Apply
@@ -862,15 +860,15 @@
         </td>
       </tr><tr>
         <td>
-          69
+          67
         </td>
         <td>
           1390
         </td>
         <td>
-          2470
+          2433
           -
-          2519
+          2482
         </td>
         <td>
           Apply
@@ -886,15 +884,15 @@
         </td>
       </tr><tr>
         <td>
-          69
+          67
         </td>
         <td>
           1389
         </td>
         <td>
-          2470
+          2433
           -
-          2505
+          2468
         </td>
         <td>
           Apply
@@ -910,15 +908,15 @@
         </td>
       </tr><tr>
         <td>
-          69
+          67
         </td>
         <td>
           1388
         </td>
         <td>
-          2470
+          2433
           -
-          2476
+          2439
         </td>
         <td>
           Apply
@@ -934,15 +932,15 @@
         </td>
       </tr><tr>
         <td>
-          72
+          70
         </td>
         <td>
           1391
         </td>
         <td>
-          2558
+          2521
           -
-          2646
+          2609
         </td>
         <td>
           Apply

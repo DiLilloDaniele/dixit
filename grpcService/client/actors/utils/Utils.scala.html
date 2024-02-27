@@ -35,47 +35,49 @@
 </span>11 <span style=''>
 </span>12 <span style=''>object Utils:
 </span>13 <span style=''>
-</span>14 <span style=''>  </span><span style='background: #F0ADAD'>def startupWithRoleForTest</span><span style=''>[X](role: String, port: String, ip: String, clusterName: String = &quot;ClusterSystem&quot;)(root: =&gt; Behavior[X]): ActorSystem[X] =
-</span>15 <span style=''>    val config = </span><span style='background: #F0ADAD'>ConfigFactory
-</span>16 <span style=''></span><span style='background: #F0ADAD'>      .parseString(
-</span>17 <span style=''></span><span style='background: #F0ADAD'>        s&quot;&quot;&quot;
-</span>18 <span style=''></span><span style='background: #F0ADAD'>        akka.remote.artery.canonical.hostname=$ip
-</span>19 <span style=''></span><span style='background: #F0ADAD'>        akka.remote.artery.canonical.port=$port
-</span>20 <span style=''></span><span style='background: #F0ADAD'>        akka.cluster.roles = [$role]
-</span>21 <span style=''></span><span style='background: #F0ADAD'>        akka.cluster.seed-nodes = [
-</span>22 <span style=''></span><span style='background: #F0ADAD'>        ]
-</span>23 <span style=''></span><span style='background: #F0ADAD'>        &quot;&quot;&quot;)
-</span>24 <span style=''></span><span style='background: #F0ADAD'>      .withFallback(ConfigFactory.load(&quot;application-test&quot;))</span><span style=''>
-</span>25 <span style=''>      // Create an Akka system
-</span>26 <span style=''>    </span><span style='background: #F0ADAD'>ActorSystem(root, clusterName, config)</span><span style=''>
-</span>27 <span style=''>
-</span>28 <span style=''>  </span><span style='background: #AEF1AE'>def startupWithRole</span><span style=''>[X](role: String, port: String, ip: String, clusterName: String = &quot;ClusterSystem&quot;)(root: =&gt; Behavior[X]): ActorSystem[X] =
-</span>29 <span style=''>    val config = </span><span style='background: #AEF1AE'>ConfigFactory
-</span>30 <span style=''></span><span style='background: #AEF1AE'>      .parseString(
-</span>31 <span style=''></span><span style='background: #AEF1AE'>        s&quot;&quot;&quot;
-</span>32 <span style=''></span><span style='background: #AEF1AE'>        akka.remote.artery.canonical.hostname=$ip
-</span>33 <span style=''></span><span style='background: #AEF1AE'>        akka.remote.artery.canonical.port=$port
-</span>34 <span style=''></span><span style='background: #AEF1AE'>        akka.cluster.roles = [$role]
-</span>35 <span style=''></span><span style='background: #AEF1AE'>        akka.cluster.seed-nodes = [
-</span>36 <span style=''></span><span style='background: #AEF1AE'>          &quot;akka://$clusterName@127.0.0.1:2551&quot;,
-</span>37 <span style=''></span><span style='background: #AEF1AE'>          &quot;akka://$clusterName@127.0.0.1:2552&quot;
-</span>38 <span style=''></span><span style='background: #AEF1AE'>        ]
-</span>39 <span style=''></span><span style='background: #AEF1AE'>        &quot;&quot;&quot;)
-</span>40 <span style=''></span><span style='background: #AEF1AE'>      .withFallback(ConfigFactory.load(&quot;base-cluster&quot;))</span><span style=''>
-</span>41 <span style=''>
-</span>42 <span style=''>    // Create an Akka system
-</span>43 <span style=''>    </span><span style='background: #AEF1AE'>ActorSystem(root, clusterName, config)</span><span style=''>
-</span>44 <span style=''>
-</span>45 <span style=''>  </span><span style='background: #F0ADAD'>@main def main</span><span style=''>() =
+</span>14 <span style=''>  // creation of a new actor system specifying the role, the port and the ip address of the user guardian actor of the AS, plus the cluster name to join (THIS USES THE TEST CONFIG FILE)
+</span>15 <span style=''>  </span><span style='background: #F0ADAD'>def startupWithRoleForTest</span><span style=''>[X](role: String, port: String, ip: String, clusterName: String = &quot;ClusterSystem&quot;)(root: =&gt; Behavior[X]): ActorSystem[X] =
+</span>16 <span style=''>    val config = </span><span style='background: #F0ADAD'>ConfigFactory
+</span>17 <span style=''></span><span style='background: #F0ADAD'>      .parseString(
+</span>18 <span style=''></span><span style='background: #F0ADAD'>        s&quot;&quot;&quot;
+</span>19 <span style=''></span><span style='background: #F0ADAD'>        akka.remote.artery.canonical.hostname=$ip
+</span>20 <span style=''></span><span style='background: #F0ADAD'>        akka.remote.artery.canonical.port=$port
+</span>21 <span style=''></span><span style='background: #F0ADAD'>        akka.cluster.roles = [$role]
+</span>22 <span style=''></span><span style='background: #F0ADAD'>        akka.cluster.seed-nodes = [
+</span>23 <span style=''></span><span style='background: #F0ADAD'>        ]
+</span>24 <span style=''></span><span style='background: #F0ADAD'>        &quot;&quot;&quot;)
+</span>25 <span style=''></span><span style='background: #F0ADAD'>      .withFallback(ConfigFactory.load(&quot;application-test&quot;))</span><span style=''>
+</span>26 <span style=''>      // Create an Akka system
+</span>27 <span style=''>    </span><span style='background: #F0ADAD'>ActorSystem(root, clusterName, config)</span><span style=''>
+</span>28 <span style=''>
+</span>29 <span style=''>  // creation of a new actor system specifying the role, the port and the ip address of the user guardian actor of the AS, plus the cluster name to join (THIS USES THE BASE CONFIG FILE)
+</span>30 <span style=''>  </span><span style='background: #AEF1AE'>def startupWithRole</span><span style=''>[X](role: String, port: String, ip: String, clusterName: String = &quot;ClusterSystem&quot;)(root: =&gt; Behavior[X]): ActorSystem[X] =
+</span>31 <span style=''>    val config = </span><span style='background: #AEF1AE'>ConfigFactory
+</span>32 <span style=''></span><span style='background: #AEF1AE'>      .parseString(
+</span>33 <span style=''></span><span style='background: #AEF1AE'>        s&quot;&quot;&quot;
+</span>34 <span style=''></span><span style='background: #AEF1AE'>        akka.remote.artery.canonical.hostname=$ip
+</span>35 <span style=''></span><span style='background: #AEF1AE'>        akka.remote.artery.canonical.port=$port
+</span>36 <span style=''></span><span style='background: #AEF1AE'>        akka.cluster.roles = [$role]
+</span>37 <span style=''></span><span style='background: #AEF1AE'>        akka.cluster.seed-nodes = [
+</span>38 <span style=''></span><span style='background: #AEF1AE'>          &quot;akka://$clusterName@127.0.0.1:2551&quot;,
+</span>39 <span style=''></span><span style='background: #AEF1AE'>          &quot;akka://$clusterName@127.0.0.1:2552&quot;
+</span>40 <span style=''></span><span style='background: #AEF1AE'>        ]
+</span>41 <span style=''></span><span style='background: #AEF1AE'>        &quot;&quot;&quot;)
+</span>42 <span style=''></span><span style='background: #AEF1AE'>      .withFallback(ConfigFactory.load(&quot;base-cluster&quot;))</span><span style=''>
+</span>43 <span style=''>
+</span>44 <span style=''>    // Create an Akka system
+</span>45 <span style=''>    </span><span style='background: #AEF1AE'>ActorSystem(root, clusterName, config)</span><span style=''>
 </span>46 <span style=''>
-</span>47 <span style=''>    val reader: BufferedReader = </span><span style='background: #F0ADAD'>new BufferedReader(new InputStreamReader(System.in))</span><span style=''>;
-</span>48 <span style=''>    </span><span style='background: #F0ADAD'>System.out.print(&quot;Inserisci l'ip&quot;)</span><span style=''>
-</span>49 <span style=''>    val ipAddress: String = </span><span style='background: #F0ADAD'>reader.readLine()</span><span style=''>;
-</span>50 <span style=''>
-</span>51 <span style=''>    val port: String = </span><span style='background: #F0ADAD'>reader.readLine()</span><span style=''>;
+</span>47 <span style=''>  </span><span style='background: #F0ADAD'>@main def main</span><span style=''>() =
+</span>48 <span style=''>
+</span>49 <span style=''>    val reader: BufferedReader = </span><span style='background: #F0ADAD'>new BufferedReader(new InputStreamReader(System.in))</span><span style=''>;
+</span>50 <span style=''>    </span><span style='background: #F0ADAD'>System.out.print(&quot;Inserisci l'ip&quot;)</span><span style=''>
+</span>51 <span style=''>    val ipAddress: String = </span><span style='background: #F0ADAD'>reader.readLine()</span><span style=''>;
 </span>52 <span style=''>
-</span>53 <span style=''>    </span><span style='background: #F0ADAD'>System.out.print(ipAddress + &quot;:&quot; + port)</span><span style=''>
-</span>54 <span style=''>    val sender = </span><span style='background: #F0ADAD'>startupWithRole(&quot;sender&quot;, port, ipAddress)(ForemanBehavior())</span><span style=''>;
+</span>53 <span style=''>    val port: String = </span><span style='background: #F0ADAD'>reader.readLine()</span><span style=''>;
+</span>54 <span style=''>
+</span>55 <span style=''>    </span><span style='background: #F0ADAD'>System.out.print(ipAddress + &quot;:&quot; + port)</span><span style=''>
+</span>56 <span style=''>    val sender = </span><span style='background: #F0ADAD'>startupWithRole(&quot;sender&quot;, port, ipAddress)(ForemanBehavior())</span><span style=''>;
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -90,15 +92,15 @@
         <th>Code</th>
       </tr><tr>
         <td>
-          13
+          14
         </td>
         <td>
           910
         </td>
         <td>
-          502
+          688
           -
-          502
+          688
         </td>
         <td>
           DefDef
@@ -114,15 +116,15 @@
         </td>
       </tr><tr>
         <td>
-          13
+          14
         </td>
         <td>
           909
         </td>
         <td>
-          475
+          661
           -
-          501
+          687
         </td>
         <td>
           DefDef
@@ -138,15 +140,15 @@
         </td>
       </tr><tr>
         <td>
-          15
+          16
         </td>
         <td>
           905
         </td>
         <td>
-          641
+          827
           -
-          881
+          1067
         </td>
         <td>
           Apply
@@ -170,15 +172,15 @@
         </td>
       </tr><tr>
         <td>
-          16
+          17
         </td>
         <td>
           904
         </td>
         <td>
-          683
+          869
           -
-          880
+          1066
         </td>
         <td>
           Apply
@@ -200,15 +202,15 @@
         </td>
       </tr><tr>
         <td>
-          23
+          24
         </td>
         <td>
           907
         </td>
         <td>
-          641
+          827
           -
-          941
+          1127
         </td>
         <td>
           Apply
@@ -233,15 +235,15 @@
         </td>
       </tr><tr>
         <td>
-          23
+          24
         </td>
         <td>
           906
         </td>
         <td>
-          902
+          1088
           -
-          940
+          1126
         </td>
         <td>
           Apply
@@ -257,15 +259,15 @@
         </td>
       </tr><tr>
         <td>
-          25
+          26
         </td>
         <td>
           908
         </td>
         <td>
-          977
+          1163
           -
-          1015
+          1201
         </td>
         <td>
           Apply
@@ -281,15 +283,15 @@
         </td>
       </tr><tr>
         <td>
-          27
+          29
         </td>
         <td>
           917
         </td>
         <td>
-          1039
+          1411
           -
-          1039
+          1411
         </td>
         <td>
           DefDef
@@ -305,15 +307,15 @@
         </td>
       </tr><tr>
         <td>
-          27
+          29
         </td>
         <td>
           916
         </td>
         <td>
-          1019
+          1391
           -
-          1038
+          1410
         </td>
         <td>
           DefDef
@@ -329,15 +331,15 @@
         </td>
       </tr><tr>
         <td>
-          29
+          31
         </td>
         <td>
           912
         </td>
         <td>
-          1178
+          1550
           -
-          1513
+          1885
         </td>
         <td>
           Apply
@@ -363,15 +365,15 @@
         </td>
       </tr><tr>
         <td>
-          30
+          32
         </td>
         <td>
           911
         </td>
         <td>
-          1220
+          1592
           -
-          1512
+          1884
         </td>
         <td>
           Apply
@@ -395,15 +397,15 @@
         </td>
       </tr><tr>
         <td>
-          39
+          41
         </td>
         <td>
           914
         </td>
         <td>
-          1178
+          1550
           -
-          1569
+          1941
         </td>
         <td>
           Apply
@@ -430,15 +432,15 @@
         </td>
       </tr><tr>
         <td>
-          39
+          41
         </td>
         <td>
           913
         </td>
         <td>
-          1534
+          1906
           -
-          1568
+          1940
         </td>
         <td>
           Apply
@@ -454,15 +456,15 @@
         </td>
       </tr><tr>
         <td>
-          42
+          44
         </td>
         <td>
           915
         </td>
         <td>
-          1604
+          1976
           -
-          1642
+          2014
         </td>
         <td>
           Apply
@@ -478,15 +480,15 @@
         </td>
       </tr><tr>
         <td>
-          44
+          46
         </td>
         <td>
           928
         </td>
         <td>
-          1646
+          2018
           -
-          1660
+          2032
         </td>
         <td>
           DefDef
@@ -502,15 +504,15 @@
         </td>
       </tr><tr>
         <td>
-          46
+          48
         </td>
         <td>
           919
         </td>
         <td>
-          1699
+          2071
           -
-          1751
+          2123
         </td>
         <td>
           Apply
@@ -526,15 +528,15 @@
         </td>
       </tr><tr>
         <td>
-          46
+          48
         </td>
         <td>
           918
         </td>
         <td>
-          1718
+          2090
           -
-          1750
+          2122
         </td>
         <td>
           Apply
@@ -550,15 +552,15 @@
         </td>
       </tr><tr>
         <td>
-          47
+          49
         </td>
         <td>
           920
         </td>
         <td>
-          1757
+          2129
           -
-          1791
+          2163
         </td>
         <td>
           Apply
@@ -574,39 +576,15 @@
         </td>
       </tr><tr>
         <td>
-          48
+          50
         </td>
         <td>
           921
         </td>
         <td>
-          1820
+          2192
           -
-          1837
-        </td>
-        <td>
-          Apply
-        </td>
-        <td>
-          readLine
-        </td>
-        <td>
-          
-        </td>
-        <td style="background: #F0ADAD">
-          reader.readLine()
-        </td>
-      </tr><tr>
-        <td>
-          50
-        </td>
-        <td>
-          922
-        </td>
-        <td>
-          1863
-          -
-          1880
+          2209
         </td>
         <td>
           Apply
@@ -625,12 +603,36 @@
           52
         </td>
         <td>
+          922
+        </td>
+        <td>
+          2235
+          -
+          2252
+        </td>
+        <td>
+          Apply
+        </td>
+        <td>
+          readLine
+        </td>
+        <td>
+          
+        </td>
+        <td style="background: #F0ADAD">
+          reader.readLine()
+        </td>
+      </tr><tr>
+        <td>
+          54
+        </td>
+        <td>
           923
         </td>
         <td>
-          1904
+          2276
           -
-          1919
+          2291
         </td>
         <td>
           Apply
@@ -646,15 +648,15 @@
         </td>
       </tr><tr>
         <td>
-          52
+          54
         </td>
         <td>
           925
         </td>
         <td>
-          1887
+          2259
           -
-          1927
+          2299
         </td>
         <td>
           Apply
@@ -670,15 +672,15 @@
         </td>
       </tr><tr>
         <td>
-          52
+          54
         </td>
         <td>
           924
         </td>
         <td>
-          1904
+          2276
           -
-          1926
+          2298
         </td>
         <td>
           Apply
@@ -694,15 +696,15 @@
         </td>
       </tr><tr>
         <td>
-          53
+          55
         </td>
         <td>
           926
         </td>
         <td>
-          1945
+          2317
           -
-          1960
+          2332
         </td>
         <td>
           Select
@@ -718,15 +720,15 @@
         </td>
       </tr><tr>
         <td>
-          53
+          55
         </td>
         <td>
           927
         </td>
         <td>
-          1945
+          2317
           -
-          2006
+          2378
         </td>
         <td>
           Apply

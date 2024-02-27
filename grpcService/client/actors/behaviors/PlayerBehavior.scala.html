@@ -174,7 +174,7 @@
 </span>150 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>interactionActor ! InteractionBehavior.ResetInteraction</span><span style='background: #AEF1AE'>
 </span>151 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>gameOn()</span><span style='background: #AEF1AE'>
 </span>152 <span style=''></span><span style='background: #AEF1AE'>
-</span>153 <span style=''></span><span style='background: #AEF1AE'>    </span><span style='background: #F0ADAD'>case _</span><span style='background: #AEF1AE'> =&gt; </span><span style='background: #F0ADAD'>Behaviors.same</span><span style='background: #AEF1AE'>
+</span>153 <span style=''></span><span style='background: #AEF1AE'>    case _ =&gt; Behaviors.same
 </span>154 <span style=''></span><span style='background: #AEF1AE'>  }</span><span style=''>
 </span>155 <span style=''>
 </span>156 <span style=''>  </span><span style='background: #AEF1AE'>def choose</span><span style=''>(replyTo: ActorRef[ForemanBehavior.Command]): Behavior[Command | Receptionist.Listing] = </span><span style='background: #AEF1AE'>Behaviors.receiveMessage {
@@ -4172,7 +4172,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           case _
         </td>
       </tr><tr>
@@ -4196,7 +4196,7 @@
         <td>
           
         </td>
-        <td style="background: #F0ADAD">
+        <td style="background: #AEF1AE">
           Behaviors.same
         </td>
       </tr><tr>

@@ -26,58 +26,57 @@
 </span>2 <span style=''>
 </span>3 <span style=''>import java.sql.SQLException
 </span>4 <span style=''>
-</span>5 <span style=''>//devo prendere la lista di tabelle disponibili e controllare che from prenda una tabella valida (policy) per evitare sql injection
-</span>6 <span style=''>class QueryBuilder():
-</span>7 <span style=''>  var query = &quot;&quot;
-</span>8 <span style=''>
-</span>9 <span style=''>  </span><span style='background: #AEF1AE'>def select</span><span style=''>(what: String) =
-</span>10 <span style=''>    what match
-</span>11 <span style=''>      </span><span style='background: #AEF1AE'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>throw SQLException()</span><span style=''>
-</span>12 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
-</span>13 <span style=''>        query = </span><span style='background: #AEF1AE'>&quot;select &quot; + what</span><span style=''>
-</span>14 <span style=''>        this
-</span>15 <span style=''>
-</span>16 <span style=''>  </span><span style='background: #AEF1AE'>def from</span><span style=''>(from: String) =
-</span>17 <span style=''>    from match
-</span>18 <span style=''>      </span><span style='background: #AEF1AE'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>throw SQLException()</span><span style=''>
-</span>19 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
-</span>20 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; from &quot; + from</span><span style=''>
-</span>21 <span style=''>        this
-</span>22 <span style=''>
-</span>23 <span style=''>  </span><span style='background: #AEF1AE'>def where</span><span style=''>(cond: String) =
-</span>24 <span style=''>    cond match
-</span>25 <span style=''>      </span><span style='background: #AEF1AE'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>throw SQLException()</span><span style=''>
-</span>26 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
-</span>27 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; where &quot; + cond</span><span style=''>
-</span>28 <span style=''>        this
-</span>29 <span style=''>
-</span>30 <span style=''>  </span><span style='background: #AEF1AE'>def and</span><span style=''>(cond: String) =
-</span>31 <span style=''>    cond match
-</span>32 <span style=''>      </span><span style='background: #AEF1AE'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>throw SQLException()</span><span style=''>
-</span>33 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
-</span>34 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; AND &quot; + cond</span><span style=''>
-</span>35 <span style=''>        this
-</span>36 <span style=''>
-</span>37 <span style=''>  </span><span style='background: #AEF1AE'>def or</span><span style=''>(cond: String) =
-</span>38 <span style=''>    cond match
-</span>39 <span style=''>      </span><span style='background: #AEF1AE'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>throw SQLException()</span><span style=''>
-</span>40 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
-</span>41 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; OR &quot; + cond</span><span style=''>
-</span>42 <span style=''>        this
-</span>43 <span style=''>
-</span>44 <span style=''>  </span><span style='background: #AEF1AE'>def equal</span><span style=''>(cond: String) =
-</span>45 <span style=''>    cond match
-</span>46 <span style=''>      </span><span style='background: #AEF1AE'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>throw SQLException()</span><span style=''>
-</span>47 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
-</span>48 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; = '&quot; + cond + &quot;'&quot;</span><span style=''>
-</span>49 <span style=''>        this
-</span>50 <span style=''>
-</span>51 <span style=''>  </span><span style='background: #AEF1AE'>def disequal</span><span style=''>(cond: String) =
-</span>52 <span style=''>    cond match
-</span>53 <span style=''>      </span><span style='background: #AEF1AE'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>throw SQLException()</span><span style=''>
-</span>54 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
-</span>55 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; != &quot; + cond</span><span style=''>
-</span>56 <span style=''>        this
+</span>5 <span style=''>class QueryBuilder():
+</span>6 <span style=''>  var query = &quot;&quot;
+</span>7 <span style=''>
+</span>8 <span style=''>  </span><span style='background: #AEF1AE'>def select</span><span style=''>(what: String) =
+</span>9 <span style=''>    what match
+</span>10 <span style=''>      </span><span style='background: #AEF1AE'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>throw SQLException()</span><span style=''>
+</span>11 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
+</span>12 <span style=''>        query = </span><span style='background: #AEF1AE'>&quot;select &quot; + what</span><span style=''>
+</span>13 <span style=''>        this
+</span>14 <span style=''>
+</span>15 <span style=''>  </span><span style='background: #AEF1AE'>def from</span><span style=''>(from: String) =
+</span>16 <span style=''>    from match
+</span>17 <span style=''>      </span><span style='background: #AEF1AE'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>throw SQLException()</span><span style=''>
+</span>18 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
+</span>19 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; from &quot; + from</span><span style=''>
+</span>20 <span style=''>        this
+</span>21 <span style=''>
+</span>22 <span style=''>  </span><span style='background: #AEF1AE'>def where</span><span style=''>(cond: String) =
+</span>23 <span style=''>    cond match
+</span>24 <span style=''>      </span><span style='background: #AEF1AE'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>throw SQLException()</span><span style=''>
+</span>25 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
+</span>26 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; where &quot; + cond</span><span style=''>
+</span>27 <span style=''>        this
+</span>28 <span style=''>
+</span>29 <span style=''>  </span><span style='background: #AEF1AE'>def and</span><span style=''>(cond: String) =
+</span>30 <span style=''>    cond match
+</span>31 <span style=''>      </span><span style='background: #AEF1AE'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>throw SQLException()</span><span style=''>
+</span>32 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
+</span>33 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; AND &quot; + cond</span><span style=''>
+</span>34 <span style=''>        this
+</span>35 <span style=''>
+</span>36 <span style=''>  </span><span style='background: #AEF1AE'>def or</span><span style=''>(cond: String) =
+</span>37 <span style=''>    cond match
+</span>38 <span style=''>      </span><span style='background: #AEF1AE'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>throw SQLException()</span><span style=''>
+</span>39 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
+</span>40 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; OR &quot; + cond</span><span style=''>
+</span>41 <span style=''>        this
+</span>42 <span style=''>
+</span>43 <span style=''>  </span><span style='background: #AEF1AE'>def equal</span><span style=''>(cond: String) =
+</span>44 <span style=''>    cond match
+</span>45 <span style=''>      </span><span style='background: #AEF1AE'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>throw SQLException()</span><span style=''>
+</span>46 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
+</span>47 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; = '&quot; + cond + &quot;'&quot;</span><span style=''>
+</span>48 <span style=''>        this
+</span>49 <span style=''>
+</span>50 <span style=''>  </span><span style='background: #AEF1AE'>def disequal</span><span style=''>(cond: String) =
+</span>51 <span style=''>    cond match
+</span>52 <span style=''>      </span><span style='background: #AEF1AE'>case &quot;&quot;</span><span style=''> =&gt; </span><span style='background: #AEF1AE'>throw SQLException()</span><span style=''>
+</span>53 <span style=''>      </span><span style='background: #AEF1AE'>case _</span><span style=''> =&gt;
+</span>54 <span style=''>        </span><span style='background: #AEF1AE'>query += &quot; != &quot; + cond</span><span style=''>
+</span>55 <span style=''>        this
 </span></pre>
           </div>
           <div class="tab-pane" id="statementlist">
@@ -92,15 +91,15 @@
         <th>Code</th>
       </tr><tr>
         <td>
-          8
+          7
         </td>
         <td>
           1555
         </td>
         <td>
-          246
+          114
           -
-          256
+          124
         </td>
         <td>
           DefDef
@@ -116,15 +115,15 @@
         </td>
       </tr><tr>
         <td>
-          10
+          9
         </td>
         <td>
           1551
         </td>
         <td>
-          305
+          173
           -
-          325
+          193
         </td>
         <td>
           Apply
@@ -140,15 +139,15 @@
         </td>
       </tr><tr>
         <td>
-          10
+          9
         </td>
         <td>
           1550
         </td>
         <td>
-          311
+          179
           -
-          325
+          193
         </td>
         <td>
           Apply
@@ -164,15 +163,15 @@
         </td>
       </tr><tr>
         <td>
-          10
+          9
         </td>
         <td>
           1552
         </td>
         <td>
-          294
+          162
           -
-          301
+          169
         </td>
         <td>
           Block
@@ -188,15 +187,15 @@
         </td>
       </tr><tr>
         <td>
-          11
+          10
         </td>
         <td>
           1554
         </td>
         <td>
-          332
+          200
           -
-          338
+          206
         </td>
         <td>
           Block
@@ -212,15 +211,15 @@
         </td>
       </tr><tr>
         <td>
-          12
+          11
         </td>
         <td>
           1553
         </td>
         <td>
-          358
+          226
           -
-          374
+          242
         </td>
         <td>
           Apply
@@ -236,15 +235,15 @@
         </td>
       </tr><tr>
         <td>
-          15
+          14
         </td>
         <td>
           1562
         </td>
         <td>
-          391
+          259
           -
-          399
+          267
         </td>
         <td>
           DefDef
@@ -260,15 +259,15 @@
         </td>
       </tr><tr>
         <td>
-          17
+          16
         </td>
         <td>
           1557
         </td>
         <td>
-          448
+          316
           -
-          468
+          336
         </td>
         <td>
           Apply
@@ -284,15 +283,15 @@
         </td>
       </tr><tr>
         <td>
-          17
+          16
         </td>
         <td>
           1556
         </td>
         <td>
-          454
+          322
           -
-          468
+          336
         </td>
         <td>
           Apply
@@ -308,15 +307,15 @@
         </td>
       </tr><tr>
         <td>
-          17
+          16
         </td>
         <td>
           1558
         </td>
         <td>
-          437
+          305
           -
-          444
+          312
         </td>
         <td>
           Block
@@ -332,15 +331,15 @@
         </td>
       </tr><tr>
         <td>
-          18
+          17
         </td>
         <td>
           1561
         </td>
         <td>
-          475
+          343
           -
-          481
+          349
         </td>
         <td>
           Block
@@ -356,15 +355,15 @@
         </td>
       </tr><tr>
         <td>
-          19
+          18
         </td>
         <td>
           1560
         </td>
         <td>
-          493
+          361
           -
-          517
+          385
         </td>
         <td>
           Apply
@@ -380,15 +379,15 @@
         </td>
       </tr><tr>
         <td>
-          19
+          18
         </td>
         <td>
           1559
         </td>
         <td>
-          502
+          370
           -
-          517
+          385
         </td>
         <td>
           Apply
@@ -404,15 +403,15 @@
         </td>
       </tr><tr>
         <td>
-          22
+          21
         </td>
         <td>
           1569
         </td>
         <td>
-          534
+          402
           -
-          543
+          411
         </td>
         <td>
           DefDef
@@ -428,15 +427,15 @@
         </td>
       </tr><tr>
         <td>
-          24
+          23
         </td>
         <td>
           1563
         </td>
         <td>
-          598
+          466
           -
-          612
+          480
         </td>
         <td>
           Apply
@@ -452,15 +451,15 @@
         </td>
       </tr><tr>
         <td>
-          24
+          23
         </td>
         <td>
           1565
         </td>
         <td>
-          581
+          449
           -
-          588
+          456
         </td>
         <td>
           Block
@@ -476,15 +475,15 @@
         </td>
       </tr><tr>
         <td>
-          24
+          23
         </td>
         <td>
           1564
         </td>
         <td>
-          592
+          460
           -
-          612
+          480
         </td>
         <td>
           Apply
@@ -500,15 +499,15 @@
         </td>
       </tr><tr>
         <td>
-          25
+          24
         </td>
         <td>
           1568
         </td>
         <td>
-          619
+          487
           -
-          625
+          493
         </td>
         <td>
           Block
@@ -524,15 +523,15 @@
         </td>
       </tr><tr>
         <td>
-          26
+          25
         </td>
         <td>
           1566
         </td>
         <td>
-          646
+          514
           -
-          662
+          530
         </td>
         <td>
           Apply
@@ -548,15 +547,15 @@
         </td>
       </tr><tr>
         <td>
-          26
+          25
         </td>
         <td>
           1567
         </td>
         <td>
-          637
+          505
           -
-          662
+          530
         </td>
         <td>
           Apply
@@ -572,15 +571,15 @@
         </td>
       </tr><tr>
         <td>
-          29
+          28
         </td>
         <td>
           1576
         </td>
         <td>
-          679
+          547
           -
-          686
+          554
         </td>
         <td>
           DefDef
@@ -596,15 +595,15 @@
         </td>
       </tr><tr>
         <td>
-          31
+          30
         </td>
         <td>
           1572
         </td>
         <td>
-          724
+          592
           -
-          731
+          599
         </td>
         <td>
           Block
@@ -620,15 +619,15 @@
         </td>
       </tr><tr>
         <td>
-          31
+          30
         </td>
         <td>
           1571
         </td>
         <td>
-          735
+          603
           -
-          755
+          623
         </td>
         <td>
           Apply
@@ -644,15 +643,15 @@
         </td>
       </tr><tr>
         <td>
-          31
+          30
         </td>
         <td>
           1570
         </td>
         <td>
-          741
+          609
           -
-          755
+          623
         </td>
         <td>
           Apply
@@ -668,15 +667,15 @@
         </td>
       </tr><tr>
         <td>
-          32
+          31
         </td>
         <td>
           1575
         </td>
         <td>
-          762
+          630
           -
-          768
+          636
         </td>
         <td>
           Block
@@ -692,15 +691,15 @@
         </td>
       </tr><tr>
         <td>
-          33
+          32
         </td>
         <td>
           1574
         </td>
         <td>
-          780
+          648
           -
-          803
+          671
         </td>
         <td>
           Apply
@@ -716,15 +715,15 @@
         </td>
       </tr><tr>
         <td>
-          33
+          32
         </td>
         <td>
           1573
         </td>
         <td>
-          789
+          657
           -
-          803
+          671
         </td>
         <td>
           Apply
@@ -740,15 +739,15 @@
         </td>
       </tr><tr>
         <td>
-          36
+          35
         </td>
         <td>
           1583
         </td>
         <td>
-          820
+          688
           -
-          826
+          694
         </td>
         <td>
           DefDef
@@ -764,15 +763,15 @@
         </td>
       </tr><tr>
         <td>
-          38
+          37
         </td>
         <td>
           1578
         </td>
         <td>
-          875
+          743
           -
-          895
+          763
         </td>
         <td>
           Apply
@@ -788,15 +787,15 @@
         </td>
       </tr><tr>
         <td>
-          38
+          37
         </td>
         <td>
           1577
         </td>
         <td>
-          881
+          749
           -
-          895
+          763
         </td>
         <td>
           Apply
@@ -812,15 +811,15 @@
         </td>
       </tr><tr>
         <td>
-          38
+          37
         </td>
         <td>
           1579
         </td>
         <td>
-          864
+          732
           -
-          871
+          739
         </td>
         <td>
           Block
@@ -836,15 +835,15 @@
         </td>
       </tr><tr>
         <td>
-          39
+          38
         </td>
         <td>
           1582
         </td>
         <td>
-          902
+          770
           -
-          908
+          776
         </td>
         <td>
           Block
@@ -860,15 +859,15 @@
         </td>
       </tr><tr>
         <td>
-          40
+          39
         </td>
         <td>
           1581
         </td>
         <td>
-          920
+          788
           -
-          942
+          810
         </td>
         <td>
           Apply
@@ -884,15 +883,15 @@
         </td>
       </tr><tr>
         <td>
-          40
+          39
         </td>
         <td>
           1580
         </td>
         <td>
-          929
+          797
           -
-          942
+          810
         </td>
         <td>
           Apply
@@ -908,15 +907,15 @@
         </td>
       </tr><tr>
         <td>
-          43
+          42
         </td>
         <td>
           1591
         </td>
         <td>
-          959
+          827
           -
-          968
+          836
         </td>
         <td>
           DefDef
@@ -932,15 +931,15 @@
         </td>
       </tr><tr>
         <td>
-          45
+          44
         </td>
         <td>
           1584
         </td>
         <td>
-          1023
+          891
           -
-          1037
+          905
         </td>
         <td>
           Apply
@@ -956,15 +955,15 @@
         </td>
       </tr><tr>
         <td>
-          45
+          44
         </td>
         <td>
           1586
         </td>
         <td>
-          1006
+          874
           -
-          1013
+          881
         </td>
         <td>
           Block
@@ -980,15 +979,15 @@
         </td>
       </tr><tr>
         <td>
-          45
+          44
         </td>
         <td>
           1585
         </td>
         <td>
-          1017
+          885
           -
-          1037
+          905
         </td>
         <td>
           Apply
@@ -1004,15 +1003,15 @@
         </td>
       </tr><tr>
         <td>
-          46
+          45
         </td>
         <td>
           1590
         </td>
         <td>
-          1044
+          912
           -
-          1050
+          918
         </td>
         <td>
           Block
@@ -1028,15 +1027,15 @@
         </td>
       </tr><tr>
         <td>
-          47
+          46
         </td>
         <td>
           1587
         </td>
         <td>
-          1071
+          939
           -
-          1084
+          952
         </td>
         <td>
           Apply
@@ -1052,15 +1051,15 @@
         </td>
       </tr><tr>
         <td>
-          47
+          46
         </td>
         <td>
           1589
         </td>
         <td>
-          1062
+          930
           -
-          1090
+          958
         </td>
         <td>
           Apply
@@ -1076,15 +1075,15 @@
         </td>
       </tr><tr>
         <td>
-          47
+          46
         </td>
         <td>
           1588
         </td>
         <td>
-          1071
+          939
           -
-          1090
+          958
         </td>
         <td>
           Apply
@@ -1100,15 +1099,15 @@
         </td>
       </tr><tr>
         <td>
-          50
+          49
         </td>
         <td>
           1598
         </td>
         <td>
-          1107
+          975
           -
-          1119
+          987
         </td>
         <td>
           DefDef
@@ -1124,15 +1123,15 @@
         </td>
       </tr><tr>
         <td>
-          52
+          51
         </td>
         <td>
           1593
         </td>
         <td>
-          1168
+          1036
           -
-          1188
+          1056
         </td>
         <td>
           Apply
@@ -1148,15 +1147,15 @@
         </td>
       </tr><tr>
         <td>
-          52
+          51
         </td>
         <td>
           1592
         </td>
         <td>
-          1174
+          1042
           -
-          1188
+          1056
         </td>
         <td>
           Apply
@@ -1172,15 +1171,15 @@
         </td>
       </tr><tr>
         <td>
-          52
+          51
         </td>
         <td>
           1594
         </td>
         <td>
-          1157
+          1025
           -
-          1164
+          1032
         </td>
         <td>
           Block
@@ -1196,15 +1195,15 @@
         </td>
       </tr><tr>
         <td>
-          53
+          52
         </td>
         <td>
           1597
         </td>
         <td>
-          1195
+          1063
           -
-          1201
+          1069
         </td>
         <td>
           Block
@@ -1220,15 +1219,15 @@
         </td>
       </tr><tr>
         <td>
-          54
+          53
         </td>
         <td>
           1596
         </td>
         <td>
-          1213
+          1081
           -
-          1235
+          1103
         </td>
         <td>
           Apply
@@ -1244,15 +1243,15 @@
         </td>
       </tr><tr>
         <td>
-          54
+          53
         </td>
         <td>
           1595
         </td>
         <td>
-          1222
+          1090
           -
-          1235
+          1103
         </td>
         <td>
           Apply

@@ -53,7 +53,7 @@
 </span>29 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
 </span>30 <span style=''></span><span style='background: #AEF1AE'>        success(msg.clusterName.toList)
 </span>31 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
-</span>32 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error: $e&quot;)</span><span style='background: #AEF1AE'>
+</span>32 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error while getting the available games: $e&quot;)</span><span style='background: #AEF1AE'>
 </span>33 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
 </span>34 <span style=''>    reply
 </span>35 <span style=''>
@@ -73,7 +73,7 @@
 </span>49 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
 </span>50 <span style=''></span><span style='background: #AEF1AE'>        success(msg.response)
 </span>51 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
-</span>52 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error: $e&quot;)</span><span style='background: #AEF1AE'>
+</span>52 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error login: $e&quot;)</span><span style='background: #AEF1AE'>
 </span>53 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
 </span>54 <span style=''>    reply
 </span>55 <span style=''>    
@@ -83,7 +83,7 @@
 </span>59 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
 </span>60 <span style=''></span><span style='background: #AEF1AE'>        success(msg.response)
 </span>61 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
-</span>62 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error: $e&quot;)</span><span style='background: #AEF1AE'>
+</span>62 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error registration: $e&quot;)</span><span style='background: #AEF1AE'>
 </span>63 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
 </span>64 <span style=''>    reply
 </span>65 <span style=''>
@@ -93,7 +93,7 @@
 </span>69 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
 </span>70 <span style=''></span><span style='background: #AEF1AE'>        success(true)
 </span>71 <span style=''></span><span style='background: #AEF1AE'>      case Failure(e) =&gt;
-</span>72 <span style=''></span><span style='background: #AEF1AE'>        println(s&quot;Error: $e&quot;)
+</span>72 <span style=''></span><span style='background: #AEF1AE'>        println(s&quot;Error while creating a new game: $e&quot;)
 </span>73 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
 </span>74 <span style=''>    reply
 </span>75 <span style=''>
@@ -103,7 +103,7 @@
 </span>79 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
 </span>80 <span style=''></span><span style='background: #AEF1AE'>        success(true)
 </span>81 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
-</span>82 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error: $e&quot;)</span><span style='background: #AEF1AE'>
+</span>82 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error during the closure of the game: $e&quot;)</span><span style='background: #AEF1AE'>
 </span>83 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
 </span>84 <span style=''>    reply
 </span>85 <span style=''>
@@ -113,7 +113,7 @@
 </span>89 <span style=''></span><span style='background: #AEF1AE'>      case Success(msg) =&gt;
 </span>90 <span style=''></span><span style='background: #AEF1AE'>        success(true)
 </span>91 <span style=''></span><span style='background: #AEF1AE'>      </span><span style='background: #F0ADAD'>case Failure(e)</span><span style='background: #AEF1AE'> =&gt;
-</span>92 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error: $e&quot;)</span><span style='background: #AEF1AE'>
+</span>92 <span style=''></span><span style='background: #AEF1AE'>        </span><span style='background: #F0ADAD'>println(s&quot;Error while updating the user points: $e&quot;)</span><span style='background: #AEF1AE'>
 </span>93 <span style=''></span><span style='background: #AEF1AE'>    }</span><span style=''>
 </span>94 <span style=''>    reply
 </span>95 <span style=''>
@@ -428,7 +428,7 @@
         <td>
           978
           -
-          1124
+          1158
         </td>
         <td>
           Apply
@@ -444,7 +444,7 @@
       case Success(msg) =&gt;
         success(msg.clusterName.toList)
       case Failure(e) =&gt;
-        println(s&quot;Error: $e&quot;)
+        println(s&quot;Error while getting the available games: $e&quot;)
     }
         </td>
       </tr><tr>
@@ -553,7 +553,7 @@
         <td>
           1097
           -
-          1118
+          1152
         </td>
         <td>
           Apply
@@ -565,7 +565,7 @@
           
         </td>
         <td style="background: #F0ADAD">
-          println(s&quot;Error: $e&quot;)
+          println(s&quot;Error while getting the available games: $e&quot;)
         </td>
       </tr><tr>
         <td>
@@ -577,7 +577,7 @@
         <td>
           1105
           -
-          1117
+          1151
         </td>
         <td>
           Apply
@@ -589,7 +589,7 @@
           
         </td>
         <td style="background: #F0ADAD">
-          s&quot;Error: $e&quot;
+          s&quot;Error while getting the available games: $e&quot;
         </td>
       </tr><tr>
         <td>
@@ -599,9 +599,9 @@
           26
         </td>
         <td>
-          1138
+          1172
           -
-          1155
+          1189
         </td>
         <td>
           DefDef
@@ -623,9 +623,9 @@
           19
         </td>
         <td>
-          1244
+          1278
           -
-          1284
+          1318
         </td>
         <td>
           Apply
@@ -647,9 +647,9 @@
           18
         </td>
         <td>
-          1265
+          1299
           -
-          1273
+          1307
         </td>
         <td>
           Select
@@ -671,9 +671,9 @@
           25
         </td>
         <td>
-          1289
+          1323
           -
-          1456
+          1490
         </td>
         <td>
           Apply
@@ -700,9 +700,9 @@
           21
         </td>
         <td>
-          1314
+          1348
           -
-          1331
+          1365
         </td>
         <td>
           Block
@@ -724,9 +724,9 @@
           20
         </td>
         <td>
-          1343
+          1377
           -
-          1362
+          1396
         </td>
         <td>
           Apply
@@ -748,9 +748,9 @@
           24
         </td>
         <td>
-          1369
+          1403
           -
-          1384
+          1418
         </td>
         <td>
           Block
@@ -772,9 +772,9 @@
           23
         </td>
         <td>
-          1396
+          1430
           -
-          1450
+          1484
         </td>
         <td>
           Apply
@@ -796,9 +796,9 @@
           22
         </td>
         <td>
-          1404
+          1438
           -
-          1449
+          1483
         </td>
         <td>
           Apply
@@ -820,9 +820,9 @@
           35
         </td>
         <td>
-          1474
+          1508
           -
-          1483
+          1517
         </td>
         <td>
           DefDef
@@ -844,9 +844,9 @@
           28
         </td>
         <td>
-          1589
+          1623
           -
-          1635
+          1669
         </td>
         <td>
           Apply
@@ -868,9 +868,9 @@
           27
         </td>
         <td>
-          1602
+          1636
           -
-          1614
+          1648
         </td>
         <td>
           Select
@@ -892,9 +892,9 @@
           34
         </td>
         <td>
-          1640
+          1674
           -
-          1776
+          1816
         </td>
         <td>
           Apply
@@ -910,7 +910,7 @@
       case Success(msg) =&gt;
         success(msg.response)
       case Failure(e) =&gt;
-        println(s&quot;Error: $e&quot;)
+        println(s&quot;Error login: $e&quot;)
     }
         </td>
       </tr><tr>
@@ -921,9 +921,9 @@
           30
         </td>
         <td>
-          1665
+          1699
           -
-          1682
+          1716
         </td>
         <td>
           Block
@@ -945,9 +945,9 @@
           29
         </td>
         <td>
-          1694
+          1728
           -
-          1715
+          1749
         </td>
         <td>
           Apply
@@ -969,9 +969,9 @@
           33
         </td>
         <td>
-          1722
+          1756
           -
-          1737
+          1771
         </td>
         <td>
           Block
@@ -993,9 +993,9 @@
           32
         </td>
         <td>
-          1749
+          1783
           -
-          1770
+          1810
         </td>
         <td>
           Apply
@@ -1007,7 +1007,7 @@
           
         </td>
         <td style="background: #F0ADAD">
-          println(s&quot;Error: $e&quot;)
+          println(s&quot;Error login: $e&quot;)
         </td>
       </tr><tr>
         <td>
@@ -1017,9 +1017,9 @@
           31
         </td>
         <td>
-          1757
+          1791
           -
-          1769
+          1809
         </td>
         <td>
           Apply
@@ -1031,7 +1031,7 @@
           
         </td>
         <td style="background: #F0ADAD">
-          s&quot;Error: $e&quot;
+          s&quot;Error login: $e&quot;
         </td>
       </tr><tr>
         <td>
@@ -1041,9 +1041,9 @@
           44
         </td>
         <td>
-          1794
+          1834
           -
-          1806
+          1846
         </td>
         <td>
           DefDef
@@ -1065,9 +1065,9 @@
           37
         </td>
         <td>
-          1912
+          1952
           -
-          1961
+          2001
         </td>
         <td>
           Apply
@@ -1089,9 +1089,9 @@
           36
         </td>
         <td>
-          1928
+          1968
           -
-          1940
+          1980
         </td>
         <td>
           Select
@@ -1113,9 +1113,9 @@
           43
         </td>
         <td>
-          1966
+          2006
           -
-          2102
+          2155
         </td>
         <td>
           Apply
@@ -1131,7 +1131,7 @@
       case Success(msg) =&gt;
         success(msg.response)
       case Failure(e) =&gt;
-        println(s&quot;Error: $e&quot;)
+        println(s&quot;Error registration: $e&quot;)
     }
         </td>
       </tr><tr>
@@ -1142,9 +1142,9 @@
           39
         </td>
         <td>
-          1991
+          2031
           -
-          2008
+          2048
         </td>
         <td>
           Block
@@ -1166,9 +1166,9 @@
           38
         </td>
         <td>
-          2020
+          2060
           -
-          2041
+          2081
         </td>
         <td>
           Apply
@@ -1190,9 +1190,9 @@
           42
         </td>
         <td>
-          2048
+          2088
           -
-          2063
+          2103
         </td>
         <td>
           Block
@@ -1214,9 +1214,9 @@
           41
         </td>
         <td>
-          2075
+          2115
           -
-          2096
+          2149
         </td>
         <td>
           Apply
@@ -1228,7 +1228,7 @@
           
         </td>
         <td style="background: #F0ADAD">
-          println(s&quot;Error: $e&quot;)
+          println(s&quot;Error registration: $e&quot;)
         </td>
       </tr><tr>
         <td>
@@ -1238,9 +1238,9 @@
           40
         </td>
         <td>
-          2083
+          2123
           -
-          2095
+          2148
         </td>
         <td>
           Apply
@@ -1252,7 +1252,7 @@
           
         </td>
         <td style="background: #F0ADAD">
-          s&quot;Error: $e&quot;
+          s&quot;Error registration: $e&quot;
         </td>
       </tr><tr>
         <td>
@@ -1262,9 +1262,9 @@
           53
         </td>
         <td>
-          2116
+          2169
           -
-          2130
+          2183
         </td>
         <td>
           DefDef
@@ -1286,9 +1286,9 @@
           46
         </td>
         <td>
-          2235
+          2288
           -
-          2277
+          2330
         </td>
         <td>
           Apply
@@ -1310,9 +1310,9 @@
           45
         </td>
         <td>
-          2250
+          2303
           -
-          2261
+          2314
         </td>
         <td>
           Select
@@ -1334,9 +1334,9 @@
           52
         </td>
         <td>
-          2282
+          2335
           -
-          2410
+          2489
         </td>
         <td>
           Apply
@@ -1352,7 +1352,7 @@
       case Success(msg) =&gt;
         success(true)
       case Failure(e) =&gt;
-        println(s&quot;Error: $e&quot;)
+        println(s&quot;Error while creating a new game: $e&quot;)
     }
         </td>
       </tr><tr>
@@ -1363,9 +1363,9 @@
           48
         </td>
         <td>
-          2307
+          2360
           -
-          2324
+          2377
         </td>
         <td>
           Block
@@ -1387,9 +1387,9 @@
           47
         </td>
         <td>
-          2336
+          2389
           -
-          2349
+          2402
         </td>
         <td>
           Apply
@@ -1411,9 +1411,9 @@
           51
         </td>
         <td>
-          2356
+          2409
           -
-          2371
+          2424
         </td>
         <td>
           Block
@@ -1435,9 +1435,9 @@
           50
         </td>
         <td>
-          2383
+          2436
           -
-          2404
+          2483
         </td>
         <td>
           Apply
@@ -1449,7 +1449,7 @@
           
         </td>
         <td style="background: #AEF1AE">
-          println(s&quot;Error: $e&quot;)
+          println(s&quot;Error while creating a new game: $e&quot;)
         </td>
       </tr><tr>
         <td>
@@ -1459,9 +1459,9 @@
           49
         </td>
         <td>
-          2391
+          2444
           -
-          2403
+          2482
         </td>
         <td>
           Apply
@@ -1473,7 +1473,7 @@
           
         </td>
         <td style="background: #AEF1AE">
-          s&quot;Error: $e&quot;
+          s&quot;Error while creating a new game: $e&quot;
         </td>
       </tr><tr>
         <td>
@@ -1483,9 +1483,9 @@
           62
         </td>
         <td>
-          2424
+          2503
           -
-          2437
+          2516
         </td>
         <td>
           DefDef
@@ -1507,9 +1507,9 @@
           55
         </td>
         <td>
-          2542
+          2621
           -
-          2586
+          2665
         </td>
         <td>
           Apply
@@ -1531,9 +1531,9 @@
           54
         </td>
         <td>
-          2559
+          2638
           -
-          2570
+          2649
         </td>
         <td>
           Select
@@ -1555,9 +1555,9 @@
           61
         </td>
         <td>
-          2591
+          2670
           -
-          2719
+          2829
         </td>
         <td>
           Apply
@@ -1573,7 +1573,7 @@
       case Success(msg) =&gt;
         success(true)
       case Failure(e) =&gt;
-        println(s&quot;Error: $e&quot;)
+        println(s&quot;Error during the closure of the game: $e&quot;)
     }
         </td>
       </tr><tr>
@@ -1584,9 +1584,9 @@
           57
         </td>
         <td>
-          2616
+          2695
           -
-          2633
+          2712
         </td>
         <td>
           Block
@@ -1608,9 +1608,9 @@
           56
         </td>
         <td>
-          2645
+          2724
           -
-          2658
+          2737
         </td>
         <td>
           Apply
@@ -1632,9 +1632,9 @@
           60
         </td>
         <td>
-          2665
+          2744
           -
-          2680
+          2759
         </td>
         <td>
           Block
@@ -1656,9 +1656,9 @@
           59
         </td>
         <td>
-          2692
+          2771
           -
-          2713
+          2823
         </td>
         <td>
           Apply
@@ -1670,7 +1670,7 @@
           
         </td>
         <td style="background: #F0ADAD">
-          println(s&quot;Error: $e&quot;)
+          println(s&quot;Error during the closure of the game: $e&quot;)
         </td>
       </tr><tr>
         <td>
@@ -1680,9 +1680,9 @@
           58
         </td>
         <td>
-          2700
+          2779
           -
-          2712
+          2822
         </td>
         <td>
           Apply
@@ -1694,7 +1694,7 @@
           
         </td>
         <td style="background: #F0ADAD">
-          s&quot;Error: $e&quot;
+          s&quot;Error during the closure of the game: $e&quot;
         </td>
       </tr><tr>
         <td>
@@ -1704,9 +1704,9 @@
           73
         </td>
         <td>
-          2733
+          2843
           -
-          2754
+          2864
         </td>
         <td>
           DefDef
@@ -1728,9 +1728,9 @@
           65
         </td>
         <td>
-          2895
+          3005
           -
-          2905
+          3015
         </td>
         <td>
           Select
@@ -1752,9 +1752,9 @@
           64
         </td>
         <td>
-          2923
+          3033
           -
-          2935
+          3045
         </td>
         <td>
           Select
@@ -1776,9 +1776,9 @@
           63
         </td>
         <td>
-          2906
+          3016
           -
-          2921
+          3031
         </td>
         <td>
           Select
@@ -1800,9 +1800,9 @@
           66
         </td>
         <td>
-          2871
+          2981
           -
-          2937
+          3047
         </td>
         <td>
           Apply
@@ -1824,9 +1824,9 @@
           72
         </td>
         <td>
-          2942
+          3052
           -
-          3070
+          3211
         </td>
         <td>
           Apply
@@ -1842,7 +1842,7 @@
       case Success(msg) =&gt;
         success(true)
       case Failure(e) =&gt;
-        println(s&quot;Error: $e&quot;)
+        println(s&quot;Error while updating the user points: $e&quot;)
     }
         </td>
       </tr><tr>
@@ -1853,9 +1853,9 @@
           68
         </td>
         <td>
-          2967
+          3077
           -
-          2984
+          3094
         </td>
         <td>
           Block
@@ -1877,9 +1877,9 @@
           67
         </td>
         <td>
-          2996
+          3106
           -
-          3009
+          3119
         </td>
         <td>
           Apply
@@ -1901,9 +1901,9 @@
           71
         </td>
         <td>
-          3016
+          3126
           -
-          3031
+          3141
         </td>
         <td>
           Block
@@ -1925,9 +1925,9 @@
           70
         </td>
         <td>
-          3043
+          3153
           -
-          3064
+          3205
         </td>
         <td>
           Apply
@@ -1939,7 +1939,7 @@
           
         </td>
         <td style="background: #F0ADAD">
-          println(s&quot;Error: $e&quot;)
+          println(s&quot;Error while updating the user points: $e&quot;)
         </td>
       </tr><tr>
         <td>
@@ -1949,9 +1949,9 @@
           69
         </td>
         <td>
-          3051
+          3161
           -
-          3063
+          3204
         </td>
         <td>
           Apply
@@ -1963,7 +1963,7 @@
           
         </td>
         <td style="background: #F0ADAD">
-          s&quot;Error: $e&quot;
+          s&quot;Error while updating the user points: $e&quot;
         </td>
       </tr>
     </table>
