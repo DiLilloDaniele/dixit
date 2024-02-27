@@ -2,7 +2,6 @@ package grpcService.server.data.adapters
 
 import java.sql.SQLException
 
-//devo prendere la lista di tabelle disponibili e controllare che from prenda una tabella valida (policy) per evitare sql injection
 class QueryBuilder():
   var query = ""
 

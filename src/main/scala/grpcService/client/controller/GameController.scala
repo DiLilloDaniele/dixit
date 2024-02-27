@@ -73,6 +73,4 @@ class GameController(val client: ClientImpl, val address: String = "127.0.0.1", 
           println("SISTEMA TERMINATO")
         })
       })
-
-
 }

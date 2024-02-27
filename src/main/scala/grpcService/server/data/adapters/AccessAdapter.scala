@@ -14,8 +14,6 @@ object AccessAdapter:
             password: String = "",
             connectionStringExt: String = ""): AccessAdapter = new AccessAdapter(url, port, driver, dbName, username, password, connectionStringExt)
 
-//il query wrapper viene passato dall'accessport all'access adapter, cosicché non venga eseguito codice malevolo nelle query
-//ho controllo sulla query inviata
 class AccessAdapter(val url: String = "",
                     val port: String = "", 
                     val driver: String = "", 
@@ -75,7 +73,6 @@ class AccessAdapter(val url: String = "",
       
       val statement: Statement = connection.createStatement()
       val query = "CREATE DATABASE IF NOT EXISTS DIXIT"
-      //val result = statement.executeQuery(query)
       statement.executeUpdate(query)
     } catch {
       case e: Exception => 
@@ -94,7 +91,6 @@ class AccessAdapter(val url: String = "",
       case _ => ()
 
   def checkDatabaseExist(): Boolean =
-    //SHOW DATABASES LIKE 'dbname';
     try {
       connectionStringExt match
         case "" => connect()

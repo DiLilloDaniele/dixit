@@ -9,6 +9,7 @@ import grpcService.server.adapters.ProtoToDomainAdapter
 
 import scala.concurrent.Future
 
+// server service implementing the proto messages requests
 class MyServerService(using mat: Materializer, inboundPorts: InboundPorts) extends Server{
   import mat.executionContext
 

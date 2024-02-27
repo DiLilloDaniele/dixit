@@ -29,7 +29,7 @@ class ClientImpl(serverAddress: String = "127.0.0.1") {
       case Success(msg) =>
         success(msg.clusterName.toList)
       case Failure(e) =>
-        println(s"Error: $e")
+        println(s"Error while getting the available games: $e")
     }
     reply
 
@@ -49,7 +49,7 @@ class ClientImpl(serverAddress: String = "127.0.0.1") {
       case Success(msg) =>
         success(msg.response)
       case Failure(e) =>
-        println(s"Error: $e")
+        println(s"Error login: $e")
     }
     reply
     
@@ -59,7 +59,7 @@ class ClientImpl(serverAddress: String = "127.0.0.1") {
       case Success(msg) =>
         success(msg.response)
       case Failure(e) =>
-        println(s"Error: $e")
+        println(s"Error registration: $e")
     }
     reply
 
@@ -69,7 +69,7 @@ class ClientImpl(serverAddress: String = "127.0.0.1") {
       case Success(msg) =>
         success(true)
       case Failure(e) =>
-        println(s"Error: $e")
+        println(s"Error while creating a new game: $e")
     }
     reply
 
@@ -79,7 +79,7 @@ class ClientImpl(serverAddress: String = "127.0.0.1") {
       case Success(msg) =>
         success(true)
       case Failure(e) =>
-        println(s"Error: $e")
+        println(s"Error during the closure of the game: $e")
     }
     reply
 
@@ -89,7 +89,7 @@ class ClientImpl(serverAddress: String = "127.0.0.1") {
       case Success(msg) =>
         success(true)
       case Failure(e) =>
-        println(s"Error: $e")
+        println(s"Error while updating the user points: $e")
     }
     reply
 

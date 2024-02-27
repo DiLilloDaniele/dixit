@@ -11,6 +11,7 @@ import java.io.{BufferedReader, InputStreamReader}
 
 object Utils:
 
+  // creation of a new actor system specifying the role, the port and the ip address of the user guardian actor of the AS, plus the cluster name to join (THIS USES THE TEST CONFIG FILE)
   def startupWithRoleForTest[X](role: String, port: String, ip: String, clusterName: String = "ClusterSystem")(root: => Behavior[X]): ActorSystem[X] =
     val config = ConfigFactory
       .parseString(
@@ -25,6 +26,7 @@ object Utils:
       // Create an Akka system
     ActorSystem(root, clusterName, config)
 
+  // creation of a new actor system specifying the role, the port and the ip address of the user guardian actor of the AS, plus the cluster name to join (THIS USES THE BASE CONFIG FILE)
   def startupWithRole[X](role: String, port: String, ip: String, clusterName: String = "ClusterSystem")(root: => Behavior[X]): ActorSystem[X] =
     val config = ConfigFactory
       .parseString(

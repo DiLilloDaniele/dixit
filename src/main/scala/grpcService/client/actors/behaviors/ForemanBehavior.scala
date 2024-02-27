@@ -108,9 +108,7 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
       }
       players.head ! YourTurn(root)
       manageTurnOf(players.head, 0)
-      // context.system.receptionist ! Receptionist.Subscribe(PlayerBehavior.Service, context.self)
     case msg: Receptionist.Listing =>
-      // val services: List[ActorRef[PlayerBehavior.Command]] = msg.serviceInstances(PlayerBehavior.Service).toList
       Behaviors.same
 
     case Stop => Behaviors.stopped
@@ -135,7 +133,7 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
       }
       waitForSelections(actor, turn, card)
     
-    // avviso che il turno va interrotto
+    // notify that the turn is interrupted
     case InterruptTurn =>
       playersList foreach { i =>
         i.player ! TurnCancelled
@@ -160,7 +158,7 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
     case SelectionToApply(cardId, replyTo) =>
       context.log.info("UNA SCELTA RICEVUTA")
       playersSelection = playersSelection :+ PlayerSelection(cardId, replyTo)
-      // rimuovo la carta scelta dal mazzo del giocatore che l'ha scelta
+      // remove the chosen card from the narrator's hand
       playersList foreach { i =>
         if(i.player.path == replyTo.path)
           i.cards -= cardId
@@ -257,12 +255,12 @@ class ForemanBehaviorImpl(context: ActorContext[Command | Receptionist.Listing],
     context.log.info("REINVIO LE CARTE A " + address)
     playersList.foreach { p =>
       if(p.player.path.address.toString == address)
-        p.player ! PlayerBehavior.CardsAssigned(p.cards.toList) // PlayerBehavior.CardsAssigned(pickCards(numCarte))
+        p.player ! PlayerBehavior.CardsAssigned(p.cards.toList)
     }
 
   def restartTurnProcedure(actor: ActorRef[PlayerBehavior.Command]): Unit = 
     context.log.info("RESTART DEL TURNO")
-    // restart del turno e pescaggio carta in più per il narratore (causa turno interrotto)
+    // restart of the current turn and drawing a cart for each player (because of interrupted turn)
     playersList.foreach { p =>
       if(p.player.path.address.toString == actor.path.address.toString)
         val newCard: String = pickCards(1).head.toString

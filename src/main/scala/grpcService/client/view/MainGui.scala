@@ -188,9 +188,5 @@ class MainGui(val sendImage: (cardId: Int, title: String) => Unit,
     frame.pack ()
     frame.setLocationRelativeTo (null)
     frame.setVisible (true)
-    /*val dialog: JDialog = new JDialog(JFrame("Test"),"theTitle", Dialog.ModalityType.APPLICATION_MODAL)
-    dialog.setContentPane (this)
-    dialog.pack()
-    dialog.setVisible(true)*/
 
 }

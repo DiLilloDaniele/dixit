@@ -104,11 +104,6 @@ class HomepageView(val gameController : GameController) extends JPanel() {
   val butPanelSouth = JPanel()
   val butPanelNorth = JPanel()
 
-  /*
-  Text box unused
-  butPanelSouth.add(redVal)
-  val redVal = JTextField(20)
-  */
   butPanelSouth.add(butCreate)
   butPanelSouth.add(butClear)
 

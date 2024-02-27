@@ -39,10 +39,8 @@ object Service {
 }
 
 /**
- * usare using e given a catena
- * qua istanzio porte e logica di dominio
- * in MyServerService voglio come contesto le porte da utilizzare
- * nelle porte voglio come contesto la logica di dominio
+ * effective instantiation of the server using the implementation of the message requests provided by MyServerService
+ * this creates the context of the server
  * @param system
  */
 class Service(system: ActorSystem, repository: AccessAdapter, ipAddress: String) {
